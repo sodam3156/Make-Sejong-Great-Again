@@ -69,6 +69,7 @@
 | [개발 백로그](docs/07_BACKLOG.md) | GitHub Issue로 옮길 작업 목록 |
 | [출처 목록](docs/08_SOURCES.md) | 근거 링크와 사용 시 주의사항 |
 | [RainFlow Sejong](docs/09_RAINFLOW_SEJONG.md) | 우천 연속 회전교차로 디지털 트윈 설계와 검증 기준 |
+| [병렬 제작 운영과 최영 작업 명세](docs/10_TEAM_PARALLEL_EXECUTION.md) | 8월 2일 제출을 위한 역할, 병렬 계약, 날짜별 납품과 외부 실행 기준 |
 
 ## 프로젝트 원칙
 
