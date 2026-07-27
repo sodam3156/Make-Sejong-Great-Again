@@ -43,6 +43,7 @@
 | [발표 서사](docs/06_PITCH_STORY.md) | 3분 피치와 예상 질문 |
 | [개발 백로그](docs/07_BACKLOG.md) | GitHub Issue로 옮길 작업 목록 |
 | [출처 목록](docs/08_SOURCES.md) | 근거 링크와 사용 시 주의사항 |
+| [RainFlow Sejong](docs/09_RAINFLOW_SEJONG.md) | 우천 연속 회전교차로 디지털 트윈 설계와 검증 기준 |
 
 ## 프로젝트 원칙
 
