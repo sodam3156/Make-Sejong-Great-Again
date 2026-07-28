@@ -151,3 +151,36 @@ Day 1 게이트(22:00~23:00) 통과 조건은 계약 동결과 fixture 기반 �
 ### 다음 체크
 
 2026-07-28 23:30. 확인 항목은 (1) 22시 FastAPI 골격 게이트 실제 통과 여부, (2) collaborator 초대 완료 여부, (3) 준 외 커밋 작성자 등장 여부, (4) 5개 역할 브랜치의 `main` 대비 분기 여부다.
+
+---
+
+## 2026-07-28 Day 1 게이트 판정 (준 야간 대행 작업 완료 기록)
+
+준이 취침 전 야간 작업을 AI 대행에 위임했고, 그 결과를 확인된 커밋 기준으로 기록한다.
+
+### 이번 판정에서 새로 확인된 사실
+
+| 항목 | 상태 |
+|---|---|
+| 22시 게이트 (FastAPI 골격·계약 테스트) | **사후 충족.** PR #10 머지로 `backend/app` 전체(main.py, simulation.py, safety.py)와 테스트 20종이 main에 존재. `/api/health` 포함 동결 API 4종 구현 |
+| 14시 게이트 잔여 2종 | OpenAPI는 FastAPI 자동 문서로, health 응답은 구현으로 해소 |
+| 시뮬레이터 | 결정론적 큐 모델로 dry_base 무spillback, 우천 시나리오 spillback 재현. 시드 10개에서 스파이크 통과 기준(spillback 30%↓, TTT 10%↓, 공정성 가드) 자동 테스트 통과 |
+| 안전 가드 | FAIRNESS_P95_EXCEEDED 등 코드화. 가드 위반 후보 승인은 API가 409로 거부하고 감사 로그에 기록 |
+| 프론트 | PR #11 머지. `frontend/index.html` fixture 기반 7단계 3분 데모. 하드코딩 아닌 결과 JSON 표시 |
+| PR | #10, #11 생성·머지 완료 (본문에 입력·출력·실행법·검증·폴백 기록) |
+| 이슈 | #9를 `sodam3156`에 임시 지정하고 동결 선언·검증 결과 코멘트 2건 기록 |
+| main 상태 | `python -m pytest backend/tests -q` 20/20 통과. fixture 모드 3분 시연 가능 조건 충족 |
+
+### 판정
+
+**Day 1 게이트 통과.** 계약 동결(docs/15, contracts/), fixture(demo_run.json), 실행 코드(백엔드+프론트), 재현성 테스트가 main에 모두 존재한다. 단 전 커밋이 준 1인(및 AI 대행) 명의라는 21:30 체크의 구조적 리스크는 해소되지 않았다.
+
+### 사람이 해야 할 잔여 작업 (아침 최우선)
+
+| 순위 | 담당 | 작업 |
+|---|---|---|
+| 1 | 준 | 나머지 팀원 2명 collaborator 초대, `Wordmaster-digital`·`dugkdbs121-ui` 실명 확정, 이슈 #1 #2 #3 #5 #6 담당자 지정 |
+| 2 | 최영 | PR #10 코드 리뷰. 큐 모델 파라미터 검토 후 이슈 #9 클로즈 여부 결정 |
+| 3 | 시우 | backend/README.md의 provisional 파라미터 표 검증, `docs/evidence`에 수치 근거 커밋 |
+| 4 | 김경은 | `design-tokens.json` 커밋 → frontend/index.html의 임시 다크 테마 색상 교체 |
+| 5 | 프론트엔드 담당 | frontend/index.html 컴포넌트 분리 및 API 어댑터 연결 (Day 2) |
