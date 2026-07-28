@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RainFlow Sejong — 3분 데모</title>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --panel: #10151f;
+    --panel-2: #151b28;
+    --border: #22293a;
+    --text: #e6ebf5;
+    --muted: #8a93a8;
+    --accent: #4fd1c5;
+    --green: #34d399;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --blue: #60a5fa;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+    font-size: 15px;
+  }
+  .app { max-width: 1200px; margin: 0 auto; padding: 16px 20px 60px; }
+
+  header.top {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    padding-bottom: 12px; margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  header.top h1 { font-size: 18px; margin: 0; letter-spacing: 0.3px; }
+  header.top .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    color: var(--muted);
+  }
+  .badge.fixture { color: var(--yellow); border-color: rgba(251,191,36,0.4); }
+  .badge.provisional { color: var(--red); border-color: rgba(248,113,113,0.4); }
+
+  .controls {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 16px;
+  }
+  .controls button {
+    background: var(--panel-2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 14px; cursor: pointer; font-size: 13px;
+  }
+  .controls button:hover { border-color: var(--accent); color: var(--accent); }
+  .controls button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .step-dots { display: flex; gap: 6px; margin-left: 4px; flex-wrap: wrap; }
+  .step-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--border); cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .step-dot.active { background: var(--accent); }
+  .clock { margin-left: auto; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .state-label {
+    font-weight: 700; color: var(--accent); font-size: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  .panel h2 {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--muted); margin: 0 0 10px;
+  }
+
+  .corridor-note { color: var(--muted); font-size: 13px; margin-top: 8px; min-height: 34px; }
+
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  }
+  @media (max-width: 700px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi-card {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px;
+  }
+  .kpi-card .label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .kpi-card .value { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi-card .unit { font-size: 11px; color: var(--muted); margin-left: 3px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; }
+  tr.rejected { background: rgba(248,113,113,0.08); }
+  tr.rejected td:first-child { border-left: 3px solid var(--red); }
+  tr.chosen td:first-child { border-left: 3px solid var(--green); }
+  .pct-good { color: var(--green); font-weight: 600; }
+  .pct-bad { color: var(--red); font-weight: 600; }
+
+  .guard-card {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;
+  }
+  .guard-card.fail { border-color: rgba(248,113,113,0.5); background: rgba(248,113,113,0.06); }
+  .guard-card .head { display: flex; align-items: center; justify-content: space-between; }
+  .guard-card .head .name { font-weight: 700; }
+  .guard-pass { color: var(--green); font-size: 12px; font-weight: 700; }
+  .guard-fail { color: var(--red); font-size: 12px; font-weight: 700; }
+  .violation { margin-top: 6px; font-size: 12px; color: var(--muted); }
+  .violation code { color: var(--red); background: rgba(248,113,113,0.1); padding: 1px 5px; border-radius: 4px; }
+
+  .approval-box {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px;
+  }
+  .approval-box dl { display: grid; grid-template-columns: 100px 1fr; gap: 6px 10px; font-size: 13px; margin: 0 0 12px; }
+  .approval-box dt { color: var(--muted); }
+  .approval-actions { display: flex; gap: 10px; }
+  .btn-approve, .btn-reject {
+    padding: 8px 18px; border-radius: 6px; border: 1px solid var(--border);
+    font-weight: 700; cursor: pointer; font-size: 13px;
+  }
+  .btn-approve { background: rgba(52,211,153,0.15); color: var(--green); border-color: rgba(52,211,153,0.4); }
+  .btn-reject { background: rgba(248,113,113,0.15); color: var(--red); border-color: rgba(248,113,113,0.4); }
+  .btn-approve:hover, .btn-reject:hover { filter: brightness(1.2); }
+  .decision-note { margin-top: 10px; font-size: 13px; color: var(--accent); }
+
+  .recovery-side { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .recovery-col { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+  .recovery-col h3 { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+  .recovery-col .row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
+  .improvement-row { margin-top: 10px; font-size: 13px; }
+  .improvement-row span.pct { font-weight: 700; }
+
+  footer.note {
+    margin-top: 24px; color: var(--muted); font-size: 11px; text-align: center;
+    border-top: 1px solid var(--border); padding-top: 12px;
+  }
+
+  .svg-wrap { width: 100%; overflow-x: auto; }
+  .link-label { fill: var(--muted); font-size: 11px; }
+  .ra-label { fill: var(--text); font-size: 13px; font-weight: 700; }
+  .link-line { stroke-width: 8; stroke-linecap: round; transition: stroke 0.4s ease; }
+  .link-line.blink { animation: blink-anim 0.9s infinite; }
+  @keyframes blink-anim { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div>
+      <h1>RainFlow Sejong — 강우 대응 회랑 관제 데모</h1>
+      <div class="sub" id="scenario-sub"></div>
+    </div>
+    <div class="badges">
+      <span class="badge fixture">result_source: fixture</span>
+      <span class="badge provisional">provisional 합성 데이터</span>
+    </div>
+  </header>
+
+  <div class="controls">
+    <button id="btn-prev">← 이전</button>
+    <button id="btn-playpause">일시정지</button>
+    <button id="btn-next">다음 →</button>
+    <div class="step-dots" id="step-dots"></div>
+    <span class="state-label" id="state-label"></span>
+    <span class="clock" id="clock"></span>
+  </div>
+
+  <div class="panel">
+    <h2>회랑 상태 · R1 – R2 – R3</h2>
+    <div class="svg-wrap">
+      <svg id="corridor-svg" viewBox="0 0 760 220" width="100%" height="220" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <div class="corridor-note" id="corridor-note"></div>
+  </div>
+
+  <div class="panel">
+    <h2>핵심 KPI (현재 시점 스냅샷: corridor_gating 적용 기준)</h2>
+    <div class="kpi-grid" id="kpi-grid"></div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="panel" id="panel-policy" style="display:none;">
+        <h2>대응안 비교 (무대응 대비)</h2>
+        <table id="policy-table"></table>
+      </div>
+
+      <div class="panel" id="panel-safety" style="display:none;">
+        <h2>안전 가드 판정</h2>
+        <div id="safety-cards"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel" id="panel-approval" style="display:none;">
+        <h2>운영자 승인</h2>
+        <div class="approval-box" id="approval-box"></div>
+      </div>
+
+      <div class="panel" id="panel-recovery" style="display:none;">
+        <h2>회복 비교 (무대응 vs 적용)</h2>
+        <div id="recovery-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="note">
+    이 화면은 backend/fixtures/demo_run.json 고정 데이터를 재생하는 3분 데모입니다.
+    실제 세종시 실측 데이터가 아니며 시우 검증 전 provisional 수치입니다.
+    run_id: <span id="run-id"></span>
+  </footer>
+</div>
+
+<script src="demo_run.js"></script>
+<script>
+(function () {
+  var DATA = window.DEMO_RUN;
+  var timeline = DATA.timeline;
+  var screenStates = DATA.screen_states;
+  var totalSteps = timeline.length;
+
+  // 3분(180초) 데모 스케일: 각 단계 표시 시간
+  var STEP_DURATION_MS = Math.round(180000 / totalSteps);
+
+  var idx = 0;
+  var playing = true;
+  var timer = null;
+  var approvalDecision = null; // 'approved' | 'rejected' | null
+
+  document.getElementById('run-id').textContent = DATA.run_id;
+  document.getElementById('scenario-sub').textContent =
+    '시나리오: ' + DATA.scenario.scenario_id + ' · seed ' + DATA.scenario.seed +
+    ' · 강우 ' + DATA.scenario.rain_level + ' · network ' + (DATA.network_version || '');
+
+  var STATE_LABELS = {
+    normal: '정상 운영',
+    rain_warning: '강우 경보',
+    spillback: '역류(spillback) 발생',
+    policy_compare: '대응안 비교',
+    safety_review: '안전 가드 심사',
+    operator_approval: '운영자 승인',
+    recovery_compare: '회복 비교'
+  };
+
+  // ---- step dots ----
+  var dotsWrap = document.getElementById('step-dots');
+  timeline.forEach(function (t, i) {
+    var d = document.createElement('div');
+    d.className = 'step-dot';
+    d.title = t.screen_state;
+    d.addEventListener('click', function () { goTo(i); });
+    dotsWrap.appendChild(d);
+  });
+
+  function updateDots() {
+    var dots = dotsWrap.querySelectorAll('.step-dot');
+    dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+  }
+
+  // ---- corridor SVG ----
+  var RA_POS = { R1: { x: 120, y: 110 }, R2: { x: 380, y: 110 }, R3: { x: 640, y: 110 } };
+  var LINK_DEF = [
+    { link_id: 'L12', from: 'R1', to: 'R2', offsetY: 0 },
+    { link_id: 'L23', from: 'R2', to: 'R3', offsetY: 0 },
+    { link_id: 'BYPASS', from: 'R1', to: 'R3', offsetY: -70 }
+  ];
+
+  function occColor(ratio) {
+    if (ratio >= 0.95) return 'var(--red)';
+    if (ratio >= 0.6) return 'var(--yellow)';
+    return 'var(--green)';
+  }
+
+  function renderCorridorSVG() {
+    var svg = document.getElementById('corridor-svg');
+    var parts = [];
+
+    LINK_DEF.forEach(function (l) {
+      var a = RA_POS[l.from], b = RA_POS[l.to];
+      var midY = 110 + l.offsetY;
+      var pathId = 'path-' + l.link_id;
+      var d;
+      if (l.offsetY === 0) {
+        d = 'M ' + a.x + ' ' + a.y + ' L ' + b.x + ' ' + b.y;
+      } else {
+        d = 'M ' + a.x + ' ' + a.y + ' Q ' + ((a.x + b.x) / 2) + ' ' + midY + ' ' + b.x + ' ' + b.y;
+      }
+      parts.push('<path id="' + pathId + '" d="' + d + '" fill="none" class="link-line" stroke="var(--border)" />');
+      var labelX = (a.x + b.x) / 2;
+      var labelY = midY - 12;
+      parts.push('<text x="' + labelX + '" y="' + labelY + '" class="link-label" text-anchor="middle">' + l.link_id + '</text>');
+    });
+
+    Object.keys(RA_POS).forEach(function (ra) {
+      var p = RA_POS[ra];
+      parts.push('<circle cx="' + p.x + '" cy="' + p.y + '" r="26" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2" />');
+      parts.push('<text x="' + p.x + '" y="' + (p.y + 5) + '" class="ra-label" text-anchor="middle">' + ra + '</text>');
+    });
+
+    svg.innerHTML = parts.join('\n');
+  }
+
+  function updateCorridorState(step) {
+    var linkMap = {};
+    step.links.forEach(function (l) { linkMap[l.link_id] = l; });
+
+    LINK_DEF.forEach(function (l) {
+      var el = document.getElementById('path-' + l.link_id);
+      if (!el) return;
+      var data = linkMap[l.link_id];
+      if (!data) return;
+      el.setAttribute('stroke', occColor(data.occupancy_ratio));
+      el.classList.toggle('blink', !!data.spillback);
+    });
+
+    var noteEl = document.getElementById('corridor-note');
+    var lines = step.links.map(function (l) {
+      return l.link_id + ': 점유율 ' + Math.round(l.occupancy_ratio * 100) + '%' +
+        (l.queue_veh != null ? ', 대기 ' + l.queue_veh + '대' : '') +
+        (l.spillback ? ' [역류]' : '');
+    }).join(' · ');
+    noteEl.textContent = (step.note || '') + '  (' + lines + ')';
+  }
+
+  // ---- KPI cards ----
+  var KPI_DEFS = [
+    { key: 'spillback_time_sec', label: 'Spillback 시간', unit: '초' },
+    { key: 'recovery_time_sec', label: '회복 시간', unit: '초' },
+    { key: 'total_travel_time_sec', label: '총 통행시간', unit: '초' },
+    { key: 'worst_approach_delay_sec', label: '최악 진입로 지체', unit: '초' }
+  ];
+
+  function renderKPI(kpi) {
+    var grid = document.getElementById('kpi-grid');
+    grid.innerHTML = KPI_DEFS.map(function (d) {
+      return '<div class="kpi-card"><div class="label">' + d.label + '</div>' +
+        '<div class="value">' + kpi[d.key] + '<span class="unit">' + d.unit + '</span></div></div>';
+    }).join('');
+  }
+
+  // ---- policy compare table ----
+  function pctSpan(v) {
+    if (v == null) return '<span class="pct-neutral">-</span>';
+    var cls = v < 0 ? 'pct-good' : (v > 0 ? 'pct-bad' : '');
+    var sign = v > 0 ? '+' : '';
+    return '<span class="' + cls + '">' + sign + v + '%</span>';
+  }
+
+  function renderPolicyTable() {
+    var policies = DATA.policies;
+    var rows = policies.map(function (p) {
+      var rowClass = p.guard.passed === false ? 'rejected' : (p.policy_id === DATA.approval.policy_id ? 'chosen' : '');
+      var d = p.delta_vs_no_action || {};
+      return '<tr class="' + rowClass + '">' +
+        '<td>' + p.label + (p.guard.passed === false ? ' (탈락)' : (p.policy_id === DATA.approval.policy_id ? ' (선택)' : '')) + '</td>' +
+        '<td>' + p.kpi.spillback_time_sec + '초</td>' +
+        '<td>' + p.kpi.total_travel_time_sec + '초</td>' +
+        '<td>' + p.kpi.worst_approach_delay_sec + '초</td>' +
+        '<td>' + pctSpan(d.spillback_time_pct) + '</td>' +
+        '<td>' + pctSpan(d.total_travel_time_pct) + '</td>' +
+        '<td>' + pctSpan(d.worst_approach_delay_pct) + '</td>' +
+        '</tr>';
+    }).join('');
+    document.getElementById('policy-table').innerHTML =
+      '<thead><tr><th>정책</th><th>Spillback</th><th>총 통행시간</th><th>최악 지체</th>' +
+      '<th>Δ Spillback</th><th>Δ 통행시간</th><th>Δ 최악지체</th></tr></thead><tbody>' + rows + '</tbody>';
+  }
+
+  // ---- safety review ----
+  function renderSafetyReview() {
+    var wrap = document.getElementById('safety-cards');
+    wrap.innerHTML = DATA.policies.map(function (p) {
+      var fail = p.guard.passed === false;
+      var viol = (p.guard.violations || []).map(function (v) {
+        return '<div class="violation"><code>' + v.code + '</code> ' + v.detail + '</div>';
+      }).join('');
+      return '<div class="guard-card ' + (fail ? 'fail' : '') + '">' +
+        '<div class="head"><span class="name">' + p.label + (fail ? ' — 탈락' : '') + '</span>' +
+        '<span class="' + (fail ? 'guard-fail' : 'guard-pass') + '">' + (p.guard.passed ? 'PASS' : 'FAIL') + '</span></div>' +
+        (p.guard.note ? '<div class="violation">' + p.guard.note + '</div>' : '') +
+        viol +
+        '</div>';
+    }).join('');
+  }
+
+  // ---- operator approval ----
+  function renderApproval() {
+    var box = document.getElementById('approval-box');
+    var a = DATA.approval;
+    var chosen = DATA.policies.filter(function (p) { return p.policy_id === a.policy_id; })[0];
+    box.innerHTML =
+      '<dl>' +
+      '<dt>대상 정책</dt><dd>' + (chosen ? chosen.label : a.policy_id) + '</dd>' +
+      '<dt>제안 상태</dt><dd>' + a.status + '</dd>' +
+      '<dt>운영자</dt><dd>' + (a.operator || '-') + '</dd>' +
+      '<dt>근거</dt><dd>' + (a.reason || '-') + '</dd>' +
+      '</dl>'.replace('<dl>', '<dl style="margin-bottom:12px">') +
+      '<div class="approval-actions">' +
+      '<button class="btn-approve" id="btn-approve">승인</button>' +
+      '<button class="btn-reject" id="btn-reject">거절</button>' +
+      '</div>' +
+      '<div class="decision-note" id="decision-note"></div>';
+
+    document.getElementById('btn-approve').addEventListener('click', function () {
+      approvalDecision = 'approved';
+      document.getElementById('decision-note').textContent = '로컬 표시: 운영자가 corridor_gating 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)';
+    });
+    document.getElementById('btn-reject').addEventListener('click', function () {
+      approvalDecision = 'rejected';
+      document.getElementById('decision-note').textContent = '로컬 표시: 운영자가 제안을 거절했습니다. (fixture 데모, 실제 반영 없음)';
+    });
+    if (approvalDecision) {
+      document.getElementById('decision-note').textContent =
+        approvalDecision === 'approved'
+          ? '로컬 표시: 운영자가 corridor_gating 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)'
+          : '로컬 표시: 운영자가 제안을 거절했습니다. (fixture 데모, 실제 반영 없음)';
+    }
+  }
+
+  // ---- recovery compare ----
+  function renderRecovery() {
+    var rc = DATA.recovery_compare;
+    var wrap = document.getElementById('recovery-content');
+    function col(title, kpi) {
+      return '<div class="recovery-col"><h3>' + title + '</h3>' +
+        KPI_DEFS.map(function (d) {
+          return '<div class="row"><span>' + d.label + '</span><span>' + kpi[d.key] + d.unit + '</span></div>';
+        }).join('') + '</div>';
+    }
+    var imp = rc.improvement || {};
+    wrap.innerHTML =
+      '<div class="recovery-side">' + col('무대응', rc.no_action) + col('적용 (corridor_gating)', rc.applied) + '</div>' +
+      '<div class="improvement-row">개선율: Spillback ' + pctSpan(imp.spillback_time_pct) +
+      ' · 회복시간 ' + pctSpan(imp.recovery_time_pct) +
+      ' · 총 통행시간 ' + pctSpan(imp.total_travel_time_pct) +
+      ' · 최악지체 ' + pctSpan(imp.worst_approach_delay_pct) + '</div>';
+  }
+
+  // ---- panel visibility per state ----
+  function updatePanels(state) {
+    document.getElementById('panel-policy').style.display = (state === 'policy_compare' || state === 'safety_review' || state === 'operator_approval' || state === 'recovery_compare') ? 'block' : 'none';
+    document.getElementById('panel-safety').style.display = (state === 'safety_review' || state === 'operator_approval' || state === 'recovery_compare') ? 'block' : 'none';
+    document.getElementById('panel-approval').style.display = (state === 'operator_approval' || state === 'recovery_compare') ? 'block' : 'none';
+    document.getElementById('panel-recovery').style.display = (state === 'recovery_compare') ? 'block' : 'none';
+  }
+
+  // ---- KPI snapshot: choose kpi source based on state ----
+  function kpiForState(state) {
+    if (state === 'recovery_compare') return DATA.recovery_compare.applied;
+    // before approval, show no_action baseline as "current trajectory" snapshot;
+    // corridor_gating kpi shown once approval reached
+    if (state === 'operator_approval' || state === 'safety_review' || state === 'policy_compare') {
+      var cg = DATA.policies.filter(function (p) { return p.policy_id === 'corridor_gating'; })[0];
+      return cg.kpi;
+    }
+    var na = DATA.policies.filter(function (p) { return p.policy_id === 'no_action'; })[0];
+    return na.kpi;
+  }
+
+  function render() {
+    var step = timeline[idx];
+    var state = step.screen_state;
+
+    document.getElementById('state-label').textContent =
+      (idx + 1) + '/' + totalSteps + ' — ' + (STATE_LABELS[state] || state);
+    document.getElementById('clock').textContent =
+      't = ' + step.t_sec + '초 (실측 스케일) / 강우: ' + (step.rain_level || '-');
+
+    updateCorridorState(step);
+    renderKPI(kpiForState(state));
+    updatePanels(state);
+
+    if (state === 'policy_compare' || state === 'safety_review' || state === 'operator_approval' || state === 'recovery_compare') {
+      renderPolicyTable();
+    }
+    if (state === 'safety_review' || state === 'operator_approval' || state === 'recovery_compare') {
+      renderSafetyReview();
+    }
+    if (state === 'operator_approval' || state === 'recovery_compare') {
+      renderApproval();
+    }
+    if (state === 'recovery_compare') {
+      renderRecovery();
+    }
+
+    updateDots();
+    document.getElementById('btn-prev').disabled = idx === 0;
+    document.getElementById('btn-next').disabled = idx === totalSteps - 1;
+  }
+
+  function goTo(newIdx) {
+    idx = Math.max(0, Math.min(totalSteps - 1, newIdx));
+    render();
+  }
+
+  function scheduleNext() {
+    clearTimeout(timer);
+    if (!playing) return;
+    if (idx >= totalSteps - 1) { playing = false; updatePlayButton(); return; }
+    timer = setTimeout(function () {
+      idx = idx + 1;
+      render();
+      scheduleNext();
+    }, STEP_DURATION_MS);
+  }
+
+  function updatePlayButton() {
+    document.getElementById('btn-playpause').textContent = playing ? '일시정지' : '재생';
+  }
+
+  document.getElementById('btn-prev').addEventListener('click', function () {
+    playing = false; updatePlayButton(); clearTimeout(timer);
+    goTo(idx - 1);
+  });
+  document.getElementById('btn-next').addEventListener('click', function () {
+    playing = false; updatePlayButton(); clearTimeout(timer);
+    goTo(idx + 1);
+  });
+  document.getElementById('btn-playpause').addEventListener('click', function () {
+    playing = !playing;
+    updatePlayButton();
+    if (playing) {
+      if (idx >= totalSteps - 1) { idx = 0; }
+      render();
+      scheduleNext();
+    } else {
+      clearTimeout(timer);
+    }
+  });
+
+  renderCorridorSVG();
+  render();
+  scheduleNext();
+})();
+</script>
+</body>
+</html>
