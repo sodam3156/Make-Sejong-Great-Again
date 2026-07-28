@@ -76,6 +76,7 @@
 | [병렬 제작 운영과 최영 작업 명세](docs/10_TEAM_PARALLEL_EXECUTION.md) | 8월 2일 제출을 위한 역할, 병렬 계약, 날짜별 납품과 외부 실행 기준 |
 | [프로젝트 실현 가능성 검증 보고서](docs/11_PROJECT_FEASIBILITY_VALIDATION.md) | 구현 가능 범위, 과장 방지 기준, 기술 구조 충돌, 필수 테스트와 발표 전 체크리스트 |
 | [기술 스택과 백엔드 구현 범위](docs/12_TECH_STACK_AND_BACKEND_SCOPE.md) | 고정 기술 선택, 코드 디렉터리, API 계약, 백엔드 P0 기능과 완료 순서 |
+| [PM 진척 체크 로그](docs/14_PM_STATUS_LOG.md) | 2시간 주기 진척 확인, 리스크, 담당자별 다음 작업 추천 |
 
 ## 프로젝트 원칙
 
