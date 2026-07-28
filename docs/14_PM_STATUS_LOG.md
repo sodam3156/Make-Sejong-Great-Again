@@ -184,3 +184,31 @@ Day 1 게이트(22:00~23:00) 통과 조건은 계약 동결과 fixture 기반 �
 | 3 | 시우 | backend/README.md의 provisional 파라미터 표 검증, `docs/evidence`에 수치 근거 커밋 |
 | 4 | 김경은 | `design-tokens.json` 커밋 → frontend/index.html의 임시 다크 테마 색상 교체 |
 | 5 | 프론트엔드 담당 | frontend/index.html 컴포넌트 분리 및 API 어댑터 연결 (Day 2) |
+
+---
+
+## 2026-07-29 새벽 야간 대행 누적 체크 (Day 2)
+
+준 위임 1시간 주기 AI 대행 루틴의 누적 결과다. 확인 근거는 전부 머지된 PR과 main 커밋이다.
+
+### 확인된 사실
+
+| 항목 | 상태 |
+|---|---|
+| 머지된 PR | #12 provisional 수치표, #13 design-tokens 13종, #14 프론트 live API 어댑터, #15 Windows 실행 스크립트, #16 **dugkdbs121-ui의 React 컴포넌트(첫 팀원 기여)**, #17 PyInstaller 실빌드 수정, #18 릴리스 패키징, #19 3분 데모 스크립트 |
+| 게이트 진척 | 7/29 전 항목, 7/30(API 연동+자동 폴백), 7/31(exe 빌드·한글 경로·재실행 검증, 패키징 스크립트) 자동화 가능분 완료 |
+| 번들 검증 | exe 6.6MB/번들 32MB. 저장소 밖 한글·공백 경로에서 health 200, live_simulation 응답, 재실행 무충돌 (docs/evidence/bundle_smoke_20260729.md) |
+| 제출 패키징 | release/package_release.ps1 원커맨드: 데모 zip 16MB + 소스 zip + SHA256SUMS (docs/evidence/release_package_20260729.md) |
+| main | 테스트 20/20, fixture 3분 시연 가능 유지 |
+| collaborator | 초대 2건 발송됨(ilhsh, zcxsdasdas), 수락 대기 |
+
+### 사람이 해야 할 잔여 작업
+
+| 순위 | 담당 | 작업 |
+|---|---|---|
+| 1 | ilhsh·zcxsdasdas | collaborator 초대 수락 → 준이 이슈 #1 #2 #3 #5 #6 담당 지정 |
+| 2 | 준 | docs/16 데모 스크립트를 소리 내 읽으며 타이밍 확정 |
+| 3 | 프론트엔드 담당 | feat/components에 package.json+vite.config 추가해 React 앱 승격 (PR #16 리뷰 코멘트 참고) |
+| 4 | 최영 | PR #10 #15 #17 #18 코드 리뷰, 이슈 #9 클로즈 판단 |
+| 5 | 시우 | docs/evidence/provisional_parameters.md 문헌 대조 검증 |
+| 6 | 전원(8/1) | 외부 PC 2대 실검증 + 백업 영상 촬영 |
