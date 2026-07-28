@@ -1,0 +1,5 @@
+# start.bat이 실행 중 생성하는 런타임 산출물
+logs/
+
+# build_windows.ps1 산출물 (PyInstaller onedir 결과)
+windows-x64/
