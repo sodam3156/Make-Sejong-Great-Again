@@ -47,7 +47,24 @@
     color: var(--muted);
   }
   .badge.fixture { color: var(--yellow); border-color: rgba(251,191,36,0.4); }
+  .badge.live { color: var(--blue); border-color: rgba(96,165,250,0.4); }
   .badge.provisional { color: var(--red); border-color: rgba(248,113,113,0.4); }
+
+  .scenario-select {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--muted);
+  }
+  .scenario-select select {
+    background: var(--panel-2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 4px 8px; font-size: 12px;
+  }
+  .scenario-select select:disabled { opacity: 0.5; cursor: not-allowed; }
+  .scenario-notice {
+    font-size: 12px; color: var(--yellow); margin-top: 6px;
+    display: none;
+  }
+  .scenario-notice.show { display: block; }
 
   .controls {
     display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
@@ -174,10 +191,19 @@
       <div class="sub" id="scenario-sub"></div>
     </div>
     <div class="badges">
-      <span class="badge fixture">result_source: fixture</span>
+      <span class="badge fixture" id="badge-source">result_source: fixture</span>
       <span class="badge provisional">provisional 합성 데이터</span>
     </div>
+    <div class="scenario-select">
+      <label for="scenario-picker">시나리오</label>
+      <select id="scenario-picker">
+        <option value="dry_base">dry_base</option>
+        <option value="rain_spillback_a" selected>rain_spillback_a</option>
+        <option value="rain_spillback_b">rain_spillback_b</option>
+      </select>
+    </div>
   </header>
+  <div class="scenario-notice" id="scenario-notice"></div>
 
   <div class="controls">
     <button id="btn-prev">← 이전</button>
@@ -237,23 +263,20 @@
 <script src="demo_run.js"></script>
 <script>
 (function () {
-  var DATA = window.DEMO_RUN;
-  var timeline = DATA.timeline;
-  var screenStates = DATA.screen_states;
-  var totalSteps = timeline.length;
+  var FIXTURE = window.DEMO_RUN;
+  var DATA = null;
+  var MODE = 'fixture'; // 'fixture' | 'live'
+  var CURRENT_SCENARIO = 'rain_spillback_a';
+  var FIXTURE_TIMEOUT_MS = 5000;
 
-  // 3분(180초) 데모 스케일: 각 단계 표시 시간
-  var STEP_DURATION_MS = Math.round(180000 / totalSteps);
+  var timeline = [];
+  var totalSteps = 0;
+  var STEP_DURATION_MS = 0;
 
   var idx = 0;
   var playing = true;
   var timer = null;
   var approvalDecision = null; // 'approved' | 'rejected' | null
-
-  document.getElementById('run-id').textContent = DATA.run_id;
-  document.getElementById('scenario-sub').textContent =
-    '시나리오: ' + DATA.scenario.scenario_id + ' · seed ' + DATA.scenario.seed +
-    ' · 강우 ' + DATA.scenario.rain_level + ' · network ' + (DATA.network_version || '');
 
   var STATE_LABELS = {
     normal: '정상 운영',
@@ -267,13 +290,20 @@
 
   // ---- step dots ----
   var dotsWrap = document.getElementById('step-dots');
-  timeline.forEach(function (t, i) {
-    var d = document.createElement('div');
-    d.className = 'step-dot';
-    d.title = t.screen_state;
-    d.addEventListener('click', function () { goTo(i); });
-    dotsWrap.appendChild(d);
-  });
+
+  function rebuildDots() {
+    dotsWrap.innerHTML = '';
+    timeline.forEach(function (t, i) {
+      var d = document.createElement('div');
+      d.className = 'step-dot';
+      d.title = t.screen_state;
+      d.addEventListener('click', function () {
+        playing = false; updatePlayButton(); clearTimeout(timer);
+        goTo(i);
+      });
+      dotsWrap.appendChild(d);
+    });
+  }
 
   function updateDots() {
     var dots = dotsWrap.querySelectorAll('.step-dot');
@@ -422,22 +452,90 @@
       '<button class="btn-approve" id="btn-approve">승인</button>' +
       '<button class="btn-reject" id="btn-reject">거절</button>' +
       '</div>' +
-      '<div class="decision-note" id="decision-note"></div>';
+      '<div class="decision-note" id="decision-note"></div>' +
+      '<div id="approval-error"></div>';
 
     document.getElementById('btn-approve').addEventListener('click', function () {
+      if (MODE === 'live') {
+        handleLiveApproval('approve', chosen);
+        return;
+      }
       approvalDecision = 'approved';
-      document.getElementById('decision-note').textContent = '로컬 표시: 운영자가 corridor_gating 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)';
+      document.getElementById('decision-note').textContent =
+        '로컬 표시: 운영자가 ' + (chosen ? chosen.label : a.policy_id) + ' 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)';
     });
     document.getElementById('btn-reject').addEventListener('click', function () {
+      if (MODE === 'live') {
+        handleLiveApproval('reject', chosen);
+        return;
+      }
       approvalDecision = 'rejected';
       document.getElementById('decision-note').textContent = '로컬 표시: 운영자가 제안을 거절했습니다. (fixture 데모, 실제 반영 없음)';
     });
-    if (approvalDecision) {
+    if (MODE !== 'live' && approvalDecision) {
       document.getElementById('decision-note').textContent =
         approvalDecision === 'approved'
-          ? '로컬 표시: 운영자가 corridor_gating 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)'
+          ? '로컬 표시: 운영자가 ' + (chosen ? chosen.label : a.policy_id) + ' 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)'
           : '로컬 표시: 운영자가 제안을 거절했습니다. (fixture 데모, 실제 반영 없음)';
     }
+  }
+
+  function fetchWithTimeout(url, opts, ms) {
+    opts = opts || {};
+    if (typeof AbortController !== 'undefined') {
+      var controller = new AbortController();
+      var timeoutId = setTimeout(function () { controller.abort(); }, ms);
+      opts.signal = controller.signal;
+      return fetch(url, opts).then(function (resp) {
+        clearTimeout(timeoutId);
+        return resp;
+      }, function (err) {
+        clearTimeout(timeoutId);
+        throw err;
+      });
+    }
+    return fetch(url, opts);
+  }
+
+  function handleLiveApproval(decision, chosen) {
+    var noteEl = document.getElementById('decision-note');
+    var errEl = document.getElementById('approval-error');
+    if (!noteEl || !chosen) return;
+    noteEl.textContent = '요청 중...';
+    if (errEl) errEl.innerHTML = '';
+    fetchWithTimeout('/api/approvals', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        run_id: DATA.run_id,
+        policy_id: chosen.policy_id,
+        decision: decision === 'approve' ? 'approve' : 'reject',
+        operator: 'demo_operator',
+        reason: ''
+      })
+    }, FIXTURE_TIMEOUT_MS).then(function (resp) {
+      if (resp.status === 409) {
+        return resp.json().then(function (body) {
+          var detail = body.detail || {};
+          var violations = detail.violations || [];
+          noteEl.textContent = '승인 불가: ' + (detail.message || '안전·공정성 가드 위반');
+          if (errEl) {
+            errEl.innerHTML = violations.map(function (v) {
+              return '<div class="violation"><code>' + v.code + '</code> ' + v.detail + '</div>';
+            }).join('');
+          }
+        });
+      }
+      if (!resp.ok) { throw new Error('approval request failed: ' + resp.status); }
+      return resp.json().then(function (result) {
+        DATA.approval = result;
+        noteEl.textContent = result.status === 'approved'
+          ? '운영자가 ' + chosen.label + ' 정책을 승인했습니다. (live)'
+          : '운영자가 제안을 거절했습니다. (live)';
+      });
+    }).catch(function () {
+      noteEl.textContent = '승인 요청 실패(네트워크). 화면에는 반영되지 않았습니다.';
+    });
   }
 
   // ---- recovery compare ----
@@ -551,9 +649,163 @@
     }
   });
 
-  renderCorridorSVG();
-  render();
-  scheduleNext();
+  // ---- badge / scenario notice ----
+  function updateBadge(source) {
+    var el = document.getElementById('badge-source');
+    if (!el) return;
+    el.textContent = 'result_source: ' + source;
+    el.classList.toggle('fixture', source === 'fixture');
+    el.classList.toggle('live', source !== 'fixture');
+  }
+
+  function showScenarioNotice(msg) {
+    var el = document.getElementById('scenario-notice');
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('show');
+  }
+
+  function hideScenarioNotice() {
+    var el = document.getElementById('scenario-notice');
+    if (!el) return;
+    el.textContent = '';
+    el.classList.remove('show');
+  }
+
+  // ---- live/fixture data adapter ----
+  function isHttpProtocol() {
+    return typeof location !== 'undefined' &&
+      (location.protocol === 'http:' || location.protocol === 'https:');
+  }
+
+  // 라이브 timeline은 4개 상태(normal/rain_warning/spillback/recovery_compare)만
+  // 샘플링에 등장한다 (backend/app/main.py:_screen_state_at). 대응안 비교/안전 가드/
+  // 운영자 승인 3단계를 fixture처럼 데모에 노출하기 위해, spillback 마지막 지점
+  // 직후에 동일 스냅샷을 복제한 합성 스텝을 끼워 넣는다. 실제 시뮬레이션 수치는
+  // 그대로 유지되며 표시 목적의 화면 상태만 추가된다.
+  function synthesizeDecisionSteps(run) {
+    var tl = run.timeline || [];
+    var hasDecisionStates = tl.some(function (s) {
+      return s.screen_state === 'policy_compare' ||
+        s.screen_state === 'safety_review' ||
+        s.screen_state === 'operator_approval';
+    });
+    if (hasDecisionStates) return run;
+
+    var lastSpillIdx = -1;
+    for (var i = 0; i < tl.length; i++) {
+      if (tl[i].screen_state === 'spillback') lastSpillIdx = i;
+    }
+    if (lastSpillIdx === -1) return run; // spillback 없는 시나리오(dry_base 등)는 그대로 둔다
+
+    var base = tl[lastSpillIdx];
+    var approvalPolicyId = run.approval && run.approval.policy_id;
+    var extraDefs = [
+      { state: 'policy_compare', note: '대응안 3종 비교 제시' },
+      { state: 'safety_review', note: '안전·공정성 가드 판정' },
+      { state: 'operator_approval', note: '운영자 승인 대기: ' + (approvalPolicyId || '') }
+    ];
+    var extra = extraDefs.map(function (def, k) {
+      var clone = JSON.parse(JSON.stringify(base));
+      clone.screen_state = def.state;
+      clone.t_sec = base.t_sec + (k + 1);
+      clone.note = def.note;
+      return clone;
+    });
+    var newTl = tl.slice(0, lastSpillIdx + 1).concat(extra, tl.slice(lastSpillIdx + 1));
+    run.timeline = newTl;
+    return run;
+  }
+
+  function loadLiveRun(scenarioId) {
+    return fetchWithTimeout('/api/simulations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ scenario_id: scenarioId, seed: 42 })
+    }, FIXTURE_TIMEOUT_MS).then(function (resp) {
+      if (!resp.ok) throw new Error('simulations POST failed: ' + resp.status);
+      return resp.json();
+    }).then(function (created) {
+      return fetchWithTimeout('/api/simulations/' + created.run_id, {}, FIXTURE_TIMEOUT_MS)
+        .then(function (getResp) {
+          if (!getResp.ok) throw new Error('simulations GET failed: ' + getResp.status);
+          return getResp.json();
+        }).then(function (run) {
+          run = synthesizeDecisionSteps(run);
+          return { run: run, resultSource: created.result_source || run.result_source || 'live_simulation' };
+        });
+    });
+  }
+
+  function init(data, mode, resultSource) {
+    DATA = data;
+    MODE = mode;
+    timeline = DATA.timeline;
+    totalSteps = timeline.length;
+    STEP_DURATION_MS = Math.round(180000 / Math.max(totalSteps, 1));
+    idx = 0;
+    playing = true;
+    approvalDecision = null;
+    clearTimeout(timer);
+
+    document.getElementById('run-id').textContent = DATA.run_id;
+    document.getElementById('scenario-sub').textContent =
+      '시나리오: ' + DATA.scenario.scenario_id + ' · seed ' + DATA.scenario.seed +
+      ' · 강우 ' + DATA.scenario.rain_level + ' · network ' + (DATA.network_version || '');
+    updateBadge(resultSource || DATA.result_source || 'fixture');
+
+    var picker = document.getElementById('scenario-picker');
+    if (picker) picker.value = CURRENT_SCENARIO;
+
+    rebuildDots();
+    updatePlayButton();
+    renderCorridorSVG();
+    render();
+    scheduleNext();
+  }
+
+  // ---- scenario picker ----
+  var scenarioPicker = document.getElementById('scenario-picker');
+  if (scenarioPicker) {
+    scenarioPicker.addEventListener('change', function (e) {
+      var chosen = e.target.value;
+      if (MODE !== 'live') {
+        if (chosen !== 'rain_spillback_a') {
+          showScenarioNotice('fixture는 rain_spillback_a만 제공합니다. 다른 시나리오는 백엔드(live) 연결 시 이용할 수 있습니다.');
+          e.target.value = 'rain_spillback_a';
+        } else {
+          hideScenarioNotice();
+        }
+        return;
+      }
+      hideScenarioNotice();
+      scenarioPicker.disabled = true;
+      loadLiveRun(chosen).then(function (res) {
+        CURRENT_SCENARIO = chosen;
+        init(res.run, 'live', res.resultSource);
+      }).catch(function () {
+        showScenarioNotice('시나리오 요청 실패. 이전 데이터를 유지합니다.');
+        e.target.value = CURRENT_SCENARIO;
+      }).then(function () {
+        scenarioPicker.disabled = false;
+      });
+    });
+  }
+
+  // ---- bootstrap: live fetch with fixture fallback ----
+  function bootstrap() {
+    if (!isHttpProtocol()) {
+      init(FIXTURE, 'fixture', 'fixture');
+      return;
+    }
+    loadLiveRun(CURRENT_SCENARIO).then(function (res) {
+      init(res.run, 'live', res.resultSource);
+    }).catch(function () {
+      init(FIXTURE, 'fixture', 'fixture');
+    });
+  }
+
+  bootstrap();
 })();
 </script>
 </body>
