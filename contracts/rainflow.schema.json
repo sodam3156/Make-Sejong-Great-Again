@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rainflow.schema.json",
+  "title": "RainFlow Sejong demo_run 계약",
+  "description": "2026-07-28 밤 동결. ID·KPI 이름·단위 변경 금지. 새 필드는 선택 속성으로만 추가한다.",
+  "type": "object",
+  "required": ["run_id", "result_source", "scenario", "screen_states", "timeline", "policies", "approval", "recovery_compare"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "result_source": { "enum": ["live_simulation", "cached_simulation", "fixture"] },
+    "provisional": { "type": "boolean" },
+    "network_version": { "type": "string" },
+    "scenario": {
+      "type": "object",
+      "required": ["scenario_id", "seed", "rain_level"],
+      "properties": {
+        "scenario_id": { "enum": ["dry_base", "rain_spillback_a", "rain_spillback_b"] },
+        "seed": { "type": "integer" },
+        "rain_level": { "enum": ["dry", "light", "moderate", "heavy"] },
+        "duration_sec": { "type": "integer" },
+        "incident": { "type": "boolean" }
+      }
+    },
+    "screen_states": {
+      "type": "array",
+      "items": { "enum": ["normal", "rain_warning", "spillback", "policy_compare", "safety_review", "operator_approval", "recovery_compare"] }
+    },
+    "timeline": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["t_sec", "screen_state", "links"],
+        "properties": {
+          "t_sec": { "type": "number" },
+          "screen_state": { "type": "string" },
+          "rain_level": { "type": "string" },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["link_id", "occupancy_ratio", "spillback"],
+              "properties": {
+                "link_id": { "type": "string" },
+                "occupancy_ratio": { "type": "number", "minimum": 0 },
+                "queue_veh": { "type": "number", "minimum": 0 },
+                "spillback": { "type": "boolean" }
+              }
+            }
+          },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "policies": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["policy_id", "kpi", "guard"],
+        "properties": {
+          "policy_id": { "enum": ["no_action", "fixed_metering", "corridor_gating"] },
+          "label": { "type": "string" },
+          "kpi": { "$ref": "#/$defs/kpi" },
+          "delta_vs_no_action": { "type": "object" },
+          "guard": {
+            "type": "object",
+            "required": ["passed", "violations"],
+            "properties": {
+              "passed": { "type": "boolean" },
+              "violations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["code", "detail"],
+                  "properties": {
+                    "code": { "type": "string" },
+                    "detail": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "explanation": { "type": "string" }
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "required": ["status", "policy_id"],
+      "properties": {
+        "status": { "enum": ["approved", "rejected", "pending"] },
+        "policy_id": { "type": "string" },
+        "operator": { "type": "string" },
+        "reason": { "type": "string" }
+      }
+    },
+    "recovery_compare": {
+      "type": "object",
+      "required": ["no_action", "applied"],
+      "properties": {
+        "no_action": { "$ref": "#/$defs/kpi" },
+        "applied": { "$ref": "#/$defs/kpi" },
+        "improvement": { "type": "object" }
+      }
+    }
+  },
+  "$defs": {
+    "kpi": {
+      "type": "object",
+      "required": ["spillback_time_sec", "recovery_time_sec", "total_travel_time_sec", "worst_approach_delay_sec"],
+      "properties": {
+        "spillback_time_sec": { "type": "number" },
+        "recovery_time_sec": { "type": "number" },
+        "total_travel_time_sec": { "type": "number" },
+        "worst_approach_delay_sec": { "type": "number" }
+      }
+    }
+  }
+}
