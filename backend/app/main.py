@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import json
+import os
 import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -17,7 +18,7 @@ from pydantic import BaseModel, Field
 from .simulation import POLICIES, SCENARIOS, run_simulation, SimResult, LINKS
 from .safety import evaluate_guard
 
-BACKEND_DIR = Path(__file__).resolve().parent.parent
+BACKEND_DIR = Path(os.environ.get("RAINFLOW_BASE_DIR", Path(__file__).resolve().parent.parent))  # PyInstaller 번들 경로 재해석용. 미설정 시 기존 동작과 동일
 FIXTURE_PATH = BACKEND_DIR / "fixtures" / "demo_run.json"
 AUDIT_PATH = BACKEND_DIR / "logs" / "audit.jsonl"
 FRONTEND_DIR = BACKEND_DIR.parent / "frontend"
