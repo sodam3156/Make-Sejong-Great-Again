@@ -3,3 +3,6 @@ logs/
 
 # build_windows.ps1 산출물 (PyInstaller onedir 결과)
 windows-x64/
+
+# package_release.ps1 산출물 (제출용 zip, 체크섬)
+out/
