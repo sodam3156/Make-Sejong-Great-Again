@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071B2B"/>
+      <stop offset="1" stop-color="#102F43"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="9" stdDeviation="10" flood-color="#00101D" flood-opacity=".28"/>
+    </filter>
+    <style>
+      text { font-family: "Noto Sans KR", sans-serif; }
+      .small { font-size: 19px; fill: #4B6070; }
+      .body { font-size: 22px; fill: #263E4D; }
+      .date { font-size: 22px; font-weight: 800; fill: #0E6F77; }
+      .title { font-size: 48px; font-weight: 900; fill: #FFFFFF; }
+      .subtitle { font-size: 23px; fill: #C7DCE4; }
+    </style>
+  </defs>
+  <rect width="1672" height="941" fill="url(#bg)"/>
+  <circle cx="1515" cy="80" r="220" fill="#1BA3A8" opacity=".12"/>
+  <circle cx="90" cy="910" r="260" fill="#F4B740" opacity=".09"/>
+  <text x="92" y="106" class="title">RainFlow Sejong 6일 압축 제작 로드맵</text>
+  <text x="94" y="148" class="subtitle">8월 1일 기능 동결 · 8월 2일은 외부 PC 검증과 제출만 수행</text>
+
+  <g filter="url(#shadow)">
+    <rect x="84" y="207" width="1504" height="608" rx="28" fill="#F5F8FA"/>
+  </g>
+  <line x1="159" y1="318" x2="1514" y2="318" stroke="#C9D9DF" stroke-width="5"/>
+
+  <g>
+    <circle cx="169" cy="318" r="19" fill="#17A2A8"/>
+    <circle cx="428" cy="318" r="19" fill="#17A2A8"/>
+    <circle cx="687" cy="318" r="19" fill="#17A2A8"/>
+    <circle cx="946" cy="318" r="19" fill="#17A2A8"/>
+    <circle cx="1205" cy="318" r="19" fill="#F4B740"/>
+    <circle cx="1464" cy="318" r="19" fill="#EF6A5B"/>
+  </g>
+
+  <g transform="translate(112 254)">
+    <text x="0" y="0" class="date">7월 28일</text>
+    <text x="0" y="118" font-size="28" font-weight="800" fill="#102F43">계약 동결</text>
+    <text x="0" y="163" class="body">시나리오 3종</text>
+    <text x="0" y="197" class="body">정책 3종 · KPI 4종</text>
+    <text x="0" y="231" class="body">API와 fixture 확정</text>
+    <rect x="0" y="292" width="177" height="54" rx="27" fill="#DDF1F1"/>
+    <text x="19" y="328" class="small" font-weight="700">가짜 데이터 완주</text>
+  </g>
+
+  <g transform="translate(371 254)">
+    <text x="0" y="0" class="date">7월 29일</text>
+    <text x="0" y="118" font-size="28" font-weight="800" fill="#102F43">독립 완주</text>
+    <text x="0" y="163" class="body">시뮬레이터 실행</text>
+    <text x="0" y="197" class="body">7단계 화면 완성</text>
+    <text x="0" y="231" class="body">가드 · QA 기준 확정</text>
+    <rect x="0" y="292" width="177" height="54" rx="27" fill="#DDF1F1"/>
+    <text x="24" y="328" class="small" font-weight="700">전후단 독립 실행</text>
+  </g>
+
+  <g transform="translate(630 254)">
+    <text x="0" y="0" class="date">7월 30일</text>
+    <text x="0" y="118" font-size="28" font-weight="800" fill="#102F43">실제 연동</text>
+    <text x="0" y="163" class="body">API adapter 연결</text>
+    <text x="0" y="197" class="body">안전 가드 · 폴백</text>
+    <text x="0" y="231" class="body">핵심 장면 에셋 교체</text>
+    <rect x="0" y="292" width="177" height="54" rx="27" fill="#DDF1F1"/>
+    <text x="20" y="328" class="small" font-weight="700">오프라인 1회 완주</text>
+  </g>
+
+  <g transform="translate(889 254)">
+    <text x="0" y="0" class="date">7월 31일</text>
+    <text x="0" y="118" font-size="28" font-weight="800" fill="#102F43">실행 번들</text>
+    <text x="0" y="163" class="body">Windows x64 패키지</text>
+    <text x="0" y="197" class="body">정적 빌드 · 오류 화면</text>
+    <text x="0" y="231" class="body">3분 대사와 타이밍</text>
+    <rect x="0" y="292" width="177" height="54" rx="27" fill="#DDF1F1"/>
+    <text x="20" y="328" class="small" font-weight="700">start.bat 실행 성공</text>
+  </g>
+
+  <g transform="translate(1148 254)">
+    <text x="0" y="0" font-size="22" font-weight="800" fill="#B07900">8월 1일</text>
+    <text x="0" y="118" font-size="28" font-weight="800" fill="#102F43">기능 동결</text>
+    <text x="0" y="163" class="body">치명적 버그만 수정</text>
+    <text x="0" y="197" class="body">팩트 · 버전 일치</text>
+    <text x="0" y="231" class="body">외부 PC 2대 반복</text>
+    <rect x="0" y="292" width="177" height="54" rx="27" fill="#FFF0C8"/>
+    <text x="19" y="328" class="small" font-weight="700" fill="#7A5700">릴리스 체크섬</text>
+  </g>
+
+  <g transform="translate(1407 254)">
+    <text x="0" y="0" font-size="22" font-weight="800" fill="#C54A3D">8월 2일</text>
+    <text x="0" y="118" font-size="28" font-weight="800" fill="#102F43">제출</text>
+    <text x="0" y="163" class="body">코드 추가 금지</text>
+    <text x="0" y="197" class="body">압축본 · 소스</text>
+    <text x="0" y="231" class="body">영상 · 문서 대조</text>
+    <rect x="0" y="292" width="130" height="54" rx="27" fill="#FFE1DC"/>
+    <text x="24" y="328" class="small" font-weight="700" fill="#9B3025">최종 제출</text>
+  </g>
+
+  <rect x="84" y="848" width="1504" height="1" fill="#3B596A"/>
+  <text x="84" y="892" font-size="21" fill="#BFD3DB">실행 계약</text>
+  <text x="205" y="892" font-size="21" font-weight="700" fill="#FFFFFF">Node · Python · SUMO · API 키 · 인터넷 없이 start.bat 한 번으로 60초 내 실행</text>
+</svg>

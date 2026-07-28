@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071B2B"/>
+      <stop offset="1" stop-color="#12374A"/>
+    </linearGradient>
+    <filter id="s" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#00101D" flood-opacity=".28"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#54BEC1"/>
+    </marker>
+    <style>
+      text { font-family: "Noto Sans KR", sans-serif; }
+      .cardTitle { font-size: 27px; font-weight: 900; fill: #102F43; }
+      .cardBody { font-size: 19px; fill: #4B6070; }
+      .num { font-size: 21px; font-weight: 900; fill: #FFFFFF; }
+    </style>
+  </defs>
+  <rect width="1672" height="941" fill="url(#bg2)"/>
+  <circle cx="1540" cy="80" r="215" fill="#17A2A8" opacity=".12"/>
+  <text x="92" y="106" font-size="48" font-weight="900" fill="#FFFFFF">RainFlow Sejong 예상 시뮬레이션 전개</text>
+  <text x="94" y="148" font-size="23" fill="#C7DCE4">같은 합성 수요와 고정 seed로 상태 재현부터 운영자 승인까지 3분 안에 시연</text>
+
+  <path d="M310 337H419" stroke="#54BEC1" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M641 337H750" stroke="#54BEC1" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M972 337H1081" stroke="#54BEC1" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M1303 337H1410" stroke="#54BEC1" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M1522 440C1522 560 1360 590 1268 590H1098"
+        stroke="#54BEC1" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M1042 702H822" stroke="#54BEC1" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+
+  <g filter="url(#s)">
+    <g transform="translate(88 234)">
+      <rect width="222" height="206" rx="24" fill="#F6F9FA"/>
+      <circle cx="35" cy="36" r="23" fill="#17A2A8"/><text x="28" y="44" class="num">1</text>
+      <text x="26" y="91" class="cardTitle">정상 상태</text>
+      <text x="26" y="130" class="cardBody">건조 조건에서</text>
+      <text x="26" y="160" class="cardBody">R1 → R2 → R3가</text>
+      <text x="26" y="190" class="cardBody">정상 처리</text>
+    </g>
+    <g transform="translate(419 234)">
+      <rect width="222" height="206" rx="24" fill="#F6F9FA"/>
+      <circle cx="35" cy="36" r="23" fill="#17A2A8"/><text x="28" y="44" class="num">2</text>
+      <text x="26" y="91" class="cardTitle">우천 충격</text>
+      <text x="26" y="130" class="cardBody">하류 진입용량이</text>
+      <text x="26" y="160" class="cardBody">수요 아래로 감소</text>
+      <text x="26" y="190" class="cardBody">대기행렬 발생</text>
+    </g>
+    <g transform="translate(750 234)">
+      <rect width="222" height="206" rx="24" fill="#F6F9FA"/>
+      <circle cx="35" cy="36" r="23" fill="#F4B740"/><text x="28" y="44" class="num">3</text>
+      <text x="26" y="91" class="cardTitle">Spillback</text>
+      <text x="26" y="130" class="cardBody">짧은 연결도로에서</text>
+      <text x="26" y="160" class="cardBody">대기행렬이 상류로</text>
+      <text x="26" y="190" class="cardBody">연쇄 전파</text>
+    </g>
+    <g transform="translate(1081 234)">
+      <rect width="222" height="206" rx="24" fill="#F6F9FA"/>
+      <circle cx="35" cy="36" r="23" fill="#17A2A8"/><text x="28" y="44" class="num">4</text>
+      <text x="26" y="91" class="cardTitle">정책 비교</text>
+      <text x="26" y="130" class="cardBody">무대응 · 고정 미터링</text>
+      <text x="26" y="160" class="cardBody">회랑 게이팅을</text>
+      <text x="26" y="190" class="cardBody">동일 조건에서 실행</text>
+    </g>
+    <g transform="translate(1410 234)">
+      <rect width="174" height="206" rx="24" fill="#F6F9FA"/>
+      <circle cx="35" cy="36" r="23" fill="#17A2A8"/><text x="28" y="44" class="num">5</text>
+      <text x="26" y="91" class="cardTitle">KPI</text>
+      <text x="26" y="130" class="cardBody">복구 시간</text>
+      <text x="26" y="160" class="cardBody">총 통행시간</text>
+      <text x="26" y="190" class="cardBody">최악 접근 지체</text>
+    </g>
+  </g>
+
+  <g filter="url(#s)">
+    <g transform="translate(1042 599)">
+      <rect width="276" height="206" rx="24" fill="#F6F9FA"/>
+      <circle cx="35" cy="36" r="23" fill="#F4B740"/><text x="28" y="44" class="num">6</text>
+      <text x="26" y="91" class="cardTitle">안전 · 공정성 가드</text>
+      <text x="26" y="130" class="cardBody">위험 후보 탈락</text>
+      <text x="26" y="160" class="cardBody">우회 전가와 데이터 품질</text>
+      <text x="26" y="190" class="cardBody">결정론적 재검사</text>
+    </g>
+    <g transform="translate(435 599)">
+      <rect width="387" height="206" rx="24" fill="#F6F9FA"/>
+      <circle cx="35" cy="36" r="23" fill="#EF6A5B"/><text x="28" y="44" class="num">7</text>
+      <text x="26" y="91" class="cardTitle">운영자 승인과 감사 기록</text>
+      <text x="26" y="130" class="cardBody">승인 · 거절 · 보류 상태 전이</text>
+      <text x="26" y="160" class="cardBody">입력 · 규칙 버전 · 후보 해시 저장</text>
+      <text x="26" y="190" class="cardBody">실행 결과를 다시 조회</text>
+    </g>
+  </g>
+
+  <rect x="88" y="858" width="1496" height="1" fill="#3B596A"/>
+  <text x="88" y="902" font-size="20" fill="#BFD3DB">주의</text>
+  <text x="159" y="902" font-size="20" font-weight="700" fill="#FFFFFF">화면의 개선율은 실제 세종시 성과가 아니라 합성 시뮬레이션 결과입니다.</text>
+</svg>
