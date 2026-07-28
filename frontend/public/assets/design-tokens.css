@@ -1,0 +1,26 @@
+:root {
+  --status-normal: #71A7FF;
+  --status-rain-warning: #7088AD;
+  --status-spillback: #F0545C;
+  --status-safe: #36B386;
+  --status-rejected: #F0545C;
+  --status-approval: #3783FC;
+  --status-recovery: #F0545C;
+
+  --surface-canvas: #f8fafc;
+  --surface-panel: #ffffff;
+  --surface-muted: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-default: #cbd5e1;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --radius-card: 12px;
+  --radius-modal: 16px;
+}
