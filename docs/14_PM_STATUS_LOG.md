@@ -212,3 +212,59 @@ Day 1 게이트(22:00~23:00) 통과 조건은 계약 동결과 fixture 기반 �
 | 4 | 최영 | PR #10 #15 #17 #18 코드 리뷰, 이슈 #9 클로즈 판단 |
 | 5 | 시우 | docs/evidence/provisional_parameters.md 문헌 대조 검증 |
 | 6 | 전원(8/1) | 외부 PC 2대 실검증 + 백업 영상 촬영 |
+
+---
+
+## 2026-07-29 08:21 체크 (Day 2)
+
+야간 대행 결과를 **실행 검증**으로 재확인한 체크다. 커밋 메시지와 PR 본문이 아니라 실제로 서버를 띄우고 테스트를 돌려 판정했다.
+
+### 확인된 사실
+
+| 항목 | 상태 |
+|---|---|
+| 커밋 | 45개. 7/28 21:13 체크(15개) 대비 **+30개**. 전 커밋이 `JunJunJun` 1인 명의 |
+| PR | #10~#20 **11건 전부 MERGED**. 열린 PR 0건 |
+| 브랜치 | 7개. `feat/backend`, `feat/frontend-core`, `feat/components`, `assets/design`, `docs/evidence`, `agent/*` 2종 |
+| 백엔드 테스트 | `python -m pytest -q` → **42 passed**. 직접 실행해 확인 |
+| 백엔드 기동 | uvicorn 기동 후 `GET /api/health` **200**. `version 0.2.0`, `fixture_available true`, `llm rule_based_fallback`. 직접 실행해 확인 |
+| OpenAPI | 6개 경로 서빙. 동결 P0 API 4종 전부 존재 + `/api/scenarios`, `/api/audit/{run_id}` 추가(가산이므로 계약 위반 아님) |
+| fixture 계약 정합 | `frontend/demo_run.js`와 `backend/fixtures/demo_run.json`이 **완전 동일**. 화면 상태 7/7, 정책 3/3, KPI 4/4 전부 포함. 드리프트 없음 |
+| 프론트 실행물 | `frontend/index.html`(32KB) + `demo_run.js`(25KB) 독립 실행형. 백엔드 없이 로드 가능 |
+| React 앱 | `frontend/src/*.tsx` 6개 존재하나 **`package.json`·`vite.config` 없음 → 빌드도 실행도 불가** |
+| 릴리스 번들 | `release/start.bat`, `package_release.ps1`, `.zip.sha256`, PyInstaller spec, `launcher/` 존재 |
+| collaborator | 3명. `ilhsh`(최영)·`zcxsdasdas`(김경은) **여전히 초대 미수락** |
+| 이슈 | #4 준+여하윤, #7 준, #8 시우, #9 준. **#1 #2 #3 #5 #6 미지정**(최영 계정 접근 불가) |
+| 저장소 위생 | 루트에 수동 ingest 부산물 4개 커밋됨: `TRACKED_CHANGES.patch`(158KB), `CHANGED_FILES_MANIFEST.txt`, `CHANGESET_README.md`, `GIT_STATUS.txt` |
+
+### 진척 판정
+
+**Day 2 게이트 통과.** 7월 29일 기준은 백엔드가 Swagger에서, 프론트가 fixtures에서 각각 독립 완주하는 것이다. 백엔드는 실제 기동과 42개 테스트로, 프론트는 독립 실행형 fixture 번들로 각각 충족한다. 7/30(API 연동·자동 폴백)과 7/31(Windows 번들) 항목도 상당 부분 선행 완료돼 **일정상 하루 이상 앞서 있다.**
+
+다만 통과의 성격을 분명히 해 둔다. 진척의 원인은 병렬 작업 복구가 아니라 준이 최영·경은의 파일을 수동으로 받아 대신 커밋한 것이다. 산출물은 들어왔지만 팀 구조는 여전히 1인 병목이다.
+
+남은 시간을 신규 구현이 아니라 **검증과 정리**에 쓸 수 있는 상태이며, 아래 리스크 1·2는 지금 처리하지 않으면 제출물에 그대로 남는다.
+
+### 리스크
+
+1. **동결 스택과 실제 실행물이 어긋난다.** `ai-context/PROJECT_STACK.yaml`과 `docs/12`는 React·Vite·TypeScript를 동결했는데, 3분 데모를 실제로 돌리는 것은 바닐라 `frontend/index.html`이다. `frontend/src/`의 컴포넌트 6개는 `package.json`이 없어 빌드조차 되지 않는 죽은 코드다. 지금 상태는 최악의 조합이다. 두 구현이 공존하는데 어느 쪽도 정본이 아니고, 여하윤이 PR #16으로 낸 컴포넌트가 제품에 반영되지 않는다. 심사에서 스택을 설명할 때 문서와 실물이 불일치한다.
+2. **제출물에 개발 부산물이 섞여 있다.** 루트의 `TRACKED_CHANGES.patch` 158KB를 비롯한 4개 파일은 수동 ingest 과정의 중간 산출물이다. public 저장소에 노출돼 있고 제출 소스 zip에도 그대로 들어간다.
+3. **팀원 2명 접근 차단이 사흘째다.** `ilhsh` 초대는 07-27 20:23 발송 후 36시간, `zcxsdasdas`는 14시간 경과다. 45개 커밋 전부가 준 1인 명의이며 기여 이력·리뷰·병렬 작업이 모두 준에게 집중돼 있다. 수동 파일 전달이 우회로로 작동하고 있으나, 이 방식은 리뷰 단계가 구조적으로 존재할 수 없다.
+4. **백엔드 전량이 리뷰 없이 main에 있다.** 큐 모델 파라미터와 안전 가드 임계값이 최영 검증을 거치지 않았다. 42개 테스트는 구현이 스스로 정한 기준을 통과했다는 뜻이지 파라미터가 타당하다는 근거가 아니다. 시우의 provisional 수치도 아직 문헌 대조 전이다.
+5. **`backend/fixtures/cached_run.json`의 `scenario_id`가 `None`이다.** 캐시 폴백 경로에서 시나리오 식별이 안 될 여지가 있다. 우선순위는 낮으나 폴백 시연 시 확인이 필요하다.
+
+### 다음 작업 추천
+
+| 순위 | 담당 | 다음 작업 | 근거 |
+|---|---|---|---|
+| 1 | 준 | 프론트 정본을 **오늘 중 하나로 결정한다.** React로 승격하려면 `package.json`+`vite.config`를 추가하고, 안 할 거면 `frontend/src/`를 제거하고 `PROJECT_STACK.yaml`·`docs/12`를 실제 실행물에 맞춘다 | 둘 다 두는 선택지는 없다. 제출까지 4일 남았고 문서와 실물이 다른 상태로 심사에 들어가면 스택 질문에 답할 수 없다 |
+| 2 | 준 | 루트 ingest 부산물 4개 삭제: `TRACKED_CHANGES.patch`, `CHANGED_FILES_MANIFEST.txt`, `CHANGESET_README.md`, `GIT_STATUS.txt` | 제출 소스 zip에 들어간다. 1분 작업 |
+| 3 | 준 | 최영·경은에게 초대 수락 링크 직접 전달 | 리뷰 단계를 만들려면 필수다. 수동 전달은 산출물은 옮기지만 리뷰는 옮기지 못한다 |
+| 4 | 최영 | 백엔드 큐 모델 파라미터와 안전 가드 임계값 검토 후 #9 클로즈 판단 | 리스크 4의 유일한 해소 경로. 코드는 이미 main에 있으므로 읽기만 하면 된다 |
+| 5 | 시우 | `docs/evidence/provisional_parameters.md` 문헌 대조 검증 후 provisional 표시 해제 | 발표에서 수치 근거 질문이 나오면 현재는 답할 수 없다 |
+| 6 | 여하윤 | 1순위 결정에 따라 컴포넌트를 실제 실행 경로에 연결하거나 index.html 유지보수로 전환 | 현재 산출물이 제품에 반영되지 않고 있다 |
+| 7 | 경은 | `design-tokens.json` 최종 확정 및 `index.html` 임시 색상 교체 | 토큰은 들어왔으나 실행물에 미반영 |
+
+### 다음 체크
+
+2026-07-29 09:47 자동 실행. 확인 항목은 프론트 정본 결정 여부, 루트 부산물 정리 여부, `ilhsh`·`zcxsdasdas` 초대 수락 여부다.
