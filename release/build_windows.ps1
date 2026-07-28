@@ -31,6 +31,7 @@ pyinstaller `
     --noconfirm `
     --onedir `
     --name RainFlow `
+    --paths . `
     --add-data "backend/fixtures;backend/fixtures" `
     --add-data "frontend;frontend" `
     "release/rainflow_entry.py"
