@@ -1,0 +1,14 @@
+services:
+  rainflow:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    init: true
+    ports:
+      - "127.0.0.1:${RAINFLOW_PORT:-8000}:8000"
+    volumes:
+      - rainflow-logs:/app/backend/logs
+    stop_grace_period: 10s
+
+volumes:
+  rainflow-logs:

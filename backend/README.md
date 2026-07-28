@@ -13,16 +13,28 @@ uvicorn backend.app.main:app --port 8000     # 저장소 루트에서 실행
 
 - `GET /api/health` 상태 확인
 - `POST /api/simulations` body `{"scenario_id": "rain_spillback_a", "seed": 42}` → 3정책 비교 실행
+  - 선택 입력 `data_quality`로 데이터 경과시간·센서·장비 상태를 전달한다
+  - 검증용 `force_source`는 `auto`, `live_simulation`, `cached_simulation`, `fixture` 중 하나다
 - `GET /api/simulations/{run_id}` 계약(contracts/rainflow.schema.json) 형식 결과
 - `POST /api/approvals` body `{"run_id": ..., "policy_id": "corridor_gating", "decision": "approve"}`
+  - 승인 직전 후보 해시·규칙 버전·데이터 신선도·장비 상태·가드를 다시 검사한다
   - 가드 위반 후보 승인 시도는 409로 거부되고 사유가 감사 로그에 남는다
 - 감사 로그: `backend/logs/audit.jsonl`
+- 완결 재생 파일: `backend/logs/runs/{run_id}.json`
+- 진단용 조회: `GET /api/audit/{run_id}`, `GET /api/scenarios`
 - `frontend/`가 있으면 같은 서버가 정적 제공한다
 
-테스트 (스파이크 통과 기준 포함 20개):
+테스트 (스파이크·계약·승인 재검증·폴백·재생 포함):
 
 ```bash
 python -m pytest backend/tests -q
+```
+
+동결 fixture, 프론트 사본, 캐시와 OpenAPI를 같은 계산 결과에서 다시 만들고 확인한다.
+
+```bash
+python scripts/generate_contract_artifacts.py
+python scripts/generate_contract_artifacts.py --check
 ```
 
 ## 파라미터 근거
@@ -53,5 +65,5 @@ python -m pytest backend/tests -q
 
 - SUMO·TraCI 미사용. 큐 모델은 차로 변경, 기하구조, 신호 상세를 표현하지 않는다. TTC·PET 대신 진입 차단 이벤트 기반 급제동 대리지표를 쓴다.
 - 회복 판정 상한이 우천 후 900초라 무대응 시나리오는 "관측창 내 회복 실패"로 기록된다.
-- 실행 상태는 메모리 저장이다. SQLite 영속화는 후속 작업(docs/12 BE-08~BE-10).
+- 실행 결과는 오프라인 JSON 재생 파일로 영속화한다. 다중 사용자 운영을 위한 SQLite 저장소는 제출 범위 밖이다.
 - 수요·용량 수치는 합성이며 실측 보정 전이다. 개선율은 프로토타입 내부 비교값이지 실도로 성과 주장이 아니다.

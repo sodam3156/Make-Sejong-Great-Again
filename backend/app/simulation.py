@@ -9,10 +9,13 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass, field
 
+from .policies import POLICIES, metering_factors
+
 DT = 5  # sec per step
 DURATION = 3600
 DRY_PREP_END = 900
 RAIN_END = 2700
+SIMULATOR_VERSION = "rainflow-queue-v1"
 
 # 강우 단계별 진입용량 배율. 근거: 임계간격 1.08~1.13배, 용량 0.83~0.95배 (이슈 #9 초기 민감도)
 RAIN_CAPACITY_FACTOR = {"dry": 1.00, "light": 0.95, "moderate": 0.89, "heavy": 0.83}
@@ -34,9 +37,6 @@ SCENARIOS = {
     "rain_spillback_a": {"rain_level": "heavy", "surge": 1.10, "incident": False},
     "rain_spillback_b": {"rain_level": "heavy", "surge": 1.18, "incident": True},
 }
-
-POLICIES = ["no_action", "fixed_metering", "corridor_gating"]
-
 
 def rain_level_at(t: int, scenario: dict) -> str:
     peak = scenario["rain_level"]
@@ -89,6 +89,8 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
     delay_series: dict[str, list[float]] = {a: [] for a in DEMAND_APPROACHES}
     spillback_prev = {l: False for l in LINKS}
     recovered_at = None
+    diverted_vehicles = 0.0
+    diversion_vehicle_seconds = 0.0
 
     # 사고 시나리오는 L23 저장공간 20% 축소 (차로 제한)
     storage = dict(LINKS)
@@ -115,19 +117,24 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
             cap["R3_N"] *= CAPACITY_DROP
 
         # 정책별 진입 제어
-        meter = {a: 1.0 for a in ALL_APPROACHES}
-        if policy_id == "fixed_metering" and in_rain:
-            # 고정 미터링: 부방향 진입을 정해진 비율로 보류 → 회랑은 살지만 해당 진입로 피해
-            meter["R2_S"] = 0.45
-            meter["R1_W"] = 0.45
-        elif policy_id == "corridor_gating":
-            # 연속 게이팅: 하류 링크 점유 0.80 초과 전에 상류 유입을 비례 감축 (전 진입로 균등)
-            for link_id, upstreams in (("L23", ["R2_N", "R2_S"]), ("L12", ["R1_N", "R1_W"])):
-                occ = links[link_id] / storage[link_id]
-                if occ > 0.80:
-                    factor = max(0.35, 1.0 - (occ - 0.80) / 0.20 * 0.65)
-                    for a in upstreams:
-                        meter[a] = min(meter[a], factor)
+        meter = metering_factors(
+            policy_id,
+            in_rain=in_rain,
+            link_occupancy={
+                "L12": links["L12"] / storage["L12"],
+                "L23": links["L23"] / storage["L23"],
+            },
+            approaches=ALL_APPROACHES,
+        )
+
+        # 연속 게이팅이 강하게 작동할 때 일부 운전자가 BYPASS를 선택한다.
+        # 우회량과 추가 지체를 별도로 기록해 전가 피해 가드가 실제 값을 검사하게 한다.
+        if policy_id == "corridor_gating" and in_rain:
+            gate_strength = max(0.0, 1.0 - meter["R1_N"])
+            diverted = min(queues["R1_N"], 0.10 * gate_strength)
+            queues["R1_N"] -= diverted
+            links["BYPASS"] = min(storage["BYPASS"], links["BYPASS"] + diverted)
+            diverted_vehicles += diverted
 
         # R3: L23 선두(R3_N) + R3_E → 무한 출구
         out_r3n = min(links["L23"], cap["R3_N"] * meter["R3_N"])
@@ -164,9 +171,11 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
         queues["R1_W"] -= want_r1w
         links["L12"] += want_r1n + want_r1w
 
-        # 우회로 배경 수요 (정책 무관, 전가 지체 기준선)
-        links["BYPASS"] = min(storage["BYPASS"], links["BYPASS"] + 0.2)
-        links["BYPASS"] = max(0.0, links["BYPASS"] - 0.2)
+        # 우회로는 본선보다 긴 자유주행 60초에 더해 대기시간이 든다.
+        bypass_out = min(links["BYPASS"], 0.30 * cap_factor)
+        links["BYPASS"] -= bypass_out
+        res.completed_trips += bypass_out
+        diversion_vehicle_seconds += links["BYPASS"] * DT
 
         # 지표 집계
         for link_id in ("L12", "L23"):
@@ -213,6 +222,8 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
         res.recovery_time_sec = (recovered_at - RAIN_END) if recovered_at is not None else DURATION - RAIN_END
     res.approach_p95_delay = {a: _p95(v) for a, v in delay_series.items()}
     res.worst_approach_delay_sec = max(res.approach_p95_delay.values())
+    if diverted_vehicles:
+        res.diversion_delay_sec = round(60.0 + diversion_vehicle_seconds / diverted_vehicles, 1)
     res.total_travel_time_sec = round(res.total_travel_time_sec, 0)
     res.spillback_time_sec = round(res.spillback_time_sec, 0)
     res.completed_trips = int(res.completed_trips)

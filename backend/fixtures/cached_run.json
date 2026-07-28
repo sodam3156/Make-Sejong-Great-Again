@@ -5,7 +5,7 @@
     "policy_id": "corridor_gating",
     "reason": "가드 통과 후보 중 규칙 기반 안전 점수가 가장 높음",
     "requested_at": "2026-07-28T23:00:00+09:00",
-    "result_source": "fixture",
+    "result_source": "cached_simulation",
     "status": "approved",
     "workflow_state": "EVALUATED"
   },
@@ -369,8 +369,8 @@
     "scoring_version": "rainflow-rule-v1",
     "simulator_version": "rainflow-queue-v1"
   },
-  "result_source": "fixture",
-  "run_id": "fixture-day1-001",
+  "result_source": "cached_simulation",
+  "run_id": "cached-day1-001",
   "safety_guards": {
     "provisional": true,
     "rule_version": "rainflow-safety-v1",

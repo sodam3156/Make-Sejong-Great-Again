@@ -1,17 +1,422 @@
 window.DEMO_RUN = {
-  "run_id": "fixture-day1-001",
-  "result_source": "fixture",
-  "provisional": true,
-  "generated_at": "2026-07-28T22:30:00+09:00",
+  "approval": {
+    "decided_at": "2026-07-28T23:00:00+09:00",
+    "operator": "demo_operator",
+    "policy_id": "corridor_gating",
+    "reason": "가드 통과 후보 중 규칙 기반 안전 점수가 가장 높음",
+    "requested_at": "2026-07-28T23:00:00+09:00",
+    "result_source": "fixture",
+    "status": "approved",
+    "workflow_state": "EVALUATED"
+  },
+  "decision": {
+    "explanation_mode": "rule_based",
+    "policy_assessments": [
+      {
+        "evidence": [
+          {
+            "code": "GUARD_PASSED",
+            "value": true
+          },
+          {
+            "assessment": "improved",
+            "available": true,
+            "delta_pct": -100.0,
+            "metric": "spillback_time_pct",
+            "weight": 0.5
+          },
+          {
+            "assessment": "improved",
+            "available": true,
+            "delta_pct": -76.1,
+            "metric": "total_travel_time_pct",
+            "weight": 0.35
+          },
+          {
+            "assessment": "improved",
+            "available": true,
+            "delta_pct": -90.4,
+            "metric": "worst_approach_delay_pct",
+            "weight": 0.15
+          }
+        ],
+        "guard_passed": true,
+        "policy_id": "corridor_gating",
+        "rank": 1,
+        "reasons": [
+          {
+            "code": "BEST_SAFE_SCORE",
+            "detail": "Highest score among guard-passing policies."
+          }
+        ],
+        "risks": [],
+        "score": 90.195
+      },
+      {
+        "evidence": [
+          {
+            "code": "GUARD_PASSED",
+            "value": true
+          },
+          {
+            "assessment": "unchanged",
+            "available": true,
+            "delta_pct": 0.0,
+            "metric": "spillback_time_pct",
+            "weight": 0.5
+          },
+          {
+            "assessment": "unchanged",
+            "available": true,
+            "delta_pct": 0.0,
+            "metric": "total_travel_time_pct",
+            "weight": 0.35
+          },
+          {
+            "assessment": "unchanged",
+            "available": true,
+            "delta_pct": 0.0,
+            "metric": "worst_approach_delay_pct",
+            "weight": 0.15
+          }
+        ],
+        "guard_passed": true,
+        "policy_id": "no_action",
+        "rank": 2,
+        "reasons": [
+          {
+            "code": "SAFE_BASELINE",
+            "detail": "Retained as the fallback if the recommended policy cannot be applied."
+          }
+        ],
+        "risks": [],
+        "score": 0.0
+      },
+      {
+        "evidence": [
+          {
+            "code": "GUARD_FAILED",
+            "value": false
+          },
+          {
+            "assessment": "improved",
+            "available": true,
+            "delta_pct": -65.4,
+            "metric": "spillback_time_pct",
+            "weight": 0.5
+          },
+          {
+            "assessment": "improved",
+            "available": true,
+            "delta_pct": -44.3,
+            "metric": "total_travel_time_pct",
+            "weight": 0.35
+          },
+          {
+            "assessment": "improved",
+            "available": true,
+            "delta_pct": -38.6,
+            "metric": "worst_approach_delay_pct",
+            "weight": 0.15
+          }
+        ],
+        "guard_passed": false,
+        "policy_id": "fixed_metering",
+        "rank": 3,
+        "reasons": [
+          {
+            "code": "EXCLUDED_BY_GUARD",
+            "detail": "A guard-failing policy cannot be recommended."
+          }
+        ],
+        "risks": [
+          {
+            "code": "FAIRNESS_P95_EXCEEDED",
+            "detail": "R1_W 진입로 P95 지체가 기준 대비 57.8% 악화. 허용한도 15.0% 초과"
+          },
+          {
+            "code": "FAIRNESS_P95_EXCEEDED",
+            "detail": "R2_S 진입로 P95 지체가 기준 대비 552.6% 악화. 허용한도 15.0% 초과"
+          }
+        ],
+        "score": 53.995
+      }
+    ],
+    "ranked_policy_ids": [
+      "corridor_gating",
+      "no_action",
+      "fixed_metering"
+    ],
+    "recommended_policy_id": "corridor_gating",
+    "scoring_version": "rainflow-rule-v1"
+  },
+  "elapsed_ms": 0.0,
+  "generated_at": "2026-07-28T23:00:00+09:00",
+  "network": {
+    "approaches": [
+      "R1_N",
+      "R1_W",
+      "R2_S",
+      "R3_E"
+    ],
+    "links": [
+      {
+        "from": "R1",
+        "link_id": "L12",
+        "storage_veh": 22,
+        "to": "R2"
+      },
+      {
+        "from": "R2",
+        "link_id": "L23",
+        "storage_veh": 18,
+        "to": "R3"
+      },
+      {
+        "from": "R1",
+        "link_id": "BYPASS",
+        "storage_veh": 60,
+        "to": "R3"
+      }
+    ],
+    "roundabouts": [
+      "R1",
+      "R2",
+      "R3"
+    ]
+  },
   "network_version": "sejong-corridor-v0",
-  "note": "합성 데이터 기반 fixture. 모든 수치는 provisional이며 시우 검증 후 교체한다. 실제 세종시 실측 성과가 아니다.",
+  "note": "검증된 결정론적 큐 모델에서 동결한 합성 데모 결과. 실제 세종시 실측 성과나 실제 도로 제어 결과가 아니다.",
+  "policies": [
+    {
+      "candidate_hash": "5eedf9a77aaf924d8213bff5c8e1b14740ee3187cd4d1c1702429f6e560e0af2",
+      "delta_vs_no_action": {
+        "spillback_time_pct": 0.0,
+        "total_travel_time_pct": 0.0,
+        "worst_approach_delay_pct": 0.0
+      },
+      "explanation": "기존 양보운전 유지. spillback 누적 3885초, 총 통행시간 284868초가 비교 기준선이 된다.",
+      "extra": {
+        "approach_p95_delay": {
+          "R1_N": 1105.1,
+          "R1_W": 259.2,
+          "R2_S": 103.9,
+          "R3_E": 0.0
+        },
+        "completed_trips": 1300,
+        "diversion_delay_sec": 0.0,
+        "safety_proxy_hard_brakes": 1165,
+        "spillback_events": 2
+      },
+      "guard": {
+        "note": "기준선. 가드 판정 대상 아님",
+        "passed": true,
+        "rule_version": "rainflow-safety-v1",
+        "violations": []
+      },
+      "kpi": {
+        "recovery_time_sec": 900,
+        "spillback_time_sec": 3885.0,
+        "total_travel_time_sec": 284868.0,
+        "worst_approach_delay_sec": 1105.1
+      },
+      "label": "무대응",
+      "policy_id": "no_action",
+      "rank": 2,
+      "score": 0.0
+    },
+    {
+      "candidate_hash": "04c6f4a6ebfa80c45f0aa802bae4c956fa40102f386f160bf3505e9a0a165acc",
+      "delta_vs_no_action": {
+        "spillback_time_pct": -65.4,
+        "total_travel_time_pct": -44.3,
+        "worst_approach_delay_pct": -38.6
+      },
+      "explanation": "고정 미터링 적용 시 무대응 대비 spillback 누적 -65.4%, 총 통행시간 -44.3%. 가드 위반(FAIRNESS_P95_EXCEEDED, FAIRNESS_P95_EXCEEDED)으로 적용 불가.",
+      "extra": {
+        "approach_p95_delay": {
+          "R1_N": 220.5,
+          "R1_W": 409.0,
+          "R2_S": 678.1,
+          "R3_E": 0.0
+        },
+        "completed_trips": 1401,
+        "diversion_delay_sec": 0.0,
+        "safety_proxy_hard_brakes": 414,
+        "spillback_events": 2
+      },
+      "guard": {
+        "passed": false,
+        "rule_version": "rainflow-safety-v1",
+        "violations": [
+          {
+            "code": "FAIRNESS_P95_EXCEEDED",
+            "detail": "R1_W 진입로 P95 지체가 기준 대비 57.8% 악화. 허용한도 15.0% 초과",
+            "observed_pct": 57.8,
+            "threshold_pct": 15.0
+          },
+          {
+            "code": "FAIRNESS_P95_EXCEEDED",
+            "detail": "R2_S 진입로 P95 지체가 기준 대비 552.6% 악화. 허용한도 15.0% 초과",
+            "observed_pct": 552.6,
+            "threshold_pct": 15.0
+          }
+        ]
+      },
+      "kpi": {
+        "recovery_time_sec": 900,
+        "spillback_time_sec": 1345.0,
+        "total_travel_time_sec": 158579.0,
+        "worst_approach_delay_sec": 678.1
+      },
+      "label": "고정 미터링",
+      "policy_id": "fixed_metering",
+      "rank": 3,
+      "score": 53.995
+    },
+    {
+      "candidate_hash": "0178f3e7f687be754d724ba2eac27a4512fc6baf7ed87060e0b5092f5083d182",
+      "delta_vs_no_action": {
+        "spillback_time_pct": -100.0,
+        "total_travel_time_pct": -76.1,
+        "worst_approach_delay_pct": -90.4
+      },
+      "explanation": "연속 게이팅 적용 시 무대응 대비 spillback 누적 -100.0%, 총 통행시간 -76.1%. 모든 안전·공정성 가드를 통과했다.",
+      "extra": {
+        "approach_p95_delay": {
+          "R1_N": 105.6,
+          "R1_W": 0.0,
+          "R2_S": 0.0,
+          "R3_E": 0.0
+        },
+        "completed_trips": 1509,
+        "diversion_delay_sec": 60.0,
+        "safety_proxy_hard_brakes": 0,
+        "spillback_events": 0
+      },
+      "guard": {
+        "passed": true,
+        "rule_version": "rainflow-safety-v1",
+        "violations": []
+      },
+      "kpi": {
+        "recovery_time_sec": 570,
+        "spillback_time_sec": 0.0,
+        "total_travel_time_sec": 68089.0,
+        "worst_approach_delay_sec": 105.6
+      },
+      "label": "연속 게이팅",
+      "policy_id": "corridor_gating",
+      "rank": 1,
+      "score": 90.195
+    }
+  ],
+  "provisional": true,
+  "recovery_compare": {
+    "applied": {
+      "recovery_time_sec": 570,
+      "spillback_time_sec": 0.0,
+      "total_travel_time_sec": 68089.0,
+      "worst_approach_delay_sec": 105.6
+    },
+    "applied_policy_id": "corridor_gating",
+    "improvement": {
+      "recovery_time_pct": -36.7,
+      "spillback_time_pct": -100.0,
+      "total_travel_time_pct": -76.1,
+      "worst_approach_delay_pct": -90.4
+    },
+    "no_action": {
+      "recovery_time_sec": 900,
+      "spillback_time_sec": 3885.0,
+      "total_travel_time_sec": 284868.0,
+      "worst_approach_delay_sec": 1105.1
+    },
+    "predicted_if_approved": {
+      "improvement": {
+        "recovery_time_pct": -36.7,
+        "spillback_time_pct": -100.0,
+        "total_travel_time_pct": -76.1,
+        "worst_approach_delay_pct": -90.4
+      },
+      "kpi": {
+        "recovery_time_sec": 570,
+        "spillback_time_sec": 0.0,
+        "total_travel_time_sec": 68089.0,
+        "worst_approach_delay_sec": 105.6
+      },
+      "policy_id": "corridor_gating"
+    }
+  },
+  "reproducibility": {
+    "candidate_hashes": {
+      "corridor_gating": "0178f3e7f687be754d724ba2eac27a4512fc6baf7ed87060e0b5092f5083d182",
+      "fixed_metering": "04c6f4a6ebfa80c45f0aa802bae4c956fa40102f386f160bf3505e9a0a165acc",
+      "no_action": "5eedf9a77aaf924d8213bff5c8e1b14740ee3187cd4d1c1702429f6e560e0af2"
+    },
+    "input": {
+      "data_quality": {
+        "data_age_sec": 0,
+        "device_status": "ok",
+        "sensor_available": true
+      },
+      "scenario_id": "rain_spillback_a",
+      "seed": 42
+    },
+    "network_version": "sejong-corridor-v0",
+    "policy_version": "rainflow-policy-v1",
+    "rule_version": "rainflow-safety-v1",
+    "scoring_version": "rainflow-rule-v1",
+    "simulator_version": "rainflow-queue-v1"
+  },
+  "result_source": "fixture",
+  "run_id": "fixture-day1-001",
+  "safety_guards": {
+    "provisional": true,
+    "rule_version": "rainflow-safety-v1",
+    "rules": [
+      {
+        "code": "FAIRNESS_P95_EXCEEDED",
+        "threshold_pct": 15.0
+      },
+      {
+        "code": "DIVERSION_DELAY_EXCEEDED",
+        "threshold_sec": 180.0
+      },
+      {
+        "code": "SAFETY_TTC_DEGRADED"
+      },
+      {
+        "code": "DATA_STALE",
+        "threshold_sec": 120.0
+      },
+      {
+        "code": "DEVICE_FAULT"
+      },
+      {
+        "code": "CANDIDATE_HASH_MISMATCH"
+      },
+      {
+        "code": "OPERATOR_NOT_APPROVED"
+      }
+    ]
+  },
   "scenario": {
-    "scenario_id": "rain_spillback_a",
-    "seed": 42,
-    "rain_level": "heavy",
+    "data_quality": {
+      "data_age_sec": 0,
+      "device_status": "ok",
+      "sensor_available": true
+    },
     "duration_sec": 3600,
-    "phases": { "dry_prep_sec": 900, "rain_peak_sec": 1800, "recovery_sec": 900 },
-    "incident": false
+    "incident": false,
+    "phases": {
+      "dry_prep_sec": 900,
+      "rain_peak_sec": 1800,
+      "recovery_sec": 900
+    },
+    "rain_level": "heavy",
+    "scenario_id": "rain_spillback_a",
+    "seed": 42
   },
   "screen_states": [
     "normal",
@@ -22,82 +427,557 @@ window.DEMO_RUN = {
     "operator_approval",
     "recovery_compare"
   ],
-  "network": {
-    "roundabouts": ["R1", "R2", "R3"],
-    "links": [
-      { "link_id": "L12", "from": "R1", "to": "R2", "storage_veh": 22 },
-      { "link_id": "L23", "from": "R2", "to": "R3", "storage_veh": 18 },
-      { "link_id": "BYPASS", "from": "R1", "to": "R3", "storage_veh": 60 }
-    ],
-    "approaches": ["R1_N", "R1_W", "R2_N", "R2_S", "R3_N", "R3_E"]
-  },
-  "timeline": [
-    { "t_sec": 0, "screen_state": "normal", "rain_level": "dry", "links": [ { "link_id": "L12", "occupancy_ratio": 0.28, "queue_veh": 3, "spillback": false }, { "link_id": "L23", "occupancy_ratio": 0.31, "queue_veh": 3, "spillback": false }, { "link_id": "BYPASS", "occupancy_ratio": 0.12, "queue_veh": 2, "spillback": false } ], "note": "건조 상태. 세 회전교차로 정상 처리" },
-    { "t_sec": 900, "screen_state": "rain_warning", "rain_level": "moderate", "links": [ { "link_id": "L12", "occupancy_ratio": 0.55, "queue_veh": 9, "spillback": false }, { "link_id": "L23", "occupancy_ratio": 0.68, "queue_veh": 11, "spillback": false }, { "link_id": "BYPASS", "occupancy_ratio": 0.15, "queue_veh": 3, "spillback": false } ], "note": "강우 시작. 하류 R3 진입용량 감소" },
-    { "t_sec": 1380, "screen_state": "spillback", "rain_level": "heavy", "links": [ { "link_id": "L12", "occupancy_ratio": 0.82, "queue_veh": 17, "spillback": false }, { "link_id": "L23", "occupancy_ratio": 1.0, "queue_veh": 18, "spillback": true }, { "link_id": "BYPASS", "occupancy_ratio": 0.18, "queue_veh": 4, "spillback": false } ], "note": "L23 저장한계 도달. R2 회전부 역류 시작" },
-    { "t_sec": 1560, "screen_state": "policy_compare", "rain_level": "heavy", "links": [ { "link_id": "L12", "occupancy_ratio": 0.97, "queue_veh": 21, "spillback": false }, { "link_id": "L23", "occupancy_ratio": 1.0, "queue_veh": 18, "spillback": true }, { "link_id": "BYPASS", "occupancy_ratio": 0.2, "queue_veh": 5, "spillback": false } ], "note": "15분 내 R1 도달 확률 0.87 예측. 대응안 3종 비교 제시" },
-    { "t_sec": 1740, "screen_state": "safety_review", "rain_level": "heavy", "links": [ { "link_id": "L12", "occupancy_ratio": 1.0, "queue_veh": 22, "spillback": true }, { "link_id": "L23", "occupancy_ratio": 1.0, "queue_veh": 18, "spillback": true }, { "link_id": "BYPASS", "occupancy_ratio": 0.22, "queue_veh": 6, "spillback": false } ], "note": "fixed_metering이 공정성 가드 위반으로 탈락" },
-    { "t_sec": 1920, "screen_state": "operator_approval", "rain_level": "heavy", "links": [ { "link_id": "L12", "occupancy_ratio": 1.0, "queue_veh": 22, "spillback": true }, { "link_id": "L23", "occupancy_ratio": 0.94, "queue_veh": 17, "spillback": false }, { "link_id": "BYPASS", "occupancy_ratio": 0.25, "queue_veh": 7, "spillback": false } ], "note": "운영자가 corridor_gating 승인" },
-    { "t_sec": 3600, "screen_state": "recovery_compare", "rain_level": "dry", "links": [ { "link_id": "L12", "occupancy_ratio": 0.33, "queue_veh": 4, "spillback": false }, { "link_id": "L23", "occupancy_ratio": 0.36, "queue_veh": 4, "spillback": false }, { "link_id": "BYPASS", "occupancy_ratio": 0.13, "queue_veh": 2, "spillback": false } ], "note": "우천 종료. 무대응 대비 회복시간 단축 비교 표시" }
-  ],
-  "policies": [
+  "state_history": [
     {
-      "policy_id": "no_action",
-      "label": "무대응",
-      "kpi": { "spillback_time_sec": 1240, "recovery_time_sec": 780, "total_travel_time_sec": 51840, "worst_approach_delay_sec": 310 },
-      "extra": { "spillback_events": 3, "completed_trips": 1685, "diversion_delay_sec": 0, "safety_proxy_hard_brakes": 41 },
-      "delta_vs_no_action": { "spillback_time_pct": 0.0, "total_travel_time_pct": 0.0, "worst_approach_delay_pct": 0.0 },
-      "guard": { "passed": true, "violations": [], "note": "기준선. 가드 판정 대상 아님" },
-      "explanation": "기존 양보운전 유지. L23 포화 후 R2와 R1까지 역류가 이어져 spillback 누적 1240초 발생."
+      "sequence": 1,
+      "state": "CREATED"
     },
     {
-      "policy_id": "fixed_metering",
-      "label": "고정 미터링",
-      "kpi": { "spillback_time_sec": 620, "recovery_time_sec": 600, "total_travel_time_sec": 47400, "worst_approach_delay_sec": 364 },
-      "extra": { "spillback_events": 1, "completed_trips": 1760, "diversion_delay_sec": 0, "safety_proxy_hard_brakes": 38 },
-      "delta_vs_no_action": { "spillback_time_pct": -50.0, "total_travel_time_pct": -8.6, "worst_approach_delay_pct": 17.4 },
-      "guard": {
-        "passed": false,
-        "violations": [
-          { "code": "FAIRNESS_P95_EXCEEDED", "detail": "R2_S 진입로 P95 지체가 무대응 대비 17.4% 악화. 허용한도 15% 초과", "threshold_pct": 15.0, "observed_pct": 17.4 }
-        ],
-        "note": "spillback은 줄지만 특정 진입로에 피해를 전가하여 탈락"
-      },
-      "explanation": "우세 방향 유입을 고정 시간 보류. 회랑 spillback은 절반으로 줄지만 R2_S 진입로 대기가 한도를 넘어 공정성 가드에서 탈락."
+      "sequence": 2,
+      "state": "PREDICTED"
     },
     {
-      "policy_id": "corridor_gating",
-      "label": "연속 게이팅",
-      "kpi": { "spillback_time_sec": 360, "recovery_time_sec": 420, "total_travel_time_sec": 44900, "worst_approach_delay_sec": 296 },
-      "extra": { "spillback_events": 1, "completed_trips": 1815, "diversion_delay_sec": 95, "safety_proxy_hard_brakes": 29 },
-      "delta_vs_no_action": { "spillback_time_pct": -71.0, "total_travel_time_pct": -13.4, "worst_approach_delay_pct": -4.5 },
-      "guard": { "passed": true, "violations": [], "note": "전 진입로 P95 악화 없음. 안전 대리지표 개선" },
-      "explanation": "하류 점유율 임계 도달 전에 상류 유입을 단계적으로 조절. spillback 누적 71% 감소, 총 통행시간 13.4% 감소, 어느 진입로도 15% 이상 악화 없음."
+      "sequence": 3,
+      "state": "AI_REVIEWED"
+    },
+    {
+      "sequence": 4,
+      "state": "SAFETY_PASSED"
+    },
+    {
+      "sequence": 5,
+      "state": "HUMAN_APPROVED"
+    },
+    {
+      "sequence": 6,
+      "state": "TWIN_APPLIED"
+    },
+    {
+      "sequence": 7,
+      "state": "EVALUATED"
     }
   ],
-  "safety_guards": {
-    "provisional": true,
-    "rules": [
-      { "code": "STORAGE_OVERFLOW_PREDICTED", "description": "하류 링크 저장공간 초과 예측 시 정책 재탐색" },
-      { "code": "FAIRNESS_P95_EXCEEDED", "description": "진입로 P95 지체 15% 초과 악화 시 후보 거절", "threshold_pct": 15.0 },
-      { "code": "DIVERSION_DELAY_EXCEEDED", "description": "우회도로 전가 지체 허용한도 초과 시 거절", "threshold_sec": 180 },
-      { "code": "SAFETY_TTC_DEGRADED", "description": "급제동·TTC 대리지표 악화 시 거절" },
-      { "code": "DATA_STALE", "description": "센서 지연·결측 임계 초과 시 관찰 전용 모드" },
-      { "code": "OPERATOR_NOT_APPROVED", "description": "운영자 미승인 시 정책 미적용" }
-    ]
-  },
-  "approval": {
-    "status": "approved",
-    "policy_id": "corridor_gating",
-    "operator": "demo_operator",
-    "requested_at": "2026-07-28T22:32:00+09:00",
-    "decided_at": "2026-07-28T22:32:40+09:00",
-    "reason": "가드 통과 후보 중 spillback 감소 최대. 우회 전가 95초는 한도 내"
-  },
-  "recovery_compare": {
-    "no_action": { "spillback_time_sec": 1240, "recovery_time_sec": 780, "total_travel_time_sec": 51840, "worst_approach_delay_sec": 310 },
-    "applied": { "spillback_time_sec": 360, "recovery_time_sec": 420, "total_travel_time_sec": 44900, "worst_approach_delay_sec": 296 },
-    "improvement": { "spillback_time_pct": -71.0, "recovery_time_pct": -46.2, "total_travel_time_pct": -13.4, "worst_approach_delay_pct": -4.5 }
-  }
-}
-;
+  "timeline": [
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 0.06,
+          "queue_veh": 1.2,
+          "spillback": false
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 0.02,
+          "queue_veh": 0.4,
+          "spillback": false
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "건조 기준 상태",
+      "rain_level": "dry",
+      "screen_state": "normal",
+      "t_sec": 0
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 0.05,
+          "queue_veh": 1.2,
+          "spillback": false
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 0.08,
+          "queue_veh": 1.5,
+          "spillback": false
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "건조 기준 상태",
+      "rain_level": "dry",
+      "screen_state": "normal",
+      "t_sec": 180
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 0.06,
+          "queue_veh": 1.3,
+          "spillback": false
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 0.1,
+          "queue_veh": 1.8,
+          "spillback": false
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "건조 기준 상태",
+      "rain_level": "dry",
+      "screen_state": "normal",
+      "t_sec": 360
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 0.06,
+          "queue_veh": 1.4,
+          "spillback": false
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 0.1,
+          "queue_veh": 1.7,
+          "spillback": false
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "건조 기준 상태",
+      "rain_level": "dry",
+      "screen_state": "normal",
+      "t_sec": 540
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 0.06,
+          "queue_veh": 1.3,
+          "spillback": false
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 0.1,
+          "queue_veh": 1.7,
+          "spillback": false
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "건조 기준 상태",
+      "rain_level": "dry",
+      "screen_state": "normal",
+      "t_sec": 720
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 0.06,
+          "queue_veh": 1.4,
+          "spillback": false
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 0.1,
+          "queue_veh": 1.7,
+          "spillback": false
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "강우 용량 저하 감지",
+      "rain_level": "moderate",
+      "screen_state": "rain_warning",
+      "t_sec": 900
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 0.06,
+          "queue_veh": 1.3,
+          "spillback": false
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 0.21,
+          "queue_veh": 3.8,
+          "spillback": false
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "강우 용량 저하 감지",
+      "rain_level": "moderate",
+      "screen_state": "rain_warning",
+      "t_sec": 1080
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 0.07,
+          "queue_veh": 1.5,
+          "spillback": false
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 0.47,
+          "queue_veh": 8.5,
+          "spillback": false
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "연결도로 저장한계와 상류 역류 확인",
+      "rain_level": "heavy",
+      "screen_state": "spillback",
+      "t_sec": 1260
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 0.07,
+          "queue_veh": 1.4,
+          "spillback": false
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 0.76,
+          "queue_veh": 13.7,
+          "spillback": false
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "연결도로 저장한계와 상류 역류 확인",
+      "rain_level": "heavy",
+      "screen_state": "spillback",
+      "t_sec": 1440
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 0.34,
+          "queue_veh": 7.5,
+          "spillback": false
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "동일 수요·seed에서 세 정책 KPI 비교",
+      "rain_level": "heavy",
+      "screen_state": "policy_compare",
+      "t_sec": 1620
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 22.0,
+          "spillback": true
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "결정론적 안전·공정성 규칙 검사",
+      "rain_level": "heavy",
+      "screen_state": "safety_review",
+      "t_sec": 1800
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 22.0,
+          "spillback": true
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "가드 통과 후보의 운영자 결정 대기",
+      "rain_level": "heavy",
+      "screen_state": "operator_approval",
+      "t_sec": 1980
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 22.0,
+          "spillback": true
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "가드 통과 후보의 운영자 결정 대기",
+      "rain_level": "heavy",
+      "screen_state": "operator_approval",
+      "t_sec": 2160
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 22.0,
+          "spillback": true
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "가드 통과 후보의 운영자 결정 대기",
+      "rain_level": "heavy",
+      "screen_state": "operator_approval",
+      "t_sec": 2340
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 22.0,
+          "spillback": true
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "가드 통과 후보의 운영자 결정 대기",
+      "rain_level": "heavy",
+      "screen_state": "operator_approval",
+      "t_sec": 2520
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 22.0,
+          "spillback": true
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "무대응과 승인 정책의 회복 결과 비교",
+      "rain_level": "dry",
+      "screen_state": "recovery_compare",
+      "t_sec": 2700
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 22.0,
+          "spillback": true
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "무대응과 승인 정책의 회복 결과 비교",
+      "rain_level": "dry",
+      "screen_state": "recovery_compare",
+      "t_sec": 2880
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 22.0,
+          "spillback": true
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "무대응과 승인 정책의 회복 결과 비교",
+      "rain_level": "dry",
+      "screen_state": "recovery_compare",
+      "t_sec": 3060
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 22.0,
+          "spillback": true
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "무대응과 승인 정책의 회복 결과 비교",
+      "rain_level": "dry",
+      "screen_state": "recovery_compare",
+      "t_sec": 3240
+    },
+    {
+      "links": [
+        {
+          "link_id": "L12",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 22.0,
+          "spillback": true
+        },
+        {
+          "link_id": "L23",
+          "occupancy_ratio": 1.0,
+          "queue_veh": 18.0,
+          "spillback": true
+        },
+        {
+          "link_id": "BYPASS",
+          "occupancy_ratio": 0.0,
+          "queue_veh": 0.0,
+          "spillback": false
+        }
+      ],
+      "note": "무대응과 승인 정책의 회복 결과 비교",
+      "rain_level": "dry",
+      "screen_state": "recovery_compare",
+      "t_sec": 3420
+    }
+  ],
+  "workflow_state": "EVALUATED"
+};

@@ -1,0 +1,17 @@
+.venv/
+.venv-build/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+build/
+dist/
+
+backend/logs/
+
+release/*.zip
+release/windows-x64/RainFlowSejong.exe
+release/windows-x64/_internal/
+release/windows-x64/logs/
+release/windows-x64/runtime/
+release/windows-x64/SHA256SUMS.txt

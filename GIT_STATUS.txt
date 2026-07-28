@@ -1,0 +1,32 @@
+## main...origin/main
+ M README.md
+ M ai-context/PROJECT_STACK.yaml
+ M backend/README.md
+ M backend/app/main.py
+ M backend/app/safety.py
+ M backend/app/simulation.py
+ M backend/fixtures/demo_run.json
+ M contracts/rainflow.schema.json
+ M frontend/demo_run.js
+?? .dockerignore
+?? .gitignore
+?? Dockerfile
+?? backend/app/decision.py
+?? backend/app/domain.py
+?? backend/app/policies.py
+?? backend/app/storage.py
+?? backend/fixtures/cached_run.json
+?? backend/tests/test_backend_contract_regressions.py
+?? backend/tests/test_decision.py
+?? backend/tests/test_generated_artifacts.py
+?? compose.yaml
+?? contracts/openapi.json
+?? docs/RUNBOOK.md
+?? docs/evidence/choi_backend_validation_2026-07-28.md
+?? launcher/
+?? rainflow-sejong.spec
+?? release/
+?? requirements-build.txt
+?? requirements-dev.txt
+?? requirements.txt
+?? scripts/

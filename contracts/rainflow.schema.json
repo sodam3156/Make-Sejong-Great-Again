@@ -9,7 +9,9 @@
     "run_id": { "type": "string" },
     "result_source": { "enum": ["live_simulation", "cached_simulation", "fixture"] },
     "provisional": { "type": "boolean" },
+    "generated_at": { "type": "string", "format": "date-time" },
     "network_version": { "type": "string" },
+    "note": { "type": "string" },
     "scenario": {
       "type": "object",
       "required": ["scenario_id", "seed", "rain_level"],
@@ -18,7 +20,9 @@
         "seed": { "type": "integer" },
         "rain_level": { "enum": ["dry", "light", "moderate", "heavy"] },
         "duration_sec": { "type": "integer" },
-        "incident": { "type": "boolean" }
+        "incident": { "type": "boolean" },
+        "phases": { "type": "object" },
+        "data_quality": { "$ref": "#/$defs/dataQuality" }
       }
     },
     "screen_states": {
@@ -61,6 +65,7 @@
           "policy_id": { "enum": ["no_action", "fixed_metering", "corridor_gating"] },
           "label": { "type": "string" },
           "kpi": { "$ref": "#/$defs/kpi" },
+          "extra": { "type": "object" },
           "delta_vs_no_action": { "type": "object" },
           "guard": {
             "type": "object",
@@ -78,20 +83,51 @@
                   }
                 }
               }
-            }
+            },
+            "rule_version": { "type": "string" },
+            "note": { "type": "string" }
           },
+          "candidate_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "rank": { "type": "integer", "minimum": 1 },
+          "score": { "type": "number" },
           "explanation": { "type": "string" }
         }
       }
     },
+    "decision": {
+      "type": "object",
+      "properties": {
+        "scoring_version": { "type": "string" },
+        "explanation_mode": { "const": "rule_based" },
+        "recommended_policy_id": {
+          "enum": ["no_action", "fixed_metering", "corridor_gating"]
+        },
+        "ranked_policy_ids": {
+          "type": "array",
+          "items": {
+            "enum": ["no_action", "fixed_metering", "corridor_gating"]
+          }
+        },
+        "policy_assessments": { "type": "array" }
+      }
+    },
+    "safety_guards": { "type": "object" },
     "approval": {
       "type": "object",
       "required": ["status", "policy_id"],
       "properties": {
-        "status": { "enum": ["approved", "rejected", "pending"] },
+        "status": { "enum": ["approved", "rejected", "pending", "held"] },
         "policy_id": { "type": "string" },
         "operator": { "type": "string" },
-        "reason": { "type": "string" }
+        "reason": { "type": "string" },
+        "decided_at": { "type": "string", "format": "date-time" },
+        "result_source": {
+          "enum": ["live_simulation", "cached_simulation", "fixture"]
+        },
+        "workflow_state": { "type": "string" }
       }
     },
     "recovery_compare": {
@@ -100,11 +136,37 @@
       "properties": {
         "no_action": { "$ref": "#/$defs/kpi" },
         "applied": { "$ref": "#/$defs/kpi" },
-        "improvement": { "type": "object" }
+        "improvement": { "type": "object" },
+        "applied_policy_id": {
+          "enum": ["no_action", "fixed_metering", "corridor_gating"]
+        },
+        "predicted_if_approved": { "type": "object" }
       }
-    }
+    },
+    "workflow_state": { "type": "string" },
+    "state_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sequence", "state"],
+        "properties": {
+          "sequence": { "type": "integer", "minimum": 1 },
+          "state": { "type": "string" }
+        }
+      }
+    },
+    "reproducibility": { "type": "object" },
+    "elapsed_ms": { "type": "number", "minimum": 0 }
   },
   "$defs": {
+    "dataQuality": {
+      "type": "object",
+      "properties": {
+        "data_age_sec": { "type": "number", "minimum": 0 },
+        "sensor_available": { "type": "boolean" },
+        "device_status": { "enum": ["ok", "degraded", "fault"] }
+      }
+    },
     "kpi": {
       "type": "object",
       "required": ["spillback_time_sec", "recovery_time_sec", "total_travel_time_sec", "worst_approach_delay_sec"],
