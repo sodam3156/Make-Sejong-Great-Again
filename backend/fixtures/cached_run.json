@@ -382,7 +382,7 @@
       "no_action": "1b8abf877414569c4d34b295385ba5ce79c7a7ed614c5d0e8dba4243e268af3e"
     },
     "freeze_id": "freeze-20260729-202509-kst",
-    "git_commit_sha": "6b84849a83505ad1533149c07d1ba0a6bc3649fb",
+    "git_commit_sha": "9b85ef21d383d2729fbbf83857a1e1d03a016af2",
     "guard_version": "rainflow-guard-v2",
     "input": {
       "data_quality": {
@@ -401,8 +401,8 @@
     "rule_version": "rainflow-guard-v2",
     "scoring_version": "rainflow-rule-v1",
     "simulator_version": "rainflow-queue-v2",
-    "source_live_run_id": "live-rain_spillback_a-s42-ddeead2f3d",
-    "source_tree_checksum": "8e873ec3afb8296868dc35545d503067288d0c65984f3771ef11e1f2fa9ab1b4"
+    "source_live_run_id": "live-rain_spillback_a-s42-a2799776ca",
+    "source_tree_checksum": "91e224b0c9cb056e3bc7820e51ee2121fefea8dade4aeb942203f958f6b5bbb0"
   },
   "result_source": "cached_simulation",
   "run_id": "cached-qa-v2-001",
