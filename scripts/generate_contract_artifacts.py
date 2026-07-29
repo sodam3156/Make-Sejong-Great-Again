@@ -32,8 +32,11 @@ SOURCE_FILES = (
     "backend/app/policies.py",
     "backend/app/safety.py",
     "backend/app/simulation.py",
+    "backend/README.template.md",
     "contracts/rainflow.schema.json",
+    "docs/09_RAINFLOW_SEJONG.md",
     "docs/16_DEMO_SCRIPT.template.md",
+    "docs/evidence/provisional_parameters.md",
     "frontend/index.html",
     "scripts/generate_contract_artifacts.py",
 )
@@ -215,6 +218,38 @@ def _render_demo_script(run: dict[str, Any]) -> str:
     return template
 
 
+def _render_backend_readme(run: dict[str, Any]) -> str:
+    template = (
+        ROOT / "backend" / "README.template.md"
+    ).read_text(encoding="utf-8")
+    no_action = _policy(run, "no_action")
+    fixed = _policy(run, "fixed_metering")
+    gating = _policy(run, "corridor_gating")
+    values = {
+        "SOURCE_RUN_ID": run["reproducibility"]["source_live_run_id"],
+        "RESULT_CHECKSUM": run["reproducibility"]["result_checksum"],
+        "NO_ACTION_SPILLBACK": _number(no_action["kpi"]["spillback_time_sec"]),
+        "NO_ACTION_TTT": _number(no_action["kpi"]["total_travel_time_sec"]),
+        "FIXED_SPILLBACK_DELTA": _number(
+            fixed["delta_vs_no_action"]["spillback_time_pct"]
+        ),
+        "FIXED_TTT_DELTA": _number(
+            fixed["delta_vs_no_action"]["total_travel_time_pct"]
+        ),
+        "GATING_SPILLBACK_DELTA": _number(
+            gating["delta_vs_no_action"]["spillback_time_pct"]
+        ),
+        "GATING_TTT_DELTA": _number(
+            gating["delta_vs_no_action"]["total_travel_time_pct"]
+        ),
+    }
+    for key, value in values.items():
+        template = template.replace("{{" + key + "}}", value)
+    if "{{" in template or "}}" in template:
+        raise RuntimeError("unresolved backend README placeholder")
+    return template
+
+
 def _percentile(values: list[float], proportion: float) -> float:
     ordered = sorted(values)
     index = (len(ordered) - 1) * proportion
@@ -290,6 +325,7 @@ def render_artifacts() -> dict[Path, str]:
             + json.dumps(fixture, ensure_ascii=False, indent=2, sort_keys=True)
             + ";\n"
         ),
+        ROOT / "backend" / "README.md": _render_backend_readme(fixture),
         ROOT / "docs" / "16_DEMO_SCRIPT.md": _render_demo_script(fixture),
         ROOT / "docs" / "evidence" / "demo_kpi_seed_matrix_20260729.json": _json(
             _seed_matrix(freeze_meta)

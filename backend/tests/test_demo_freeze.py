@@ -112,6 +112,7 @@ def test_seed_matrix_covers_a_and_b_for_ten_seeds():
 def test_presentation_paths_exclude_qa_banned_numbers_and_terms():
     paths = (
         "docs/16_DEMO_SCRIPT.md",
+        "backend/README.md",
         "frontend/index.html",
         "frontend/demo_run.js",
         "backend/fixtures/demo_run.json",
