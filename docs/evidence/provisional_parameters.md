@@ -1,5 +1,12 @@
 # Provisional 수치표 (시우 검증 대기)
 
+> **검증 상태 업데이트 — 2026-07-29**
+>
+> 시우 검증 결과와 발표 사용 게이트는
+> [`rainflow_scenario_kpi_qa_validation_20260729.md`](./rainflow_scenario_kpi_qa_validation_20260729.md)를 따른다.
+> 이 문서의 현재 구현값이 곧 외부 근거 또는 승인값을 뜻하지 않는다.
+> P0 KPI·공정성 결함 수정과 동일 커밋 fixture 재생성 전까지 대표 개선율은 사용 금지다.
+
 ## 목적
 
 이 문서는 시우(근거·KPI·팩트체크 담당)의 검증이 완료되기 전까지, RainFlow Sejong 큐 모델과 fixture에 들어 있는 provisional 수치의 단일 출처(single source of truth)로 쓰기 위해 작성한다. 아래 표의 모든 값은 `backend/app/simulation.py`, `backend/app/safety.py`, `backend/README.md`, `backend/fixtures/demo_run.json`, `docs/09_RAINFLOW_SEJONG.md`에 이미 존재하는 값을 옮겨 적은 것이며, 이 문서에서 새로 계산하거나 추정한 수치는 없다. `docs/15_DAY1_FREEZE_DECISION.md` 5항 원칙대로 전부 합성 데이터이고 세종시 실측값이 아니며, 시우 검증 후 교체될 것을 전제로 한다.
