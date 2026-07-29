@@ -1,107 +1,188 @@
-# RainFlow Sejong - offline launcher
-#
-# Implements the run contract documented in docs/RUNBOOK.md section 4:
-#   1. If a previous run's /api/health is still healthy, reuse it.
-#   2. Otherwise ask the OS for a free 127.0.0.1 port.
-#   3. Start RainFlowSejong.exe and poll /api/health for up to 55 seconds.
-#   4. On success, open the default browser.
-#   5. Launcher stdout/stderr goes to logs/, the chosen port and PID go to runtime/.
-#
-# Uses $PSScriptRoot for all paths so extraction folders containing Korean
-# characters or spaces work correctly. The server only ever binds 127.0.0.1.
+[CmdletBinding()]
+param()
 
 $ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
 
-$ScriptDir = $PSScriptRoot
-$ExePath = Join-Path $ScriptDir "RainFlowSejong.exe"
-$LogDir = Join-Path $ScriptDir "logs"
-$RuntimeDir = Join-Path $ScriptDir "runtime"
-$PortFile = Join-Path $RuntimeDir "rainflow.port"
-$PidFile = Join-Path $RuntimeDir "rainflow.pid"
-$HealthTimeoutSeconds = 55
+$Executable = Join-Path $PSScriptRoot "RainFlowSejong.exe"
+$RuntimeDirectory = Join-Path $PSScriptRoot "runtime"
+$LogDirectory = Join-Path $PSScriptRoot "logs"
+$PortFile = Join-Path $RuntimeDirectory "rainflow.port"
+$PidFile = Join-Path $RuntimeDirectory "rainflow.pid"
 
-New-Item -ItemType Directory -Path $LogDir -Force | Out-Null
-New-Item -ItemType Directory -Path $RuntimeDir -Force | Out-Null
+function Test-RainFlowHealth {
+    param([int]$Port)
 
-function Test-RainflowHealth {
-    param([int]$Port, [int]$TimeoutSec = 2)
     try {
-        $response = Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:$Port/api/health" -TimeoutSec $TimeoutSec
-        return $response.StatusCode -eq 200
-    } catch {
+        $Health = Invoke-RestMethod `
+            -UseBasicParsing `
+            -Uri "http://127.0.0.1:$Port/api/health" `
+            -Method Get `
+            -TimeoutSec 1
+        return $Health.status -eq "ok"
+    }
+    catch {
         return $false
     }
 }
 
-function Open-Browser {
+function Wait-RainFlowHealth {
+    param(
+        [int]$Port,
+        [datetime]$Deadline,
+        $Process
+    )
+
+    while ((Get-Date) -lt $Deadline) {
+        if (Test-RainFlowHealth -Port $Port) {
+            return $true
+        }
+        if ($null -ne $Process -and $Process.HasExited) {
+            return $false
+        }
+        Start-Sleep -Milliseconds 250
+    }
+    return $false
+}
+
+function Get-FreeLoopbackPort {
+    $Listener = [System.Net.Sockets.TcpListener]::new(
+        [System.Net.IPAddress]::Loopback,
+        0
+    )
+    try {
+        $Listener.Start()
+        return ([System.Net.IPEndPoint]$Listener.LocalEndpoint).Port
+    }
+    finally {
+        $Listener.Stop()
+    }
+}
+
+function Open-RainFlowBrowser {
     param([int]$Port)
-    $url = "http://127.0.0.1:$Port/"
-    Write-Host "서버 준비 완료. 기본 브라우저를 엽니다: $url"
-    Start-Process $url | Out-Null
+
+    $Url = "http://127.0.0.1:$Port/"
+    if (
+        [Environment]::GetEnvironmentVariable(
+            "RAINFLOW_NO_BROWSER",
+            [EnvironmentVariableTarget]::Process
+        ) -eq "1"
+    ) {
+        Write-Host "[RainFlow Sejong] Browser suppressed for automated validation: $Url"
+        return
+    }
+
+    try {
+        Start-Process $Url
+        Write-Host "[RainFlow Sejong] Browser opened: $Url"
+    }
+    catch {
+        Write-Host "[RainFlow Sejong] Server is ready. Open this address: $Url"
+    }
 }
 
-if (-not (Test-Path -LiteralPath $ExePath -PathType Leaf)) {
-    Write-Host "[오류] RainFlowSejong.exe를 찾을 수 없습니다: $ExePath"
-    Write-Host "[오류] RainFlowSejong-windows-x64.zip 전체를 다시 압축 해제했는지 확인하세요."
-    exit 1
+if (-not (Test-Path -LiteralPath $Executable -PathType Leaf)) {
+    [Console]::Error.WriteLine(
+        "RainFlowSejong.exe is missing. Use the complete release ZIP, not the source template alone."
+    )
+    exit 2
 }
 
-# --- 1. Reuse an already-running, healthy server -----------------------------
-if (Test-Path -LiteralPath $PortFile) {
-    $existingPort = (Get-Content -LiteralPath $PortFile -Raw).Trim()
-    if ($existingPort -match '^\d+$' -and (Test-RainflowHealth -Port ([int]$existingPort))) {
-        Write-Host "기존 서버(포트 $existingPort)가 이미 응답하고 있어 재사용합니다."
-        Open-Browser -Port ([int]$existingPort)
+New-Item -ItemType Directory -Path $RuntimeDirectory -Force | Out-Null
+New-Item -ItemType Directory -Path $LogDirectory -Force | Out-Null
+
+# Re-running start.bat reuses a healthy server instead of creating duplicates.
+if (Test-Path -LiteralPath $PortFile -PathType Leaf) {
+    $ExistingPortText = (Get-Content -LiteralPath $PortFile -Raw).Trim()
+    $ExistingPort = 0
+    if (
+        [int]::TryParse($ExistingPortText, [ref]$ExistingPort) -and
+        $ExistingPort -ge 1 -and
+        $ExistingPort -le 65535
+    ) {
+        if (Test-RainFlowHealth -Port $ExistingPort) {
+            Open-RainFlowBrowser -Port $ExistingPort
+            exit 0
+        }
+
+        # A second launch during initial extraction waits for the first process.
+        if (Test-Path -LiteralPath $PidFile -PathType Leaf) {
+            $ExistingPidText = (Get-Content -LiteralPath $PidFile -Raw).Trim()
+            $ExistingPid = 0
+            if ([int]::TryParse($ExistingPidText, [ref]$ExistingPid)) {
+                $ExistingProcess = Get-Process -Id $ExistingPid -ErrorAction SilentlyContinue
+                if ($null -ne $ExistingProcess) {
+                    $ExistingDeadline = (Get-Date).AddSeconds(15)
+                    if (
+                        Wait-RainFlowHealth `
+                            -Port $ExistingPort `
+                            -Deadline $ExistingDeadline `
+                            -Process $ExistingProcess
+                    ) {
+                        Open-RainFlowBrowser -Port $ExistingPort
+                        exit 0
+                    }
+                }
+            }
+        }
+    }
+}
+
+Remove-Item -LiteralPath $PortFile -Force -ErrorAction SilentlyContinue
+Remove-Item -LiteralPath $PidFile -Force -ErrorAction SilentlyContinue
+
+$OverallDeadline = (Get-Date).AddSeconds(55)
+$LastStdoutLog = $null
+$LastStderrLog = $null
+
+for ($Attempt = 1; $Attempt -le 3; $Attempt++) {
+    $Port = Get-FreeLoopbackPort
+    $Timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+    $LastStdoutLog = Join-Path $LogDirectory "server-$Timestamp-$Attempt.out.log"
+    $LastStderrLog = Join-Path $LogDirectory "server-$Timestamp-$Attempt.err.log"
+
+    Set-Content -LiteralPath $PortFile -Value $Port -Encoding Ascii
+
+    $ServerProcess = Start-Process `
+        -FilePath $Executable `
+        -ArgumentList @("--host", "127.0.0.1", "--port", "$Port") `
+        -WorkingDirectory $PSScriptRoot `
+        -RedirectStandardOutput $LastStdoutLog `
+        -RedirectStandardError $LastStderrLog `
+        -WindowStyle Hidden `
+        -PassThru
+    Set-Content -LiteralPath $PidFile -Value $ServerProcess.Id -Encoding Ascii
+
+    if (
+        Wait-RainFlowHealth `
+            -Port $Port `
+            -Deadline $OverallDeadline `
+            -Process $ServerProcess
+    ) {
+        Open-RainFlowBrowser -Port $Port
         exit 0
     }
-}
 
-# --- 2. Ask the OS for a free 127.0.0.1 port ----------------------------------
-$listener = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Loopback, 0)
-$listener.Start()
-$Port = $listener.LocalEndpoint.Port
-$listener.Stop()
-
-Write-Host "사용 포트: $Port"
-
-# --- 3. Start RainFlowSejong.exe in the background ----------------------------
-$timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$OutLog = Join-Path $LogDir "server-$timestamp.out.log"
-$ErrLog = Join-Path $LogDir "server-$timestamp.err.log"
-
-$env:RAINFLOW_HOST = "127.0.0.1"
-$env:RAINFLOW_PORT = "$Port"
-
-$process = Start-Process -FilePath $ExePath `
-    -WorkingDirectory $ScriptDir `
-    -RedirectStandardOutput $OutLog `
-    -RedirectStandardError $ErrLog `
-    -WindowStyle Hidden `
-    -PassThru
-
-Set-Content -LiteralPath $PortFile -Value "$Port" -NoNewline -Encoding ascii
-Set-Content -LiteralPath $PidFile -Value "$($process.Id)" -NoNewline -Encoding ascii
-
-# --- 4. Poll /api/health for up to 55 seconds ---------------------------------
-$ready = $false
-for ($i = 0; $i -lt $HealthTimeoutSeconds; $i++) {
-    if (Test-RainflowHealth -Port $Port) {
-        $ready = $true
+    if (-not $ServerProcess.HasExited) {
+        # Startup timed out while this exact process was still alive. Stop it
+        # before deleting its PID record so stop.bat is never orphaned.
+        Stop-Process -Id $ServerProcess.Id -Force -ErrorAction SilentlyContinue
+        $ServerProcess.WaitForExit(5000) | Out-Null
         break
     }
-    if ($process.HasExited) {
-        Write-Host "[오류] 서버 프로세스가 예기치 않게 종료되었습니다 (종료 코드: $($process.ExitCode))."
+
+    # A bind race exits quickly; choose another free port while time remains.
+    if ((Get-Date) -ge $OverallDeadline) {
         break
     }
-    Start-Sleep -Seconds 1
 }
 
-if (-not $ready) {
-    Write-Host "[오류] $HealthTimeoutSeconds 초 안에 서버가 응답하지 않았습니다."
-    Write-Host "로그를 확인하세요: $OutLog / $ErrLog"
-    exit 1
-}
+Remove-Item -LiteralPath $PortFile -Force -ErrorAction SilentlyContinue
+Remove-Item -LiteralPath $PidFile -Force -ErrorAction SilentlyContinue
 
-# --- 5. Open the default browser ----------------------------------------------
-Open-Browser -Port $Port
-exit 0
+Write-Error (
+    "The server did not become healthy within 55 seconds. " +
+    "Check '$LastStdoutLog' and '$LastStderrLog'."
+)
+exit 1

@@ -1,52 +1,60 @@
-# RainFlow Sejong - offline launcher stop script
-#
-# Implements docs/RUNBOOK.md section 4 (line 118): only terminate the process
-# recorded in runtime/rainflow.pid after confirming it is actually a
-# RainFlowSejong process. This prevents killing an unrelated process that
-# happens to have reused the same PID after the original server exited.
+[CmdletBinding()]
+param()
 
 $ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
 
-$ScriptDir = $PSScriptRoot
-$RuntimeDir = Join-Path $ScriptDir "runtime"
-$PortFile = Join-Path $RuntimeDir "rainflow.port"
-$PidFile = Join-Path $RuntimeDir "rainflow.pid"
+$RuntimeDirectory = Join-Path $PSScriptRoot "runtime"
+$PortFile = Join-Path $RuntimeDirectory "rainflow.port"
+$PidFile = Join-Path $RuntimeDirectory "rainflow.pid"
+$Executable = Join-Path $PSScriptRoot "RainFlowSejong.exe"
 
-if (-not (Test-Path -LiteralPath $PidFile)) {
-    Write-Host "실행 중인 서버 기록이 없습니다 (runtime/rainflow.pid 없음)."
-    exit 0
-}
-
-$recordedPid = (Get-Content -LiteralPath $PidFile -Raw).Trim()
-
-if (-not ($recordedPid -match '^\d+$')) {
-    Write-Host "runtime/rainflow.pid 값이 올바르지 않습니다. 기록을 정리합니다."
-    Remove-Item -LiteralPath $PidFile -Force -ErrorAction SilentlyContinue
+if (-not (Test-Path -LiteralPath $PidFile -PathType Leaf)) {
     Remove-Item -LiteralPath $PortFile -Force -ErrorAction SilentlyContinue
+    Write-Host "[RainFlow Sejong] No recorded server process is running."
     exit 0
 }
 
-$targetProcess = Get-Process -Id ([int]$recordedPid) -ErrorAction SilentlyContinue
+$PidText = (Get-Content -LiteralPath $PidFile -Raw).Trim()
+$ServerPid = 0
+if (-not [int]::TryParse($PidText, [ref]$ServerPid)) {
+    Remove-Item -LiteralPath $PidFile, $PortFile -Force -ErrorAction SilentlyContinue
+    Write-Error "The recorded server PID is invalid; stale runtime files were removed."
+    exit 1
+}
 
-if (-not $targetProcess) {
-    Write-Host "PID $recordedPid 프로세스가 이미 종료되어 있습니다. 기록을 정리합니다."
-    Remove-Item -LiteralPath $PidFile -Force -ErrorAction SilentlyContinue
-    Remove-Item -LiteralPath $PortFile -Force -ErrorAction SilentlyContinue
+$ServerProcess = Get-Process -Id $ServerPid -ErrorAction SilentlyContinue
+if ($null -eq $ServerProcess) {
+    Remove-Item -LiteralPath $PidFile, $PortFile -Force -ErrorAction SilentlyContinue
+    Write-Host "[RainFlow Sejong] The recorded process already stopped."
     exit 0
 }
 
-if ($targetProcess.ProcessName -ne "RainFlowSejong") {
-    Write-Host "[경고] PID $recordedPid 는 RainFlowSejong 프로세스가 아닙니다 (실제: $($targetProcess.ProcessName)). 종료하지 않습니다."
-    Write-Host "다른 프로그램이 이 PID를 재사용했을 수 있습니다. runtime/rainflow.pid 기록만 정리합니다."
-    Remove-Item -LiteralPath $PidFile -Force -ErrorAction SilentlyContinue
-    Remove-Item -LiteralPath $PortFile -Force -ErrorAction SilentlyContinue
-    exit 0
+$ActualExecutablePath = $null
+try {
+    $ActualExecutablePath = $ServerProcess.Path
+}
+catch {
+    # Refuse to terminate when Windows does not allow executable-path inspection.
 }
 
-Stop-Process -Id ([int]$recordedPid) -Force
-Write-Host "RainFlowSejong 서버(PID $recordedPid)를 종료했습니다."
+if (
+    $ServerProcess.ProcessName -ne "RainFlowSejong" -or
+    $null -eq $ActualExecutablePath -or
+    -not [string]::Equals(
+        [System.IO.Path]::GetFullPath($ActualExecutablePath),
+        [System.IO.Path]::GetFullPath($Executable),
+        [System.StringComparison]::OrdinalIgnoreCase
+    )
+) {
+    Write-Error (
+        "PID $ServerPid is not this release folder's RainFlowSejong.exe. " +
+        "No process was stopped; the runtime record was preserved for inspection."
+    )
+    exit 1
+}
 
-Remove-Item -LiteralPath $PidFile -Force -ErrorAction SilentlyContinue
-Remove-Item -LiteralPath $PortFile -Force -ErrorAction SilentlyContinue
-
-exit 0
+Stop-Process -Id $ServerPid -Force
+$ServerProcess.WaitForExit(5000) | Out-Null
+Remove-Item -LiteralPath $PidFile, $PortFile -Force -ErrorAction SilentlyContinue
+Write-Host "[RainFlow Sejong] Server stopped."

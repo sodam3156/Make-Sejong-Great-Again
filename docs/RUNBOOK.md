@@ -84,10 +84,18 @@ powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1 -PythonVers
 2. 백엔드 테스트와 소스 self-check 실행
 3. `rainflow-sejong.spec`으로 onedir 실행본 생성
 4. 패키지 실행파일 self-check 실행
-5. `release/windows-x64`에 실행본 배치
-6. `SHA256SUMS.txt`, `release/RainFlowSejong-windows-x64.zip`과 ZIP `.sha256` 생성
+5. 깨끗한 `release/windows-x64`에 실행본과 필수 런처 5종
+   (`start.bat`, `launch.ps1`, `stop.bat`, `stop.ps1`, `README.txt`) 배치
+6. `SHA256SUMS.txt`와 후보 ZIP 생성
+7. 새 임시 폴더에 후보 ZIP을 압축 해제하고
+   `start.bat → health HTTP 200 → start.bat 재실행(동일 PID·포트 재사용)
+   → stop.bat → 프로세스·health·runtime 종료` 스모크 실행
+8. 스모크가 성공한 후보만 `release/RainFlowSejong-windows-x64.zip`으로 승격하고
+   ZIP `.sha256` 생성
 
+스모크가 실패하면 최종 ZIP과 `.sha256`은 생성되지 않으며 빌드는 실패한다.
 빌드 테스트를 생략하는 `-SkipTests`는 긴급 재빌드용이며 제출본에는 권장하지 않는다.
+`-SkipTests`를 사용해도 압축 해제본 스모크 게이트는 생략되지 않는다.
 
 ## 4. 제출본 구조와 실행
 
@@ -115,7 +123,9 @@ SHA256SUMS.txt
 경로는 `%~dp0`와 PowerShell의 `PSScriptRoot`를 사용하므로 한글과 공백이 포함된 압축 해제 경로를 지원한다. 서버는 `127.0.0.1`에만 바인딩한다.
 
 런처의 stdout/stderr는 `logs/`에, 시뮬레이션·승인 감사 기록은 `_internal/backend/logs/`에 남는다. 문제를 전달할 때 두 위치를 함께 보존한다.
-시연이 끝나면 `stop.bat`을 실행한다. 기록된 PID가 실제 `RainFlowSejong` 프로세스인지 확인한 뒤에만 종료하므로 PID 재사용으로 다른 프로세스를 종료하지 않는다.
+시연이 끝나면 `stop.bat`을 실행한다. 기록된 PID의 프로세스 이름과 실행파일 경로가
+현재 압축 해제 폴더의 `RainFlowSejong.exe`와 모두 일치할 때만 종료하므로,
+PID 재사용이나 다른 압축 해제본 때문에 무관한 프로세스를 종료하지 않는다.
 
 ## 5. 외부 PC 검증 체크리스트
 
