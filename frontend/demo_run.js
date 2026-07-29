@@ -9,6 +9,13 @@ window.DEMO_RUN = {
     "status": "approved",
     "workflow_state": "EVALUATED"
   },
+  "dataset": {
+    "adapter_version": "builtin-synthetic-v1",
+    "data_class": "synthetic",
+    "dataset_id": "synthetic-v0",
+    "default": true,
+    "schema_version": "rainflow-dataset-v1"
+  },
   "decision": {
     "explanation_mode": "rule_based",
     "policy_assessments": [
@@ -382,7 +389,7 @@ window.DEMO_RUN = {
       "no_action": "1b8abf877414569c4d34b295385ba5ce79c7a7ed614c5d0e8dba4243e268af3e"
     },
     "freeze_id": "freeze-20260729-202509-kst",
-    "git_commit_sha": "0e20e58578d5d7bb549a2d0d50c2dbcd6139a62b",
+    "git_commit_sha": "ce6fe7404f2e8ae84d5e31e4245258ffaf7bef27",
     "guard_version": "rainflow-guard-v2",
     "input": {
       "data_quality": {
@@ -390,6 +397,7 @@ window.DEMO_RUN = {
         "device_status": "ok",
         "sensor_available": true
       },
+      "dataset_id": "synthetic-v0",
       "scenario_id": "rain_spillback_a",
       "seed": 42
     },
@@ -397,12 +405,12 @@ window.DEMO_RUN = {
     "network_version": "sejong-corridor-v0",
     "parameter_set_version": "rainflow-provisional-v2",
     "policy_version": "rainflow-policy-v1",
-    "result_checksum": "23697a5073863fe62b3bf43053fd2e758c145edd385e7748f29a13e5f28a4823",
+    "result_checksum": "80a4440cb798a8262e88e462a3088e3d128debbdb32ec3eb30cab119537d9c22",
     "rule_version": "rainflow-guard-v2",
     "scoring_version": "rainflow-rule-v1",
     "simulator_version": "rainflow-queue-v2",
-    "source_live_run_id": "live-rain_spillback_a-s42-a620cd4bb7",
-    "source_tree_checksum": "3b6c2b9bd3100c2a95db23e515f30be666e557d8147556abb888b4e420ef4c5f"
+    "source_live_run_id": "live-rain_spillback_a-s42-f3ba7ad161",
+    "source_tree_checksum": "6e545102aab3189618b57da70eacce20e72c6fe47a25e62cb23d498dcf2944d3"
   },
   "result_source": "fixture",
   "run_id": "fixture-qa-v2-001",

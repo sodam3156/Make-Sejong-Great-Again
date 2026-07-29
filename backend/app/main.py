@@ -63,6 +63,9 @@ KST = timezone(timedelta(hours=9))
 
 VERSION = "0.2.0"
 NETWORK_VERSION = "sejong-corridor-v0"
+DATASET_ID = "synthetic-v0"
+DATASET_SCHEMA_VERSION = "rainflow-dataset-v1"
+DATASET_ADAPTER_VERSION = "builtin-synthetic-v1"
 SCREEN_STATES = [
     "normal",
     "rain_warning",
@@ -122,6 +125,7 @@ def _pct(candidate: float, baseline: float) -> float:
 def result_checksum(run: dict[str, Any]) -> str:
     """Hash the deterministic result shared by live, fixture, and the screen."""
     canonical = {
+        "dataset": run["dataset"],
         "scenario": run["scenario"],
         "screen_states": run["screen_states"],
         "network": run["network"],
@@ -294,6 +298,7 @@ def _make_run_id(
     scenario_id: str,
     seed: int,
     data_quality: dict[str, Any],
+    dataset_id: str,
     source_tree_checksum: str,
 ) -> str:
     payload = json.dumps(
@@ -301,6 +306,7 @@ def _make_run_id(
             "scenario_id": scenario_id,
             "seed": seed,
             "data_quality": data_quality,
+            "dataset_id": dataset_id,
             "simulator_version": SIMULATOR_VERSION,
             "parameter_set_version": PARAMETER_SET_VERSION,
             "kpi_definition_version": KPI_DEFINITION_VERSION,
@@ -349,6 +355,7 @@ def build_run(
     seed: int,
     data_quality: dict[str, Any] | None = None,
     freeze_meta: dict[str, Any] | None = None,
+    dataset_id: str = DATASET_ID,
 ) -> dict[str, Any]:
     """Build one deterministic live result.
 
@@ -358,6 +365,10 @@ def build_run(
     """
     if scenario_id not in SCENARIOS:
         raise ValueError(f"unknown scenario_id: {scenario_id}")
+    if dataset_id != DATASET_ID:
+        raise ValueError(
+            f"dataset adapter not installed: {dataset_id}; use {DATASET_ID}"
+        )
     quality = copy.deepcopy(data_quality or {
         "data_age_sec": 0.0,
         "sensor_available": True,
@@ -402,6 +413,7 @@ def build_run(
         scenario_id,
         seed,
         quality,
+        dataset_id,
         frozen_source["source_tree_checksum"],
     )
 
@@ -411,6 +423,13 @@ def build_run(
         "provisional": True,
         "generated_at": _now(),
         "network_version": NETWORK_VERSION,
+        "dataset": {
+            "dataset_id": dataset_id,
+            "data_class": "synthetic",
+            "schema_version": DATASET_SCHEMA_VERSION,
+            "adapter_version": DATASET_ADAPTER_VERSION,
+            "default": True,
+        },
         "note": (
             "결정론적 큐 모델 계산 결과. 합성 데이터이며 실제 세종시 "
             "실측 성과나 실제 도로 제어 결과가 아니다."
@@ -493,6 +512,7 @@ def build_run(
                 "scenario_id": scenario_id,
                 "seed": seed,
                 "data_quality": quality,
+                "dataset_id": dataset_id,
             },
             "freeze_id": frozen_source["freeze_id"],
             "git_commit_sha": frozen_source["git_commit_sha"],
@@ -521,16 +541,24 @@ def _fallback_run(
     seed: int,
     data_quality: dict[str, Any],
     source: str,
+    dataset_id: str = DATASET_ID,
 ) -> dict[str, Any]:
     cache_path = CACHED_FIXTURE_PATH if CACHED_FIXTURE_PATH.exists() else FIXTURE_PATH
     run = load_fixture(cache_path if source == "cached_simulation" else FIXTURE_PATH)
     run = copy.deepcopy(run)
+    stored_dataset_id = run.get("dataset", {}).get("dataset_id")
+    if stored_dataset_id != dataset_id:
+        raise ValueError(
+            "stored result dataset mismatch: "
+            f"requested {dataset_id}, stored {stored_dataset_id or 'missing'}"
+        )
     stored_reproducibility = copy.deepcopy(run.get("reproducibility", {}))
     run["run_id"] = _make_run_id(
         source,
         scenario_id,
         seed,
         data_quality,
+        dataset_id,
         stored_reproducibility.get("source_tree_checksum", "unfrozen"),
     )
     run["result_source"] = source
@@ -577,6 +605,7 @@ def _fallback_run(
             "scenario_id": scenario_id,
             "seed": seed,
             "data_quality": data_quality,
+            "dataset_id": dataset_id,
         },
         "simulator_version": "stored-result",
         "freeze_id": stored_reproducibility.get("freeze_id", "unfrozen"),
@@ -802,6 +831,7 @@ def health() -> dict[str, Any]:
         "runs_in_memory": len(RUNS),
         "persisted_runs": STORE.count(),
         "result_source": "fixture",
+        "dataset_id": DATASET_ID,
     }
 
 
@@ -812,20 +842,33 @@ def health() -> dict[str, Any]:
 )
 def create_simulation(request: SimulationRequest) -> dict[str, Any]:
     scenario_id = request.scenario_id.value
+    dataset_id = request.dataset_id
     quality = request.data_quality.model_dump(mode="json")
     requested_input = request.model_dump(mode="json")
     try:
         if request.force_source == "fixture":
-            run = _fallback_run(scenario_id, request.seed, quality, "fixture")
+            run = _fallback_run(
+                scenario_id,
+                request.seed,
+                quality,
+                "fixture",
+                dataset_id,
+            )
         elif request.force_source == "cached_simulation":
             run = _fallback_run(
                 scenario_id,
                 request.seed,
                 quality,
                 "cached_simulation",
+                dataset_id,
             )
         else:
-            run = build_run(scenario_id, request.seed, quality)
+            run = build_run(
+                scenario_id,
+                request.seed,
+                quality,
+                dataset_id=dataset_id,
+            )
     except Exception as error:
         if request.force_source == "live_simulation":
             raise HTTPException(
@@ -837,6 +880,7 @@ def create_simulation(request: SimulationRequest) -> dict[str, Any]:
             {
                 "scenario_id": scenario_id,
                 "seed": request.seed,
+                "dataset_id": dataset_id,
                 "error_type": type(error).__name__,
                 "error": str(error),
             },
@@ -846,6 +890,7 @@ def create_simulation(request: SimulationRequest) -> dict[str, Any]:
             request.seed,
             quality,
             "cached_simulation",
+            dataset_id,
         )
 
     RUNS[run["run_id"]] = run

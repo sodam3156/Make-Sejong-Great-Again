@@ -1,13 +1,13 @@
 {
   "artifacts": {
-    "backend/README.md": "b6755bc5a228e71098f898de1e26f5cc984b88026963b2cf2b1212e1c644c1a7",
-    "backend/fixtures/cached_run.json": "385f46db0ab137707fb5e6d4efa214a4e80598ad5f2b5f004ea198e7a43d49b2",
-    "backend/fixtures/demo_freeze_meta.json": "a0dc347ec8dc9b7241b4781cc665e726817f636b5bbaf223c1b8362dfd3fde8f",
-    "backend/fixtures/demo_run.json": "0bc49d04a335ec87abba6e6f6ded629758819ba7334ad3c3b65012c1aa35e138",
-    "contracts/openapi.json": "d3776271859378c6e08d635cff80787bf598a1b51f0f61543d414d5fcb608b37",
-    "docs/16_DEMO_SCRIPT.md": "a78783107d178645b22f86705d8e9479b7224cd2114aef22b6b2e902677dca1b",
-    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "3367486d470d14993cd0c4ab2271c6d580336c8dd229dbfaea09c77c3d24b090",
-    "frontend/demo_run.js": "d4e68673070ae3d610c52e88f1407af4fdd8fb9df1eece61ff962b41d3434ee6"
+    "backend/README.md": "674e88870ef168d899c96765d99b1756b26d8d92834b91217f13456fb14e5146",
+    "backend/fixtures/cached_run.json": "58b61a6a5c242d7b49acce5aa3ae2fed40c7a6785319c19bf2ff8b74691926c8",
+    "backend/fixtures/demo_freeze_meta.json": "38d540856917fc2cef2759d233d2e6ad001e69437cbc49b8f4210983d068e2ad",
+    "backend/fixtures/demo_run.json": "a24b24ad1e5704177f8cd85618ccc24cbe03575f41adc28b7b51dd12f87df323",
+    "contracts/openapi.json": "b9de78d38d673df302ec42fabfe4c0ef17c8eb139de1e3d059a61495269ad1c5",
+    "docs/16_DEMO_SCRIPT.md": "1620a877838ad7838dad9f205295c9f5ce69c2c18b76762674af6e0feeef900a",
+    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "4e86d6c52038630815da880543f9a7f62e4193b5c67f19eaffd3f126de7122e4",
+    "frontend/demo_run.js": "323dcaa85607e039490e1f41a1a827dcc534d4a63d47916cfc8afdf610c1b876"
   },
   "freeze_id": "freeze-20260729-202509-kst",
   "frozen_at": "2026-07-29T20:25:09+09:00",
@@ -15,12 +15,12 @@
     "fixture_run_id": "fixture-qa-v2-001",
     "freeze_id": "freeze-20260729-202509-kst",
     "frozen_at": "2026-07-29T20:25:09+09:00",
-    "git_commit_sha": "0e20e58578d5d7bb549a2d0d50c2dbcd6139a62b",
+    "git_commit_sha": "ce6fe7404f2e8ae84d5e31e4245258ffaf7bef27",
     "provisional": true,
-    "result_checksum": "23697a5073863fe62b3bf43053fd2e758c145edd385e7748f29a13e5f28a4823",
-    "run_id": "live-rain_spillback_a-s42-a620cd4bb7",
+    "result_checksum": "80a4440cb798a8262e88e462a3088e3d128debbdb32ec3eb30cab119537d9c22",
+    "run_id": "live-rain_spillback_a-s42-f3ba7ad161",
     "scenario_id": "rain_spillback_a",
     "seed": 42,
-    "source_tree_checksum": "3b6c2b9bd3100c2a95db23e515f30be666e557d8147556abb888b4e420ef4c5f"
+    "source_tree_checksum": "6e545102aab3189618b57da70eacce20e72c6fe47a25e62cb23d498dcf2944d3"
   }
 }

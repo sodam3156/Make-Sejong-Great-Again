@@ -43,6 +43,16 @@ RainFlow 결과 → 동일 버전·동일 seed·수정된 KPI 계산의 실행 �
 현장 성과 → 현재 범위 밖
 ```
 
+### 0.1 dataset_id·폴백 경계 반영 상태
+
+- 현재 기본값은 `dataset_id=synthetic-v0`이며 실제 자료 어댑터는 설치하지 않았다.
+- 요청·실행 결과·재현 입력·health 응답에 dataset identity를 기록한다.
+- run 결과에는 `data_class=synthetic`, `schema_version=rainflow-dataset-v1`, `adapter_version=builtin-synthetic-v1`을 함께 남긴다.
+- 미설치 dataset은 API 입력 검증에서 422로 거절하며 synthetic fixture로 위장해 폴백하지 않는다.
+- 저장 fixture의 dataset과 요청 dataset이 다르면 폴백을 거절한다.
+- dataset identity를 run ID와 result checksum에 포함하므로 식별자는 재생성되지만, KPI 값·가드 판정·정책 순위는 변경하지 않는다.
+- `backend/tests/test_dataset_contract.py`와 생성물 동기화 테스트를 승인 게이트로 사용한다.
+
 ## 1. 운영현황 팩트 레지스터
 
 | claim_id | 주장 | 판정 | 발표 허용 범위 | 금지되는 확장 |
