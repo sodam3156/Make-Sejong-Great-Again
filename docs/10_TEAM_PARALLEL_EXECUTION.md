@@ -24,7 +24,7 @@
 | 핵심 KPI | spillback_time_sec, recovery_time_sec, total_travel_time_sec, worst_approach_delay_sec | 단위 변경 금지, 계산 수정 시 시우 검증 필수 |
 | 결과 출처 | live_simulation, cached_simulation, fixture | 화면이 현재 출처를 항상 표시 |
 | API | GET /api/health, POST /api/simulations, GET /api/simulations/{run_id}, POST /api/approvals | 파괴적 변경 금지, 필요한 필드는 선택 속성으로 추가 |
-| 오류 처리 | 백엔드 실패 시 fixture, LLM 실패 시 규칙 기반 설명, SUMO 실패 시 사전 계산 결과 | 폴백 전환 뒤에도 3분 시연 흐름을 끝까지 완주 |
+| 오류 처리 | 백엔드 실패 시 같은 시나리오·dataset의 cached/fixture, 설명은 규칙 기반 | 폴백 전환 뒤에도 출처를 표시하고 3분 시연 흐름을 끝까지 완주 |
 
 프론트와 백엔드는 같은 샘플 JSON을 각자 보관한다. 최영이 실제 API를 완성하기 전에도 준과 프론트엔드 담당은 샘플 JSON으로 모든 화면을 구현한다. 준의 화면이 완성되기 전에도 최영은 계약 테스트로 API를 검증한다. 시우의 최종 수치가 늦어지면 provisional 값을 사용하고 검증 완료 후 값만 교체한다. 디자인 에셋이 늦어지면 기본 SVG와 CSS 도형으로 시연을 유지한다.
 
@@ -36,7 +36,7 @@
 | FastAPI 골격 | health, 시뮬레이션 실행, 결과 조회, 운영자 승인 엔드포인트 구현 | 자동 API 문서와 계약 테스트 통과 | backend/app/main.py, backend/app/api |
 | 교통 모델 | 연속 회전교차로 3개와 우회로 1개에서 건조 상태와 우천 spillback 재현 | 같은 seed에서 결과 재현, 우천 시 상류 역류 발생 | backend/app/simulation |
 | 대응 정책 | 무대응, 고정 미터링, 연속 게이팅을 같은 조건에서 비교 | 세 후보의 KPI가 동일 구조로 반환 | backend/app/policies |
-| 안전 가드 | 시우가 정의한 최악 진입로 지체와 공정성 기준으로 위험 후보 차단 | 탈락 사유가 코드와 응답에 남고 승인 API가 차단 후보를 거부 | backend/app/safety |
+| 안전 가드 | 시우가 정의한 최악 진입로 P95 대기 proxy와 공정성 기준으로 위험 후보 차단 | 탈락 사유가 코드와 응답에 남고 승인 API가 차단 후보를 거부 | backend/app/safety |
 | AI 설계 | 수치와 규칙을 근거로 후보를 순위화하고 설명 생성 | 외부 LLM이 없어도 규칙 기반 설명으로 같은 응답 구조 유지 | backend/app/decision |
 | 폴백 데이터 | 실제 계산 결과를 검증한 뒤 제출용 fixture로 동결 | 네트워크, API 키, SUMO 없이 모든 장면 재생 | backend/fixtures |
 | 로그와 재현성 | seed, 입력, 후보 점수, 가드 결과, 승인, 결과 출처를 기록 | 시연 한 회차를 JSON 로그로 재생 가능 | backend/logs |
@@ -74,7 +74,7 @@
 
 | 상황 | 즉시 적용할 규칙 |
 |---|---|
-| 백엔드가 늦음 | 프론트는 demo_run.json으로 계속 구현하고 API adapter만 나중에 교체 |
+| 백엔드가 늦음 | 구현된 live API adapter를 유지하되 실패 시 demo_run.js fixture로 자동 전환 |
 | 프론트가 늦음 | 최영은 계약 테스트와 독립 API 클라이언트로 백엔드를 완료 |
 | 디자인이 늦음 | 기본 SVG, CSS 도형, 시스템 폰트로 기능 시연 유지 |
 | 근거 검증이 늦음 | provisional 표식을 붙인 값으로 구현하고 최종 수치만 교체 |

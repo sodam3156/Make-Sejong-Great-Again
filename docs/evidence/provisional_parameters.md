@@ -5,11 +5,11 @@
 > 시우 검증 결과와 발표 사용 게이트는
 > [`rainflow_scenario_kpi_qa_validation_20260729.md`](./rainflow_scenario_kpi_qa_validation_20260729.md)를 따른다.
 > 이 문서의 현재 구현값이 곧 외부 근거 또는 승인값을 뜻하지 않는다.
-> P0 KPI·공정성 결함 수정과 동일 커밋 fixture 재생성 전까지 대표 개선율은 사용 금지다.
+> P0 KPI·공정성 결함과 fixture 재동결은 PR #26에서 반영됐다. 그러나 결과는 계속 `synthetic-v0`·`provisional`이며 사람 검토 전에는 세종 실측 성과로 사용할 수 없다.
 
 ## 목적
 
-이 문서는 시우(근거·KPI·팩트체크 담당)의 검증이 완료되기 전까지, RainFlow Sejong 큐 모델과 fixture에 들어 있는 provisional 수치의 단일 출처(single source of truth)로 쓰기 위해 작성한다. 아래 표의 모든 값은 `backend/app/simulation.py`, `backend/app/safety.py`, `backend/README.md`, `backend/fixtures/demo_run.json`, `docs/09_RAINFLOW_SEJONG.md`에 이미 존재하는 값을 옮겨 적은 것이며, 이 문서에서 새로 계산하거나 추정한 수치는 없다. `docs/15_DAY1_FREEZE_DECISION.md` 5항 원칙대로 전부 합성 데이터이고 세종시 실측값이 아니며, 시우 검증 후 교체될 것을 전제로 한다.
+이 문서는 RainFlow Sejong 큐 모델과 fixture에 들어 있는 provisional 파라미터의 단일 출처(single source of truth)다. 아래 표의 모든 값은 `backend/app/simulation.py`, `backend/app/safety.py`, `backend/README.md`, `backend/fixtures/demo_run.json`, `docs/09_RAINFLOW_SEJONG.md`에 존재하는 값을 옮겨 적은 것이며, 이 문서에서 새로 계산하거나 추정한 수치는 없다. `docs/15_DAY1_FREEZE_DECISION.md` 5항 원칙대로 전부 합성 데이터이고 세종시 실측값이 아니다.
 
 ## 표1. 시나리오 수치표
 
@@ -52,6 +52,6 @@
 ## 검증 절차 제안
 
 1. 문헌 대조: docs/09 1차 근거 4건(DOI 10.1155/2018/2726732, opentransportationjournal Vol.12 p.192, FHWA 000678.pdf, TRB ec083 27_Akcelikpaper.pdf)을 원문 확인하여 임계간격 1.08~1.13배, 후속차두 1.06~1.12배, 용량 0.83~0.95배 범위가 실제로 그 문헌에서 도출됐는지, 세종시 회전교차로 기하구조에 그대로 적용 가능한지 확인한다.
-2. 민감도 스윕: `RAIN_CAPACITY_FACTOR`의 4단계 값과 게이팅 임계(0.80, 하한 0.35), fixed_metering 배율(0.45)을 문헌 범위 안에서 스윕하며 `backend/tests/test_spike.py`의 스파이크 통과 기준(spillback 30%↓, 총 통행시간 10%↓, 진입로 15% 악화 금지, 재현성)이 유지되는지 확인한다.
+2. 민감도 스윕: `RAIN_CAPACITY_FACTOR`의 4단계 값과 게이팅 임계(0.80, 하한 0.35), fixed_metering 배율(0.45)을 문헌 범위 안에서 스윕하며 `backend/tests/test_spike.py`의 스파이크 통과 기준(spillback 30%↓, 모형 내 누적 체류시간 10%↓, 진입로 15% 악화 금지, 재현성)이 유지되는지 확인한다.
 3. 가드 임계값(FAIRNESS_P95 15%, DIVERSION_DELAY 180초)과 회복 판정(점유<0.5, 대기<5대) 기준이 세종시 실제 운영 기준이나 관계기관 협의 결과와 부합하는지 별도로 검토한다.
 4. 수치를 교체할 때는 `backend/README.md`의 "파라미터 근거" 표와 "검증된 스파이크 결과" 표, `backend/fixtures/demo_run.json`의 provisional 값을 반드시 같은 커밋에서 동기화한다. 세 위치 중 하나만 바뀌면 화면 표기와 백엔드 계약이 어긋난다.

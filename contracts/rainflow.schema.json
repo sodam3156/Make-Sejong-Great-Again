@@ -11,6 +11,16 @@
     "provisional": { "type": "boolean" },
     "generated_at": { "type": "string", "format": "date-time" },
     "network_version": { "type": "string" },
+    "dataset": {
+      "type": "object",
+      "properties": {
+        "dataset_id": { "type": "string" },
+        "data_class": { "enum": ["synthetic", "observed", "calibrated"] },
+        "schema_version": { "type": "string" },
+        "adapter_version": { "type": "string" },
+        "default": { "type": "boolean" }
+      }
+    },
     "note": { "type": "string" },
     "scenario": {
       "type": "object",
@@ -21,6 +31,7 @@
         "rain_level": { "enum": ["dry", "light", "moderate", "heavy"] },
         "duration_sec": { "type": "integer" },
         "incident": { "type": "boolean" },
+        "incident_type": { "type": ["string", "null"] },
         "phases": { "type": "object" },
         "data_quality": { "$ref": "#/$defs/dataQuality" }
       }
@@ -82,10 +93,10 @@
                     "detail": { "type": "string" }
                   }
                 }
-              }
-            },
-            "rule_version": { "type": "string" },
-            "note": { "type": "string" }
+              },
+              "rule_version": { "type": "string" },
+              "note": { "type": "string" }
+            }
           },
           "candidate_hash": {
             "type": "string",

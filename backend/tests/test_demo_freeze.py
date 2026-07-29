@@ -100,6 +100,9 @@ def test_manifest_hashes_every_frozen_artifact():
 def test_seed_matrix_covers_a_and_b_for_ten_seeds():
     matrix = _load("docs/evidence/demo_kpi_seed_matrix_20260729.json")
 
+    assert matrix["dataset_id"] == "synthetic-v0"
+    assert matrix["provisional"] is True
+    assert "실제 세종 성과" in matrix["interpretation_limit"]
     assert set(matrix["scenarios"]) == {
         "rain_spillback_a",
         "rain_spillback_b",
@@ -107,6 +110,24 @@ def test_seed_matrix_covers_a_and_b_for_ten_seeds():
     for scenario in matrix["scenarios"].values():
         assert [run["seed"] for run in scenario["runs"]] == list(range(1, 11))
         assert scenario["guard_failure_seeds"] == []
+        assert set(scenario["policy_distribution"]) == {
+            "no_action",
+            "fixed_metering",
+            "corridor_gating",
+        }
+        for policy in scenario["policy_distribution"].values():
+            assert set(policy["kpi_distribution"]) == {
+                "spillback_time_sec",
+                "recovery_time_sec",
+                "total_travel_time_sec",
+                "worst_approach_delay_sec",
+            }
+            assert policy["guard_failed_seed_count"] == len(
+                policy["guard_failure_seeds"]
+            )
+            assert policy["recovery_unobserved_seed_count"] == len(
+                policy["recovery_unobserved_seeds"]
+            )
 
 
 def test_presentation_paths_exclude_qa_banned_numbers_and_terms():

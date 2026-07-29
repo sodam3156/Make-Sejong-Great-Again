@@ -34,6 +34,8 @@
 
 화면의 개선율은 실제 세종시 성과가 아니라 동일한 합성 수요와 고정 난수 시드에서 계산된 데모용 시뮬레이션 결과로 표시합니다.
 
+`result_source=live_simulation`은 요청 시점에 합성 큐 모델을 계산했다는 뜻이며 실시간 세종 데이터를 사용했다는 뜻이 아닙니다. 현재 허용 데이터셋은 `synthetic-v0` 하나뿐입니다.
+
 ### 7월 28일 동결 계약
 
 `docs/15_DAY1_FREEZE_DECISION.md`에 따라 RainFlow Sejong 단일 제출안과 다음 계약을 사용합니다.
@@ -45,6 +47,7 @@
 | KPI 4종 | `spillback_time_sec`, `recovery_time_sec`, `total_travel_time_sec`, `worst_approach_delay_sec` |
 | API 4경로 | `GET /api/health`, `POST /api/simulations`, `GET /api/simulations/{run_id}`, `POST /api/approvals` |
 | 결과 출처 | `live_simulation`, `cached_simulation`, `fixture` |
+| 기본 데이터셋 | `synthetic-v0` (실자료 어댑터 미설치) |
 
 프론트와 백엔드의 결과 계약 정본은 `contracts/rainflow.schema.json`과 `backend/fixtures/demo_run.json`입니다. `docs/12_TECH_STACK_AND_BACKEND_SCOPE.md`의 합성 5개 신호교차로 core MVP는 기술 원칙을 참고하기 위한 레거시 설계이며 제출 범위가 아닙니다.
 
@@ -71,6 +74,8 @@
 
 현재 작업트리에는 Windows Python 3.11로 빌드한 `release/windows-x64/RainFlowSejong.exe`, `start.bat`, `stop.bat`, `SHA256SUMS.txt`와 `release/RainFlowSejong-windows-x64.zip`이 있다. 현재 한글·공백 경로와 ZIP 재압축 해제 경로에서 health check, 7단계 API, 재실행 서버 재사용, 종료를 확인했다. 초기화된 외부 Windows x64 PC 두 대의 인터넷 차단 반복 검증은 남아 있다.
 
+소스·fixture가 바뀐 PR을 병합한 뒤에는 기존 ZIP을 최종 제출본으로 재사용하지 않는다. Windows에서 다시 빌드하고 smoke gate·SHA-256을 갱신한 뒤 외부 PC 검증을 반복한다.
+
 ### 예상 시뮬레이션 전개
 
 ![RainFlow Sejong 예상 시뮬레이션 전개도](docs/assets/rainflow-simulation-storyboard.png)
@@ -94,6 +99,7 @@
 | [프로젝트 실현 가능성 검증 보고서](docs/11_PROJECT_FEASIBILITY_VALIDATION.md) | 구현 가능 범위, 과장 방지 기준, 기술 구조 충돌, 필수 테스트와 발표 전 체크리스트 |
 | [기술 스택과 백엔드 구현 범위](docs/12_TECH_STACK_AND_BACKEND_SCOPE.md) | 제출 범위에서 제외된 5개 신호교차로 core MVP의 레거시 참조 설계 |
 | [PM 진척 체크 로그](docs/14_PM_STATUS_LOG.md) | 2시간 주기 진척 확인, 리스크, 담당자별 다음 작업 추천 |
+| [데이터 필요조건·투입·롤백 기준](docs/evidence/rainflow_data_requirements.md) | 합성 데모·실제 회랑 보정·현장 연동 자료를 구분하고 안전한 전환·복귀 절차를 규정 |
 
 ## 프로젝트 원칙
 
@@ -117,14 +123,16 @@
 - 외부 LLM 없는 결정론적 정책 순위와 구조화된 근거·위험·사유
 - JSON 실행 저장, JSONL 감사 로그, 실행 재조회
 - `live_simulation` 실패 시 cached/fixture 경로로 전환하는 폴백 코드
+- `synthetic-v0` 기본 데이터셋 경계, 미설치 dataset 거절, 시나리오가 다른 저장 결과의 폴백 차단
 - 실제 계산에서 동결하고 스키마 검증한 `cached_run.json`
-- fixture 기반 7단계 정적 프론트와 FastAPI 정적 제공
+- live/cached/fixture API 어댑터와 오프라인 폴백을 갖춘 7단계 정적 프론트
+- A·B 각각 seed 1~10의 KPI 분포·가드 실패·미회복 seed 검증자료
 - Docker 개발 실행 경로와 Windows x64 PyInstaller 실행본·ZIP·SHA256 체크섬
-- 백엔드 테스트 42건 통과
+- 백엔드 테스트 67건 통과
 
 남은 제출 작업은 다음과 같습니다.
 
-- 프론트의 실제 API adapter 연결(현재 fixture 모드는 유지)
 - Docker Desktop 실행 후 실제 이미지 빌드 검증
+- 이 변경 병합 뒤 Windows 실행본·ZIP 재빌드와 SHA-256 재동결
 - 인터넷 차단 조건의 초기화된 외부 Windows x64 PC 2대 반복 검증
 - 검증된 수치·실행 로그·README·영상·발표 자료의 최종 버전 일치 확인

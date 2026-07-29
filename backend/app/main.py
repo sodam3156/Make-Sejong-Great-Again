@@ -50,6 +50,7 @@ from .simulation import (
     SIMULATOR_VERSION,
     SimResult,
     run_simulation,
+    storage_for_scenario,
 )
 from .storage import RunStore
 
@@ -61,8 +62,11 @@ LOGS_DIR = BACKEND_DIR / "logs"
 FRONTEND_DIR = BACKEND_DIR.parent / "frontend"
 KST = timezone(timedelta(hours=9))
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 NETWORK_VERSION = "sejong-corridor-v0"
+DATASET_ID = "synthetic-v0"
+DATASET_SCHEMA_VERSION = "rainflow-dataset-v1"
+DATASET_ADAPTER_VERSION = "builtin-synthetic-v1"
 SCREEN_STATES = [
     "normal",
     "rain_warning",
@@ -122,6 +126,7 @@ def _pct(candidate: float, baseline: float) -> float:
 def result_checksum(run: dict[str, Any]) -> str:
     """Hash the deterministic result shared by live, fixture, and the screen."""
     canonical = {
+        "dataset": run.get("dataset"),
         "scenario": run["scenario"],
         "screen_states": run["screen_states"],
         "network": run["network"],
@@ -191,13 +196,15 @@ def _explain(policy_id: str, result: SimResult, baseline: SimResult, guard: dict
     if policy_id == "no_action":
         return (
             f"기존 양보운전 유지. spillback 누적 {result.spillback_time_sec:.0f}초, "
-            f"총 통행시간 {result.total_travel_time_sec:.0f}초가 비교 기준선이 된다."
+            f"모형 내 누적 체류시간 {result.total_travel_time_sec:.0f} "
+            "vehicle-seconds가 비교 기준선이 된다."
         )
     spillback_delta = _pct(result.spillback_time_sec, baseline.spillback_time_sec)
     travel_delta = _pct(result.total_travel_time_sec, baseline.total_travel_time_sec)
     text = (
         f"{POLICY_LABELS[policy_id]} 적용 시 무대응 대비 spillback 누적 "
-        f"{spillback_delta:+.1f}%, 총 통행시간 {travel_delta:+.1f}%."
+        f"{spillback_delta:+.1f}%, 모형 내 누적 체류시간 "
+        f"{travel_delta:+.1f}%."
     )
     if guard["passed"]:
         return text + " 모든 안전·공정성 가드를 통과했다."
@@ -295,12 +302,14 @@ def _make_run_id(
     seed: int,
     data_quality: dict[str, Any],
     source_tree_checksum: str,
+    dataset_id: str,
 ) -> str:
     payload = json.dumps(
         {
             "scenario_id": scenario_id,
             "seed": seed,
             "data_quality": data_quality,
+            "dataset_id": dataset_id,
             "simulator_version": SIMULATOR_VERSION,
             "parameter_set_version": PARAMETER_SET_VERSION,
             "kpi_definition_version": KPI_DEFINITION_VERSION,
@@ -349,6 +358,7 @@ def build_run(
     seed: int,
     data_quality: dict[str, Any] | None = None,
     freeze_meta: dict[str, Any] | None = None,
+    dataset_id: str = DATASET_ID,
 ) -> dict[str, Any]:
     """Build one deterministic live result.
 
@@ -358,6 +368,10 @@ def build_run(
     """
     if scenario_id not in SCENARIOS:
         raise ValueError(f"unknown scenario_id: {scenario_id}")
+    if dataset_id != DATASET_ID:
+        raise ValueError(
+            f"dataset adapter not installed: {dataset_id}; use {DATASET_ID}"
+        )
     quality = copy.deepcopy(data_quality or {
         "data_age_sec": 0.0,
         "sensor_available": True,
@@ -403,14 +417,23 @@ def build_run(
         seed,
         quality,
         frozen_source["source_tree_checksum"],
+        dataset_id,
     )
 
+    effective_storage = storage_for_scenario(scenario_id)
     run = {
         "run_id": run_id,
         "result_source": "live_simulation",
         "provisional": True,
         "generated_at": _now(),
         "network_version": NETWORK_VERSION,
+        "dataset": {
+            "dataset_id": dataset_id,
+            "data_class": "synthetic",
+            "schema_version": DATASET_SCHEMA_VERSION,
+            "adapter_version": DATASET_ADAPTER_VERSION,
+            "default": True,
+        },
         "note": (
             "결정론적 큐 모델 계산 결과. 합성 데이터이며 실제 세종시 "
             "실측 성과나 실제 도로 제어 결과가 아니다."
@@ -426,6 +449,7 @@ def build_run(
                 "recovery_sec": DURATION - RAIN_END,
             },
             "incident": SCENARIOS[scenario_id]["incident"],
+            "incident_type": SCENARIOS[scenario_id]["incident_type"],
             "data_quality": quality,
         },
         "screen_states": SCREEN_STATES,
@@ -442,7 +466,8 @@ def build_run(
                     "link_id": "L23",
                     "from": "R2",
                     "to": "R3",
-                    "storage_veh": LINKS["L23"],
+                    "storage_veh": effective_storage["L23"],
+                    "nominal_storage_veh": LINKS["L23"],
                 },
                 {
                     "link_id": "BYPASS",
@@ -461,6 +486,7 @@ def build_run(
             "rule_version": RULE_VERSION,
             "rules": [
                 {"code": "FAIRNESS_P95_EXCEEDED", "threshold_pct": 15.0},
+                {"code": "FAIRNESS_INPUT_INVALID"},
                 {"code": "DIVERSION_DELAY_EXCEEDED", "threshold_sec": 180.0},
                 {"code": "HARD_BRAKE_PROXY_DEGRADED"},
                 {"code": "DATA_STALE", "threshold_sec": 120.0},
@@ -493,6 +519,7 @@ def build_run(
                 "scenario_id": scenario_id,
                 "seed": seed,
                 "data_quality": quality,
+                "dataset_id": dataset_id,
             },
             "freeze_id": frozen_source["freeze_id"],
             "git_commit_sha": frozen_source["git_commit_sha"],
@@ -521,10 +548,23 @@ def _fallback_run(
     seed: int,
     data_quality: dict[str, Any],
     source: str,
+    dataset_id: str = DATASET_ID,
 ) -> dict[str, Any]:
     cache_path = CACHED_FIXTURE_PATH if CACHED_FIXTURE_PATH.exists() else FIXTURE_PATH
     run = load_fixture(cache_path if source == "cached_simulation" else FIXTURE_PATH)
     run = copy.deepcopy(run)
+    stored_scenario_id = run.get("scenario", {}).get("scenario_id")
+    if stored_scenario_id != scenario_id:
+        raise ValueError(
+            "stored result scenario mismatch: "
+            f"requested={scenario_id}, stored={stored_scenario_id}"
+        )
+    stored_dataset_id = run.get("dataset", {}).get("dataset_id", DATASET_ID)
+    if stored_dataset_id != dataset_id:
+        raise ValueError(
+            "stored result dataset mismatch: "
+            f"requested={dataset_id}, stored={stored_dataset_id}"
+        )
     stored_reproducibility = copy.deepcopy(run.get("reproducibility", {}))
     run["run_id"] = _make_run_id(
         source,
@@ -532,9 +572,17 @@ def _fallback_run(
         seed,
         data_quality,
         stored_reproducibility.get("source_tree_checksum", "unfrozen"),
+        dataset_id,
     )
     run["result_source"] = source
     run["generated_at"] = _now()
+    run["dataset"] = {
+        "dataset_id": dataset_id,
+        "data_class": "synthetic",
+        "schema_version": DATASET_SCHEMA_VERSION,
+        "adapter_version": DATASET_ADAPTER_VERSION,
+        "default": True,
+    }
     run["note"] = (
         f"{run.get('note', '')} 요청 {scenario_id}/seed {seed}의 실시간 계산 대신 "
         f"{cache_path.name if source == 'cached_simulation' else FIXTURE_PATH.name}을 재생한다."
@@ -577,8 +625,13 @@ def _fallback_run(
             "scenario_id": scenario_id,
             "seed": seed,
             "data_quality": data_quality,
+            "dataset_id": dataset_id,
         },
-        "simulator_version": "stored-result",
+        "simulator_version": stored_reproducibility.get(
+            "simulator_version",
+            "stored-result",
+        ),
+        "replay_mode": "stored-result",
         "freeze_id": stored_reproducibility.get("freeze_id", "unfrozen"),
         "git_commit_sha": stored_reproducibility.get(
             "git_commit_sha", "unfrozen"
@@ -617,6 +670,7 @@ def _save_and_audit(run: dict[str, Any], requested_input: dict[str, Any]) -> Non
         {
             "run_id": run["run_id"],
             "result_source": run["result_source"],
+            "dataset": run.get("dataset"),
             "workflow_state": run["workflow_state"],
             "input": requested_input,
             "versions": {
@@ -658,8 +712,10 @@ def _load_run(run_id: str) -> dict[str, Any] | None:
     if persisted is not None:
         RUNS[run_id] = persisted
         return persisted
-    if run_id == "fixture-day1-001":
-        return load_fixture()
+    if FIXTURE_PATH.is_file():
+        fixture = load_fixture()
+        if run_id == fixture.get("run_id"):
+            return fixture
     return None
 
 
@@ -802,6 +858,7 @@ def health() -> dict[str, Any]:
         "runs_in_memory": len(RUNS),
         "persisted_runs": STORE.count(),
         "result_source": "fixture",
+        "dataset_id": DATASET_ID,
     }
 
 
@@ -813,24 +870,42 @@ def health() -> dict[str, Any]:
 def create_simulation(request: SimulationRequest) -> dict[str, Any]:
     scenario_id = request.scenario_id.value
     quality = request.data_quality.model_dump(mode="json")
+    dataset_id = request.dataset_id
     requested_input = request.model_dump(mode="json")
     try:
         if request.force_source == "fixture":
-            run = _fallback_run(scenario_id, request.seed, quality, "fixture")
+            run = _fallback_run(
+                scenario_id,
+                request.seed,
+                quality,
+                "fixture",
+                dataset_id,
+            )
         elif request.force_source == "cached_simulation":
             run = _fallback_run(
                 scenario_id,
                 request.seed,
                 quality,
                 "cached_simulation",
+                dataset_id,
             )
         else:
-            run = build_run(scenario_id, request.seed, quality)
+            run = build_run(
+                scenario_id,
+                request.seed,
+                quality,
+                dataset_id=dataset_id,
+            )
     except Exception as error:
-        if request.force_source == "live_simulation":
+        if request.force_source != "auto" or dataset_id != DATASET_ID:
             raise HTTPException(
                 status_code=503,
-                detail="live simulation failed and fallback was disabled",
+                detail=(
+                    "requested dataset simulation failed; cross-dataset "
+                    "fallback is disabled"
+                    if dataset_id != DATASET_ID
+                    else f"forced result source failed: {request.force_source}"
+                ),
             ) from error
         STORE.audit(
             "simulation_fallback",
@@ -841,12 +916,22 @@ def create_simulation(request: SimulationRequest) -> dict[str, Any]:
                 "error": str(error),
             },
         )
-        run = _fallback_run(
-            scenario_id,
-            request.seed,
-            quality,
-            "cached_simulation",
-        )
+        try:
+            run = _fallback_run(
+                scenario_id,
+                request.seed,
+                quality,
+                "cached_simulation",
+                dataset_id,
+            )
+        except Exception as fallback_error:
+            raise HTTPException(
+                status_code=503,
+                detail=(
+                    "live simulation failed and no compatible stored result "
+                    "is available"
+                ),
+            ) from fallback_error
 
     RUNS[run["run_id"]] = run
     _save_and_audit(run, requested_input)

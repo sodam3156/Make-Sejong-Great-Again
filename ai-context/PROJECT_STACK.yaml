@@ -1,5 +1,5 @@
-schema_version: "1.1"
-updated_at: "2026-07-28"
+schema_version: "1.2"
+updated_at: "2026-07-29"
 
 project:
   id: "make-sejong-great-again"
@@ -8,7 +8,7 @@ project:
   authoritative_scope: "Synthetic three-roundabout corridor plus one parallel bypass"
   submission_variant: "RainFlow Sejong only"
   repository_state: "implemented_prototype_with_windows_release"
-  implementation_status_note: "The shared worktree contains the executable FastAPI backend, deterministic simulation/policy/safety/decision modules, JSON persistence and audit logs, synchronized fixture/cache/OpenAPI artifacts, 42 passing tests, Docker reproduction files, and a native Windows Python 3.11 PyInstaller release with ZIP and checksums. Local Korean/space-path start, reuse, API, and stop checks pass; two clean external-PC offline validations remain."
+  implementation_status_note: "The shared worktree contains KPI v2 calculation and freeze metadata, dataset and stored-result rollback guards, live/cached/fixture static frontend integration, synchronized fixture/cache/OpenAPI/evidence artifacts, 67 passing backend tests, Docker reproduction files, and a native Windows Python 3.11 PyInstaller release with ZIP and checksums. Two clean external-PC offline validations remain."
   excluded_claims:
     - "Real-time synchronization with the actual Sejong traffic network"
     - "Direct control of real signal controllers or field devices"
@@ -57,6 +57,7 @@ frozen_contract:
     - "live_simulation"
     - "cached_simulation"
     - "fixture"
+  default_dataset: "synthetic-v0"
   screen_states:
     - "normal"
     - "rain_warning"
@@ -101,12 +102,12 @@ hard_constraints:
 
 technology_stack:
   frontend:
-    status: "implemented_fixture_mode"
+    status: "implemented_live_with_offline_fallback"
     implementation: "Static offline HTML, CSS, and JavaScript"
-    data_mode: "frontend/demo_run.js copied from the canonical fixture"
+    data_mode: "FastAPI live adapter with cached/fixture fallback; frontend/demo_run.js is the offline canonical fixture copy"
     server_delivery: "FastAPI static file mount"
     offline_file_mode: true
-    api_adapter_status: "remaining"
+    api_adapter_status: "implemented"
     constraints:
       - "No external CDN"
       - "No map tile API"
@@ -125,7 +126,7 @@ technology_stack:
   simulation:
     status: "implemented"
     engine: "Deterministic custom queue-based RainFlow corridor simulator"
-    version: "rainflow-queue-v1"
+    version: "rainflow-queue-v2"
     network_model: "R1 to L12 to R2 to L23 to R3, with parallel BYPASS"
     random_source: "Python random.Random instantiated per scenario ID and recorded seed"
     required_mechanics:
@@ -164,12 +165,13 @@ technology_stack:
     external_llm: false
   safety:
     status: "implemented"
-    version: "rainflow-safety-v1"
+    version: "rainflow-guard-v2"
     implementation: "backend/app/safety.py"
     implemented_rules:
       - "FAIRNESS_P95_EXCEEDED"
+      - "FAIRNESS_INPUT_INVALID"
       - "DIVERSION_DELAY_EXCEEDED"
-      - "SAFETY_TTC_DEGRADED"
+      - "HARD_BRAKE_PROXY_DEGRADED"
       - "DATA_STALE"
       - "DEVICE_FAULT"
       - "CANDIDATE_HASH_MISMATCH"
@@ -194,7 +196,7 @@ technology_stack:
     llm_failure: "Not applicable to the critical path because the decision/explanation layer is local and rule based."
   testing:
     framework: "pytest"
-    last_local_result: "42 passed on Linux and native Windows Python 3.11 on 2026-07-28"
+    last_local_result: "67 passed on Linux on 2026-07-29; the KPI v2 freeze has separate Windows release gates"
     covered:
       - "Same-input and same-seed determinism"
       - "Dry and rainy spillback behavior"
@@ -204,6 +206,8 @@ technology_stack:
       - "Contract and fixture validation"
       - "Decision ranking, safe fallback, and byte-stable output"
       - "Persistence, audit, cached/fixture source selection"
+      - "A/B seeds 1-10 KPI distributions, guard failures, and recovery censoring"
+      - "Synthetic dataset selection and incompatible stored-result fallback rejection"
   packaging:
     status: "native_windows_x64_release_built"
     backend_binary: "PyInstaller onedir"
@@ -305,11 +309,13 @@ implementation_status:
     - "Four frozen API paths with additive response fields"
     - "JSON run persistence, JSONL audit log, and stored-run lookup"
     - "Live-to-cached/fixture fallback code with explicit result_source"
-    - "Fixture-driven offline frontend"
+    - "Live/cached/fixture static frontend with offline fallback"
+    - "Synthetic-v0 dataset boundary and scenario-compatible stored-result rollback"
     - "Docker reproduction files and a native Windows x64 executable, ZIP, and SHA256 checksum set"
   remaining:
-    - "Connect the frontend API adapter while preserving fixture mode"
+    - "Add any future observed-data adapter only through a versioned dataset manifest and separate PR"
     - "Build and run the Docker image when a Docker daemon is available"
+    - "Rebuild the Windows executable and ZIP, then refresh SHA256 after merging source or fixture changes"
     - "Pass two consecutive runs on each of two clean Windows x64 PCs, including Korean and space-containing paths"
     - "Synchronize final logs, README, source, video, presentation numbers, and release tag"
 

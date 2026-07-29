@@ -65,6 +65,13 @@ export interface DemoRun {
   run_id: string;
   result_source: 'fixture' | 'live_simulation' | 'cached_simulation';
   provisional: boolean;
+  dataset?: {
+    dataset_id: string;
+    data_class: 'synthetic' | 'observed' | 'calibrated';
+    schema_version: string;
+    adapter_version: string;
+    default: boolean;
+  };
   scenario: {
     scenario_id: string;
     seed: number;

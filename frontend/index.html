@@ -47,6 +47,7 @@
     color: var(--muted);
   }
   .badge.fixture { color: var(--yellow); border-color: rgba(251,191,36,0.4); }
+  .badge.cached { color: var(--yellow); border-color: rgba(251,191,36,0.4); }
   .badge.live { color: var(--blue); border-color: rgba(96,165,250,0.4); }
   .badge.provisional { color: var(--red); border-color: rgba(248,113,113,0.4); }
 
@@ -254,8 +255,8 @@
   </div>
 
   <footer class="note">
-    이 화면은 backend/fixtures/demo_run.json 고정 데이터를 재생하는 3분 데모입니다.
-    실제 세종시 실측 데이터가 아니며 시우 검증 전 provisional 수치입니다.
+    <span id="footer-source">검증된 fixture를 재생 중입니다.</span>
+    실제 세종시 실측 데이터가 아닌 provisional 합성 결과입니다.
     run_id: <span id="run-id"></span>
   </footer>
 </div>
@@ -414,7 +415,7 @@
       return '<tr class="' + rowClass + '">' +
         '<td>' + p.label + (p.guard.passed === false ? ' (탈락)' : (p.policy_id === DATA.approval.policy_id ? ' (선택)' : '')) + '</td>' +
         '<td>' + p.kpi.spillback_time_sec + '초</td>' +
-        '<td>' + p.kpi.total_travel_time_sec + '초</td>' +
+        '<td>' + p.kpi.total_travel_time_sec + ' vehicle-seconds</td>' +
         '<td>' + p.kpi.worst_approach_delay_sec + '초</td>' +
         '<td>' + pctSpan(d.spillback_time_pct) + '</td>' +
         '<td>' + pctSpan(d.total_travel_time_pct) + '</td>' +
@@ -423,7 +424,7 @@
     }).join('');
     document.getElementById('policy-table').innerHTML =
       '<thead><tr><th>정책</th><th>Spillback wall-clock</th><th>누적 체류시간</th><th>P95 대기 proxy</th>' +
-      '<th>Δ Spillback</th><th>Δ 통행시간</th><th>Δ 최악지체</th></tr></thead><tbody>' + rows + '</tbody>';
+      '<th>Δ Spillback</th><th>Δ 누적체류</th><th>Δ P95 proxy</th></tr></thead><tbody>' + rows + '</tbody>';
   }
 
   // ---- safety review ----
@@ -535,10 +536,28 @@
       }
       if (!resp.ok) { throw new Error('approval request failed: ' + resp.status); }
       return resp.json().then(function (result) {
-        DATA.approval = result;
-        noteEl.textContent = result.status === 'approved'
-          ? '운영자가 ' + chosen.label + ' 정책을 승인했습니다. (live)'
-          : '운영자가 제안을 거절했습니다. (live)';
+        return fetchWithTimeout(
+          '/api/simulations/' + DATA.run_id,
+          {},
+          FIXTURE_TIMEOUT_MS
+        ).then(function (getResp) {
+          if (!getResp.ok) {
+            throw new Error('approved run refresh failed: ' + getResp.status);
+          }
+          return getResp.json();
+        }).then(function (updatedRun) {
+          DATA = synthesizeDecisionSteps(updatedRun);
+          timeline = DATA.timeline;
+          totalSteps = timeline.length;
+          approvalDecision = result.status;
+          render();
+          var refreshedNote = document.getElementById('decision-note');
+          if (refreshedNote) {
+            refreshedNote.textContent = result.status === 'approved'
+              ? '운영자가 ' + chosen.label + ' 정책을 승인했습니다. (live)'
+              : '운영자가 제안을 거절했습니다. (live)';
+          }
+        });
       });
     }).catch(function () {
       noteEl.textContent = '승인 요청 실패(네트워크). 화면에는 반영되지 않았습니다.';
@@ -557,15 +576,16 @@
     }
     var imp = rc.improvement || {};
     wrap.innerHTML =
-      '<div class="recovery-side">' + col('무대응', rc.no_action) + col('적용 (corridor_gating)', rc.applied) + '</div>' +
+      '<div class="recovery-side">' + col('무대응', rc.no_action) +
+      col('적용 (' + (rc.applied_policy_id || '승인 전 무대응') + ')', rc.applied) + '</div>' +
       '<div class="improvement-row">개선율: Spillback ' + pctSpan(imp.spillback_time_pct) +
       ' · 회복시간 ' + (
         rc.no_action.recovery_observed === false
           ? '<span class="pct-neutral">비교 보류(기준선 미회복)</span>'
           : pctSpan(imp.recovery_time_pct)
       ) +
-      ' · 총 통행시간 ' + pctSpan(imp.total_travel_time_pct) +
-      ' · 최악지체 ' + pctSpan(imp.worst_approach_delay_pct) + '</div>';
+      ' · 누적체류 ' + pctSpan(imp.total_travel_time_pct) +
+      ' · P95 proxy ' + pctSpan(imp.worst_approach_delay_pct) + '</div>';
   }
 
   // ---- panel visibility per state ----
@@ -596,7 +616,7 @@
     document.getElementById('state-label').textContent =
       (idx + 1) + '/' + totalSteps + ' — ' + (STATE_LABELS[state] || state);
     document.getElementById('clock').textContent =
-      't = ' + step.t_sec + '초 (실측 스케일) / 강우: ' + (step.rain_level || '-');
+      't = ' + step.t_sec + '초 (합성 시뮬레이션 시간) / 강우: ' + (step.rain_level || '-');
 
     updateCorridorState(step);
     renderKPI(kpiForState(state));
@@ -666,7 +686,8 @@
     if (!el) return;
     el.textContent = 'result_source: ' + source;
     el.classList.toggle('fixture', source === 'fixture');
-    el.classList.toggle('live', source !== 'fixture');
+    el.classList.toggle('cached', source === 'cached_simulation');
+    el.classList.toggle('live', source === 'live_simulation');
   }
 
   function showScenarioNotice(msg) {
@@ -764,6 +785,15 @@
       '시나리오: ' + DATA.scenario.scenario_id + ' · seed ' + DATA.scenario.seed +
       ' · 강우 ' + DATA.scenario.rain_level + ' · network ' + (DATA.network_version || '');
     updateBadge(resultSource || DATA.result_source || 'fixture');
+    var footerSource = document.getElementById('footer-source');
+    var source = resultSource || DATA.result_source || 'fixture';
+    if (footerSource) {
+      footerSource.textContent = source === 'live_simulation'
+        ? '백엔드가 방금 계산한 합성 결과를 표시 중입니다.'
+        : (source === 'cached_simulation'
+          ? '검증된 cached 합성 결과를 재생 중입니다.'
+          : '검증된 fixture 합성 결과를 재생 중입니다.');
+    }
 
     var picker = document.getElementById('scenario-picker');
     if (picker) picker.value = CURRENT_SCENARIO;

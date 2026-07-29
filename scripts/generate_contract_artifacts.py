@@ -25,6 +25,13 @@ FROZEN_AT = "2026-07-29T20:25:09+09:00"
 FREEZE_ID = "freeze-20260729-202509-kst"
 SCENARIO_ID = "rain_spillback_a"
 SEED = 42
+KPI_FIELDS = (
+    "spillback_time_sec",
+    "recovery_time_sec",
+    "total_travel_time_sec",
+    "worst_approach_delay_sec",
+)
+POLICY_IDS = ("no_action", "fixed_metering", "corridor_gating")
 SOURCE_FILES = (
     "backend/app/decision.py",
     "backend/app/domain.py",
@@ -37,6 +44,7 @@ SOURCE_FILES = (
     "docs/09_RAINFLOW_SEJONG.md",
     "docs/16_DEMO_SCRIPT.template.md",
     "docs/evidence/provisional_parameters.md",
+    "docs/evidence/rainflow_data_requirements.md",
     "frontend/index.html",
     "scripts/generate_contract_artifacts.py",
 )
@@ -265,9 +273,12 @@ def _percentile(values: list[float], proportion: float) -> float:
 def _seed_matrix(freeze_meta: dict[str, Any]) -> dict[str, Any]:
     scenarios: dict[str, Any] = {}
     for scenario_id in ("rain_spillback_a", "rain_spillback_b"):
+        runs = [
+            build_run(scenario_id, seed, freeze_meta=freeze_meta)
+            for seed in range(1, 11)
+        ]
         rows = []
-        for seed in range(1, 11):
-            run = build_run(scenario_id, seed, freeze_meta=freeze_meta)
+        for seed, run in enumerate(runs, start=1):
             gating = _policy(run, "corridor_gating")
             rows.append(
                 {
@@ -283,6 +294,44 @@ def _seed_matrix(freeze_meta: dict[str, Any]) -> dict[str, Any]:
                     "guard_passed": gating["guard"]["passed"],
                 }
             )
+        policy_distribution = {}
+        for policy_id in POLICY_IDS:
+            policies = [_policy(run, policy_id) for run in runs]
+            guard_failure_seeds = [
+                seed
+                for seed, policy in enumerate(policies, start=1)
+                if not policy["guard"]["passed"]
+            ]
+            recovery_unobserved_seeds = [
+                seed
+                for seed, policy in enumerate(policies, start=1)
+                if policy["kpi"].get("recovery_observed") is False
+            ]
+            policy_distribution[policy_id] = {
+                "kpi_distribution": {
+                    field: {
+                        "median": _percentile(
+                            [float(policy["kpi"][field]) for policy in policies],
+                            0.50,
+                        ),
+                        "p10": _percentile(
+                            [float(policy["kpi"][field]) for policy in policies],
+                            0.10,
+                        ),
+                        "p90": _percentile(
+                            [float(policy["kpi"][field]) for policy in policies],
+                            0.90,
+                        ),
+                    }
+                    for field in KPI_FIELDS
+                },
+                "guard_failed_seed_count": len(guard_failure_seeds),
+                "guard_failure_seeds": guard_failure_seeds,
+                "recovery_unobserved_seed_count": len(
+                    recovery_unobserved_seeds
+                ),
+                "recovery_unobserved_seeds": recovery_unobserved_seeds,
+            }
         scenarios[scenario_id] = {
             "runs": rows,
             "summary": {
@@ -296,15 +345,21 @@ def _seed_matrix(freeze_meta: dict[str, Any]) -> dict[str, Any]:
             "guard_failure_seeds": [
                 row["seed"] for row in rows if not row["guard_passed"]
             ],
+            "policy_distribution": policy_distribution,
         }
     return {
         "freeze_id": FREEZE_ID,
+        "dataset_id": "synthetic-v0",
         "git_commit_sha": freeze_meta["git_commit_sha"],
         "source_tree_checksum": freeze_meta["source_tree_checksum"],
         "parameter_set_version": "rainflow-provisional-v2",
         "kpi_definition_version": "rainflow-kpi-v2",
         "guard_version": "rainflow-guard-v2",
         "provisional": True,
+        "interpretation_limit": (
+            "합성 입력의 분포 검증이다. 실제 세종 성과·예측정확도·"
+            "현장 개선율이 아니다."
+        ),
         "scenarios": scenarios,
     }
 

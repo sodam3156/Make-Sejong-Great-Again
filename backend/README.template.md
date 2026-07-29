@@ -14,6 +14,7 @@ uvicorn backend.app.main:app --port 8000     # 저장소 루트에서 실행
 - `GET /api/health` 상태 확인
 - `POST /api/simulations` body `{"scenario_id": "rain_spillback_a", "seed": 42}` → 3정책 비교 실행
   - 선택 입력 `data_quality`로 데이터 경과시간·센서·장비 상태를 전달한다
+  - 선택 입력 `dataset_id`는 현재 `synthetic-v0`만 허용한다. 미설치 실자료 ID는 422로 거절한다
   - 검증용 `force_source`는 `auto`, `live_simulation`, `cached_simulation`, `fixture` 중 하나다
 - `GET /api/simulations/{run_id}` 계약(contracts/rainflow.schema.json) 형식 결과
 - `POST /api/approvals` body `{"run_id": ..., "policy_id": "corridor_gating", "decision": "approve"}`
@@ -37,9 +38,11 @@ python scripts/generate_contract_artifacts.py
 python scripts/generate_contract_artifacts.py --check
 ```
 
+실제 기관 자료를 받더라도 합성 상수나 fixture를 직접 덮어쓰지 않는다. 자료 보존·manifest·별도 adapter PR·롤백 기준은 `docs/evidence/rainflow_data_requirements.md`를 따른다. 저장 결과의 시나리오나 dataset이 요청과 다르면 폴백을 거절한다.
+
 ## 파라미터 근거
 
-전부 합성 provisional 값이다. 실제 세종시 실측이 아니다. 시우 검증 후 교체한다.
+전부 합성 provisional 값이다. 실제 세종시 실측이 아니다. 실자료 어댑터와 보정·검증이 완료되기 전에는 `synthetic-v0` 기본값을 유지한다.
 
 | 파라미터 | 값 | 근거 |
 |---|---|---|
@@ -62,6 +65,8 @@ python scripts/generate_contract_artifacts.py --check
 | corridor_gating | {{GATING_SPILLBACK_DELTA}}% | {{GATING_TTT_DELTA}}% | 통과 |
 
 통과 기준(spillback 30%↓, 누적 체류시간 10%↓, 진입로 15% 악화 금지, 재현성)은 `backend/tests/test_spike.py`가 A/B 각각 seed 1~10에서 자동 검증한다.
+
+`docs/evidence/demo_kpi_seed_matrix_20260729.json`은 A/B의 정책별 KPI 중앙값·P10·P90, 가드 실패 seed와 관측창 내 미회복 seed를 함께 기록한다.
 
 ## 한계
 

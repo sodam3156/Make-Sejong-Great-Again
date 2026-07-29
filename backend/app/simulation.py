@@ -21,6 +21,7 @@ RECOVERY_QUEUE_LIMIT = 5.0
 SIMULATOR_VERSION = "rainflow-queue-v2"
 PARAMETER_SET_VERSION = "rainflow-provisional-v2"
 KPI_DEFINITION_VERSION = "rainflow-kpi-v2"
+INCIDENT_STORAGE_FACTOR = 0.80
 
 # 강우 단계별 진입용량 배율. 근거: 임계간격 1.08~1.13배, 용량 0.83~0.95배 (이슈 #9 초기 민감도)
 RAIN_CAPACITY_FACTOR = {"dry": 1.00, "light": 0.95, "moderate": 0.89, "heavy": 0.84}
@@ -38,10 +39,36 @@ JAM_OCC = 0.95
 CAPACITY_DROP = 0.70
 
 SCENARIOS = {
-    "dry_base": {"rain_level": "dry", "surge": 1.0, "incident": False},
-    "rain_spillback_a": {"rain_level": "heavy", "surge": 1.10, "incident": False},
-    "rain_spillback_b": {"rain_level": "heavy", "surge": 1.18, "incident": True},
+    "dry_base": {
+        "rain_level": "dry",
+        "surge": 1.0,
+        "incident": False,
+        "incident_type": None,
+    },
+    "rain_spillback_a": {
+        "rain_level": "heavy",
+        "surge": 1.10,
+        "incident": False,
+        "incident_type": None,
+    },
+    "rain_spillback_b": {
+        "rain_level": "heavy",
+        "surge": 1.18,
+        "incident": True,
+        "incident_type": "L23_partial_space_occupancy",
+    },
 }
+
+
+def storage_for_scenario(scenario_id: str) -> dict[str, float | int]:
+    """Return the effective storage used by the queue model."""
+    if scenario_id not in SCENARIOS:
+        raise ValueError(f"unknown scenario_id: {scenario_id}")
+    storage = dict(LINKS)
+    if SCENARIOS[scenario_id]["incident"]:
+        storage["L23"] *= INCIDENT_STORAGE_FACTOR
+    return storage
+
 
 def rain_level_at(t: int, scenario: dict) -> str:
     peak = scenario["rain_level"]
@@ -141,10 +168,8 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
     diverted_vehicles = 0.0
     diversion_vehicle_seconds = 0.0
 
-    # 사고 시나리오는 L23 저장공간 20% 축소 (차로 제한)
-    storage = dict(LINKS)
-    if sc["incident"]:
-        storage["L23"] = storage["L23"] * 0.8
+    # B 시나리오는 장애물의 공간 점유를 L23 가용 저장공간 20% 감소로 표현한다.
+    storage = storage_for_scenario(scenario_id)
 
     for step in range(DURATION // DT):
         t = step * DT

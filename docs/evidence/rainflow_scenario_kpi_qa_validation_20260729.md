@@ -18,6 +18,21 @@ backend/fixtures/demo_run.json   75dec6933726fdbb4fc2ec2d334a0debf381ef72
 docs/16_DEMO_SCRIPT.md           18bb553aa92283c93e6e2798efa0e92604a26cc5
 ```
 
+### 2026-07-29 구현 인계 상태
+
+위 지문은 결함을 발견한 당시의 역사적 기준이다. 이후 PR #26에서 다음 KPI v2 수정과 재동결이 구현됐다.
+
+- 회랑 spillback을 링크별 합이 아닌 wall-clock 합집합으로 계산
+- 회복 calm 60초 연속조건과 `recovery_observed` 기록
+- BYPASS 모형 내 체류와 추가 자유주행을 누적 vehicle-seconds에 포함
+- 고정 용량 절반값 대신 실제 meter·하류 제약을 반영한 P95 대기 proxy
+- 공정성 분자의 기준값 오류 수정과 누락 진입로 입력 거절
+- A·B 각각 seed 1~10 실행, 동결 source SHA·source tree checksum·결과 checksum 기록
+
+추가 데이터 가드레일에서는 기본 dataset을 `synthetic-v0`로 명시하고, 미설치 실자료 dataset과 시나리오가 다른 fixture 폴백을 거절한다. A·B의 정책별 중앙값·P10·P90, 가드 실패 seed, 관측창 내 미회복 seed는 `demo_kpi_seed_matrix_20260729.json`에서 확인한다.
+
+코드·생성물 자동검증 통과는 사람의 발표 승인이나 현장 성과 승인을 대신하지 않는다. 현재 수치는 계속 `provisional` 합성 결과이며, Windows 최종 재빌드와 외부 PC 반복검증은 별도 게이트다.
+
 ## 0. 문서 사용법
 
 판정 태그는 다음처럼 통일한다.
