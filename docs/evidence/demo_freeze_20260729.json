@@ -1,0 +1,25 @@
+{
+  "artifacts": {
+    "backend/fixtures/cached_run.json": "9c5737e23d8b2bfc235439a406f21752dec2071fa827a7ee86c722a2e5ad9288",
+    "backend/fixtures/demo_freeze_meta.json": "4e6b9d98e89c4703b43f032562b264acad1bd72398e614e4bfdcf160b31d0358",
+    "backend/fixtures/demo_run.json": "836b6ee4310b0c90251bc376b828ae7712d0966d34e00b5ebc0c18789f287c71",
+    "contracts/openapi.json": "d3776271859378c6e08d635cff80787bf598a1b51f0f61543d414d5fcb608b37",
+    "docs/16_DEMO_SCRIPT.md": "73f9a2f6cbfddfcdd74b628d4506e2706a3a608ee34d9df5a5e426fedcbb315b",
+    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "79dca61f094eaa8d3c116771daeb87d7dcb4b86b242ebf0f219b6bacc5a78a63",
+    "frontend/demo_run.js": "3d07922945462cc4629699459cb75a3d9c7ea57c19691d395d6a814be2981829"
+  },
+  "freeze_id": "freeze-20260729-202509-kst",
+  "frozen_at": "2026-07-29T20:25:09+09:00",
+  "source": {
+    "fixture_run_id": "fixture-qa-v2-001",
+    "freeze_id": "freeze-20260729-202509-kst",
+    "frozen_at": "2026-07-29T20:25:09+09:00",
+    "git_commit_sha": "6b84849a83505ad1533149c07d1ba0a6bc3649fb",
+    "provisional": true,
+    "result_checksum": "23697a5073863fe62b3bf43053fd2e758c145edd385e7748f29a13e5f28a4823",
+    "run_id": "live-rain_spillback_a-s42-ddeead2f3d",
+    "scenario_id": "rain_spillback_a",
+    "seed": 42,
+    "source_tree_checksum": "8e873ec3afb8296868dc35545d503067288d0c65984f3771ef11e1f2fa9ab1b4"
+  }
+}

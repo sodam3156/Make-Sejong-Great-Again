@@ -1,0 +1,8 @@
+{
+  "freeze_id": "freeze-20260729-202509-kst",
+  "frozen_at": "2026-07-29T20:25:09+09:00",
+  "git_commit_sha": "6b84849a83505ad1533149c07d1ba0a6bc3649fb",
+  "scenario_id": "rain_spillback_a",
+  "seed": 42,
+  "source_tree_checksum": "8e873ec3afb8296868dc35545d503067288d0c65984f3771ef11e1f2fa9ab1b4"
+}
