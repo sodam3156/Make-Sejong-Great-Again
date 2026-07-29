@@ -53,13 +53,13 @@ python scripts/generate_contract_artifacts.py --check
 
 ## QA v2 동결 결과 (seed 42, rain_spillback_a)
 
-정본 source run `live-rain_spillback_a-s42-a620cd4bb7`, checksum `23697a5073863fe62b3bf43053fd2e758c145edd385e7748f29a13e5f28a4823`, `provisional=true`. 아래 값은 이 합성 run에만 해당하며 세종 실측 성과가 아니다.
+정본 source run `{{SOURCE_RUN_ID}}`, checksum `{{RESULT_CHECKSUM}}`, `provisional=true`. 아래 값은 이 합성 run에만 해당하며 세종 실측 성과가 아니다.
 
 | 정책 | 회랑 spillback wall-clock | 모형 내 누적 체류시간 | 가드 |
 |---|---|---|---|
-| no_action | 1980초 | 265228 vehicle-seconds | 기준선 |
-| fixed_metering | -62.4% | -41.6% | **탈락** (R1_W·R2_S P95 대기 proxy 내부 한도 초과) |
-| corridor_gating | -100% | -77.3% | 통과 |
+| no_action | {{NO_ACTION_SPILLBACK}}초 | {{NO_ACTION_TTT}} vehicle-seconds | 기준선 |
+| fixed_metering | {{FIXED_SPILLBACK_DELTA}}% | {{FIXED_TTT_DELTA}}% | **탈락** (R1_W·R2_S P95 대기 proxy 내부 한도 초과) |
+| corridor_gating | {{GATING_SPILLBACK_DELTA}}% | {{GATING_TTT_DELTA}}% | 통과 |
 
 통과 기준(spillback 30%↓, 누적 체류시간 10%↓, 진입로 15% 악화 금지, 재현성)은 `backend/tests/test_spike.py`가 A/B 각각 seed 1~10에서 자동 검증한다.
 

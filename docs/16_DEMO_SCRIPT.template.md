@@ -2,7 +2,7 @@
 
 동결 기준: `backend/fixtures/demo_run.json`과 `docs/evidence/demo_freeze_20260729.json`. 이 문서는 fixture와 함께 생성되며 수치를 직접 편집하지 않는다.
 
-정본 메타데이터: freeze `freeze-20260729-202509-kst`, source run `live-rain_spillback_a-s42-a620cd4bb7`, checksum `23697a5073863fe62b3bf43053fd2e758c145edd385e7748f29a13e5f28a4823`, seed `42`, `provisional=true`. 모두 합성 결과이며 세종 실측 성과가 아니다.
+정본 메타데이터: freeze `{{FREEZE_ID}}`, source run `{{SOURCE_RUN_ID}}`, checksum `{{RESULT_CHECKSUM}}`, seed `42`, `provisional=true`. 모두 합성 결과이며 세종 실측 성과가 아니다.
 
 ## 0. 시작 전 체크리스트
 
@@ -25,50 +25,50 @@
 - 화면 상태: 건조 상태. R1–R2–R3 세 회전교차로 링크가 모두 초록색(점유율 낮음), 역류 없음.
 - 조작: 클릭 없음. 자동재생이 시작된 상태를 그대로 둔다.
 - 발표 대사: "지금 화면은 세종형 3개 연속 회전교차로입니다. 건조 상태에서는 R1, R2, R3 모두 정상 처리되고 있습니다. 이제 비가 오면 무슨 일이 벌어지는지 보겠습니다."
-- 근거 수치: 링크 점유율 L12 6%, L23 2%, BYPASS 0% (t=0, 정본 run).
+- 근거 수치: 링크 점유율 L12 {{T0_L12_OCC_PCT}}%, L23 {{T0_L23_OCC_PCT}}%, BYPASS {{T0_BYPASS_OCC_PCT}}% (t=0, 정본 run).
 
 ### 구간 2 · 0:30–1:00 · 화면 상태: `rain_warning`
 
 - 화면 상태: 강우 시작(약우→보통비), 배지에 강우 단계 표시. 링크 색이 노란색으로 이동.
 - 조작: 클릭 없음. 자동 전환 대기.
-- 발표 대사: "강우가 시작되자 하류 R3 방향 진입용량이 떨어지기 시작합니다. L23 링크 점유율이 21%까지 올라왔습니다."
-- 근거 수치: L23 점유율 21%, 대기 3.8대 (t=1080, 정본 run).
+- 발표 대사: "강우가 시작되자 하류 R3 방향 진입용량이 떨어지기 시작합니다. L23 링크 점유율이 {{RAIN_L23_OCC_PCT}}%까지 올라왔습니다."
+- 근거 수치: L23 점유율 {{RAIN_L23_OCC_PCT}}%, 대기 {{RAIN_L23_QUEUE}}대 (t={{RAIN_SAMPLE_T}}, 정본 run).
 
 ### 구간 3 · 1:00–1:20 · 화면 상태: `spillback`
 
 - 화면 상태: L23 링크가 빨간색으로 깜빡인다(역류). corridor-note에 역류 표시.
 - 조작: 클릭 없음. L23 링크의 깜빡임을 손으로 가리킨다.
 - 발표 대사: "L23이 저장공간 한계에 도달해 R2 회전부까지 역류가 시작됐습니다. 이게 저희가 막으려는 연쇄 마비입니다."
-- 근거 수치: L23 점유율 99%, 대기 17.9대, spillback true (t=1620, 정본 run).
+- 근거 수치: L23 점유율 {{SPILL_L23_OCC_PCT}}%, 대기 {{SPILL_L23_QUEUE}}대, spillback true (t={{SPILL_SAMPLE_T}}, 정본 run).
 
 ### 구간 4 · 1:20–1:45 · 화면 상태: `policy_compare`
 
 - 화면 상태: "대응안 비교" 패널이 열리고 무대응·고정 미터링·연속 게이팅 3개 정책 표가 나타난다.
 - 조작: 클릭 없음. 표의 세 행을 손으로 훑는다.
 - 발표 대사: "동일한 시나리오와 seed에서 후보안 세 개를 계산해 보여줍니다. 이 수치는 AI가 만든 예측 확률이 아니라 큐 모델의 합성 run 결과입니다."
-- 근거 수치: 회랑 spillback wall-clock은 무대응 1980초, 고정 미터링 745초(-62.4%), 연속 게이팅 0초(-100%)다.
+- 근거 수치: 회랑 spillback wall-clock은 무대응 {{NO_ACTION_SPILLBACK}}초, 고정 미터링 {{FIXED_SPILLBACK}}초({{FIXED_SPILLBACK_DELTA}}%), 연속 게이팅 {{GATING_SPILLBACK}}초({{GATING_SPILLBACK_DELTA}}%)다.
 
 ### 구간 5 · 1:45–2:05 · 화면 상태: `safety_review`
 
 - 화면 상태: "안전 가드 판정" 패널. 고정 미터링 카드가 빨간 테두리 FAIL로 표시된다.
 - 조작: 클릭 없음. FAIL 카드를 가리킨다.
-- 발표 대사: "고정 미터링은 spillback을 줄이지만, R1_W와 R2_S의 P95 대기 proxy가 각각 55.4%, 938.5% 악화돼 내부 한도 15%를 넘습니다. 그래서 규칙이 이 안을 탈락시킵니다."
-- 근거 수치: `FAIRNESS_P95_EXCEEDED`, 내부 provisional threshold 15.0%, observed 55.4%(R1_W)·938.5%(R2_S), 고정 미터링 guard.passed = false.
+- 발표 대사: "고정 미터링은 spillback을 줄이지만, R1_W와 R2_S의 P95 대기 proxy가 각각 {{FIXED_R1W_WORSEN}}%, {{FIXED_R2S_WORSEN}}% 악화돼 내부 한도 15%를 넘습니다. 그래서 규칙이 이 안을 탈락시킵니다."
+- 근거 수치: `FAIRNESS_P95_EXCEEDED`, 내부 provisional threshold 15.0%, observed {{FIXED_R1W_WORSEN}}%(R1_W)·{{FIXED_R2S_WORSEN}}%(R2_S), 고정 미터링 guard.passed = false.
 
 ### 구간 6 · 2:05–2:40 · 화면 상태: `operator_approval`
 
 - 화면 상태: "운영자 승인" 패널. 대상 정책 연속 게이팅, 근거 텍스트 노출.
 - 조작: **`승인` 버튼을 직접 클릭한다.** (자동재생이 화면 상태는 넘겨주지만 버튼 클릭은 수동 조작이다.)
-- 발표 대사: "가드를 통과한 후보 중 spillback 감소가 가장 큰 연속 게이팅을 운영자에게 제안합니다. 우회 전가 지체는 60초로 내부 한도 안입니다. 제가 운영자 역할로 승인 버튼을 누르겠습니다. 이 승인 없이는 어떤 정책도 적용되지 않습니다."
+- 발표 대사: "가드를 통과한 후보 중 spillback 감소가 가장 큰 연속 게이팅을 운영자에게 제안합니다. 우회 전가 지체는 {{GATING_DIVERSION_DELAY}}초로 내부 한도 안입니다. 제가 운영자 역할로 승인 버튼을 누르겠습니다. 이 승인 없이는 어떤 정책도 적용되지 않습니다."
 - (버튼 클릭)
-- 근거 수치: 연속 게이팅 diversion_delay_sec 60, operator "demo_operator".
+- 근거 수치: 연속 게이팅 diversion_delay_sec {{GATING_DIVERSION_DELAY}}, operator "demo_operator".
 
 ### 구간 7 · 2:40–3:00 · 화면 상태: `recovery_compare`
 
 - 화면 상태: "회복 비교" 패널. 무대응 대비 적용 후 KPI가 나란히 보인다.
 - 조작: 클릭 없음. 두 열을 좌우로 가리킨다.
-- 발표 대사: "seed 42 합성 run의 결과입니다. 무대응은 spillback wall-clock 1980초이고 관측창 15분 안에 회복하지 못했습니다. 연속 게이팅은 spillback 0초, 모형 내 누적 체류시간은 77.3% 감소했습니다."
-- 근거 수치: 무대응 spillback 1980초 / 관측창 내 미회복 / 누적 체류시간 265228 vehicle-seconds. 적용은 spillback 0초 / 회복 495초(60초 연속 calm 확인) / 누적 체류시간 60081 vehicle-seconds. 개선율은 spillback -100%, 누적 체류시간 -77.3%, P95 대기 proxy -96.7%. 회복 개선율은 기준선 미회복 censor 때문에 표시하지 않는다.
+- 발표 대사: "seed 42 합성 run의 결과입니다. 무대응은 spillback wall-clock {{NO_ACTION_SPILLBACK}}초이고 관측창 15분 안에 회복하지 못했습니다. 연속 게이팅은 spillback {{GATING_SPILLBACK}}초, 모형 내 누적 체류시간은 {{GATING_TTT_DELTA_ABS}}% 감소했습니다."
+- 근거 수치: 무대응 spillback {{NO_ACTION_SPILLBACK}}초 / 관측창 내 미회복 / 누적 체류시간 {{NO_ACTION_TTT}} vehicle-seconds. 적용은 spillback {{GATING_SPILLBACK}}초 / 회복 {{GATING_RECOVERY}}초(60초 연속 calm 확인) / 누적 체류시간 {{GATING_TTT}} vehicle-seconds. 개선율은 spillback {{GATING_SPILLBACK_DELTA}}%, 누적 체류시간 {{GATING_TTT_DELTA}}%, P95 대기 proxy {{GATING_DELAY_DELTA}}%. 회복 개선율은 기준선 미회복 censor 때문에 표시하지 않는다.
 
 ## 2. 핵심 메시지 3줄
 
@@ -103,7 +103,7 @@
    예. seed 42로 고정되어 있고, 재현성은 `docs/09`의 기술 스파이크 통과 기준 중 하나입니다. 시나리오·시드·정책이 같으면 같은 결과가 나옵니다.
 
 5. **"고정 미터링은 왜 떨어졌나요? 개선율이 더 좋아 보이는데요."**
-   spillback만 보면 고정 미터링도 62.4% 줄지만, R1_W·R2_S의 P95 대기 proxy가 각각 55.4%·938.5% 악화돼 내부 공정성 한도 15%를 넘습니다. 특정 진입로에 피해를 전가하는 안이라 시스템이 자동으로 탈락시킵니다.
+   spillback만 보면 고정 미터링도 {{FIXED_SPILLBACK_DELTA_ABS}}% 줄지만, R1_W·R2_S의 P95 대기 proxy가 각각 {{FIXED_R1W_WORSEN}}%·{{FIXED_R2S_WORSEN}}% 악화돼 내부 공정성 한도 15%를 넘습니다. 특정 진입로에 피해를 전가하는 안이라 시스템이 자동으로 탈락시킵니다.
 
 ## 4. 금지 발언
 

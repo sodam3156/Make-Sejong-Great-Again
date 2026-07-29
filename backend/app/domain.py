@@ -114,6 +114,7 @@ class GuardResult(ContractModel):
 class Kpi(ContractModel):
     spillback_time_sec: float
     recovery_time_sec: float
+    recovery_observed: bool | None = None
     total_travel_time_sec: float
     worst_approach_delay_sec: float
 

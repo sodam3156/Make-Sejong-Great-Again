@@ -365,6 +365,17 @@
       "Kpi": {
         "additionalProperties": true,
         "properties": {
+          "recovery_observed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recovery Observed"
+          },
           "recovery_time_sec": {
             "title": "Recovery Time Sec",
             "type": "number"

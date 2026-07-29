@@ -15,10 +15,15 @@ DT = 5  # sec per step
 DURATION = 3600
 DRY_PREP_END = 900
 RAIN_END = 2700
-SIMULATOR_VERSION = "rainflow-queue-v1"
+RECOVERY_HOLD_SEC = 60
+RECOVERY_OCCUPANCY_LIMIT = 0.50
+RECOVERY_QUEUE_LIMIT = 5.0
+SIMULATOR_VERSION = "rainflow-queue-v2"
+PARAMETER_SET_VERSION = "rainflow-provisional-v2"
+KPI_DEFINITION_VERSION = "rainflow-kpi-v2"
 
 # 강우 단계별 진입용량 배율. 근거: 임계간격 1.08~1.13배, 용량 0.83~0.95배 (이슈 #9 초기 민감도)
-RAIN_CAPACITY_FACTOR = {"dry": 1.00, "light": 0.95, "moderate": 0.89, "heavy": 0.83}
+RAIN_CAPACITY_FACTOR = {"dry": 1.00, "light": 0.95, "moderate": 0.89, "heavy": 0.84}
 
 LINKS = {"L12": 22, "L23": 18, "BYPASS": 60}  # storage_veh
 DEMAND_APPROACHES = ["R1_N", "R1_W", "R2_S", "R3_E"]
@@ -57,11 +62,17 @@ class SimResult:
     seed: int
     policy_id: str
     spillback_time_sec: float = 0.0
+    spillback_link_seconds: dict[str, float] = field(default_factory=dict)
     spillback_events: int = 0
     recovery_time_sec: float = 0.0
+    recovery_observed: bool = False
     total_travel_time_sec: float = 0.0
+    modeled_vehicle_seconds: float = 0.0
     completed_trips: int = 0
     diversion_delay_sec: float = 0.0
+    diverted_vehicles: float = 0.0
+    diversion_vehicle_seconds: float = 0.0
+    diversion_freeflow_seconds: float = 0.0
     hard_brakes: int = 0
     approach_p95_delay: dict = field(default_factory=dict)
     worst_approach_delay_sec: float = 0.0
@@ -73,6 +84,43 @@ def _p95(values: list[float]) -> float:
         return 0.0
     s = sorted(values)
     return round(s[min(len(s) - 1, int(len(s) * 0.95))], 1)
+
+
+def _accumulate_spillback(
+    result: SimResult,
+    full_by_link: dict[str, bool],
+) -> None:
+    """Accumulate one wall-clock step and optional link-level diagnostics."""
+    for link_id, full in full_by_link.items():
+        if full:
+            result.spillback_link_seconds[link_id] = (
+                result.spillback_link_seconds.get(link_id, 0.0) + DT
+            )
+    if any(full_by_link.values()):
+        result.spillback_time_sec += DT
+
+
+def _advance_recovery_window(
+    calm_started_at: int | None,
+    *,
+    t: int,
+    calm: bool,
+) -> tuple[int | None, int | None]:
+    """Return updated calm start and confirmed recovery start, if any."""
+    if not calm:
+        return None, None
+    started_at = t if calm_started_at is None else calm_started_at
+    recovered_at = (
+        started_at
+        if t - started_at + DT >= RECOVERY_HOLD_SEC
+        else None
+    )
+    return started_at, recovered_at
+
+
+def _clearance_proxy(queue_veh: float, effective_service: float) -> float:
+    """Queue-clearance proxy in seconds using the constrained service rate."""
+    return queue_veh / max(effective_service, 0.1) * DT
 
 
 def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
@@ -88,6 +136,7 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
     links = {l: 0.0 for l in LINKS}
     delay_series: dict[str, list[float]] = {a: [] for a in DEMAND_APPROACHES}
     spillback_prev = {l: False for l in LINKS}
+    recovery_calm_started_at = None
     recovered_at = None
     diverted_vehicles = 0.0
     diversion_vehicle_seconds = 0.0
@@ -95,7 +144,7 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
     # 사고 시나리오는 L23 저장공간 20% 축소 (차로 제한)
     storage = dict(LINKS)
     if sc["incident"]:
-        storage["L23"] = int(storage["L23"] * 0.8)
+        storage["L23"] = storage["L23"] * 0.8
 
     for step in range(DURATION // DT):
         t = step * DT
@@ -148,11 +197,12 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
         want_r2n = min(links["L12"], cap["R2_N"] * meter["R2_N"])
         want_r2s = min(queues["R2_S"], cap["R2_S"] * meter["R2_S"])
         total_want = want_r2n + want_r2s
+        scale23 = 1.0
         if total_want > space23:
-            scale = space23 / total_want if total_want > 0 else 0.0
+            scale23 = space23 / total_want if total_want > 0 else 0.0
             res.hard_brakes += int((total_want - space23) / 0.5)
-            want_r2n *= scale
-            want_r2s *= scale
+            want_r2n *= scale23
+            want_r2s *= scale23
         links["L12"] -= want_r2n
         queues["R2_S"] -= want_r2s
         links["L23"] += want_r2n + want_r2s
@@ -162,11 +212,12 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
         want_r1n = min(queues["R1_N"], cap["R1_N"] * meter["R1_N"])
         want_r1w = min(queues["R1_W"], cap["R1_W"] * meter["R1_W"])
         total_want1 = want_r1n + want_r1w
+        scale12 = 1.0
         if total_want1 > space12:
-            scale = space12 / total_want1 if total_want1 > 0 else 0.0
+            scale12 = space12 / total_want1 if total_want1 > 0 else 0.0
             res.hard_brakes += int((total_want1 - space12) / 0.5)
-            want_r1n *= scale
-            want_r1w *= scale
+            want_r1n *= scale12
+            want_r1w *= scale12
         queues["R1_N"] -= want_r1n
         queues["R1_W"] -= want_r1w
         links["L12"] += want_r1n + want_r1w
@@ -177,29 +228,46 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
         res.completed_trips += bypass_out
         diversion_vehicle_seconds += links["BYPASS"] * DT
 
-        # 지표 집계
+        # 지표 집계: headline spillback은 링크별 합이 아니라 회랑 wall-clock이다.
+        full_by_link = {
+            link_id: links[link_id] >= storage[link_id] - 0.5
+            for link_id in ("L12", "L23")
+        }
         for link_id in ("L12", "L23"):
-            full = links[link_id] >= storage[link_id] - 0.5
+            full = full_by_link[link_id]
             if full:
-                res.spillback_time_sec += DT
                 if not spillback_prev[link_id]:
                     res.spillback_events += 1
             spillback_prev[link_id] = full
+        _accumulate_spillback(res, full_by_link)
 
-        vehicles_in_system = sum(queues.values()) + links["L12"] + links["L23"]
+        vehicles_in_system = sum(queues.values()) + sum(links.values())
         res.total_travel_time_sec += vehicles_in_system * DT
 
+        effective_service = {
+            "R1_N": cap["R1_N"] * meter["R1_N"] * scale12,
+            "R1_W": cap["R1_W"] * meter["R1_W"] * scale12,
+            "R2_S": cap["R2_S"] * meter["R2_S"] * scale23,
+            "R3_E": cap["R3_E"] * meter["R3_E"],
+        }
         for a in DEMAND_APPROACHES:
-            eff_cap = max(cap[a] * 0.5, 0.1)
-            delay_series[a].append(queues[a] / eff_cap * DT)
-
-        # 회복 판정: 우천 종료 후 링크 점유<0.5, 대기<5대
-        if t >= RAIN_END and recovered_at is None:
-            calm = all(links[l] / storage[l] < 0.5 for l in ("L12", "L23")) and all(
-                q < 5 for q in queues.values()
+            delay_series[a].append(
+                _clearance_proxy(queues[a], effective_service[a])
             )
-            if calm:
-                recovered_at = t
+
+        # 회복 판정: 우천 종료 후 calm이 연속 60초 유지된 구간의 시작 시각.
+        if t >= RAIN_END and recovered_at is None:
+            calm = all(
+                links[l] / storage[l] < RECOVERY_OCCUPANCY_LIMIT
+                for l in ("L12", "L23")
+            ) and all(q < RECOVERY_QUEUE_LIMIT for q in queues.values())
+            recovery_calm_started_at, confirmed_at = _advance_recovery_window(
+                recovery_calm_started_at,
+                t=t,
+                calm=calm,
+            )
+            if confirmed_at is not None:
+                recovered_at = confirmed_at
 
         if step % 36 == 0:  # 180초마다 타임라인 샘플
             res.timeline.append(
@@ -219,11 +287,21 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
             )
 
     if sc["rain_level"] != "dry":
-        res.recovery_time_sec = (recovered_at - RAIN_END) if recovered_at is not None else DURATION - RAIN_END
+        res.recovery_observed = recovered_at is not None
+        res.recovery_time_sec = (
+            recovered_at - RAIN_END
+            if recovered_at is not None
+            else DURATION - RAIN_END
+        )
     res.approach_p95_delay = {a: _p95(v) for a, v in delay_series.items()}
     res.worst_approach_delay_sec = max(res.approach_p95_delay.values())
     if diverted_vehicles:
         res.diversion_delay_sec = round(60.0 + diversion_vehicle_seconds / diverted_vehicles, 1)
+    res.diverted_vehicles = round(diverted_vehicles, 1)
+    res.diversion_vehicle_seconds = round(diversion_vehicle_seconds, 1)
+    res.diversion_freeflow_seconds = round(diverted_vehicles * 60.0, 1)
+    res.modeled_vehicle_seconds = round(res.total_travel_time_sec, 1)
+    res.total_travel_time_sec += res.diversion_freeflow_seconds
     res.total_travel_time_sec = round(res.total_travel_time_sec, 0)
     res.spillback_time_sec = round(res.spillback_time_sec, 0)
     res.completed_trips = int(res.completed_trips)

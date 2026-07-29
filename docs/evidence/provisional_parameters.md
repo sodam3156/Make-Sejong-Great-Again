@@ -1,4 +1,4 @@
-# Provisional 수치표 (시우 검증 대기)
+# Provisional 수치표 (QA v2 반영)
 
 > **검증 상태 업데이트 — 2026-07-29**
 >
@@ -18,10 +18,10 @@
 | scenario_id | rain_level (첨두) | 수요 서지 배율(surge) | 사고 여부(incident) | 우천 첨두 용량 배율 | 근거 유형 |
 |---|---|---|---|---|---|
 | dry_base | dry | 1.00 | false | 1.00 (dry는 배율 적용 없음) | 순수 가정 |
-| rain_spillback_a | heavy | 1.10 | false | 0.83 (heavy 배율) | 문헌 범위 내 (0.83~0.95배, docs/09 1차 근거) |
-| rain_spillback_b | heavy | 1.18 | true | 0.83 (heavy 배율) + 사고 시 L23 저장공간 20% 축소 | 문헌 범위 내(용량 배율) / 순수 가정(사고 저장공간 축소율 20%, surge 1.18) |
+| rain_spillback_a | heavy | 1.10 | false | 0.84 (heavy 배율) | QA v2 문헌 평균 기반 provisional |
+| rain_spillback_b | heavy | 1.18 | true | 0.84 (heavy 배율) + L23 가용공간 20% 축소(14.4대) | 문헌 기반 provisional(용량 배율) / 순수 가정(공간·surge) |
 
-보조: 우천 진행 중 단계별 용량 배율은 dry 1.00 / light 0.95 / moderate 0.89 / heavy 0.83이며(`RAIN_CAPACITY_FACTOR`), `rain_level_at()`에 따라 dry_prep_end(900초) 이후 240초 동안 moderate를 거쳐 첨두(peak)로 전환되고 rain_end(2700초) 이후 dry로 복귀한다. 이 계단식 진행 구간 배분(240초) 자체는 순수 가정이며 문헌 근거가 명시돼 있지 않다.
+보조: 우천 진행 중 단계별 용량 배율은 dry 1.00 / light 0.95 / moderate 0.89 / heavy 0.84이며(`RAIN_CAPACITY_FACTOR`), `rain_level_at()`에 따라 dry_prep_end(900초) 이후 240초 동안 moderate를 거쳐 첨두(peak)로 전환되고 rain_end(2700초) 이후 dry로 복귀한다. 이 계단식 진행 구간 배분(240초) 자체는 순수 가정이다.
 
 ## 표2. 운전자·용량 파라미터 매핑
 
@@ -31,7 +31,7 @@
 |---|---|---|---|
 | 임계간격(critical gap) 증가 | 1.08배 ~ 1.13배 | 한국 회전교차로 우천 진입행태 연구, DOI: 10.1155/2018/2726732 | 미구현. 큐 모델은 진입간격을 직접 모델링하지 않고 `APPROACH_CAP × RAIN_CAPACITY_FACTOR`로 뭉뚱그려 용량만 낮춘다 |
 | 후속차두(follow-up headway) 증가 | 1.06배 ~ 1.12배 | 강우와 회전교차로 진입행태 연구 (opentransportationjournal.com Vol.12 p.192) | 미구현. 같은 이유로 후속차두를 별도 변수로 두지 않음 |
-| 진입용량 저하 | 0.83배 ~ 0.95배 | 위 두 문헌의 초기 민감도 종합 | 구현됨. `RAIN_CAPACITY_FACTOR = {"dry": 1.00, "light": 0.95, "moderate": 0.89, "heavy": 0.83}`로 강우 4단계 이산값으로 반영 |
+| 진입용량 저하 | 0.84배 ~ 0.95배 | QA v2 문헌 평균 재계산 | 구현됨. `RAIN_CAPACITY_FACTOR = {"dry": 1.00, "light": 0.95, "moderate": 0.89, "heavy": 0.84}`로 반영 |
 | 연결도로 저장공간 및 상류 차단(spillback) 메커니즘 | 정성적 근거만 (수치 범위 없음) | FHWA 연속 회전교차로 분석 (FHWA 000678.pdf) | 구현됨. `LINKS = {"L12": 22, "L23": 18, "BYPASS": 60}` (storage_veh)와 spillback/capacity drop(JAM_OCC=0.95, CAPACITY_DROP=0.70) 로직 |
 | 유입계량(metering) 효과·혼잡 전가 | 정성적 근거만 (수치 범위 없음) | 회전교차로 미터링 연구 (TRB onlinepubs ec083 27_Akcelikpaper.pdf) | 구현됨(정책 비교용). `fixed_metering` 정책이 `R2_S`, `R1_W` 유입을 0.45로 고정 감축. 이 0.45 값 자체는 문헌에서 가져온 수치가 아니라 "공정성 가드 교육용 위반 사례 재현" 목적의 순수 가정(`backend/README.md` 표 명시) |
 | SUMO 차량 파라미터(speedFactor, tau, minGap) | SUMO 문서 참조용 | SUMO 도로망/차량 파라미터 문서 | 미구현. docs/15에 따라 Day 1~2는 SUMO·TraCI 대신 큐 모델을 정식 경로로 쓰므로 해당 파라미터는 아직 코드에 없음 |
@@ -44,8 +44,8 @@
 |---|---|---|---|
 | FAIRNESS_P95_EXCEEDED | 진입로 P95 지체 기준 대비 +15% 초과 시 거절 (노이즈 하한 30초 적용) | `backend/app/safety.py:FAIRNESS_P95_LIMIT_PCT`(=15.0), `backend/app/safety.py:P95_NOISE_FLOOR_SEC`(=30.0) | 예 |
 | DIVERSION_DELAY_EXCEEDED | 우회도로 전가 지체가 기준 대비 180초 초과 시 거절 | `backend/app/safety.py:DIVERSION_DELAY_LIMIT_SEC`(=180.0) | 예 |
-| SAFETY_TTC_DEGRADED | 급제동 대리지표(hard_brakes)가 기준선보다 커지면 거절 (TTC·PET 직접 계산 아님, 진입 차단 시 발생 건수 기반 대리지표) | `backend/app/safety.py:evaluate_guard()` 내 `candidate.hard_brakes > baseline.hard_brakes` 비교, 대리지표 산출은 `backend/app/simulation.py:res.hard_brakes` (`(total_want - space) / 0.5`) | 예 |
-| 회복 판정 기준 | 우천 종료(RAIN_END) 이후 링크 점유율<0.5 및 모든 진입로 대기<5대를 동시에 만족하는 최초 시각을 회복 시점으로 판정 | `backend/app/simulation.py:187-193`행 (상수명 없이 인라인 리터럴 `0.5`, `5`로 구현, 별도 명명 상수 없음) | 예 |
+| HARD_BRAKE_PROXY_DEGRADED | 진입 차단 proxy가 기준선보다 커지면 거절 | `backend/app/safety.py:evaluate_guard()` | QA v2 반영 |
+| 회복 판정 기준 | 우천 종료 후 링크 점유율<0.5·모든 외부 큐<5대를 60초 연속 만족 | `backend/app/simulation.py:_advance_recovery_window()` | QA v2 반영, 미회복 censor 별도 표시 |
 
 보조로 함께 검증이 필요한 관련 상수: `backend/app/simulation.py`의 `JAM_OCC`(0.95, 포화 정체 판정), `CAPACITY_DROP`(0.70, capacity drop 배율), `corridor_gating` 정책의 게이팅 임계(하류 점유 0.80 초과 시 상류 유입 비례 감축, 하한 0.35)도 문헌 대조가 되지 않은 순수 가정 값이다(`backend/README.md` 파라미터 근거 표 참조).
 

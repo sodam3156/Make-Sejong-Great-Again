@@ -41,10 +41,11 @@ def test_rain_causes_spillback(scenario):
     assert r.spillback_events >= 1
 
 
+@pytest.mark.parametrize("scenario", ["rain_spillback_a", "rain_spillback_b"])
 @pytest.mark.parametrize("seed", range(1, 11))
-def test_spike_pass_criteria_10_seeds(seed):
+def test_spike_pass_criteria_10_seeds(scenario, seed):
     """스파이크 통과 기준: gating이 spillback 30%↓, TTT 10%↓, 공정성·안전 가드 통과."""
-    run = build_run("rain_spillback_a", seed)
+    run = build_run(scenario, seed)
     policies = {p["policy_id"]: p for p in run["policies"]}
     gating = policies["corridor_gating"]
     assert gating["delta_vs_no_action"]["spillback_time_pct"] <= -30.0
@@ -68,8 +69,12 @@ def test_api_flow_and_guard_rejection():
 
     detail = client.get(f"/api/simulations/{run_id}").json()
     assert detail["result_source"] == "live_simulation"
-    assert set(k for k in detail["recovery_compare"]["no_action"]) == {
-        "spillback_time_sec", "recovery_time_sec", "total_travel_time_sec", "worst_approach_delay_sec"
+    assert set(detail["recovery_compare"]["no_action"]) == {
+        "spillback_time_sec",
+        "recovery_time_sec",
+        "recovery_observed",
+        "total_travel_time_sec",
+        "worst_approach_delay_sec",
     }
 
     # 가드 위반 후보 승인은 409로 거부

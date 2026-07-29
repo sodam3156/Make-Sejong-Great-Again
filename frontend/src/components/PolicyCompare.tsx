@@ -16,7 +16,7 @@ function PctCell({ v }: { v: number }) {
 }
 
 const HEADERS = [
-  '정책', 'Spillback(초)', '총 통행시간(초)', '최악 지체(초)',
+  '정책', 'Spillback wall-clock(초)', '누적 체류시간(vehicle-seconds)', 'P95 대기 proxy(초)',
   'Δ Spillback', 'Δ 통행시간', 'Δ 최악지체',
 ];
 

@@ -15,6 +15,7 @@ export type ScreenState =
 export interface KPI {
   spillback_time_sec: number;
   recovery_time_sec: number;
+  recovery_observed?: boolean;
   total_travel_time_sec: number;
   worst_approach_delay_sec: number;
 }

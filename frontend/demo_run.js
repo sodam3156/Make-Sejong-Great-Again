@@ -1,10 +1,10 @@
 window.DEMO_RUN = {
   "approval": {
-    "decided_at": "2026-07-28T23:00:00+09:00",
+    "decided_at": "2026-07-29T20:25:09+09:00",
     "operator": "demo_operator",
     "policy_id": "corridor_gating",
-    "reason": "가드 통과 후보 중 규칙 기반 안전 점수가 가장 높음",
-    "requested_at": "2026-07-28T23:00:00+09:00",
+    "reason": "QA v2 가드 통과 후보 중 규칙 기반 안전 점수가 가장 높음",
+    "requested_at": "2026-07-29T20:25:09+09:00",
     "result_source": "fixture",
     "status": "approved",
     "workflow_state": "EVALUATED"
@@ -28,14 +28,14 @@ window.DEMO_RUN = {
           {
             "assessment": "improved",
             "available": true,
-            "delta_pct": -76.1,
+            "delta_pct": -77.3,
             "metric": "total_travel_time_pct",
             "weight": 0.35
           },
           {
             "assessment": "improved",
             "available": true,
-            "delta_pct": -90.4,
+            "delta_pct": -96.7,
             "metric": "worst_approach_delay_pct",
             "weight": 0.15
           }
@@ -50,7 +50,7 @@ window.DEMO_RUN = {
           }
         ],
         "risks": [],
-        "score": 90.195
+        "score": 91.56
       },
       {
         "evidence": [
@@ -101,21 +101,21 @@ window.DEMO_RUN = {
           {
             "assessment": "improved",
             "available": true,
-            "delta_pct": -65.4,
+            "delta_pct": -62.4,
             "metric": "spillback_time_pct",
             "weight": 0.5
           },
           {
             "assessment": "improved",
             "available": true,
-            "delta_pct": -44.3,
+            "delta_pct": -41.6,
             "metric": "total_travel_time_pct",
             "weight": 0.35
           },
           {
             "assessment": "improved",
             "available": true,
-            "delta_pct": -38.6,
+            "delta_pct": -33.8,
             "metric": "worst_approach_delay_pct",
             "weight": 0.15
           }
@@ -132,14 +132,14 @@ window.DEMO_RUN = {
         "risks": [
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "R1_W 진입로 P95 지체가 기준 대비 57.8% 악화. 허용한도 15.0% 초과"
+            "detail": "R1_W 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과"
           },
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "R2_S 진입로 P95 지체가 기준 대비 552.6% 악화. 허용한도 15.0% 초과"
+            "detail": "R2_S 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과"
           }
         ],
-        "score": 53.995
+        "score": 50.83
       }
     ],
     "ranked_policy_ids": [
@@ -151,7 +151,7 @@ window.DEMO_RUN = {
     "scoring_version": "rainflow-rule-v1"
   },
   "elapsed_ms": 0.0,
-  "generated_at": "2026-07-28T23:00:00+09:00",
+  "generated_at": "2026-07-29T20:25:09+09:00",
   "network": {
     "approaches": [
       "R1_N",
@@ -186,39 +186,48 @@ window.DEMO_RUN = {
     ]
   },
   "network_version": "sejong-corridor-v0",
-  "note": "검증된 결정론적 큐 모델에서 동결한 합성 데모 결과. 실제 세종시 실측 성과나 실제 도로 제어 결과가 아니다.",
+  "note": "rainflow-kpi-v2로 재동결한 provisional 합성 데모 결과. 실제 세종시 실측 성과나 실제 도로 제어 결과가 아니다.",
   "policies": [
     {
-      "candidate_hash": "5eedf9a77aaf924d8213bff5c8e1b14740ee3187cd4d1c1702429f6e560e0af2",
+      "candidate_hash": "1b8abf877414569c4d34b295385ba5ce79c7a7ed614c5d0e8dba4243e268af3e",
       "delta_vs_no_action": {
         "spillback_time_pct": 0.0,
         "total_travel_time_pct": 0.0,
         "worst_approach_delay_pct": 0.0
       },
-      "explanation": "기존 양보운전 유지. spillback 누적 3885초, 총 통행시간 284868초가 비교 기준선이 된다.",
+      "explanation": "기존 양보운전 유지. spillback 누적 1980초, 총 통행시간 265228초가 비교 기준선이 된다.",
       "extra": {
         "approach_p95_delay": {
-          "R1_N": 1105.1,
-          "R1_W": 259.2,
-          "R2_S": 103.9,
+          "R1_N": 1099.4,
+          "R1_W": 278.3,
+          "R2_S": 70.1,
           "R3_E": 0.0
         },
-        "completed_trips": 1300,
+        "completed_trips": 1310,
         "diversion_delay_sec": 0.0,
-        "safety_proxy_hard_brakes": 1165,
-        "spillback_events": 2
+        "diversion_freeflow_seconds": 0.0,
+        "diversion_vehicle_seconds": 0.0,
+        "diverted_vehicles": 0.0,
+        "modeled_vehicle_seconds": 265227.8,
+        "safety_proxy_hard_brakes": 1131,
+        "spillback_events": 2,
+        "spillback_link_seconds": {
+          "L12": 1785.0,
+          "L23": 1980.0
+        }
       },
       "guard": {
         "note": "기준선. 가드 판정 대상 아님",
         "passed": true,
-        "rule_version": "rainflow-safety-v1",
+        "rule_version": "rainflow-guard-v2",
         "violations": []
       },
       "kpi": {
+        "recovery_observed": false,
         "recovery_time_sec": 900,
-        "spillback_time_sec": 3885.0,
-        "total_travel_time_sec": 284868.0,
-        "worst_approach_delay_sec": 1105.1
+        "spillback_time_sec": 1980.0,
+        "total_travel_time_sec": 265228.0,
+        "worst_approach_delay_sec": 1099.4
       },
       "label": "무대응",
       "policy_id": "no_action",
@@ -226,154 +235,180 @@ window.DEMO_RUN = {
       "score": 0.0
     },
     {
-      "candidate_hash": "04c6f4a6ebfa80c45f0aa802bae4c956fa40102f386f160bf3505e9a0a165acc",
+      "candidate_hash": "f7b517d31c82f15987a5e6348a4bc45c320a6112447b2e446f0e986cf42d09e3",
       "delta_vs_no_action": {
-        "spillback_time_pct": -65.4,
-        "total_travel_time_pct": -44.3,
-        "worst_approach_delay_pct": -38.6
+        "spillback_time_pct": -62.4,
+        "total_travel_time_pct": -41.6,
+        "worst_approach_delay_pct": -33.8
       },
-      "explanation": "고정 미터링 적용 시 무대응 대비 spillback 누적 -65.4%, 총 통행시간 -44.3%. 가드 위반(FAIRNESS_P95_EXCEEDED, FAIRNESS_P95_EXCEEDED)으로 적용 불가.",
+      "explanation": "고정 미터링 적용 시 무대응 대비 spillback 누적 -62.4%, 총 통행시간 -41.6%. 가드 위반(FAIRNESS_P95_EXCEEDED, FAIRNESS_P95_EXCEEDED)으로 적용 불가.",
       "extra": {
         "approach_p95_delay": {
-          "R1_N": 220.5,
-          "R1_W": 409.0,
-          "R2_S": 678.1,
+          "R1_N": 259.9,
+          "R1_W": 432.5,
+          "R2_S": 728.0,
           "R3_E": 0.0
         },
-        "completed_trips": 1401,
+        "completed_trips": 1404,
         "diversion_delay_sec": 0.0,
+        "diversion_freeflow_seconds": 0.0,
+        "diversion_vehicle_seconds": 0.0,
+        "diverted_vehicles": 0.0,
+        "modeled_vehicle_seconds": 154800.3,
         "safety_proxy_hard_brakes": 414,
-        "spillback_events": 2
+        "spillback_events": 2,
+        "spillback_link_seconds": {
+          "L12": 600.0,
+          "L23": 745.0
+        }
       },
       "guard": {
         "passed": false,
-        "rule_version": "rainflow-safety-v1",
+        "rule_version": "rainflow-guard-v2",
         "violations": [
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "R1_W 진입로 P95 지체가 기준 대비 57.8% 악화. 허용한도 15.0% 초과",
-            "observed_pct": 57.8,
+            "detail": "R1_W 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과",
+            "observed_pct": 55.4,
             "threshold_pct": 15.0
           },
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "R2_S 진입로 P95 지체가 기준 대비 552.6% 악화. 허용한도 15.0% 초과",
-            "observed_pct": 552.6,
+            "detail": "R2_S 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과",
+            "observed_pct": 938.5,
             "threshold_pct": 15.0
           }
         ]
       },
       "kpi": {
+        "recovery_observed": false,
         "recovery_time_sec": 900,
-        "spillback_time_sec": 1345.0,
-        "total_travel_time_sec": 158579.0,
-        "worst_approach_delay_sec": 678.1
+        "spillback_time_sec": 745.0,
+        "total_travel_time_sec": 154800.0,
+        "worst_approach_delay_sec": 728.0
       },
       "label": "고정 미터링",
       "policy_id": "fixed_metering",
       "rank": 3,
-      "score": 53.995
+      "score": 50.83
     },
     {
-      "candidate_hash": "0178f3e7f687be754d724ba2eac27a4512fc6baf7ed87060e0b5092f5083d182",
+      "candidate_hash": "cddb4712471e0e2efd4672b5b62cdc0fdf0e617d8f9b77eef95dbef2a57050dc",
       "delta_vs_no_action": {
         "spillback_time_pct": -100.0,
-        "total_travel_time_pct": -76.1,
-        "worst_approach_delay_pct": -90.4
+        "total_travel_time_pct": -77.3,
+        "worst_approach_delay_pct": -96.7
       },
-      "explanation": "연속 게이팅 적용 시 무대응 대비 spillback 누적 -100.0%, 총 통행시간 -76.1%. 모든 안전·공정성 가드를 통과했다.",
+      "explanation": "연속 게이팅 적용 시 무대응 대비 spillback 누적 -100.0%, 총 통행시간 -77.3%. 모든 안전·공정성 가드를 통과했다.",
       "extra": {
         "approach_p95_delay": {
-          "R1_N": 105.6,
+          "R1_N": 36.1,
           "R1_W": 0.0,
           "R2_S": 0.0,
           "R3_E": 0.0
         },
         "completed_trips": 1509,
         "diversion_delay_sec": 60.0,
+        "diversion_freeflow_seconds": 130.1,
+        "diversion_vehicle_seconds": 0.0,
+        "diverted_vehicles": 2.2,
+        "modeled_vehicle_seconds": 59951.0,
         "safety_proxy_hard_brakes": 0,
-        "spillback_events": 0
+        "spillback_events": 0,
+        "spillback_link_seconds": {}
       },
       "guard": {
         "passed": true,
-        "rule_version": "rainflow-safety-v1",
+        "rule_version": "rainflow-guard-v2",
         "violations": []
       },
       "kpi": {
-        "recovery_time_sec": 570,
+        "recovery_observed": true,
+        "recovery_time_sec": 495,
         "spillback_time_sec": 0.0,
-        "total_travel_time_sec": 68089.0,
-        "worst_approach_delay_sec": 105.6
+        "total_travel_time_sec": 60081.0,
+        "worst_approach_delay_sec": 36.1
       },
       "label": "연속 게이팅",
       "policy_id": "corridor_gating",
       "rank": 1,
-      "score": 90.195
+      "score": 91.56
     }
   ],
   "provisional": true,
   "recovery_compare": {
     "applied": {
-      "recovery_time_sec": 570,
+      "recovery_observed": true,
+      "recovery_time_sec": 495,
       "spillback_time_sec": 0.0,
-      "total_travel_time_sec": 68089.0,
-      "worst_approach_delay_sec": 105.6
+      "total_travel_time_sec": 60081.0,
+      "worst_approach_delay_sec": 36.1
     },
     "applied_policy_id": "corridor_gating",
     "improvement": {
-      "recovery_time_pct": -36.7,
+      "recovery_time_pct": -45.0,
       "spillback_time_pct": -100.0,
-      "total_travel_time_pct": -76.1,
-      "worst_approach_delay_pct": -90.4
+      "total_travel_time_pct": -77.3,
+      "worst_approach_delay_pct": -96.7
     },
     "no_action": {
+      "recovery_observed": false,
       "recovery_time_sec": 900,
-      "spillback_time_sec": 3885.0,
-      "total_travel_time_sec": 284868.0,
-      "worst_approach_delay_sec": 1105.1
+      "spillback_time_sec": 1980.0,
+      "total_travel_time_sec": 265228.0,
+      "worst_approach_delay_sec": 1099.4
     },
     "predicted_if_approved": {
       "improvement": {
-        "recovery_time_pct": -36.7,
+        "recovery_time_pct": -45.0,
         "spillback_time_pct": -100.0,
-        "total_travel_time_pct": -76.1,
-        "worst_approach_delay_pct": -90.4
+        "total_travel_time_pct": -77.3,
+        "worst_approach_delay_pct": -96.7
       },
       "kpi": {
-        "recovery_time_sec": 570,
+        "recovery_observed": true,
+        "recovery_time_sec": 495,
         "spillback_time_sec": 0.0,
-        "total_travel_time_sec": 68089.0,
-        "worst_approach_delay_sec": 105.6
+        "total_travel_time_sec": 60081.0,
+        "worst_approach_delay_sec": 36.1
       },
       "policy_id": "corridor_gating"
     }
   },
   "reproducibility": {
     "candidate_hashes": {
-      "corridor_gating": "0178f3e7f687be754d724ba2eac27a4512fc6baf7ed87060e0b5092f5083d182",
-      "fixed_metering": "04c6f4a6ebfa80c45f0aa802bae4c956fa40102f386f160bf3505e9a0a165acc",
-      "no_action": "5eedf9a77aaf924d8213bff5c8e1b14740ee3187cd4d1c1702429f6e560e0af2"
+      "corridor_gating": "cddb4712471e0e2efd4672b5b62cdc0fdf0e617d8f9b77eef95dbef2a57050dc",
+      "fixed_metering": "f7b517d31c82f15987a5e6348a4bc45c320a6112447b2e446f0e986cf42d09e3",
+      "no_action": "1b8abf877414569c4d34b295385ba5ce79c7a7ed614c5d0e8dba4243e268af3e"
     },
+    "freeze_id": "freeze-20260729-202509-kst",
+    "git_commit_sha": "0e20e58578d5d7bb549a2d0d50c2dbcd6139a62b",
+    "guard_version": "rainflow-guard-v2",
     "input": {
       "data_quality": {
-        "data_age_sec": 0,
+        "data_age_sec": 0.0,
         "device_status": "ok",
         "sensor_available": true
       },
       "scenario_id": "rain_spillback_a",
       "seed": 42
     },
+    "kpi_definition_version": "rainflow-kpi-v2",
     "network_version": "sejong-corridor-v0",
+    "parameter_set_version": "rainflow-provisional-v2",
     "policy_version": "rainflow-policy-v1",
-    "rule_version": "rainflow-safety-v1",
+    "result_checksum": "23697a5073863fe62b3bf43053fd2e758c145edd385e7748f29a13e5f28a4823",
+    "rule_version": "rainflow-guard-v2",
     "scoring_version": "rainflow-rule-v1",
-    "simulator_version": "rainflow-queue-v1"
+    "simulator_version": "rainflow-queue-v2",
+    "source_live_run_id": "live-rain_spillback_a-s42-a620cd4bb7",
+    "source_tree_checksum": "3b6c2b9bd3100c2a95db23e515f30be666e557d8147556abb888b4e420ef4c5f"
   },
   "result_source": "fixture",
-  "run_id": "fixture-day1-001",
+  "run_id": "fixture-qa-v2-001",
   "safety_guards": {
     "provisional": true,
-    "rule_version": "rainflow-safety-v1",
+    "rule_version": "rainflow-guard-v2",
     "rules": [
       {
         "code": "FAIRNESS_P95_EXCEEDED",
@@ -384,7 +419,7 @@ window.DEMO_RUN = {
         "threshold_sec": 180.0
       },
       {
-        "code": "SAFETY_TTC_DEGRADED"
+        "code": "HARD_BRAKE_PROXY_DEGRADED"
       },
       {
         "code": "DATA_STALE",
@@ -403,7 +438,7 @@ window.DEMO_RUN = {
   },
   "scenario": {
     "data_quality": {
-      "data_age_sec": 0,
+      "data_age_sec": 0.0,
       "device_status": "ok",
       "sensor_available": true
     },
@@ -650,8 +685,8 @@ window.DEMO_RUN = {
         },
         {
           "link_id": "L23",
-          "occupancy_ratio": 0.47,
-          "queue_veh": 8.5,
+          "occupancy_ratio": 0.45,
+          "queue_veh": 8.0,
           "spillback": false
         },
         {
@@ -671,13 +706,13 @@ window.DEMO_RUN = {
         {
           "link_id": "L12",
           "occupancy_ratio": 0.07,
-          "queue_veh": 1.4,
+          "queue_veh": 1.5,
           "spillback": false
         },
         {
           "link_id": "L23",
-          "occupancy_ratio": 0.76,
-          "queue_veh": 13.7,
+          "occupancy_ratio": 0.69,
+          "queue_veh": 12.5,
           "spillback": false
         },
         {
@@ -696,14 +731,14 @@ window.DEMO_RUN = {
       "links": [
         {
           "link_id": "L12",
-          "occupancy_ratio": 0.34,
-          "queue_veh": 7.5,
+          "occupancy_ratio": 0.07,
+          "queue_veh": 1.5,
           "spillback": false
         },
         {
           "link_id": "L23",
-          "occupancy_ratio": 1.0,
-          "queue_veh": 18.0,
+          "occupancy_ratio": 0.99,
+          "queue_veh": 17.9,
           "spillback": true
         },
         {
@@ -722,9 +757,9 @@ window.DEMO_RUN = {
       "links": [
         {
           "link_id": "L12",
-          "occupancy_ratio": 1.0,
-          "queue_veh": 22.0,
-          "spillback": true
+          "occupancy_ratio": 0.92,
+          "queue_veh": 20.2,
+          "spillback": false
         },
         {
           "link_id": "L23",

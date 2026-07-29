@@ -11,7 +11,7 @@ FAIRNESS_P95_LIMIT_PCT = 15.0  # provisional, 시우 검증 대상
 DIVERSION_DELAY_LIMIT_SEC = 180.0
 P95_NOISE_FLOOR_SEC = 30.0  # 기준 지체가 작을 때의 백분율 노이즈 차단
 DATA_STALE_LIMIT_SEC = 120.0
-RULE_VERSION = "rainflow-safety-v1"
+RULE_VERSION = "rainflow-guard-v2"
 
 
 def operational_violations(data_quality: dict[str, Any] | None) -> list[dict]:
@@ -55,9 +55,17 @@ def evaluate_guard(
     violations = operational_violations(data_quality)
 
     for approach, base_p95 in baseline.approach_p95_delay.items():
-        cand_p95 = candidate.approach_p95_delay.get(approach, 0.0)
+        if approach not in candidate.approach_p95_delay:
+            violations.append(
+                {
+                    "code": "FAIRNESS_INPUT_INVALID",
+                    "detail": f"{approach} 진입로 P95 대기 proxy가 누락되어 판정 불가",
+                }
+            )
+            continue
+        cand_p95 = candidate.approach_p95_delay[approach]
         ref = max(base_p95, P95_NOISE_FLOOR_SEC)
-        worsen_pct = (cand_p95 - ref) / ref * 100
+        worsen_pct = (cand_p95 - base_p95) / ref * 100
         if worsen_pct > FAIRNESS_P95_LIMIT_PCT:
             violations.append(
                 {
@@ -80,8 +88,8 @@ def evaluate_guard(
     if candidate.hard_brakes > baseline.hard_brakes:
         violations.append(
             {
-                "code": "SAFETY_TTC_DEGRADED",
-                "detail": f"급제동 대리지표 {baseline.hard_brakes}→{candidate.hard_brakes} 악화",
+                "code": "HARD_BRAKE_PROXY_DEGRADED",
+                "detail": f"차단 진입 proxy {baseline.hard_brakes}→{candidate.hard_brakes} 악화",
             }
         )
 
