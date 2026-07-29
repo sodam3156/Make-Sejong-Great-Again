@@ -1,6 +1,30 @@
 # 김경은 디자인 병렬 작업 및 프론트엔드 에셋 규격
 
-문서 상태는 2026년 7월 28일 확정본이다. 김경은은 프론트엔드와 백엔드의 완성을 기다리지 않고, 고정된 화면 상태와 아래 규격을 기준으로 디자인 에셋을 독립 제작한다.
+> [!IMPORTANT]
+> **프론트 적용 대상 대체 공지 — 2026-07-29**
+>
+> 이 문서의 에셋 크기·파일명·상태 ID·색상 규격은 계속 유효하지만,
+> 적용 대상은 React/Vite 컴포넌트가 아니라 제출 정본인
+> `frontend/index.html` 정적 단일 페이지다.
+>
+> - 정본 프론트: `frontend/index.html`, `frontend/demo_run.js`,
+>   `frontend/public/assets/`
+> - 구현 방식: 무빌드 HTML·CSS·JavaScript, 로컬 SVG/CSS 자산
+> - 제공 방식: FastAPI의 정적 파일 mount
+> - 폴백: API 실패 시 `window.DEMO_RUN` fixture 재생
+> - 비정본: `frontend/src/*.tsx`는 post-hackathon 참고 코드이며
+>   8월 2일 제출 빌드·실행·패키징 경로가 아님
+>
+> 아래에서 “컴포넌트”는 시각 상태와 배치 규격을 뜻한다. 실제 제출
+> 구현은 정적 HTML 요소와 CSS 클래스로 반영한다.
+>
+> Notion 공유본:
+> [12 실행 명세](https://app.notion.com/p/3ab5d8c25aa4810684e5d9dddd24543f),
+> [13 팀 실행 계획](https://app.notion.com/p/3ab5d8c25aa4815cb381d7fc602979cb)
+
+에셋 규격은 2026년 7월 28일 확정본이며, 구현 대상은 위 대체 공지를
+따른다. 김경은은 프론트엔드와 백엔드의 완성을 기다리지 않고, 고정된
+화면 상태와 아래 규격을 기준으로 디자인 에셋을 독립 제작한다.
 
 ## 1. 김경은의 최종 책임
 
