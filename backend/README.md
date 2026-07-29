@@ -53,7 +53,7 @@ python scripts/generate_contract_artifacts.py --check
 
 ## QA v2 동결 결과 (seed 42, rain_spillback_a)
 
-정본 source run `live-rain_spillback_a-s42-f3ba7ad161`, checksum `80a4440cb798a8262e88e462a3088e3d128debbdb32ec3eb30cab119537d9c22`, `provisional=true`. 아래 값은 이 합성 run에만 해당하며 세종 실측 성과가 아니다.
+정본 source run `live-rain_spillback_a-s42-ceedb562be`, checksum `80a4440cb798a8262e88e462a3088e3d128debbdb32ec3eb30cab119537d9c22`, `provisional=true`. 아래 값은 이 합성 run에만 해당하며 세종 실측 성과가 아니다.
 
 | 정책 | 회랑 spillback wall-clock | 모형 내 누적 체류시간 | 가드 |
 |---|---|---|---|
