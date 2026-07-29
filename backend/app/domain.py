@@ -55,6 +55,7 @@ class SimulationRequest(ContractModel):
                         "sensor_available": True,
                         "device_status": "ok",
                     },
+                    "dataset_id": "synthetic-v0",
                     "force_source": "auto",
                 }
             ]
@@ -66,6 +67,7 @@ class SimulationRequest(ContractModel):
     )
     seed: int = Field(default=42, ge=0, le=2_147_483_647)
     data_quality: DataQualityInput = Field(default_factory=DataQualityInput)
+    dataset_id: Literal["synthetic-v0"] = "synthetic-v0"
     force_source: Literal["auto", "live_simulation", "cached_simulation", "fixture"] = "auto"
 
 
@@ -163,6 +165,7 @@ class RunResult(ContractModel):
     provisional: bool = True
     generated_at: str | None = None
     network_version: str | None = None
+    dataset: dict[str, Any] | None = None
     note: str | None = None
     scenario: dict[str, Any]
     screen_states: list[str]
@@ -196,3 +199,4 @@ class HealthResponse(ContractModel):
     runs_in_memory: int
     persisted_runs: int
     result_source: ResultSource
+    dataset_id: str

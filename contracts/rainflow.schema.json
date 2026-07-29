@@ -11,6 +11,17 @@
     "provisional": { "type": "boolean" },
     "generated_at": { "type": "string", "format": "date-time" },
     "network_version": { "type": "string" },
+    "dataset": {
+      "type": "object",
+      "required": ["dataset_id", "data_class", "schema_version", "adapter_version", "default"],
+      "properties": {
+        "dataset_id": { "const": "synthetic-v0" },
+        "data_class": { "const": "synthetic" },
+        "schema_version": { "const": "rainflow-dataset-v1" },
+        "adapter_version": { "const": "builtin-synthetic-v1" },
+        "default": { "const": true }
+      }
+    },
     "note": { "type": "string" },
     "scenario": {
       "type": "object",

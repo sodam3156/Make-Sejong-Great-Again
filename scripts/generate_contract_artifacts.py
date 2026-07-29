@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from backend.app.main import (  # noqa: E402
+    DATASET_ID,
     _append_state,
     _set_applied_policy,
     app,
@@ -301,6 +302,7 @@ def _seed_matrix(freeze_meta: dict[str, Any]) -> dict[str, Any]:
         "freeze_id": FREEZE_ID,
         "git_commit_sha": freeze_meta["git_commit_sha"],
         "source_tree_checksum": freeze_meta["source_tree_checksum"],
+        "dataset_id": DATASET_ID,
         "parameter_set_version": "rainflow-provisional-v2",
         "kpi_definition_version": "rainflow-kpi-v2",
         "guard_version": "rainflow-guard-v2",
