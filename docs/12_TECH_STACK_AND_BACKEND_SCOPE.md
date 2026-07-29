@@ -1,20 +1,53 @@
 # 기술 스택과 백엔드 구현 범위
 
+> [!IMPORTANT]
+> **제출 정본 대체 공지 — 2026-07-29**
+>
+> 이 문서의 합성 5개 신호교차로, React·Vite·TypeScript, SSE,
+> SQLite·SQLAlchemy 및 확장 API 설계는 초기 기술 검토를 위한
+> **legacy reference**다. 8월 2일 RainFlow Sejong 제출 정본으로 사용하지
+> 않는다.
+>
+> 현재 제출 실행 구조는 다음으로 대체됐다.
+>
+> - 프론트: `frontend/index.html` + `frontend/demo_run.js` +
+>   `frontend/public/assets/`의 무빌드 정적 HTML·CSS·JavaScript
+> - 제공 방식: FastAPI가 정적 프론트와 API를 같은 로컬 주소에서 제공
+> - 동결 API: `GET /api/health`, `POST /api/simulations`,
+>   `GET /api/simulations/{run_id}`, `POST /api/approvals`
+> - 실행: `start.bat` → 번들된 `RainFlowSejong.exe` → 로컬 브라우저
+> - 실행 PC 의존성: Node.js, Python, SUMO, 인터넷, API 키 불필요
+> - React 파일: `frontend/src/*.tsx`는 post-hackathon 참고 코드이며
+>   제출 빌드·실행·패키징 경로가 아님
+>
+> 정본 우선순위는 `docs/15_DAY1_FREEZE_DECISION.md` →
+> `contracts/rainflow.schema.json`·`backend/fixtures/demo_run.json` →
+> `docs/10_TEAM_PARALLEL_EXECUTION.md` →
+> `ai-context/PROJECT_STACK.yaml`이다.
+>
+> Notion 공유본:
+> [12 실행 명세](https://app.notion.com/p/3ab5d8c25aa4810684e5d9dddd24543f),
+> [13 팀 실행 계획](https://app.notion.com/p/3ab5d8c25aa4815cb381d7fc602979cb)
+
 문서 기준일은 2026년 7월 28일이다. 이 문서는 합성 데이터 기반 5개 교차로 교통운영 오케스트레이터 MVP의 고정 기술 선택과 백엔드 구현 범위를 정의한다.
 
 AI 코딩 도구는 먼저 `ai-context/PROJECT_STACK.yaml`을 읽고 이 문서를 보조 설명으로 사용한다. 기술 선택이 기존 문서와 충돌하면 구현 스택은 `ai-context/PROJECT_STACK.yaml`, 사실 주장과 안전 한계는 `docs/11_PROJECT_FEASIBILITY_VALIDATION.md`를 우선한다.
 
-`docs/09_RAINFLOW_SEJONG.md`와 `docs/10_TEAM_PARALLEL_EXECUTION.md`의 RainFlow Sejong은 별도 변형안이다. RainFlow의 시나리오 ID와 KPI 이름을 본 5개 교차로 MVP에 자동으로 혼합하지 않는다.
+2026-07-28 당시에는 `docs/09_RAINFLOW_SEJONG.md`와
+`docs/10_TEAM_PARALLEL_EXECUTION.md`의 RainFlow Sejong을 별도 변형안으로
+다뤘다. 이후 `docs/15_DAY1_FREEZE_DECISION.md`가 RainFlow Sejong 단일
+제출안을 확정했으므로, 아래 5개 신호교차로 설계를 현재 RainFlow 정본에
+자동으로 혼합하지 않는다.
 
-## 1. 현재 저장소 상태
+## 1. 2026-07-28 설계 당시 저장소 상태 (legacy snapshot)
 
-현재 저장소 검색에서는 FastAPI 실행 코드나 `backend/app` 구현이 확인되지 않았다. 따라서 아래 기능은 현재 완성된 코드가 아니라 지금부터 백엔드 파트에서 구현 가능한 P0 범위다.
+당시 저장소 검색에서는 FastAPI 실행 코드나 `backend/app` 구현이 확인되지 않았다. 따라서 아래 내용은 현재 구현 상태가 아니라 2026-07-28 시점의 P0 설계 범위다.
 
-현재 완료된 것은 문제 정의, 제품 범위, 기술 구조, 백로그, 실행 계획, 실현 가능성 검증과 같은 문서 설계다.
+당시 완료된 것은 문제 정의, 제품 범위, 기술 구조, 백로그, 실행 계획, 실현 가능성 검증과 같은 문서 설계였다.
 
-현재 미완료된 것은 교통 시뮬레이터, KPI 엔진, 후보 생성기, 안전 가드, AI 검토 모듈, 상태 전이, 승인 API, 감사 로그와 Windows 실행 번들이다.
+당시 미완료 항목은 교통 시뮬레이터, KPI 엔진, 후보 생성기, 안전 가드, AI 검토 모듈, 상태 전이, 승인 API, 감사 로그와 Windows 실행 번들이었다.
 
-## 2. 고정 기술 스택
+## 2. Legacy 고정 기술 스택 (제출 정본 아님)
 
 ### 프론트엔드
 
@@ -193,7 +226,11 @@ start.bat
 compose.yaml
 ```
 
-## 4. P0 API 계약
+## 4. Legacy P0 API 설계 (현재 동결 계약 아님)
+
+이 절의 SSE·평가·확장 조회 경로는 초기 설계 기록이다. 현재 동결 P0 계약은
+문서 상단에 명시한 4개 API 경로뿐이며, 실제 응답 정본은
+`contracts/openapi.json`과 `contracts/rainflow.schema.json`이다.
 
 ### GET /api/health
 
