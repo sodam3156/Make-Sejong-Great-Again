@@ -49,7 +49,7 @@ def _sha256_text(content: str) -> str:
 
 def _source_git_sha() -> str:
     result = subprocess.run(
-        ["git", "rev-parse", "HEAD"],
+        ["git", "log", "-1", "--format=%H", "--", *SOURCE_FILES],
         cwd=ROOT,
         check=True,
         capture_output=True,

@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 from backend.app import main as backend_main
 from backend.app.main import result_checksum
 from backend.app.storage import RunStore
-from scripts.generate_contract_artifacts import ROOT
+from scripts.generate_contract_artifacts import ROOT, SOURCE_FILES
 
 
 def _load(relative: str) -> dict:
@@ -140,10 +140,10 @@ def test_presentation_paths_exclude_qa_banned_numbers_and_terms():
     assert all(value not in text for value in banned)
 
 
-def test_frozen_git_sha_is_current_source_commit():
+def test_frozen_git_sha_is_latest_commit_touching_source_files():
     meta = _load("backend/fixtures/demo_freeze_meta.json")
     current = subprocess.run(
-        ["git", "rev-parse", "HEAD"],
+        ["git", "log", "-1", "--format=%H", "--", *SOURCE_FILES],
         cwd=ROOT,
         check=True,
         capture_output=True,
