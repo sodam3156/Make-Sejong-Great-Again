@@ -15,3 +15,8 @@ release/windows-x64/_internal/
 release/windows-x64/logs/
 release/windows-x64/runtime/
 release/windows-x64/SHA256SUMS.txt
+release/windows-x64/start.bat
+release/windows-x64/launch.ps1
+release/windows-x64/stop.bat
+release/windows-x64/stop.ps1
+release/windows-x64/README.txt
