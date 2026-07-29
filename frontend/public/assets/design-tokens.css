@@ -5,7 +5,13 @@
   --status-safe: #36B386;
   --status-rejected: #F0545C;
   --status-approval: #3783FC;
-  --status-recovery: #F0545C;
+  --status-recovery: #36B386;
+  --status-comm-delay: #FFA75A;
+  --status-sensor-missing: #F0545C;
+  --status-data-fixture: #3783FC;
+  --status-policy-selected: #3783FC;
+  --status-policy-recommended: #CD91FF;
+  --status-kpi-nodata: #7088AD;
 
   --surface-canvas: #f8fafc;
   --surface-panel: #ffffff;
