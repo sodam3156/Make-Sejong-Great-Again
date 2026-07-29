@@ -1,22 +1,21 @@
 @echo off
-REM ============================================================================
-REM RainFlow Sejong - one-click start (calls launch.ps1)
-REM Double-click this file. No Python or internet connection required.
-REM ============================================================================
 setlocal
-chcp 65001 >nul
-title RainFlow Sejong - start.bat
 
-set "SCRIPT_DIR=%~dp0"
-
-powershell -NoProfile -ExecutionPolicy Bypass -File "%SCRIPT_DIR%launch.ps1"
-set "RESULT=%ERRORLEVEL%"
-
-if not "%RESULT%"=="0" (
-    echo.
-    echo [오류] 실행에 실패했습니다. 위 메시지와 logs 폴더를 확인하세요.
-    pause
+set "POWERSHELL_EXE=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
+if not exist "%POWERSHELL_EXE%" (
+    echo [RainFlow Sejong] Windows PowerShell was not found.
+    echo This launcher supports Windows x64 with Windows PowerShell 5.1.
+    if /I not "%RAINFLOW_NONINTERACTIVE%"=="1" pause
+    exit /b 2
 )
 
-endlocal
-exit /b %RESULT%
+"%POWERSHELL_EXE%" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "%~dp0launch.ps1"
+set "LAUNCH_EXIT=%ERRORLEVEL%"
+
+if not "%LAUNCH_EXIT%"=="0" (
+    echo.
+    echo [RainFlow Sejong] Startup failed. Check the logs folder next to start.bat.
+    if /I not "%RAINFLOW_NONINTERACTIVE%"=="1" pause
+)
+
+exit /b %LAUNCH_EXIT%
