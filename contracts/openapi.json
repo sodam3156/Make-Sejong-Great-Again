@@ -316,6 +316,10 @@
             "title": "Cached Fixture Available",
             "type": "boolean"
           },
+          "dataset_id": {
+            "title": "Dataset Id",
+            "type": "string"
+          },
           "fixture_available": {
             "title": "Fixture Available",
             "type": "boolean"
@@ -357,7 +361,8 @@
           "llm",
           "runs_in_memory",
           "persisted_runs",
-          "result_source"
+          "result_source",
+          "dataset_id"
         ],
         "title": "HealthResponse",
         "type": "object"
@@ -532,6 +537,18 @@
         "properties": {
           "approval": {
             "$ref": "#/components/schemas/ApprovalResult"
+          },
+          "dataset": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset"
           },
           "decision": {
             "anyOf": [
@@ -754,6 +771,7 @@
               "device_status": "ok",
               "sensor_available": true
             },
+            "dataset_id": "synthetic-v0",
             "force_source": "auto",
             "scenario_id": "rain_spillback_a",
             "seed": 42
@@ -762,6 +780,12 @@
         "properties": {
           "data_quality": {
             "$ref": "#/components/schemas/DataQualityInput"
+          },
+          "dataset_id": {
+            "const": "synthetic-v0",
+            "default": "synthetic-v0",
+            "title": "Dataset Id",
+            "type": "string"
           },
           "force_source": {
             "default": "auto",
@@ -881,7 +905,7 @@
   "info": {
     "description": "합성 데이터 기반 우천 연속 회전교차로 디지털 트윈. 실제 세종시 교통 성과나 실제 신호 제어를 의미하지 않습니다.",
     "title": "RainFlow Sejong",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "openapi": "3.1.0",
   "paths": {

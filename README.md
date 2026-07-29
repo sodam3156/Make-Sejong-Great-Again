@@ -128,7 +128,7 @@
 - live/cached/fixture API 어댑터와 오프라인 폴백을 갖춘 7단계 정적 프론트
 - A·B 각각 seed 1~10의 KPI 분포·가드 실패·미회복 seed 검증자료
 - Docker 개발 실행 경로와 Windows x64 PyInstaller 실행본·ZIP·SHA256 체크섬
-- 백엔드 테스트 67건 통과
+- 백엔드 테스트 75건 통과
 
 남은 제출 작업은 다음과 같습니다.
 

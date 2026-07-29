@@ -9,6 +9,13 @@
     "status": "approved",
     "workflow_state": "EVALUATED"
   },
+  "dataset": {
+    "adapter_version": "builtin-synthetic-v1",
+    "data_class": "synthetic",
+    "dataset_id": "synthetic-v0",
+    "default": true,
+    "schema_version": "rainflow-dataset-v1"
+  },
   "decision": {
     "explanation_mode": "rule_based",
     "policy_assessments": [
@@ -169,6 +176,7 @@
       {
         "from": "R2",
         "link_id": "L23",
+        "nominal_storage_veh": 18,
         "storage_veh": 18,
         "to": "R3"
       },
@@ -195,7 +203,7 @@
         "total_travel_time_pct": 0.0,
         "worst_approach_delay_pct": 0.0
       },
-      "explanation": "기존 양보운전 유지. spillback 누적 1980초, 총 통행시간 265228초가 비교 기준선이 된다.",
+      "explanation": "기존 양보운전 유지. spillback 누적 1980초, 모형 내 누적 체류시간 265228 vehicle-seconds가 비교 기준선이 된다.",
       "extra": {
         "approach_p95_delay": {
           "R1_N": 1099.4,
@@ -241,7 +249,7 @@
         "total_travel_time_pct": -41.6,
         "worst_approach_delay_pct": -33.8
       },
-      "explanation": "고정 미터링 적용 시 무대응 대비 spillback 누적 -62.4%, 총 통행시간 -41.6%. 가드 위반(FAIRNESS_P95_EXCEEDED, FAIRNESS_P95_EXCEEDED)으로 적용 불가.",
+      "explanation": "고정 미터링 적용 시 무대응 대비 spillback 누적 -62.4%, 모형 내 누적 체류시간 -41.6%. 가드 위반(FAIRNESS_P95_EXCEEDED, FAIRNESS_P95_EXCEEDED)으로 적용 불가.",
       "extra": {
         "approach_p95_delay": {
           "R1_N": 259.9,
@@ -299,7 +307,7 @@
         "total_travel_time_pct": -77.3,
         "worst_approach_delay_pct": -96.7
       },
-      "explanation": "연속 게이팅 적용 시 무대응 대비 spillback 누적 -100.0%, 총 통행시간 -77.3%. 모든 안전·공정성 가드를 통과했다.",
+      "explanation": "연속 게이팅 적용 시 무대응 대비 spillback 누적 -100.0%, 모형 내 누적 체류시간 -77.3%. 모든 안전·공정성 가드를 통과했다.",
       "extra": {
         "approach_p95_delay": {
           "R1_N": 36.1,
@@ -382,7 +390,7 @@
       "no_action": "1b8abf877414569c4d34b295385ba5ce79c7a7ed614c5d0e8dba4243e268af3e"
     },
     "freeze_id": "freeze-20260729-202509-kst",
-    "git_commit_sha": "0e20e58578d5d7bb549a2d0d50c2dbcd6139a62b",
+    "git_commit_sha": "58f34532f0d79514181b0b0c12db0968c21243f8",
     "guard_version": "rainflow-guard-v2",
     "input": {
       "data_quality": {
@@ -390,6 +398,7 @@
         "device_status": "ok",
         "sensor_available": true
       },
+      "dataset_id": "synthetic-v0",
       "scenario_id": "rain_spillback_a",
       "seed": 42
     },
@@ -397,12 +406,12 @@
     "network_version": "sejong-corridor-v0",
     "parameter_set_version": "rainflow-provisional-v2",
     "policy_version": "rainflow-policy-v1",
-    "result_checksum": "23697a5073863fe62b3bf43053fd2e758c145edd385e7748f29a13e5f28a4823",
+    "result_checksum": "1c5ee778ce55091a96615886e05df38ed3e4641eef9be537280d91425a69db5b",
     "rule_version": "rainflow-guard-v2",
     "scoring_version": "rainflow-rule-v1",
     "simulator_version": "rainflow-queue-v2",
-    "source_live_run_id": "live-rain_spillback_a-s42-a620cd4bb7",
-    "source_tree_checksum": "3b6c2b9bd3100c2a95db23e515f30be666e557d8147556abb888b4e420ef4c5f"
+    "source_live_run_id": "live-rain_spillback_a-s42-177b836eea",
+    "source_tree_checksum": "a306f9186fd67ed4fdc7ae0980b7f3888864ee7f77f1843bc30df4348da93f74"
   },
   "result_source": "cached_simulation",
   "run_id": "cached-qa-v2-001",
@@ -413,6 +422,9 @@
       {
         "code": "FAIRNESS_P95_EXCEEDED",
         "threshold_pct": 15.0
+      },
+      {
+        "code": "FAIRNESS_INPUT_INVALID"
       },
       {
         "code": "DIVERSION_DELAY_EXCEEDED",
@@ -444,6 +456,7 @@
     },
     "duration_sec": 3600,
     "incident": false,
+    "incident_type": null,
     "phases": {
       "dry_prep_sec": 900,
       "rain_peak_sec": 1800,

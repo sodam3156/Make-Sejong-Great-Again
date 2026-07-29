@@ -8,7 +8,7 @@ project:
   authoritative_scope: "Synthetic three-roundabout corridor plus one parallel bypass"
   submission_variant: "RainFlow Sejong only"
   repository_state: "implemented_prototype_with_windows_release"
-  implementation_status_note: "The shared worktree contains KPI v2 calculation and freeze metadata, dataset and stored-result rollback guards, live/cached/fixture static frontend integration, synchronized fixture/cache/OpenAPI/evidence artifacts, 67 passing backend tests, Docker reproduction files, and a native Windows Python 3.11 PyInstaller release with ZIP and checksums. Two clean external-PC offline validations remain."
+  implementation_status_note: "The shared worktree contains KPI v2 calculation and freeze metadata, dataset and stored-result rollback guards, live/cached/fixture static frontend integration, synchronized fixture/cache/OpenAPI/evidence artifacts, 75 passing backend tests, Docker reproduction files, and a native Windows Python 3.11 PyInstaller release with ZIP and checksums. Two clean external-PC offline validations remain."
   excluded_claims:
     - "Real-time synchronization with the actual Sejong traffic network"
     - "Direct control of real signal controllers or field devices"
@@ -196,7 +196,7 @@ technology_stack:
     llm_failure: "Not applicable to the critical path because the decision/explanation layer is local and rule based."
   testing:
     framework: "pytest"
-    last_local_result: "67 passed on Linux on 2026-07-29; the KPI v2 freeze has separate Windows release gates"
+    last_local_result: "75 passed on Linux on 2026-07-29; the KPI v2 freeze has separate Windows release gates"
     covered:
       - "Same-input and same-seed determinism"
       - "Dry and rainy spillback behavior"
