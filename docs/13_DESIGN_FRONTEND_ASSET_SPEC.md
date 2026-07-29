@@ -8,7 +8,7 @@
 
 | 작업 영역 | 해야 할 일 | 완료 산출물 |
 |---|---|---|
-| 디자인 토큰 | 상태 색상, 배경, 텍스트, 테두리, 그림자, 간격, 모서리 규격 확정 | `frontend/src/styles/tokens.css`, `design/design-tokens.json` |
+| 디자인 토큰 | 상태 색상, 배경, 텍스트, 테두리, 그림자, 간격, 모서리 규격 확정 | `frontend/public/assets/design-tokens.css` |
 | 상태 아이콘 | 정상, 우천, 정체, spillback, 안전 통과, 안전 탈락, 승인, 거절, 센서 결측, 통신 지연, 데이터 출처 아이콘 제작 | SVG 아이콘 세트 |
 | 교차로 그래픽 | 정상, 우천 경고, 마비, 정책 적용, 복구 상태를 조합 가능한 레이어로 제작 | 교차로 배경과 상태별 SVG 레이어 |
 | 정책 카드 | `no_action`, `fixed_metering`, `corridor_gating`의 기본, 선택, 추천, 탈락 상태 설계 | 정책 카드 컴포넌트 규격 |
@@ -119,7 +119,7 @@ frontend/public/assets/intersection/recovery-layer.svg
 frontend/public/assets/presentation/scene-normal.png
 frontend/public/assets/presentation/scene-spillback.png
 frontend/public/assets/presentation/scene-recovery.png
-design/design-tokens.json
+frontend/public/assets/design-tokens.css
 ```
 
 파일명에 공백, 한글, 괄호, 최종, 진짜최종 같은 버전 표현을 사용하지 않는다. 수정 버전은 Git 기록으로 관리한다.
