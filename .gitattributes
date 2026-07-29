@@ -5,3 +5,7 @@ scripts/launcher_assets/start.bat text eol=crlf
 scripts/launcher_assets/stop.bat text eol=crlf
 release/start.bat text eol=crlf
 release/start_exe.bat text eol=crlf
+
+# Preserve downloaded public CSV snapshots byte-for-byte, including their
+# original encoding and CRLF line endings.
+data/public/**/*.csv -text -diff
