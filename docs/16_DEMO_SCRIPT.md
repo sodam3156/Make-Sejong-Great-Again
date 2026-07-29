@@ -2,7 +2,7 @@
 
 동결 기준: `backend/fixtures/demo_run.json`과 `docs/evidence/demo_freeze_20260729.json`. 이 문서는 fixture와 함께 생성되며 수치를 직접 편집하지 않는다.
 
-정본 메타데이터: freeze `freeze-20260729-202509-kst`, source run `live-rain_spillback_a-s42-a2799776ca`, checksum `23697a5073863fe62b3bf43053fd2e758c145edd385e7748f29a13e5f28a4823`, seed `42`, `provisional=true`. 모두 합성 결과이며 세종 실측 성과가 아니다.
+정본 메타데이터: freeze `freeze-20260729-202509-kst`, source run `live-rain_spillback_a-s42-a620cd4bb7`, checksum `23697a5073863fe62b3bf43053fd2e758c145edd385e7748f29a13e5f28a4823`, seed `42`, `provisional=true`. 모두 합성 결과이며 세종 실측 성과가 아니다.
 
 ## 0. 시작 전 체크리스트
 

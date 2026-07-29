@@ -43,7 +43,7 @@ python scripts/generate_contract_artifacts.py --check
 
 | 파라미터 | 값 | 근거 |
 |---|---|---|
-| 강우 용량 배율 | dry 1.00 / light 0.95 / moderate 0.89 / heavy 0.83 | 이슈 #9 초기 민감도 (용량 0.83~0.95배) |
+| 강우 용량 배율 | dry 1.00 / light 0.95 / moderate 0.89 / heavy 0.84 | QA v2 문헌 평균 기반 provisional 민감도 |
 | 링크 저장공간 | L12 22대, L23 18대 | 연속 회전교차로 사이 짧은 연결도로 가정 |
 | capacity drop | 포화 정체(occ≥0.95) 링크 선두 배출 ×0.70 | stop-and-go 방출 손실. spillback이 상류 처리량을 깎는 핵심 메커니즘 |
 | 게이팅 임계 | 하류 점유 0.80 초과 시 상류 유입 비례 감축 (하한 0.35) | 저장공간 초과 전 선제 조절 |
@@ -51,19 +51,21 @@ python scripts/generate_contract_artifacts.py --check
 | 공정성 한도 | 진입로 P95 지체 +15% | 이슈 #9 가드 기준 |
 | 시드 재현 | `random.Random(f"{scenario_id}:{seed}")` | 동일 입력·시드 → 동일 결과 |
 
-## 검증된 스파이크 결과 (seed 42, rain_spillback_a)
+## QA v2 동결 결과 (seed 42, rain_spillback_a)
 
-| 정책 | spillback 누적 | 총 통행시간 | 가드 |
+정본 source run `live-rain_spillback_a-s42-a620cd4bb7`, checksum `23697a5073863fe62b3bf43053fd2e758c145edd385e7748f29a13e5f28a4823`, `provisional=true`. 아래 값은 이 합성 run에만 해당하며 세종 실측 성과가 아니다.
+
+| 정책 | 회랑 spillback wall-clock | 모형 내 누적 체류시간 | 가드 |
 |---|---|---|---|
-| no_action | 3885초 | 284,868초 | 기준선 |
-| fixed_metering | -65% | -44% | **탈락** (R1_W·R2_S P95 +15% 초과 악화) |
-| corridor_gating | -100% | -75% | 통과 |
+| no_action | 1980초 | 265228 vehicle-seconds | 기준선 |
+| fixed_metering | -62.4% | -41.6% | **탈락** (R1_W·R2_S P95 대기 proxy 내부 한도 초과) |
+| corridor_gating | -100% | -77.3% | 통과 |
 
-통과 기준(spillback 30%↓, 총 통행시간 10%↓, 진입로 15% 악화 금지, 재현성)은 `backend/tests/test_spike.py`가 시드 10개에서 자동 검증한다.
+통과 기준(spillback 30%↓, 누적 체류시간 10%↓, 진입로 15% 악화 금지, 재현성)은 `backend/tests/test_spike.py`가 A/B 각각 seed 1~10에서 자동 검증한다.
 
 ## 한계
 
-- SUMO·TraCI 미사용. 큐 모델은 차로 변경, 기하구조, 신호 상세를 표현하지 않는다. TTC·PET 대신 진입 차단 이벤트 기반 급제동 대리지표를 쓴다.
+- SUMO·TraCI 미사용. 큐 모델은 차로 변경, 기하구조, 신호 상세를 표현하지 않는다. 안전 지표는 진입 차단 이벤트 기반 proxy이며 실제 차량 궤적 안전지표가 아니다.
 - 회복 판정 상한이 우천 후 900초라 무대응 시나리오는 "관측창 내 회복 실패"로 기록된다.
 - 실행 결과는 오프라인 JSON 재생 파일로 영속화한다. 다중 사용자 운영을 위한 SQLite 저장소는 제출 범위 밖이다.
 - 수요·용량 수치는 합성이며 실측 보정 전이다. 개선율은 프로토타입 내부 비교값이지 실도로 성과 주장이 아니다.
