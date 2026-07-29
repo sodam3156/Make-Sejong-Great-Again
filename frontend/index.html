@@ -223,7 +223,7 @@
   </div>
 
   <div class="panel">
-    <h2>핵심 KPI (현재 시점 스냅샷: corridor_gating 적용 기준)</h2>
+    <h2>핵심 KPI (현재 run 계산값)</h2>
     <div class="kpi-grid" id="kpi-grid"></div>
   </div>
 
@@ -377,17 +377,24 @@
 
   // ---- KPI cards ----
   var KPI_DEFS = [
-    { key: 'spillback_time_sec', label: 'Spillback 시간', unit: '초' },
-    { key: 'recovery_time_sec', label: '회복 시간', unit: '초' },
-    { key: 'total_travel_time_sec', label: '총 통행시간', unit: '초' },
-    { key: 'worst_approach_delay_sec', label: '최악 진입로 지체', unit: '초' }
+    { key: 'spillback_time_sec', label: '회랑 Spillback wall-clock', unit: '초' },
+    { key: 'recovery_time_sec', label: '회복(60초 연속)', unit: '초' },
+    { key: 'total_travel_time_sec', label: '모형 내 누적 체류시간', unit: 'vehicle-seconds' },
+    { key: 'worst_approach_delay_sec', label: '최악 진입로 P95 대기 proxy', unit: '초' }
   ];
+
+  function kpiValue(kpi, def) {
+    if (def.key === 'recovery_time_sec' && kpi.recovery_observed === false) {
+      return '관측창 15분 내 미회복';
+    }
+    return kpi[def.key] + '<span class="unit">' + def.unit + '</span>';
+  }
 
   function renderKPI(kpi) {
     var grid = document.getElementById('kpi-grid');
     grid.innerHTML = KPI_DEFS.map(function (d) {
       return '<div class="kpi-card"><div class="label">' + d.label + '</div>' +
-        '<div class="value">' + kpi[d.key] + '<span class="unit">' + d.unit + '</span></div></div>';
+        '<div class="value">' + kpiValue(kpi, d) + '</div></div>';
     }).join('');
   }
 
@@ -415,7 +422,7 @@
         '</tr>';
     }).join('');
     document.getElementById('policy-table').innerHTML =
-      '<thead><tr><th>정책</th><th>Spillback</th><th>총 통행시간</th><th>최악 지체</th>' +
+      '<thead><tr><th>정책</th><th>Spillback wall-clock</th><th>누적 체류시간</th><th>P95 대기 proxy</th>' +
       '<th>Δ Spillback</th><th>Δ 통행시간</th><th>Δ 최악지체</th></tr></thead><tbody>' + rows + '</tbody>';
   }
 
@@ -545,14 +552,18 @@
     function col(title, kpi) {
       return '<div class="recovery-col"><h3>' + title + '</h3>' +
         KPI_DEFS.map(function (d) {
-          return '<div class="row"><span>' + d.label + '</span><span>' + kpi[d.key] + d.unit + '</span></div>';
+          return '<div class="row"><span>' + d.label + '</span><span>' + kpiValue(kpi, d) + '</span></div>';
         }).join('') + '</div>';
     }
     var imp = rc.improvement || {};
     wrap.innerHTML =
       '<div class="recovery-side">' + col('무대응', rc.no_action) + col('적용 (corridor_gating)', rc.applied) + '</div>' +
       '<div class="improvement-row">개선율: Spillback ' + pctSpan(imp.spillback_time_pct) +
-      ' · 회복시간 ' + pctSpan(imp.recovery_time_pct) +
+      ' · 회복시간 ' + (
+        rc.no_action.recovery_observed === false
+          ? '<span class="pct-neutral">비교 보류(기준선 미회복)</span>'
+          : pctSpan(imp.recovery_time_pct)
+      ) +
       ' · 총 통행시간 ' + pctSpan(imp.total_travel_time_pct) +
       ' · 최악지체 ' + pctSpan(imp.worst_approach_delay_pct) + '</div>';
   }

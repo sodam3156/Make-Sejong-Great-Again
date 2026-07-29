@@ -42,7 +42,9 @@ from .safety import (
 from .simulation import (
     DURATION,
     DRY_PREP_END,
+    KPI_DEFINITION_VERSION,
     LINKS,
+    PARAMETER_SET_VERSION,
     RAIN_END,
     SCENARIOS,
     SIMULATOR_VERSION,
@@ -54,6 +56,7 @@ from .storage import RunStore
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 FIXTURE_PATH = BACKEND_DIR / "fixtures" / "demo_run.json"
 CACHED_FIXTURE_PATH = BACKEND_DIR / "fixtures" / "cached_run.json"
+FREEZE_META_PATH = BACKEND_DIR / "fixtures" / "demo_freeze_meta.json"
 LOGS_DIR = BACKEND_DIR / "logs"
 FRONTEND_DIR = BACKEND_DIR.parent / "frontend"
 KST = timezone(timedelta(hours=9))
@@ -86,14 +89,25 @@ def load_fixture(path: Path = FIXTURE_PATH) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def load_freeze_meta() -> dict[str, Any]:
+    if not FREEZE_META_PATH.exists():
+        return {
+            "freeze_id": "unfrozen",
+            "git_commit_sha": "unfrozen",
+            "source_tree_checksum": "unfrozen",
+        }
+    return json.loads(FREEZE_META_PATH.read_text(encoding="utf-8"))
+
+
 def _now() -> str:
     return datetime.now(KST).isoformat()
 
 
-def _kpi(result: SimResult) -> dict[str, float]:
+def _kpi(result: SimResult) -> dict[str, float | bool]:
     return {
         "spillback_time_sec": result.spillback_time_sec,
         "recovery_time_sec": result.recovery_time_sec,
+        "recovery_observed": result.recovery_observed,
         "total_travel_time_sec": result.total_travel_time_sec,
         "worst_approach_delay_sec": result.worst_approach_delay_sec,
     }
@@ -103,6 +117,53 @@ def _pct(candidate: float, baseline: float) -> float:
     if baseline == 0:
         return 0.0
     return round((candidate - baseline) / baseline * 100, 1)
+
+
+def result_checksum(run: dict[str, Any]) -> str:
+    """Hash the deterministic result shared by live, fixture, and the screen."""
+    canonical = {
+        "scenario": run["scenario"],
+        "screen_states": run["screen_states"],
+        "network": run["network"],
+        "timeline": run["timeline"],
+        "policies": run["policies"],
+        "decision": run["decision"],
+        "versions": {
+            key: run["reproducibility"][key]
+            for key in (
+                "simulator_version",
+                "parameter_set_version",
+                "kpi_definition_version",
+                "guard_version",
+                "network_version",
+                "policy_version",
+                "scoring_version",
+            )
+        },
+    }
+
+    def normalize(value: Any) -> Any:
+        if isinstance(value, bool) or value is None:
+            return value
+        if isinstance(value, float) and value.is_integer():
+            return int(value)
+        if isinstance(value, dict):
+            return {
+                key: normalized
+                for key, item in value.items()
+                if (normalized := normalize(item)) is not None
+            }
+        if isinstance(value, list):
+            return [normalize(item) for item in value]
+        return value
+
+    encoded = json.dumps(
+        normalize(canonical),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 def _improvement(candidate: dict[str, Any], baseline: dict[str, Any]) -> dict[str, float]:
@@ -197,8 +258,13 @@ def _policy_record(
         "kpi": _kpi(result),
         "extra": {
             "spillback_events": result.spillback_events,
+            "spillback_link_seconds": result.spillback_link_seconds,
             "completed_trips": result.completed_trips,
             "diversion_delay_sec": result.diversion_delay_sec,
+            "diverted_vehicles": result.diverted_vehicles,
+            "diversion_vehicle_seconds": result.diversion_vehicle_seconds,
+            "diversion_freeflow_seconds": result.diversion_freeflow_seconds,
+            "modeled_vehicle_seconds": result.modeled_vehicle_seconds,
             "safety_proxy_hard_brakes": result.hard_brakes,
             "approach_p95_delay": result.approach_p95_delay,
         },
@@ -228,12 +294,21 @@ def _make_run_id(
     scenario_id: str,
     seed: int,
     data_quality: dict[str, Any],
+    source_tree_checksum: str,
 ) -> str:
     payload = json.dumps(
         {
             "scenario_id": scenario_id,
             "seed": seed,
             "data_quality": data_quality,
+            "simulator_version": SIMULATOR_VERSION,
+            "parameter_set_version": PARAMETER_SET_VERSION,
+            "kpi_definition_version": KPI_DEFINITION_VERSION,
+            "guard_version": RULE_VERSION,
+            "policy_version": POLICY_VERSION,
+            "network_version": NETWORK_VERSION,
+            "scoring_version": SCORING_VERSION,
+            "source_tree_checksum": source_tree_checksum,
         },
         sort_keys=True,
         separators=(",", ":"),
@@ -273,6 +348,7 @@ def build_run(
     scenario_id: str,
     seed: int,
     data_quality: dict[str, Any] | None = None,
+    freeze_meta: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build one deterministic live result.
 
@@ -283,10 +359,11 @@ def build_run(
     if scenario_id not in SCENARIOS:
         raise ValueError(f"unknown scenario_id: {scenario_id}")
     quality = copy.deepcopy(data_quality or {
-        "data_age_sec": 0,
+        "data_age_sec": 0.0,
         "sensor_available": True,
         "device_status": "ok",
     })
+    frozen_source = copy.deepcopy(freeze_meta or load_freeze_meta())
     started = time.perf_counter()
     results = {
         policy_id: run_simulation(scenario_id, seed, policy_id)
@@ -320,7 +397,13 @@ def build_run(
         for policy in policy_records
     )
     workflow_state = "SAFETY_PASSED" if safety_passed else "SAFETY_REJECTED"
-    run_id = _make_run_id("live_simulation", scenario_id, seed, quality)
+    run_id = _make_run_id(
+        "live_simulation",
+        scenario_id,
+        seed,
+        quality,
+        frozen_source["source_tree_checksum"],
+    )
 
     run = {
         "run_id": run_id,
@@ -379,7 +462,7 @@ def build_run(
             "rules": [
                 {"code": "FAIRNESS_P95_EXCEEDED", "threshold_pct": 15.0},
                 {"code": "DIVERSION_DELAY_EXCEEDED", "threshold_sec": 180.0},
-                {"code": "SAFETY_TTC_DEGRADED"},
+                {"code": "HARD_BRAKE_PROXY_DEGRADED"},
                 {"code": "DATA_STALE", "threshold_sec": 120.0},
                 {"code": "DEVICE_FAULT"},
                 {"code": "CANDIDATE_HASH_MISMATCH"},
@@ -411,7 +494,13 @@ def build_run(
                 "seed": seed,
                 "data_quality": quality,
             },
+            "freeze_id": frozen_source["freeze_id"],
+            "git_commit_sha": frozen_source["git_commit_sha"],
+            "source_tree_checksum": frozen_source["source_tree_checksum"],
             "simulator_version": SIMULATOR_VERSION,
+            "parameter_set_version": PARAMETER_SET_VERSION,
+            "kpi_definition_version": KPI_DEFINITION_VERSION,
+            "guard_version": RULE_VERSION,
             "network_version": NETWORK_VERSION,
             "policy_version": POLICY_VERSION,
             "rule_version": RULE_VERSION,
@@ -423,6 +512,7 @@ def build_run(
         },
         "elapsed_ms": round((time.perf_counter() - started) * 1000, 1),
     }
+    run["reproducibility"]["result_checksum"] = result_checksum(run)
     return run
 
 
@@ -435,7 +525,14 @@ def _fallback_run(
     cache_path = CACHED_FIXTURE_PATH if CACHED_FIXTURE_PATH.exists() else FIXTURE_PATH
     run = load_fixture(cache_path if source == "cached_simulation" else FIXTURE_PATH)
     run = copy.deepcopy(run)
-    run["run_id"] = _make_run_id(source, scenario_id, seed, data_quality)
+    stored_reproducibility = copy.deepcopy(run.get("reproducibility", {}))
+    run["run_id"] = _make_run_id(
+        source,
+        scenario_id,
+        seed,
+        data_quality,
+        stored_reproducibility.get("source_tree_checksum", "unfrozen"),
+    )
     run["result_source"] = source
     run["generated_at"] = _now()
     run["note"] = (
@@ -482,6 +579,22 @@ def _fallback_run(
             "data_quality": data_quality,
         },
         "simulator_version": "stored-result",
+        "freeze_id": stored_reproducibility.get("freeze_id", "unfrozen"),
+        "git_commit_sha": stored_reproducibility.get(
+            "git_commit_sha", "unfrozen"
+        ),
+        "source_tree_checksum": stored_reproducibility.get(
+            "source_tree_checksum", "unfrozen"
+        ),
+        "parameter_set_version": stored_reproducibility.get(
+            "parameter_set_version", PARAMETER_SET_VERSION
+        ),
+        "kpi_definition_version": stored_reproducibility.get(
+            "kpi_definition_version", KPI_DEFINITION_VERSION
+        ),
+        "guard_version": stored_reproducibility.get(
+            "guard_version", RULE_VERSION
+        ),
         "network_version": run.get("network_version", NETWORK_VERSION),
         "policy_version": POLICY_VERSION,
         "rule_version": RULE_VERSION,
@@ -490,6 +603,7 @@ def _fallback_run(
             policy["policy_id"]: policy["candidate_hash"]
             for policy in run["policies"]
         },
+        "result_checksum": stored_reproducibility.get("result_checksum"),
         "stored_scenario_id": run.get("scenario", {}).get("scenario_id"),
     }
     run["elapsed_ms"] = 0.0
@@ -509,6 +623,9 @@ def _save_and_audit(run: dict[str, Any], requested_input: dict[str, Any]) -> Non
                 key: run["reproducibility"].get(key)
                 for key in (
                     "simulator_version",
+                    "parameter_set_version",
+                    "kpi_definition_version",
+                    "guard_version",
                     "network_version",
                     "policy_version",
                     "rule_version",

@@ -173,6 +173,7 @@
       "properties": {
         "spillback_time_sec": { "type": "number" },
         "recovery_time_sec": { "type": "number" },
+        "recovery_observed": { "type": "boolean" },
         "total_travel_time_sec": { "type": "number" },
         "worst_approach_delay_sec": { "type": "number" }
       }
