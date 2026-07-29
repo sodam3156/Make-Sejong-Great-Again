@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 from backend.app import main as backend_main
 from backend.app.main import result_checksum
 from backend.app.storage import RunStore
+from scripts import generate_contract_artifacts as artifact_generator
 from scripts.generate_contract_artifacts import ROOT, SOURCE_FILES
 
 
@@ -152,3 +153,22 @@ def test_frozen_git_sha_is_latest_commit_touching_source_files():
     ).stdout.strip()
 
     assert meta["git_commit_sha"] == current
+
+
+def test_source_tree_checksum_is_line_ending_independent(
+    tmp_path,
+    monkeypatch,
+):
+    source = tmp_path / "source.txt"
+    monkeypatch.setattr(artifact_generator, "ROOT", tmp_path)
+    monkeypatch.setattr(
+        artifact_generator,
+        "SOURCE_FILES",
+        ("source.txt",),
+    )
+
+    source.write_bytes(b"first\nsecond\n")
+    lf_checksum = artifact_generator._source_tree_checksum()
+    source.write_bytes(b"first\r\nsecond\r\n")
+
+    assert artifact_generator._source_tree_checksum() == lf_checksum

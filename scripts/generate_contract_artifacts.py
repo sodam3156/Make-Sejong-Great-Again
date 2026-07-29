@@ -68,7 +68,9 @@ def _source_tree_checksum() -> str:
         path = ROOT / relative
         digest.update(relative.encode("utf-8"))
         digest.update(b"\0")
-        digest.update(path.read_bytes())
+        # Git stores these text sources with LF, while Windows checkouts may
+        # materialize CRLF. Keep the freeze identity stable across platforms.
+        digest.update(path.read_bytes().replace(b"\r\n", b"\n"))
         digest.update(b"\0")
     return digest.hexdigest()
 

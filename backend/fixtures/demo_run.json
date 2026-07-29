@@ -389,7 +389,7 @@
       "no_action": "1b8abf877414569c4d34b295385ba5ce79c7a7ed614c5d0e8dba4243e268af3e"
     },
     "freeze_id": "freeze-20260729-202509-kst",
-    "git_commit_sha": "ce6fe7404f2e8ae84d5e31e4245258ffaf7bef27",
+    "git_commit_sha": "b9324ecfde1d74de154a21888e59632e1f50c329",
     "guard_version": "rainflow-guard-v2",
     "input": {
       "data_quality": {
@@ -409,8 +409,8 @@
     "rule_version": "rainflow-guard-v2",
     "scoring_version": "rainflow-rule-v1",
     "simulator_version": "rainflow-queue-v2",
-    "source_live_run_id": "live-rain_spillback_a-s42-f3ba7ad161",
-    "source_tree_checksum": "6e545102aab3189618b57da70eacce20e72c6fe47a25e62cb23d498dcf2944d3"
+    "source_live_run_id": "live-rain_spillback_a-s42-ceedb562be",
+    "source_tree_checksum": "598c6348df0ec9c07362a62c297b1fa112d7daad9fc6758f15dc56d98c23e2ae"
   },
   "result_source": "fixture",
   "run_id": "fixture-qa-v2-001",

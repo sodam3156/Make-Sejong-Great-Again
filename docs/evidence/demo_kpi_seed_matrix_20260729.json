@@ -1,7 +1,7 @@
 {
   "dataset_id": "synthetic-v0",
   "freeze_id": "freeze-20260729-202509-kst",
-  "git_commit_sha": "ce6fe7404f2e8ae84d5e31e4245258ffaf7bef27",
+  "git_commit_sha": "b9324ecfde1d74de154a21888e59632e1f50c329",
   "guard_version": "rainflow-guard-v2",
   "kpi_definition_version": "rainflow-kpi-v2",
   "parameter_set_version": "rainflow-provisional-v2",
@@ -13,7 +13,7 @@
         {
           "guard_passed": true,
           "result_checksum": "362e61100fa52551a88724b07adc3fc66aca9c9097b8d42a97627c1779ac9155",
-          "run_id": "live-rain_spillback_a-s1-46cfdee232",
+          "run_id": "live-rain_spillback_a-s1-0840da05b3",
           "seed": 1,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.1
@@ -21,7 +21,7 @@
         {
           "guard_passed": true,
           "result_checksum": "8965c8faded0660566f8b20f08f82b3b7a970b8d61ee50462eea8f2348eaaab7",
-          "run_id": "live-rain_spillback_a-s2-f30ee9d335",
+          "run_id": "live-rain_spillback_a-s2-23327d509e",
           "seed": 2,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.9
@@ -29,7 +29,7 @@
         {
           "guard_passed": true,
           "result_checksum": "6aabbad4655c7a3408bb9f8667a224441e73c308a4db5d2f590e7755d93cd552",
-          "run_id": "live-rain_spillback_a-s3-aa78c03bdf",
+          "run_id": "live-rain_spillback_a-s3-141911d57b",
           "seed": 3,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -76.6
@@ -37,7 +37,7 @@
         {
           "guard_passed": true,
           "result_checksum": "2d0f02ed88f49927d2187cb1d3b304848d731f9928736f95c304ad50c9d8ead3",
-          "run_id": "live-rain_spillback_a-s4-2ff656a965",
+          "run_id": "live-rain_spillback_a-s4-d0fd5f7682",
           "seed": 4,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.1
@@ -45,7 +45,7 @@
         {
           "guard_passed": true,
           "result_checksum": "2636cc395b0931e621cd597cd7297ac090e2bb309fc67c464c42e4e23b9f8cad",
-          "run_id": "live-rain_spillback_a-s5-4be7770bfc",
+          "run_id": "live-rain_spillback_a-s5-2efe44777a",
           "seed": 5,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.5
@@ -53,7 +53,7 @@
         {
           "guard_passed": true,
           "result_checksum": "56307abaeed70414c8408367af2df30c2a3ca4a8902109f020cd67742cc7bf9c",
-          "run_id": "live-rain_spillback_a-s6-951cefd176",
+          "run_id": "live-rain_spillback_a-s6-77e84cd0e5",
           "seed": 6,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.0
@@ -61,7 +61,7 @@
         {
           "guard_passed": true,
           "result_checksum": "02f5b137f1c978fd799da6661d0a29a9ef6baf193ed1af8a9afe9f8b18dfe074",
-          "run_id": "live-rain_spillback_a-s7-0c3033d8f6",
+          "run_id": "live-rain_spillback_a-s7-9daf39bf28",
           "seed": 7,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.1
@@ -69,7 +69,7 @@
         {
           "guard_passed": true,
           "result_checksum": "1a048e0ca2a824f84bc6da2b2d671babc49bd7ad2347de0a0b082752751fe35e",
-          "run_id": "live-rain_spillback_a-s8-e5e4139cd5",
+          "run_id": "live-rain_spillback_a-s8-0f8310cf66",
           "seed": 8,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.3
@@ -77,7 +77,7 @@
         {
           "guard_passed": true,
           "result_checksum": "cbe906637f04d038ae3803bbbe1e679ffe61dedbe078f2cba3a1fb19bc3f3dcc",
-          "run_id": "live-rain_spillback_a-s9-6d06cadd4a",
+          "run_id": "live-rain_spillback_a-s9-905c81fca1",
           "seed": 9,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -78.0
@@ -85,7 +85,7 @@
         {
           "guard_passed": true,
           "result_checksum": "06d61082d0cfc5f7f85e185e741b385f777de416c3e0b131f4171f9f37b5bf5f",
-          "run_id": "live-rain_spillback_a-s10-0815333369",
+          "run_id": "live-rain_spillback_a-s10-aeb923002d",
           "seed": 10,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -76.7
@@ -110,7 +110,7 @@
         {
           "guard_passed": true,
           "result_checksum": "cd35e70c97cd4726f97ec0c8caa86b5173ff9eb1508571d0bbdd2ad2e70ccd34",
-          "run_id": "live-rain_spillback_b-s1-ce05faf558",
+          "run_id": "live-rain_spillback_b-s1-3d50ed2493",
           "seed": 1,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.5
@@ -118,7 +118,7 @@
         {
           "guard_passed": true,
           "result_checksum": "2eb030fd76da8b372ba2b6d00c55bec722098f700183d52e5debfc4f3e422d80",
-          "run_id": "live-rain_spillback_b-s2-5bd6876092",
+          "run_id": "live-rain_spillback_b-s2-2fa94e0f42",
           "seed": 2,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -68.8
@@ -126,7 +126,7 @@
         {
           "guard_passed": true,
           "result_checksum": "475e19c27b719f92dad2183722a164cbcdb3d71ebb7e428ee07d71fc3f8e8e5c",
-          "run_id": "live-rain_spillback_b-s3-8abe10d2da",
+          "run_id": "live-rain_spillback_b-s3-1f846211eb",
           "seed": 3,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -68.4
@@ -134,7 +134,7 @@
         {
           "guard_passed": true,
           "result_checksum": "0f979acda70374f7db2ad636f0c3d656498f6db3586255159a025fcd685cd400",
-          "run_id": "live-rain_spillback_b-s4-452070d981",
+          "run_id": "live-rain_spillback_b-s4-065e73defa",
           "seed": 4,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.5
@@ -142,7 +142,7 @@
         {
           "guard_passed": true,
           "result_checksum": "4467004a3ca12e8228fec53f0117a7f147a00eecff4c2fd0210449c550eb33a8",
-          "run_id": "live-rain_spillback_b-s5-86172991d3",
+          "run_id": "live-rain_spillback_b-s5-9fc41507d1",
           "seed": 5,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.0
@@ -150,7 +150,7 @@
         {
           "guard_passed": true,
           "result_checksum": "6dc5818e86ae6e83beba539e8628eb8fc1478405c110ba954f94ddac40b56807",
-          "run_id": "live-rain_spillback_b-s6-df2ae7981a",
+          "run_id": "live-rain_spillback_b-s6-16717b8481",
           "seed": 6,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -68.3
@@ -158,7 +158,7 @@
         {
           "guard_passed": true,
           "result_checksum": "8bdaa1f887c98929680be373c98fe8256388fb81bd5282d50f2cff4898650a7d",
-          "run_id": "live-rain_spillback_b-s7-3624dbfe0d",
+          "run_id": "live-rain_spillback_b-s7-79a3401e10",
           "seed": 7,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.2
@@ -166,7 +166,7 @@
         {
           "guard_passed": true,
           "result_checksum": "fbd9e569f4ba5765da3c420b01b591b8f0e7fedc4e660f9f82e1229457f3187e",
-          "run_id": "live-rain_spillback_b-s8-ed218813e6",
+          "run_id": "live-rain_spillback_b-s8-4803e0275a",
           "seed": 8,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.2
@@ -174,7 +174,7 @@
         {
           "guard_passed": true,
           "result_checksum": "200e0efa22f7de408f8793c93fa892ca087b1dccc3c381de19fdaa1438fd2314",
-          "run_id": "live-rain_spillback_b-s9-58d7727707",
+          "run_id": "live-rain_spillback_b-s9-aae3f28578",
           "seed": 9,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.7
@@ -182,7 +182,7 @@
         {
           "guard_passed": true,
           "result_checksum": "936d0ac9ce789e9a9fe2a60a4e2c0047466615d9bdac1cd1d4b51b07f8539cd3",
-          "run_id": "live-rain_spillback_b-s10-a2fa3edd6d",
+          "run_id": "live-rain_spillback_b-s10-88d807699d",
           "seed": 10,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -68.9
@@ -202,5 +202,5 @@
       }
     }
   },
-  "source_tree_checksum": "6e545102aab3189618b57da70eacce20e72c6fe47a25e62cb23d498dcf2944d3"
+  "source_tree_checksum": "598c6348df0ec9c07362a62c297b1fa112d7daad9fc6758f15dc56d98c23e2ae"
 }
