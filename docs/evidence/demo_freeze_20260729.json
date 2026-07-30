@@ -1,26 +1,26 @@
 {
   "artifacts": {
-    "backend/README.md": "a64c33743f6f5b6f6ff1ad267e989be850a934f0376ceab2ed393171f126d8e4",
-    "backend/fixtures/cached_run.json": "41ea33e90ae75350a5b4e1b106ef74b6e37c7b8a5fd86326ab2e721e9faac866",
-    "backend/fixtures/demo_freeze_meta.json": "10b64fc9b9cb62138411dc28822f81a2ed48e78fe5bcd8a540483b31c73b5bf0",
-    "backend/fixtures/demo_run.json": "6aa08872b96f3c87a207b97172c3e168a430728a0cc3e025bcc37b282c60424b",
+    "backend/README.md": "f5d5c7cdb86f7cf8324a06ca20cbfc5f08b00a5512fa29fc17c52f18faf2fe21",
+    "backend/fixtures/cached_run.json": "0575ddada1ea0636dbfcb3e6411adc9557566fd4c7f11eb00ae4683243c83947",
+    "backend/fixtures/demo_freeze_meta.json": "877de69f2b1ab44400512d0f877d31637aa025d8f5c572f5997829f26b092d2f",
+    "backend/fixtures/demo_run.json": "8efd893a5f603dd68e9ed174ae3bcc39dc4cd4a405a995a0183cc432c208a88b",
     "contracts/openapi.json": "b9de78d38d673df302ec42fabfe4c0ef17c8eb139de1e3d059a61495269ad1c5",
-    "docs/16_DEMO_SCRIPT.md": "b09bfcdd05aba2258647875108a21d42b3d59c5539bfdc385ff53d7e909335e4",
-    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "aaa8e18ec2afb02b6e9a6e186e1c02e0e547266127f5a32c3eb05effb05de488",
-    "frontend/demo_run.js": "db6c8812438389af735e2fd9d7cb6a3005edefe1d25135ee446ad90804c38718"
+    "docs/16_DEMO_SCRIPT.md": "231cf961cccd481f8a6a5b113cedae838d23a31e3e42f7b2ce2b303b18755d39",
+    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "936bf691cb7df00e322d9436a2f7ca9282e92881cf4689a34e815d54c1b60bc1",
+    "frontend/demo_run.js": "aae70687b00c5b318eb7fc84be187fb07506ef3572720217b71440543518bc5b"
   },
-  "freeze_id": "freeze-20260729-202509-kst",
-  "frozen_at": "2026-07-29T20:25:09+09:00",
+  "freeze_id": "freeze-20260730-191723-kst",
+  "frozen_at": "2026-07-30T19:17:23+09:00",
   "source": {
     "fixture_run_id": "fixture-qa-v2-001",
-    "freeze_id": "freeze-20260729-202509-kst",
-    "frozen_at": "2026-07-29T20:25:09+09:00",
-    "git_commit_sha": "20ce47135281f1c93ebf84555ba94dae113c0418",
+    "freeze_id": "freeze-20260730-191723-kst",
+    "frozen_at": "2026-07-30T19:17:23+09:00",
+    "git_commit_sha": "98ef5ec0394b72000cb931646041f839447f11f6",
     "provisional": true,
-    "result_checksum": "c9088907640696c315685619ce18ae1529ceb8bc1e993bb36c0f080b7ce4ed89",
-    "run_id": "live-rain_spillback_a-s42-f3727bcd00",
+    "result_checksum": "4d2ffedf11b004dfe05c9da351bbf1b195f3c3d9e53a2941e7200eb64cac6d21",
+    "run_id": "live-rain_spillback_a-s42-57ab9f71a5",
     "scenario_id": "rain_spillback_a",
     "seed": 42,
-    "source_tree_checksum": "94d556a6de2f09c3d432465edd63be156df494a1548a6ef69516591ab0e55efd"
+    "source_tree_checksum": "417bc32d922a8ed469373f6dcc2628c802d48619c98e489099c440d39e5ac2a0"
   }
 }

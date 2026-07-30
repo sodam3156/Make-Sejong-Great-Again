@@ -1,10 +1,10 @@
 window.DEMO_RUN = {
   "approval": {
-    "decided_at": "2026-07-29T20:25:09+09:00",
+    "decided_at": "2026-07-30T19:17:23+09:00",
     "operator": "demo_operator",
     "policy_id": "corridor_gating",
     "reason": "QA v2 가드 통과 후보 중 규칙 기반 안전 점수가 가장 높음",
-    "requested_at": "2026-07-29T20:25:09+09:00",
+    "requested_at": "2026-07-30T19:17:23+09:00",
     "result_source": "fixture",
     "status": "approved",
     "workflow_state": "EVALUATED"
@@ -139,11 +139,11 @@ window.DEMO_RUN = {
         "risks": [
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "성금교차로 서측 진입로 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과"
+            "detail": "성금교차로 서측 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과"
           },
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "청사교차로 남측 진입로 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과"
+            "detail": "청사교차로 남측 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과"
           }
         ],
         "score": 50.83
@@ -158,7 +158,7 @@ window.DEMO_RUN = {
     "scoring_version": "rainflow-rule-v1"
   },
   "elapsed_ms": 0.0,
-  "generated_at": "2026-07-29T20:25:09+09:00",
+  "generated_at": "2026-07-30T19:17:23+09:00",
   "network": {
     "approaches": [
       "성금교차로 북측 진입로",
@@ -328,7 +328,7 @@ window.DEMO_RUN = {
       "score": 0.0
     },
     {
-      "candidate_hash": "42cc78249382a68b179f825a3db7880ce7da2a31513a9eed515a705c27f55cbb",
+      "candidate_hash": "3ce2b7b03b44b96e02cd99698553da9863f2af4f42a5bdbab8e72bc08adc857b",
       "delta_vs_no_action": {
         "spillback_time_pct": -62.4,
         "total_travel_time_pct": -41.6,
@@ -361,13 +361,13 @@ window.DEMO_RUN = {
         "violations": [
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "성금교차로 서측 진입로 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과",
+            "detail": "성금교차로 서측 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과",
             "observed_pct": 55.4,
             "threshold_pct": 15.0
           },
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "청사교차로 남측 진입로 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과",
+            "detail": "청사교차로 남측 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과",
             "observed_pct": 938.5,
             "threshold_pct": 15.0
           }
@@ -471,11 +471,11 @@ window.DEMO_RUN = {
   "reproducibility": {
     "candidate_hashes": {
       "corridor_gating": "dad35cd61630783f4ea256d31759ea58a0207cf981e10bacaab9c82b75a98ad3",
-      "fixed_metering": "42cc78249382a68b179f825a3db7880ce7da2a31513a9eed515a705c27f55cbb",
+      "fixed_metering": "3ce2b7b03b44b96e02cd99698553da9863f2af4f42a5bdbab8e72bc08adc857b",
       "no_action": "60ed4286b4ee6490c1b08032ee944fd9e77ed07ccf0ff672b92b24b210b89d06"
     },
-    "freeze_id": "freeze-20260729-202509-kst",
-    "git_commit_sha": "20ce47135281f1c93ebf84555ba94dae113c0418",
+    "freeze_id": "freeze-20260730-191723-kst",
+    "git_commit_sha": "98ef5ec0394b72000cb931646041f839447f11f6",
     "guard_version": "rainflow-guard-v2",
     "input": {
       "data_quality": {
@@ -491,12 +491,12 @@ window.DEMO_RUN = {
     "network_version": "sejong-nodelink-20260716-v1",
     "parameter_set_version": "rainflow-provisional-v2",
     "policy_version": "rainflow-policy-v1",
-    "result_checksum": "c9088907640696c315685619ce18ae1529ceb8bc1e993bb36c0f080b7ce4ed89",
+    "result_checksum": "4d2ffedf11b004dfe05c9da351bbf1b195f3c3d9e53a2941e7200eb64cac6d21",
     "rule_version": "rainflow-guard-v2",
     "scoring_version": "rainflow-rule-v1",
     "simulator_version": "rainflow-queue-v2",
-    "source_live_run_id": "live-rain_spillback_a-s42-f3727bcd00",
-    "source_tree_checksum": "94d556a6de2f09c3d432465edd63be156df494a1548a6ef69516591ab0e55efd"
+    "source_live_run_id": "live-rain_spillback_a-s42-57ab9f71a5",
+    "source_tree_checksum": "417bc32d922a8ed469373f6dcc2628c802d48619c98e489099c440d39e5ac2a0"
   },
   "result_source": "fixture",
   "run_id": "fixture-qa-v2-001",

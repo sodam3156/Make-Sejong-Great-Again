@@ -1,7 +1,7 @@
 {
   "dataset_id": "synthetic-v0",
-  "freeze_id": "freeze-20260729-202509-kst",
-  "git_commit_sha": "20ce47135281f1c93ebf84555ba94dae113c0418",
+  "freeze_id": "freeze-20260730-191723-kst",
+  "git_commit_sha": "98ef5ec0394b72000cb931646041f839447f11f6",
   "guard_version": "rainflow-guard-v2",
   "kpi_definition_version": "rainflow-kpi-v2",
   "parameter_set_version": "rainflow-provisional-v2",
@@ -12,80 +12,80 @@
       "runs": [
         {
           "guard_passed": true,
-          "result_checksum": "f4d60fb86871f2ced04d9b2dcd78fcecf4a693e404c6329f9824a584d66e7b8a",
-          "run_id": "live-rain_spillback_a-s1-7dab3a2239",
+          "result_checksum": "1cda2e9d837e5f75c208fea7bfac617d1ba8b843cde18e582cbfd8bc7c253867",
+          "run_id": "live-rain_spillback_a-s1-2c582e69e1",
           "seed": 1,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.1
         },
         {
           "guard_passed": true,
-          "result_checksum": "4bc38fb75db910b243eb084b6e4b9678b2283d90e8dd88d3658a00c4cedd1e95",
-          "run_id": "live-rain_spillback_a-s2-d2ba6249a0",
+          "result_checksum": "8c548bde63b9085ef1941ec2e1c6300298f9c4014c478c7699e478a370ddaae7",
+          "run_id": "live-rain_spillback_a-s2-975d704f93",
           "seed": 2,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.9
         },
         {
           "guard_passed": true,
-          "result_checksum": "57634dd53c5a5d9fe7be07bd9a4906f1f67fb1fa65203f788837939b0edbdd13",
-          "run_id": "live-rain_spillback_a-s3-c1da55c286",
+          "result_checksum": "b5532caa2cb4ddc6fe5322e81b67e8fea555d6162e96d0c7205e32a0049dec58",
+          "run_id": "live-rain_spillback_a-s3-b033e9495c",
           "seed": 3,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -76.6
         },
         {
           "guard_passed": true,
-          "result_checksum": "2df253e44bc2558bd77b827320c84d38656a915c159bbcfb40daa7d1195af25a",
-          "run_id": "live-rain_spillback_a-s4-3b528f322e",
+          "result_checksum": "33e79494a095b2086ef689b126bcb486cd686833b5dbeba8a50d035c0f37b632",
+          "run_id": "live-rain_spillback_a-s4-aa7b43ac70",
           "seed": 4,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.1
         },
         {
           "guard_passed": true,
-          "result_checksum": "412a71c51a7be5094877d5ea1a6f216a547ef2165c410611ae80a96a77936314",
-          "run_id": "live-rain_spillback_a-s5-42efcdd7b5",
+          "result_checksum": "4fd5ab0e17459eca3e7baee8439178c3eabf04380dc38a6dd308c049bfc0215e",
+          "run_id": "live-rain_spillback_a-s5-a7c3e75528",
           "seed": 5,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.5
         },
         {
           "guard_passed": true,
-          "result_checksum": "948ee467214d1f98b6dd5c1683d70e128792bff4d3840be94574324220d53596",
-          "run_id": "live-rain_spillback_a-s6-70e1de2d45",
+          "result_checksum": "17b8d1c9655c3e11f8769331fe23cdad2373d4c967938953d728823a18d7d38f",
+          "run_id": "live-rain_spillback_a-s6-f5caaa87eb",
           "seed": 6,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.0
         },
         {
           "guard_passed": true,
-          "result_checksum": "85638f16186cfc41e04e223d6b9fd472bff77d7accf40539054aee4267063718",
-          "run_id": "live-rain_spillback_a-s7-d5883f9c22",
+          "result_checksum": "fcd62869904515945dd7fb3b84ba2391222ea73bf716f8a6688c8ffaec6bab1c",
+          "run_id": "live-rain_spillback_a-s7-26863f52e1",
           "seed": 7,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.1
         },
         {
           "guard_passed": true,
-          "result_checksum": "d9461c073af009d46fcc0a9855467eeb962e94c542dda52ac64dadfa3ac96da2",
-          "run_id": "live-rain_spillback_a-s8-9de0e9d28d",
+          "result_checksum": "474485a7028e31126626d92409590e0251ed6168cb613777934aeca95a26daf7",
+          "run_id": "live-rain_spillback_a-s8-c769a72cf9",
           "seed": 8,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -77.3
         },
         {
           "guard_passed": true,
-          "result_checksum": "3519b4ede55f10c5044e09945ec9048fcba6fbb3e1f25591ea3d9bc471c5c8c6",
-          "run_id": "live-rain_spillback_a-s9-4ed9374f8e",
+          "result_checksum": "908d891de57dd32d9642144f60106fd242eaf827e0565ef63919e4ff82c9ae97",
+          "run_id": "live-rain_spillback_a-s9-9de87cdb1b",
           "seed": 9,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -78.0
         },
         {
           "guard_passed": true,
-          "result_checksum": "50bc41497c2fa133130d978cc277f0b50ad232f4285a556d9ecd2b9ed3effd98",
-          "run_id": "live-rain_spillback_a-s10-dd90fe9422",
+          "result_checksum": "f5b6c64a99a176984e3667b4cca6330b84313bc774566442e3427f702b58f951",
+          "run_id": "live-rain_spillback_a-s10-dd989d7afa",
           "seed": 10,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -76.7
@@ -109,80 +109,80 @@
       "runs": [
         {
           "guard_passed": true,
-          "result_checksum": "7fdefc533ef7833b5dce95ba6fcc4d7f0a6ee3b6d161e30606b4c95cc2a22602",
-          "run_id": "live-rain_spillback_b-s1-56c7c6d8d9",
+          "result_checksum": "37c868dc05d8d31003f4e02653d512c7560e736d5e3e47a6cf1a4a084622f090",
+          "run_id": "live-rain_spillback_b-s1-5e360d2c7e",
           "seed": 1,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.5
         },
         {
           "guard_passed": true,
-          "result_checksum": "6332afe70971a91531b2fbbef0384871cd5d81c1df9ec09b3a40ace1f8332872",
-          "run_id": "live-rain_spillback_b-s2-1db57c4e14",
+          "result_checksum": "3072ffe644c2661af8862483852a577dcb661967c20590e8e13d3d95e64b7f3c",
+          "run_id": "live-rain_spillback_b-s2-5833cf734e",
           "seed": 2,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -68.8
         },
         {
           "guard_passed": true,
-          "result_checksum": "db37e57aa2cef82ff8304d41cf25a190d2e096f3f2a51a397fb85d1d7f11234d",
-          "run_id": "live-rain_spillback_b-s3-332dc50d28",
+          "result_checksum": "24adc4cb45bbee2550a8e58de6259b3c72c26791989baed4fea21bdaaaa96a33",
+          "run_id": "live-rain_spillback_b-s3-ebb48f0591",
           "seed": 3,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -68.4
         },
         {
           "guard_passed": true,
-          "result_checksum": "28565dc131df72bbede059a13e64b941eb75ff75143816f7dd92445428d2e566",
-          "run_id": "live-rain_spillback_b-s4-10117712d5",
+          "result_checksum": "ae3eb3dddb7992de12e7f320a8c545f717bf55a16d4ebc1c6ecbd65186a900f5",
+          "run_id": "live-rain_spillback_b-s4-7e184c2c64",
           "seed": 4,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.5
         },
         {
           "guard_passed": true,
-          "result_checksum": "680124e2fc505c30fb17308c0d878e447872d4ed0cc1322b7c79e3200b7e7586",
-          "run_id": "live-rain_spillback_b-s5-1f1ded96e9",
+          "result_checksum": "dbb5cfd9c25c3b6f1adf519e8c1d255cc99863a1a7cc30893b7043a75ebadc1b",
+          "run_id": "live-rain_spillback_b-s5-d721d14a70",
           "seed": 5,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.0
         },
         {
           "guard_passed": true,
-          "result_checksum": "e06a37593d7a241ddfc1788a57806bc40b949d1727ebadcfa2c5c30d8cfdafd2",
-          "run_id": "live-rain_spillback_b-s6-759198323f",
+          "result_checksum": "a0f9d7ebca4b9816f1c1c3fadb2f5cc98d42603d9950261c178152df9473e671",
+          "run_id": "live-rain_spillback_b-s6-f5c7d035ed",
           "seed": 6,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -68.3
         },
         {
           "guard_passed": true,
-          "result_checksum": "52b5229dd405c2d268011ec356ec60332edf0f2478bb1d5e774443ba910770f6",
-          "run_id": "live-rain_spillback_b-s7-0bc92deb1c",
+          "result_checksum": "867ce965411691acc382d146ce144c1d9a9096cd9b5c9b5eb952e62a3ad33f6d",
+          "run_id": "live-rain_spillback_b-s7-511ded2b29",
           "seed": 7,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.2
         },
         {
           "guard_passed": true,
-          "result_checksum": "63369fea3b916b587cc0ecf106fa286cfaa215cfffcfede74934fcee811a16be",
-          "run_id": "live-rain_spillback_b-s8-37284a3ba1",
+          "result_checksum": "232a9a31538f8ca8464b9029bf409e5b9741f5f41552e22e3a8a3faebbc52a5f",
+          "run_id": "live-rain_spillback_b-s8-0ba7d99efd",
           "seed": 8,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.2
         },
         {
           "guard_passed": true,
-          "result_checksum": "414eff97f9aeff4148087c990d7294ae3e39e54d0e50072a290ea0608f06f525",
-          "run_id": "live-rain_spillback_b-s9-66f5b2c6e0",
+          "result_checksum": "f42ffb06fe15da32971213d7f0b77de36d93c5273923e9bb1507a76a7ba7c3cb",
+          "run_id": "live-rain_spillback_b-s9-51f7263e80",
           "seed": 9,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -69.7
         },
         {
           "guard_passed": true,
-          "result_checksum": "026a38e0cb3349fc282ab11ee951eaa9ce2551a367f4078a13ddc76f6439d54d",
-          "run_id": "live-rain_spillback_b-s10-9c4ca9b361",
+          "result_checksum": "2143e5caed03ebfe365c4c141d47411e9bedccecfdd18889f438bfdc6261fac1",
+          "run_id": "live-rain_spillback_b-s10-68040c6106",
           "seed": 10,
           "spillback_time_pct": -100.0,
           "total_travel_time_pct": -68.9
@@ -202,5 +202,5 @@
       }
     }
   },
-  "source_tree_checksum": "94d556a6de2f09c3d432465edd63be156df494a1548a6ef69516591ab0e55efd"
+  "source_tree_checksum": "417bc32d922a8ed469373f6dcc2628c802d48619c98e489099c440d39e5ac2a0"
 }
