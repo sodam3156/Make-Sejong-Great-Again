@@ -1,13 +1,13 @@
 {
   "artifacts": {
     "backend/README.md": "fe09f629fbccb001aee47c4ad3d55d137c48863dd7e42e9bfa187d25e7ec6fd8",
-    "backend/fixtures/cached_run.json": "c26729b6d5db27e79bfde56401709fb0d523d4b4055ae56b7e6a83accb81a0b5",
-    "backend/fixtures/demo_freeze_meta.json": "0799cf2a477eb077f97056eb44c96adfe4ae8e4c224b44ce393a8e2d370e8b33",
-    "backend/fixtures/demo_run.json": "772c08eb978802d6323ecd5e660be58d811ed6900cc39a5f374ee8f5c1fab54f",
+    "backend/fixtures/cached_run.json": "1d5369d2ce492a9d7fdf9fe34c238f5157b7eb04eba8644f7b8ef341a4930e8e",
+    "backend/fixtures/demo_freeze_meta.json": "660c7d5c8611c82865345094fd5c50e24b2ef18f4818804ad13b6da55f6d58b4",
+    "backend/fixtures/demo_run.json": "4928ac2a9397e34aef12ff549a82ea42271b0c5be4744d46d209f044b2ad5981",
     "contracts/openapi.json": "b9de78d38d673df302ec42fabfe4c0ef17c8eb139de1e3d059a61495269ad1c5",
     "docs/16_DEMO_SCRIPT.md": "cf35b669cb84f43450c4f04c8fb606cfb450f1b416dbbd536e5ba0bb4bb4173f",
-    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "b88493c567b285816aa2b5faf34132cdd592bdc178f0979a44915760e61ca5cf",
-    "frontend/demo_run.js": "6e2ef6026cc4667c26c29f94090316e52a926a4e2d1b41cdfca7257d48d8aedb"
+    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "6d355e4ca7d245ff0737ad2e49d5b976fe043851586534dfac8bd2a16f41d1bc",
+    "frontend/demo_run.js": "e025a39ef320c28fee091b6d86488693333a11378003df2d4d1a0f04534c10ba"
   },
   "freeze_id": "freeze-20260729-202509-kst",
   "frozen_at": "2026-07-29T20:25:09+09:00",
@@ -15,7 +15,7 @@
     "fixture_run_id": "fixture-qa-v2-001",
     "freeze_id": "freeze-20260729-202509-kst",
     "frozen_at": "2026-07-29T20:25:09+09:00",
-    "git_commit_sha": "4d706e4bfea13d1e38dd2dd5c6d44c410003bb27",
+    "git_commit_sha": "7a939db84725e2c7a9813d0ee5c33795d430dc15",
     "provisional": true,
     "result_checksum": "4d2ffedf11b004dfe05c9da351bbf1b195f3c3d9e53a2941e7200eb64cac6d21",
     "run_id": "live-rain_spillback_a-s42-2b20402076",
