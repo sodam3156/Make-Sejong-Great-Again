@@ -15,14 +15,14 @@ export default function App() {
 
   return (
     <div style={{
-      background: '#0a0e14',
-      color: '#e6ebf5',
+      background: '#ffffff',
+      color: '#0f172a',
       minHeight: '100vh',
       padding: 24,
       fontFamily: '-apple-system, "Segoe UI", "Malgun Gothic", system-ui, sans-serif',
     }}>
       <h1 style={{ fontSize: 18, marginBottom: 4 }}>RainFlow Sejong — 컴포넌트 목업</h1>
-      <p style={{ fontSize: 12, color: '#8a93a8', marginBottom: 24 }}>
+      <p style={{ fontSize: 12, color: '#475569', marginBottom: 24 }}>
         fixture 데이터 기반 · run_id: {data.run_id}
       </p>
 
@@ -66,15 +66,15 @@ export default function App() {
 
 const sectionTitle: React.CSSProperties = {
   fontSize: 13,
-  color: '#8a93a8',
+  color: '#475569',
   textTransform: 'uppercase',
   letterSpacing: '0.6px',
   marginBottom: 10,
 };
 
 const panel: React.CSSProperties = {
-  background: '#10151f',
-  border: '1px solid #22293a',
+  background: '#f1f5f9',
+  border: '1px solid #cbd5e1',
   borderRadius: 10,
   padding: '14px 16px',
 };
