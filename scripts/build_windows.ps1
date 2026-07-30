@@ -2,6 +2,8 @@
 param(
     [ValidateSet("3.11", "3.12")]
     [string]$PythonVersion = "3.11",
+    [ValidatePattern("^$|^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")]
+    [string]$ReleaseTag = "",
     [switch]$SkipTests
 )
 
@@ -38,6 +40,47 @@ $RequestedPythonSelector = "-$PythonVersion-64"
 
 Push-Location $RepositoryRoot
 try {
+    $SourceCommitOutput = & git rev-parse HEAD
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to resolve the source Git commit."
+    }
+    $SourceCommit = ([string]$SourceCommitOutput).Trim().ToLowerInvariant()
+    if ($SourceCommit -notmatch "^[0-9a-f]{40}$") {
+        throw "Git returned an invalid source commit: '$SourceCommitOutput'."
+    }
+
+    $TrackedStatusOutput = & git status --porcelain --untracked-files=no
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to inspect tracked working-tree changes."
+    }
+    if (-not [string]::IsNullOrWhiteSpace([string]$TrackedStatusOutput)) {
+        throw (
+            "Release builds require a clean tracked working tree. " +
+            "Commit or revert tracked changes before building."
+        )
+    }
+
+    $ReleaseTagCommit = $null
+    if (-not [string]::IsNullOrWhiteSpace($ReleaseTag)) {
+        & git show-ref --verify --quiet "refs/tags/$ReleaseTag"
+        if ($LASTEXITCODE -ne 0) {
+            throw "Release tag does not exist locally: $ReleaseTag"
+        }
+        $ReleaseTagCommitOutput = & git rev-parse "$ReleaseTag^{commit}"
+        if ($LASTEXITCODE -ne 0) {
+            throw "Unable to resolve release tag commit: $ReleaseTag"
+        }
+        $ReleaseTagCommit = (
+            [string]$ReleaseTagCommitOutput
+        ).Trim().ToLowerInvariant()
+        if ($ReleaseTagCommit -ne $SourceCommit) {
+            throw (
+                "Release tag $ReleaseTag points to $ReleaseTagCommit, " +
+                "but the build source is $SourceCommit."
+            )
+        }
+    }
+
     foreach ($LauncherAssetName in $LauncherAssetNames) {
         $LauncherAssetPath = Join-Path $LauncherAssetsDirectory $LauncherAssetName
         if (-not (Test-Path -LiteralPath $LauncherAssetPath -PathType Leaf)) {
@@ -168,6 +211,35 @@ try {
             -Destination (Join-Path $ReleaseDirectory $LauncherAssetName) `
             -Force
     }
+
+    $FreezeMeta = Get-Content `
+        -LiteralPath (Join-Path $RepositoryRoot "backend\fixtures\demo_freeze_meta.json") `
+        -Raw |
+        ConvertFrom-Json
+    $ReleaseMetadata = [ordered]@{
+        schema_version = 1
+        artifact_name = "RainFlowSejong-windows-x64.zip"
+        source_commit_sha = $SourceCommit
+        release_tag = if (
+            [string]::IsNullOrWhiteSpace($ReleaseTag)
+        ) {
+            $null
+        }
+        else {
+            $ReleaseTag
+        }
+        release_tag_commit_sha = $ReleaseTagCommit
+        model_freeze_git_sha = [string]$FreezeMeta.git_commit_sha
+        model_source_tree_sha256 = [string]$FreezeMeta.source_tree_checksum
+        python_version = $PythonVersion
+        architecture = "windows-x64"
+        built_at_utc = (Get-Date).ToUniversalTime().ToString("o")
+    }
+    [System.IO.File]::WriteAllText(
+        (Join-Path $ReleaseDirectory "RELEASE-METADATA.json"),
+        ($ReleaseMetadata | ConvertTo-Json -Depth 4) + "`n",
+        [System.Text.UTF8Encoding]::new($false)
+    )
 
     $ChecksumPath = Join-Path $ReleaseDirectory "SHA256SUMS.txt"
     $ChecksumLines = Get-ChildItem -LiteralPath $ReleaseDirectory -File -Recurse |

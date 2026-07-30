@@ -11,6 +11,10 @@ required. Running start.bat again reopens the already-running local server.
 If the previous process ended, the launcher automatically chooses a new free
 localhost port.
 
+RELEASE-METADATA.json records the exact source commit and release tag used for
+this ZIP. SHA256SUMS.txt covers that metadata, the executable, and every
+launcher file. Keep both files with the ZIP checksum when archiving evidence.
+
 The app listens only on 127.0.0.1. Startup output is saved under logs\ and
 the selected port/PID are saved under runtime\.
 Simulation and approval audit records are stored under
