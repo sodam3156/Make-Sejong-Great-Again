@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "station": {
     "provider": "Korea Meteorological Administration",
     "station_id": 239,
@@ -10,7 +10,7 @@
   "classification": {
     "reanalysis_proxy": "Date screening and sensitivity only; never a Sejong observed value.",
     "observed_weather": "May be used as weather time-series input after committed QA passes.",
-    "traffic_parameter_mapping": "Not included. Capacity, demand, safety, and control parameters require separate reviewed evidence."
+    "traffic_parameter_mapping": "Not included. Capacity, demand, signal, fairness, and safety parameters require separate reviewed evidence."
   },
   "proxy": {
     "source_model": "ERA5",
@@ -26,15 +26,11 @@
     "rain_date": "2022-08-10",
     "rain_date_proxy_precipitation_mm": 36.7,
     "rain_date_proxy_max_hourly_mm": 2.8,
-    "selected_proxy_dry_candidate": "2022-07-27",
-    "detail_files": [
-      "data/observed/weather_reference/proxy/weather_hourly_proxy_20220712_20220907.csv",
-      "data/observed/weather_reference/proxy/weather_daily_proxy_20220712_20220907.csv",
-      "data/observed/weather_reference/processed/dry_candidate_screening.csv"
-    ]
+    "selected_proxy_dry_candidate": "2022-07-27"
   },
   "kma_observed": {
     "manifest": "data/observed/weather_reference/observed/kma_observation_manifest.json",
+    "compact_precipitation_file": "data/observed/weather_reference/observed/normalized/kma_aws_239_precipitation_compact.json",
     "rain_date": "2022-08-10",
     "rain_status": "OBSERVED_COMPLETE",
     "rain_aws_minute_rows": 1440,
@@ -46,8 +42,7 @@
     "dry_aws_minute_rows": 1440,
     "dry_daily_precipitation_mm": 0.0,
     "minute_gaps": 0,
-    "scenario_input_file": "data/observed/weather_reference/processed/kma_weather_scenario_inputs.csv.gz",
-    "compact_precipitation_file": "data/observed/weather_reference/observed/normalized/kma_aws_239_precipitation_compact.csv.gz"
+    "scenario_input_artifact": "weather_reference_output/kma_observed/kma_weather_scenario_inputs.csv.gz"
   },
   "final_dry_date_status": "CONDITIONALLY_CONFIRMED_FOR_ANALYSIS_START_AT_OR_AFTER_06:00_KST",
   "model_parameter_status": "NO_TRAFFIC_PARAMETER_CHANGED_BY_THIS_DATA_COMMIT",

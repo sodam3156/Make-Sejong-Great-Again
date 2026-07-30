@@ -1,14 +1,14 @@
 {
-  "schema_version": 3,
-  "processor_version": "kma-observation-compact-v1",
+  "schema_version": 4,
+  "processor_version": "kma-observation-compact-json-v2",
   "station": {
     "provider": "Korea Meteorological Administration",
     "station_id": 239,
     "station_name": "Sejong"
   },
   "evidence_storage": {
-    "committed_compact_precipitation": "data/observed/weather_reference/observed/normalized/kma_aws_239_precipitation_compact.csv.gz",
-    "compact_sha256": "fe2c92e3c5db069be9305e71365e21e78186fedef62b1c26ea262c78cdd18a74",
+    "committed_compact_precipitation": "data/observed/weather_reference/observed/normalized/kma_aws_239_precipitation_compact.json",
+    "compact_sha256": "ae37d0c857a7d86de81bcf749d131fee7fdc132adfe18628d374101fa1de082a",
     "original_api_responses_committed": false,
     "original_response_hashes": [
       {
@@ -37,7 +37,7 @@
         "bytes": 26945
       }
     ],
-    "reason": "Data minimization: retain exact source hashes and only precipitation fields needed for reproducible scenario QA."
+    "reason": "Data minimization: retain exact source hashes, the 1,440 rain-minute increments, and run-length dry-day zero metadata required for reproducible weather QA."
   },
   "rain_observation": {
     "date_kst": "2022-08-10",
@@ -68,10 +68,11 @@
     "aws_daily_precipitation_mm": 0.0,
     "all_precipitation_fields_zero": true,
     "status": "OBSERVED_DRY_DAY_CONFIRMED_CONDITIONAL_ON_ANALYSIS_START_AT_OR_AFTER_06:00_KST",
-    "limitation": "Analysis starts before 06:00 require 2022-07-26 data for the preceding-six-hour test."
+    "limitation": "Analysis starts before 06:00 require 2022-07-26 observations for the preceding-six-hour test."
   },
   "outputs": {
-    "scenario_intervals_gzip": "data/observed/weather_reference/processed/kma_weather_scenario_inputs.csv.gz",
+    "scenario_intervals_artifact": "weather_reference_output/kma_observed/kma_weather_scenario_inputs.csv.gz",
+    "validation_report_artifact": "weather_reference_output/kma_observed/kma_validation_report.json",
     "rain_hourly": "data/observed/weather_reference/observed/normalized/kma_asos_239_20220810_hourly.csv"
   },
   "usage": {
