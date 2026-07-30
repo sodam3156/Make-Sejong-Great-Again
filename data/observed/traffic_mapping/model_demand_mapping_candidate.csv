@@ -1,0 +1,7 @@
+canonical_intersection_name,model_approach_id,model_display_label,model_approach_side,implied_travel_direction,public_source_column,public_metadata_interpretation,recommended_robust_share,mapping_status,model_role,known_limitations
+성금교차로,R1_N,성금교차로 북측 진입로,north,south,남,교차로 통행방향별 남쪽 교통량,0.312042,CANDIDATE_REVIEW_REQUIRED,external_demand,"진행방향→진입로 위치 반전 추론; 회전별·시간대별 교통량 없음"
+성금교차로,R1_W,성금교차로 서측 진입로,west,east,동,교차로 통행방향별 동쪽 교통량,0.206793,CANDIDATE_REVIEW_REQUIRED,external_demand,"진행방향→진입로 위치 반전 추론; 회전별·시간대별 교통량 없음"
+청사교차로,R2_S,청사교차로 남측 진입로,south,north,북,교차로 통행방향별 북쪽 교통량,0.346572,CANDIDATE_REVIEW_REQUIRED,external_demand,"진행방향→진입로 위치 반전 추론; 통과교통과 신규 진입교통 분리 불가"
+세종교차로,R3_E,세종교차로 동측 진입로,east,west,서,교차로 통행방향별 서쪽 교통량,0.173056,CANDIDATE_REVIEW_REQUIRED,external_demand,"진행방향→진입로 위치 반전 추론; 2022-08 서 856 이상치는 강건 중앙비중으로 완화했으나 원기관 확인 필요"
+청사교차로,R2_N,청사교차로 북측 진입로,north,, ,모델 내부에서 L12 회랑 유입의 선두 서비스 라벨,,DO_NOT_MAP_PUBLIC_DEMAND,internal_corridor_head,"외부 BASE_DEMAND가 아니라 상류 링크 L12의 통과 흐름; 공개 월간 방향열과 직접 연결 금지"
+세종교차로,R3_N,세종교차로 북측 진입로,north,, ,모델 내부에서 L23 회랑 유입의 선두 서비스 라벨,,DO_NOT_MAP_PUBLIC_DEMAND,internal_corridor_head,"외부 BASE_DEMAND가 아니라 상류 링크 L23의 통과 흐름; 공개 월간 방향열과 직접 연결 금지"
