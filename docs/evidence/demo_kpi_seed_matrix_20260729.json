@@ -1,7 +1,7 @@
 {
   "dataset_id": "synthetic-v0",
   "freeze_id": "freeze-20260729-202509-kst",
-  "git_commit_sha": "effd7fbd79cd83ce1bde23e313633c88d57bc929",
+  "git_commit_sha": "4d706e4bfea13d1e38dd2dd5c6d44c410003bb27",
   "guard_version": "rainflow-guard-v2",
   "kpi_definition_version": "rainflow-kpi-v2",
   "parameter_set_version": "rainflow-provisional-v2",
