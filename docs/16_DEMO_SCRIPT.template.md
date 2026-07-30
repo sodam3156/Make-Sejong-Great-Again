@@ -2,7 +2,7 @@
 
 동결 기준: `backend/fixtures/demo_run.json`과 `docs/evidence/demo_freeze_20260729.json`. 이 문서는 fixture와 함께 생성되며 수치를 직접 편집하지 않는다.
 
-정본 메타데이터: freeze `{{FREEZE_ID}}`, source run `{{SOURCE_RUN_ID}}`, checksum `{{RESULT_CHECKSUM}}`, seed `42`, `provisional=true`. 모두 합성 결과이며 세종 실측 성과가 아니다.
+정본 메타데이터: freeze `{{FREEZE_ID}}`, source run `{{SOURCE_RUN_ID}}`, checksum `{{RESULT_CHECKSUM}}`, seed `42`, `provisional=true`. 화면의 지명·링크 관계는 2026-07-16 전국표준노드링크 세종 8,768노드·11,893링크를 참조하며, 교통량·저장공간·정책 효과는 합성 결과라 세종 실측 성과가 아니다.
 
 ## 0. 시작 전 체크리스트
 
@@ -22,24 +22,24 @@
 
 ### 구간 1 · 0:00–0:30 · 화면 상태: `normal`
 
-- 화면 상태: 건조 상태. R1–R2–R3 세 회전교차로 링크가 모두 초록색(점유율 낮음), 역류 없음.
+- 화면 상태: 건조 상태. 성금교차로–청사교차로–세종교차로 절재로 참조 구간이 모두 초록색(점유율 낮음), 역류 없음.
 - 조작: 클릭 없음. 자동재생이 시작된 상태를 그대로 둔다.
-- 발표 대사: "지금 화면은 세종형 3개 연속 회전교차로입니다. 건조 상태에서는 R1, R2, R3 모두 정상 처리되고 있습니다. 이제 비가 오면 무슨 일이 벌어지는지 보겠습니다."
-- 근거 수치: 링크 점유율 L12 {{T0_L12_OCC_PCT}}%, L23 {{T0_L23_OCC_PCT}}%, BYPASS {{T0_BYPASS_OCC_PCT}}% (t=0, 정본 run).
+- 발표 대사: "지금 화면은 실제 세종 표준노드링크의 성금교차로, 청사교차로, 세종교차로와 절재로 연결 관계를 참조합니다. 화면의 흐름 수치는 이 공간망 위에 얹은 합성 큐 모델입니다. 이제 비가 오면 어떤 위험을 비교하는지 보겠습니다."
+- 근거 수치: 성금–청사 구간 점유율 {{T0_SG_CS_OCC_PCT}}%, 청사–세종 구간 {{T0_CS_SJ_OCC_PCT}}%, 성금–세종 대체 경로 {{T0_ALT_OCC_PCT}}% (t=0, 정본 run).
 
 ### 구간 2 · 0:30–1:00 · 화면 상태: `rain_warning`
 
 - 화면 상태: 강우 시작(약우→보통비), 배지에 강우 단계 표시. 링크 색이 노란색으로 이동.
 - 조작: 클릭 없음. 자동 전환 대기.
-- 발표 대사: "강우가 시작되자 하류 R3 방향 진입용량이 떨어지기 시작합니다. L23 링크 점유율이 {{RAIN_L23_OCC_PCT}}%까지 올라왔습니다."
-- 근거 수치: L23 점유율 {{RAIN_L23_OCC_PCT}}%, 대기 {{RAIN_L23_QUEUE}}대 (t={{RAIN_SAMPLE_T}}, 정본 run).
+- 발표 대사: "강우가 시작되자 합성 큐 모델에서 청사교차로에서 세종교차로로 향하는 절재로 참조 구간의 용량이 떨어지도록 설정했습니다. 이 구간 점유율이 {{RAIN_CS_SJ_OCC_PCT}}%까지 올라왔습니다."
+- 근거 수치: 청사–세종 절재로 참조 구간 점유율 {{RAIN_CS_SJ_OCC_PCT}}%, 합성 대기 {{RAIN_CS_SJ_QUEUE}}대 (t={{RAIN_SAMPLE_T}}, 정본 run).
 
 ### 구간 3 · 1:00–1:20 · 화면 상태: `spillback`
 
-- 화면 상태: L23 링크가 빨간색으로 깜빡인다(역류). corridor-note에 역류 표시.
-- 조작: 클릭 없음. L23 링크의 깜빡임을 손으로 가리킨다.
-- 발표 대사: "L23이 저장공간 한계에 도달해 R2 회전부까지 역류가 시작됐습니다. 이게 저희가 막으려는 연쇄 마비입니다."
-- 근거 수치: L23 점유율 {{SPILL_L23_OCC_PCT}}%, 대기 {{SPILL_L23_QUEUE}}대, spillback true (t={{SPILL_SAMPLE_T}}, 정본 run).
+- 화면 상태: 청사–세종 절재로 참조 구간이 빨간색으로 깜빡인다(역류). corridor-note에 역류 표시.
+- 조작: 클릭 없음. 청사–세종 구간의 깜빡임을 손으로 가리킨다.
+- 발표 대사: "이 합성 모델에서 청사–세종 참조 구간이 설정된 저장공간 한계에 도달해 상류까지 역류가 시작됐습니다. 실제 현장 혼잡 관측값이 아니라, 정책 비교를 위한 위험 시나리오입니다."
+- 근거 수치: 청사–세종 절재로 참조 구간 점유율 {{SPILL_CS_SJ_OCC_PCT}}%, 합성 대기 {{SPILL_CS_SJ_QUEUE}}대, spillback true (t={{SPILL_SAMPLE_T}}, 정본 run).
 
 ### 구간 4 · 1:20–1:45 · 화면 상태: `policy_compare`
 
@@ -52,8 +52,8 @@
 
 - 화면 상태: "안전 가드 판정" 패널. 고정 미터링 카드가 빨간 테두리 FAIL로 표시된다.
 - 조작: 클릭 없음. FAIL 카드를 가리킨다.
-- 발표 대사: "고정 미터링은 spillback을 줄이지만, R1_W와 R2_S의 P95 대기 proxy가 각각 {{FIXED_R1W_WORSEN}}%, {{FIXED_R2S_WORSEN}}% 악화돼 내부 한도 15%를 넘습니다. 그래서 규칙이 이 안을 탈락시킵니다."
-- 근거 수치: `FAIRNESS_P95_EXCEEDED`, 내부 provisional threshold 15.0%, observed {{FIXED_R1W_WORSEN}}%(R1_W)·{{FIXED_R2S_WORSEN}}%(R2_S), 고정 미터링 guard.passed = false.
+- 발표 대사: "고정 미터링은 spillback을 줄이지만, 성금교차로 서측과 청사교차로 남측 진입로의 P95 대기 proxy가 각각 {{FIXED_SEONGGEUM_W_WORSEN}}%, {{FIXED_CHEONGSA_S_WORSEN}}% 악화돼 내부 한도 15%를 넘습니다. 그래서 규칙이 이 안을 탈락시킵니다."
+- 근거 수치: `FAIRNESS_P95_EXCEEDED`, 내부 provisional threshold 15.0%, observed {{FIXED_SEONGGEUM_W_WORSEN}}%(성금교차로 서측)·{{FIXED_CHEONGSA_S_WORSEN}}%(청사교차로 남측), 고정 미터링 guard.passed = false.
 
 ### 구간 6 · 2:05–2:40 · 화면 상태: `operator_approval`
 
@@ -91,7 +91,7 @@
 ### Q&A 대비 5개
 
 1. **"이 수치, 세종시 실측 성과인가요?"**
-   아닙니다. `demo_run.json`에 `provisional: true`로 명시된 합성 데이터입니다. 시우 검증 전까지는 프로토타입 기술 스파이크 통과 기준이지 실측 성과가 아닙니다 (`docs/09` 구현 경계).
+   아닙니다. `demo_run.json`에 `provisional: true`로 명시된 합성 데이터입니다. 교차로 표시명과 링크 관계만 세종 표준노드링크에서 왔고, 시우 검증 전까지는 프로토타입 기술 스파이크 통과 기준이지 실측 성과가 아닙니다 (`docs/09` 구현 경계).
 
 2. **"왜 SUMO를 안 쓰고 큐 모델을 썼나요?"**
    Day 1~2는 결정론적 큐 모델을 정식 경로로 쓰기로 확정했습니다. SUMO·TraCI는 큐 모델이 3분 데모를 먼저 완주한 뒤의 선택적 업그레이드로 미뤘습니다 (`docs/15_DAY1_FREEZE_DECISION.md` 4항).
@@ -103,7 +103,7 @@
    예. seed 42로 고정되어 있고, 재현성은 `docs/09`의 기술 스파이크 통과 기준 중 하나입니다. 시나리오·시드·정책이 같으면 같은 결과가 나옵니다.
 
 5. **"고정 미터링은 왜 떨어졌나요? 개선율이 더 좋아 보이는데요."**
-   spillback만 보면 고정 미터링도 {{FIXED_SPILLBACK_DELTA_ABS}}% 줄지만, R1_W·R2_S의 P95 대기 proxy가 각각 {{FIXED_R1W_WORSEN}}%·{{FIXED_R2S_WORSEN}}% 악화돼 내부 공정성 한도 15%를 넘습니다. 특정 진입로에 피해를 전가하는 안이라 시스템이 자동으로 탈락시킵니다.
+   spillback만 보면 고정 미터링도 {{FIXED_SPILLBACK_DELTA_ABS}}% 줄지만, 성금교차로 서측·청사교차로 남측 진입로의 P95 대기 proxy가 각각 {{FIXED_SEONGGEUM_W_WORSEN}}%·{{FIXED_CHEONGSA_S_WORSEN}}% 악화돼 내부 공정성 한도 15%를 넘습니다. 특정 진입로에 피해를 전가하는 안이라 시스템이 자동으로 탈락시킵니다.
 
 ## 4. 금지 발언
 

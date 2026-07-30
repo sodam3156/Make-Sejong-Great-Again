@@ -62,7 +62,7 @@ FRONTEND_DIR = BACKEND_DIR.parent / "frontend"
 KST = timezone(timedelta(hours=9))
 
 VERSION = "0.2.0"
-NETWORK_VERSION = "sejong-corridor-v0"
+NETWORK_VERSION = "sejong-nodelink-20260716-v1"
 DATASET_ID = "synthetic-v0"
 DATASET_SCHEMA_VERSION = "rainflow-dataset-v1"
 DATASET_ADAPTER_VERSION = "builtin-synthetic-v1"
@@ -75,6 +75,73 @@ SCREEN_STATES = [
     "operator_approval",
     "recovery_compare",
 ]
+
+# 화면의 지명·연결 관계는 2026-07-16 전국표준노드링크에서 지역코드 413으로
+# 추출한 실제 세종 공간망을 사용한다. 큐·저장공간·수요는 별도의 합성 모델값이며,
+# 아래 source_link_ids가 실측 교통량이나 실제 제어 경로를 뜻하지는 않는다.
+NETWORK_REFERENCE = {
+    "source": "국가교통정보센터 전국표준노드링크 2026-07-16, 세종 지역코드 413",
+    "derived_files": [
+        "data/public/2026-07-29/sejong_nodelink_node.geojson",
+        "data/public/2026-07-29/sejong_nodelink_link.geojson",
+    ],
+    "node_count": 8768,
+    "link_count": 11893,
+    "usage": "화면의 교차로 표시명과 링크 연결 관계",
+    "limitations": "공간망 참조일 뿐, 실시간 교통량·신호현시·차로 운영·정책 효과를 보정하지 않는다.",
+}
+PRESENTATION_LINKS = {
+    "L12": {
+        "link_id": "seonggeum-cheongsa-jeoljae",
+        "display_name": "성금교차로 → 청사교차로 · 절재로",
+        "from": "성금교차로",
+        "to": "청사교차로",
+        "source_from_node_id": "4130092502",
+        "source_to_node_id": "4130102903",
+        "source_link_ids": [
+            "4130260500", "4130260501", "4130261100", "4130261101",
+            "4130260400", "4130258200",
+        ],
+        "source_length_m": 553.7,
+    },
+    "L23": {
+        "link_id": "cheongsa-sejong-jeoljae",
+        "display_name": "청사교차로 → 세종교차로 · 절재로",
+        "from": "청사교차로",
+        "to": "세종교차로",
+        "source_from_node_id": "4130102902",
+        "source_to_node_id": "4130138003",
+        "source_link_ids": [
+            "4130254200", "4130251800", "4130251802", "4130245001",
+            "4130242000", "4130242002", "4130242001", "4130225400",
+            "4130225403", "4130225402",
+        ],
+        "source_length_m": 2669.9,
+    },
+    "BYPASS": {
+        "link_id": "seonggeum-sejong-alternative",
+        "display_name": "성금교차로 → 세종교차로 · 절재로 대체 경로",
+        "from": "성금교차로",
+        "to": "세종교차로",
+        "source_from_node_id": "4130092502",
+        "source_to_node_id": "4130138003",
+        "source_link_ids": [
+            "4130260500", "4130260501", "4130261100", "4130261101",
+            "4130260400", "4130254400", "4130254401", "4130251800",
+            "4130251802", "4130245001", "4130242000", "4130242002",
+            "4130242001", "4130225400", "4130225403", "4130225402",
+        ],
+        "source_length_m": 3234.3,
+    },
+}
+PRESENTATION_APPROACHES = {
+    "R1_N": "성금교차로 북측 진입로",
+    "R1_W": "성금교차로 서측 진입로",
+    "R2_N": "청사교차로 북측 진입로",
+    "R2_S": "청사교차로 남측 진입로",
+    "R3_N": "세종교차로 북측 진입로",
+    "R3_E": "세종교차로 동측 진입로",
+}
 
 app = FastAPI(
     title="RainFlow Sejong",
@@ -239,10 +306,19 @@ def _timeline(scenario_id: str, baseline: SimResult) -> list[dict[str, Any]]:
     }
     timeline = []
     for entry in baseline.timeline:
+        links = [
+            {
+                **link,
+                "link_id": PRESENTATION_LINKS[link["link_id"]]["link_id"],
+                "display_name": PRESENTATION_LINKS[link["link_id"]]["display_name"],
+            }
+            for link in entry["links"]
+        ]
         state = _screen_state_at(scenario_id, int(entry["t_sec"]))
         timeline.append(
             {
                 **entry,
+                "links": links,
                 "screen_state": state,
                 "note": notes[state],
             }
@@ -256,13 +332,20 @@ def _policy_record(
     baseline: SimResult,
     guard: dict[str, Any],
 ) -> dict[str, Any]:
+    presentation_guard = copy.deepcopy(guard)
+    for violation in presentation_guard["violations"]:
+        for internal, display in PRESENTATION_APPROACHES.items():
+            violation["detail"] = violation["detail"].replace(internal, display)
     record = {
         "policy_id": policy_id,
         "label": POLICY_LABELS[policy_id],
         "kpi": _kpi(result),
         "extra": {
             "spillback_events": result.spillback_events,
-            "spillback_link_seconds": result.spillback_link_seconds,
+            "spillback_link_seconds": {
+                PRESENTATION_LINKS[link_id]["link_id"]: seconds
+                for link_id, seconds in result.spillback_link_seconds.items()
+            },
             "completed_trips": result.completed_trips,
             "diversion_delay_sec": result.diversion_delay_sec,
             "diverted_vehicles": result.diverted_vehicles,
@@ -270,7 +353,10 @@ def _policy_record(
             "diversion_freeflow_seconds": result.diversion_freeflow_seconds,
             "modeled_vehicle_seconds": result.modeled_vehicle_seconds,
             "safety_proxy_hard_brakes": result.hard_brakes,
-            "approach_p95_delay": result.approach_p95_delay,
+            "approach_p95_delay": {
+                PRESENTATION_APPROACHES[approach]: delay
+                for approach, delay in result.approach_p95_delay.items()
+            },
         },
         "delta_vs_no_action": {
             "spillback_time_pct": _pct(
@@ -286,7 +372,7 @@ def _policy_record(
                 baseline.worst_approach_delay_sec,
             ),
         },
-        "guard": guard,
+        "guard": presentation_guard,
         "explanation": _explain(policy_id, result, baseline, guard),
     }
     record["candidate_hash"] = candidate_hash(record)
@@ -449,28 +535,27 @@ def build_run(
         },
         "screen_states": SCREEN_STATES,
         "network": {
-            "roundabouts": ["R1", "R2", "R3"],
+            "reference": NETWORK_REFERENCE,
+            "junctions": [
+                {"display_name": "성금교차로", "node_ids": ["4130092501", "4130092502", "4130092503", "4130092504"]},
+                {"display_name": "청사교차로", "node_ids": ["4130102901", "4130102902", "4130102903", "4130102904"]},
+                {"display_name": "세종교차로", "node_ids": ["4130138001", "4130138002", "4130138003", "4130138004"]},
+            ],
             "links": [
                 {
-                    "link_id": "L12",
-                    "from": "R1",
-                    "to": "R2",
-                    "storage_veh": LINKS["L12"],
-                },
-                {
-                    "link_id": "L23",
-                    "from": "R2",
-                    "to": "R3",
-                    "storage_veh": LINKS["L23"],
-                },
-                {
-                    "link_id": "BYPASS",
-                    "from": "R1",
-                    "to": "R3",
-                    "storage_veh": LINKS["BYPASS"],
-                },
+                    **presentation,
+                    "synthetic_storage_veh": LINKS[internal],
+                }
+                for internal, presentation in PRESENTATION_LINKS.items()
             ],
-            "approaches": list(baseline.approach_p95_delay),
+            "approaches": [
+                PRESENTATION_APPROACHES[approach]
+                for approach in baseline.approach_p95_delay
+            ],
+            "model_limitations": (
+                "대기열·저장공간·수요·강우 용량·정책 효과는 실제 세종 측정값이 아닌 "
+                "provisional 합성 입력이다. 실제 도로 제어나 성과를 뜻하지 않는다."
+            ),
         },
         "timeline": _timeline(scenario_id, baseline),
         "policies": policy_records,

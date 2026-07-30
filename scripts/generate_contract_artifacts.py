@@ -39,6 +39,8 @@ SOURCE_FILES = (
     "docs/16_DEMO_SCRIPT.template.md",
     "docs/evidence/provisional_parameters.md",
     "frontend/index.html",
+    "data/public/2026-07-29/sejong_nodelink_node.geojson",
+    "data/public/2026-07-29/sejong_nodelink_link.geojson",
     "scripts/generate_contract_artifacts.py",
 )
 
@@ -52,8 +54,12 @@ def _sha256_text(content: str) -> str:
 
 
 def _source_git_sha() -> str:
+    # The generated artifact is committed together with its sources.  Recording
+    # HEAD would make the commit hash self-referential, so retain the last
+    # committed source baseline while source_tree_checksum pins the exact
+    # working tree included in this freeze.
     result = subprocess.run(
-        ["git", "log", "-1", "--format=%H", "--", *SOURCE_FILES],
+        ["git", "log", "-1", "--format=%H", "HEAD^", "--", *SOURCE_FILES],
         cwd=ROOT,
         check=True,
         capture_output=True,
@@ -175,14 +181,14 @@ def _render_demo_script(run: dict[str, Any]) -> str:
         "FREEZE_ID": run["reproducibility"]["freeze_id"],
         "SOURCE_RUN_ID": run["reproducibility"]["source_live_run_id"],
         "RESULT_CHECKSUM": run["reproducibility"]["result_checksum"],
-        "T0_L12_OCC_PCT": _number(_link(t0, "L12")["occupancy_ratio"] * 100),
-        "T0_L23_OCC_PCT": _number(_link(t0, "L23")["occupancy_ratio"] * 100),
-        "T0_BYPASS_OCC_PCT": _number(_link(t0, "BYPASS")["occupancy_ratio"] * 100),
-        "RAIN_L23_OCC_PCT": _number(_link(rain, "L23")["occupancy_ratio"] * 100),
-        "RAIN_L23_QUEUE": _number(_link(rain, "L23")["queue_veh"]),
+        "T0_SG_CS_OCC_PCT": _number(_link(t0, "seonggeum-cheongsa-jeoljae")["occupancy_ratio"] * 100),
+        "T0_CS_SJ_OCC_PCT": _number(_link(t0, "cheongsa-sejong-jeoljae")["occupancy_ratio"] * 100),
+        "T0_ALT_OCC_PCT": _number(_link(t0, "seonggeum-sejong-alternative")["occupancy_ratio"] * 100),
+        "RAIN_CS_SJ_OCC_PCT": _number(_link(rain, "cheongsa-sejong-jeoljae")["occupancy_ratio"] * 100),
+        "RAIN_CS_SJ_QUEUE": _number(_link(rain, "cheongsa-sejong-jeoljae")["queue_veh"]),
         "RAIN_SAMPLE_T": _number(rain["t_sec"]),
-        "SPILL_L23_OCC_PCT": _number(_link(spill, "L23")["occupancy_ratio"] * 100),
-        "SPILL_L23_QUEUE": _number(_link(spill, "L23")["queue_veh"]),
+        "SPILL_CS_SJ_OCC_PCT": _number(_link(spill, "cheongsa-sejong-jeoljae")["occupancy_ratio"] * 100),
+        "SPILL_CS_SJ_QUEUE": _number(_link(spill, "cheongsa-sejong-jeoljae")["queue_veh"]),
         "SPILL_SAMPLE_T": _number(spill["t_sec"]),
         "NO_ACTION_SPILLBACK": _number(no_action["kpi"]["spillback_time_sec"]),
         "FIXED_SPILLBACK": _number(fixed["kpi"]["spillback_time_sec"]),
@@ -196,8 +202,8 @@ def _render_demo_script(run: dict[str, Any]) -> str:
         "GATING_SPILLBACK_DELTA": _number(
             gating["delta_vs_no_action"]["spillback_time_pct"]
         ),
-        "FIXED_R1W_WORSEN": _guard_worsen(fixed, "R1_W"),
-        "FIXED_R2S_WORSEN": _guard_worsen(fixed, "R2_S"),
+        "FIXED_SEONGGEUM_W_WORSEN": _guard_worsen(fixed, "성금교차로 서측 진입로"),
+        "FIXED_CHEONGSA_S_WORSEN": _guard_worsen(fixed, "청사교차로 남측 진입로"),
         "GATING_DIVERSION_DELAY": _number(
             gating["extra"]["diversion_delay_sec"]
         ),

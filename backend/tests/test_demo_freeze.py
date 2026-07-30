@@ -142,17 +142,37 @@ def test_presentation_paths_exclude_qa_banned_numbers_and_terms():
     assert all(value not in text for value in banned)
 
 
-def test_frozen_git_sha_is_latest_commit_touching_source_files():
+def test_frozen_source_checksum_matches_current_source_and_records_a_real_commit():
     meta = _load("backend/fixtures/demo_freeze_meta.json")
-    current = subprocess.run(
-        ["git", "log", "-1", "--format=%H", "--", *SOURCE_FILES],
+    recorded = meta["git_commit_sha"]
+    assert subprocess.run(
+        ["git", "cat-file", "-e", f"{recorded}^{{commit}}"],
         cwd=ROOT,
         check=True,
         capture_output=True,
         text=True,
-    ).stdout.strip()
+    ).returncode == 0
+    assert meta["source_tree_checksum"] == artifact_generator._source_tree_checksum()
 
-    assert meta["git_commit_sha"] == current
+
+def test_fixture_uses_real_sejong_display_names_and_link_lineage():
+    fixture = _load("backend/fixtures/demo_run.json")
+    network = fixture["network"]
+
+    assert network["reference"]["node_count"] == 8768
+    assert network["reference"]["link_count"] == 11893
+    assert [node["display_name"] for node in network["junctions"]] == [
+        "성금교차로",
+        "청사교차로",
+        "세종교차로",
+    ]
+    assert [link["link_id"] for link in network["links"]] == [
+        "seonggeum-cheongsa-jeoljae",
+        "cheongsa-sejong-jeoljae",
+        "seonggeum-sejong-alternative",
+    ]
+    assert all("synthetic_storage_veh" in link for link in network["links"])
+    assert "실제 세종 측정값이 아닌" in network["model_limitations"]
 
 
 def test_source_tree_checksum_is_line_ending_independent(

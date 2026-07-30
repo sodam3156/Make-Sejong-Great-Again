@@ -1,13 +1,13 @@
 {
   "artifacts": {
-    "backend/README.md": "d6c5301757feb35f2ad655663dc3d66b8eb6f22eebbe80f9a116b0cdf1a3a312",
-    "backend/fixtures/cached_run.json": "a56c253b93d1012b630ac8de2c583e64a6e2858c203e2e78684913231b90d984",
-    "backend/fixtures/demo_freeze_meta.json": "faa159358ed8897698acadcccb9a9a9b5d03ba049a15a5d10b5ca3078633b01b",
-    "backend/fixtures/demo_run.json": "267d5b33d38a3ed3abfa9e4b88923f2f60f0b731b9478fb83cb0be3feb5fa544",
+    "backend/README.md": "6165a92d058ab0b75f97eb30db40bd64db24bc4ecda798c17be4eb4a8a026cf4",
+    "backend/fixtures/cached_run.json": "5cbc07295da88114c969192ceef1a2bb16b690a2b8809cab1cac703c31f3288b",
+    "backend/fixtures/demo_freeze_meta.json": "e56bb564beaf45f8587ff12b9efaa71dc3ae30b97d2c7f051ca682f5901d1aa0",
+    "backend/fixtures/demo_run.json": "6165ff236f97cdd4e139a163d1ff19932282ae7c0c771e2504902a261f735e9d",
     "contracts/openapi.json": "b9de78d38d673df302ec42fabfe4c0ef17c8eb139de1e3d059a61495269ad1c5",
-    "docs/16_DEMO_SCRIPT.md": "36b1a23f80edb4698376e8a03c9a6b428eaff2ff99bd2d95de76353167c38f22",
-    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "bc7be2b1f5baf1efb06eda511fb29a3a79a16a449797879a1ba2eeeee9590d98",
-    "frontend/demo_run.js": "3965a57f38c561ad0e75ecda70f59db65af8dd2ba0dc7d99eb59564788f80d30"
+    "docs/16_DEMO_SCRIPT.md": "22694936d4d7a5895edd377700d85506c6dc60a093b9c31a34ae84fed59971f0",
+    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "80700f44461d58d6b14f9d41ff381846b32b684c14811375c1cd86c7f88c7bad",
+    "frontend/demo_run.js": "0fb2775adb2e6994b893860f3b5e56d9c828038b34520e681e7f488782046730"
   },
   "freeze_id": "freeze-20260729-202509-kst",
   "frozen_at": "2026-07-29T20:25:09+09:00",
@@ -15,12 +15,12 @@
     "fixture_run_id": "fixture-qa-v2-001",
     "freeze_id": "freeze-20260729-202509-kst",
     "frozen_at": "2026-07-29T20:25:09+09:00",
-    "git_commit_sha": "b9324ecfde1d74de154a21888e59632e1f50c329",
+    "git_commit_sha": "effd7fbd79cd83ce1bde23e313633c88d57bc929",
     "provisional": true,
-    "result_checksum": "80a4440cb798a8262e88e462a3088e3d128debbdb32ec3eb30cab119537d9c22",
-    "run_id": "live-rain_spillback_a-s42-ceedb562be",
+    "result_checksum": "c9088907640696c315685619ce18ae1529ceb8bc1e993bb36c0f080b7ce4ed89",
+    "run_id": "live-rain_spillback_a-s42-3e5be2d480",
     "scenario_id": "rain_spillback_a",
     "seed": 42,
-    "source_tree_checksum": "598c6348df0ec9c07362a62c297b1fa112d7daad9fc6758f15dc56d98c23e2ae"
+    "source_tree_checksum": "65d5d7c17defd3a95b0a3c4ab462ae62ab198ca17d1d49dbe282180f65ae129b"
   }
 }

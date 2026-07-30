@@ -192,7 +192,7 @@
     </div>
     <div class="badges">
       <span class="badge fixture" id="badge-source">result_source: fixture</span>
-      <span class="badge provisional">provisional 합성 데이터</span>
+      <span class="badge provisional">공간망: 실제 세종 · 흐름: provisional 합성</span>
     </div>
     <div class="scenario-select">
       <label for="scenario-picker">시나리오</label>
@@ -215,7 +215,7 @@
   </div>
 
   <div class="panel">
-    <h2>회랑 상태 · R1 – R2 – R3</h2>
+    <h2>세종 표준노드링크 참조 · 성금교차로 – 청사교차로 – 세종교차로</h2>
     <div class="svg-wrap">
       <svg id="corridor-svg" viewBox="0 0 760 220" width="100%" height="220" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
@@ -255,7 +255,8 @@
 
   <footer class="note">
     이 화면은 backend/fixtures/demo_run.json 고정 데이터를 재생하는 3분 데모입니다.
-    실제 세종시 실측 데이터가 아니며 시우 검증 전 provisional 수치입니다.
+    지명·링크 관계는 2026-07-16 세종 표준노드링크(8,768노드·11,893링크) 참조이며,
+    점유율·대기열·저장공간·정책 효과는 실제 세종시 실측이 아닌 provisional 합성 수치입니다.
     run_id: <span id="run-id"></span>
   </footer>
 </div>
@@ -311,11 +312,15 @@
   }
 
   // ---- corridor SVG ----
-  var RA_POS = { R1: { x: 120, y: 110 }, R2: { x: 380, y: 110 }, R3: { x: 640, y: 110 } };
+  var RA_POS = {
+    '성금교차로': { x: 120, y: 110 },
+    '청사교차로': { x: 380, y: 110 },
+    '세종교차로': { x: 640, y: 110 }
+  };
   var LINK_DEF = [
-    { link_id: 'L12', from: 'R1', to: 'R2', offsetY: 0 },
-    { link_id: 'L23', from: 'R2', to: 'R3', offsetY: 0 },
-    { link_id: 'BYPASS', from: 'R1', to: 'R3', offsetY: -70 }
+    { link_id: 'seonggeum-cheongsa-jeoljae', from: '성금교차로', to: '청사교차로', offsetY: 0, label: '절재로 · 6개 실제 링크' },
+    { link_id: 'cheongsa-sejong-jeoljae', from: '청사교차로', to: '세종교차로', offsetY: 0, label: '절재로 · 10개 실제 링크' },
+    { link_id: 'seonggeum-sejong-alternative', from: '성금교차로', to: '세종교차로', offsetY: -70, label: '절재로 대체 경로 · 16개 실제 링크' }
   ];
 
   function occColor(ratio) {
@@ -341,13 +346,13 @@
       parts.push('<path id="' + pathId + '" d="' + d + '" fill="none" class="link-line" stroke="var(--border)" />');
       var labelX = (a.x + b.x) / 2;
       var labelY = midY - 12;
-      parts.push('<text x="' + labelX + '" y="' + labelY + '" class="link-label" text-anchor="middle">' + l.link_id + '</text>');
+      parts.push('<text x="' + labelX + '" y="' + labelY + '" class="link-label" text-anchor="middle">' + l.label + '</text>');
     });
 
-    Object.keys(RA_POS).forEach(function (ra) {
-      var p = RA_POS[ra];
+    Object.keys(RA_POS).forEach(function (junction) {
+      var p = RA_POS[junction];
       parts.push('<circle cx="' + p.x + '" cy="' + p.y + '" r="26" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2" />');
-      parts.push('<text x="' + p.x + '" y="' + (p.y + 5) + '" class="ra-label" text-anchor="middle">' + ra + '</text>');
+      parts.push('<text x="' + p.x + '" y="' + (p.y + 5) + '" class="ra-label" text-anchor="middle">' + junction + '</text>');
     });
 
     svg.innerHTML = parts.join('\n');
@@ -368,7 +373,7 @@
 
     var noteEl = document.getElementById('corridor-note');
     var lines = step.links.map(function (l) {
-      return l.link_id + ': 점유율 ' + Math.round(l.occupancy_ratio * 100) + '%' +
+      return (l.display_name || l.link_id) + ': 점유율 ' + Math.round(l.occupancy_ratio * 100) + '%' +
         (l.queue_veh != null ? ', 대기 ' + l.queue_veh + '대' : '') +
         (l.spillback ? ' [역류]' : '');
     }).join(' · ');
