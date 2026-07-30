@@ -157,10 +157,20 @@ def validate_catalog(catalog: dict[str, Any]) -> CatalogResult:
             missing = sorted(TRAFFIC_CHECKS - checks)
             if missing:
                 errors.append(f"{request_id}: missing traffic acceptance checks {missing}")
-        if any("signal_model" in use_case for use_case in use_cases):
+
+        # A dedicated signal-contract request must contain the full operating-plan
+        # acceptance set. The corridor request asks for signal fields only when the
+        # agency happens to hold them, so absence is a warning until a response is
+        # received and its contents are classified.
+        if "signal_model_contract_if_scope_changes" in use_cases:
             missing = sorted(SIGNAL_CHECKS - checks)
             if missing:
                 errors.append(f"{request_id}: missing signal acceptance checks {missing}")
+        elif "signal_model_if_provided" in use_cases and not SIGNAL_CHECKS <= checks:
+            warnings.append(
+                f"{request_id} has optional signal content; any received signal files require a separate full signal acceptance check"
+            )
+
         if "lane_and_storage_geometry" in use_cases:
             missing = sorted(GEOMETRY_CHECKS - checks)
             if missing:
@@ -182,7 +192,11 @@ def validate_catalog(catalog: dict[str, Any]) -> CatalogResult:
     if not isinstance(handoff, dict):
         errors.append("response_handoff_requirements must be an object")
     else:
-        for key in ("user_should_provide", "user_should_not_provide", "processing_after_receipt"):
+        for key in (
+            "user_should_provide",
+            "user_should_not_provide",
+            "processing_after_receipt",
+        ):
             if not isinstance(handoff.get(key), list) or not handoff[key]:
                 errors.append(f"response_handoff_requirements.{key} must be non-empty")
 
