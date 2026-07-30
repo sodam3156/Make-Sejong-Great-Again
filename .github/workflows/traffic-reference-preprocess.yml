@@ -1,0 +1,67 @@
+name: Traffic Reference Preprocess
+
+on:
+  push:
+    branches:
+      - agent/siwoo-traffic-preprocessing-20260730
+    paths:
+      - scripts/preprocess_intersection_traffic.py
+      - .github/workflows/traffic-reference-preprocess.yml
+      - data/public/2026-07-29/세종특별자치시_교차로 방향별 교통 통행량_20230420.csv
+  pull_request:
+    paths:
+      - scripts/preprocess_intersection_traffic.py
+      - .github/workflows/traffic-reference-preprocess.yml
+      - data/public/2026-07-29/세종특별자치시_교차로 방향별 교통 통행량_20230420.csv
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  preprocess-traffic-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Generate traffic reference outputs
+        run: |
+          python scripts/preprocess_intersection_traffic.py --output-dir traffic_reference_output
+
+      - name: Inspect generated outputs
+        run: |
+          find traffic_reference_output -maxdepth 3 -type f -print -exec wc -l {} \;
+          python -m json.tool traffic_reference_output/traffic_source_manifest.json >/dev/null
+
+      - name: Upload traffic reference artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: traffic-reference-output
+          path: traffic_reference_output/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Persist validated outputs on branch
+        if: >-
+          (github.event_name == 'push' && github.ref_name == 'agent/siwoo-traffic-preprocessing-20260730') ||
+          (github.event_name == 'pull_request' && github.head_ref == 'agent/siwoo-traffic-preprocessing-20260730')
+        env:
+          TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: |
+          target=data/observed/traffic_reference
+          rm -rf "$target"
+          mkdir -p "$target"
+          cp -R traffic_reference_output/. "$target"/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$target"
+          if git diff --cached --quiet; then
+            echo "No generated traffic changes to commit."
+            exit 0
+          fi
+          git commit -m "data: store processed intersection traffic reference"
+          git push origin HEAD:"$TARGET_BRANCH"
