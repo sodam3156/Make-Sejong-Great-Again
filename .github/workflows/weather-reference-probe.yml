@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   fetch-weather-reference:
@@ -44,23 +44,12 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Persist validated outputs on branch
-        if: >-
-          (github.event_name == 'push' && github.ref_name == 'agent/siwoo-weather-reference-selection-20260730') ||
-          (github.event_name == 'pull_request' && github.head_ref == 'agent/siwoo-weather-reference-selection-20260730')
-        env:
-          TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
+      - name: Confirm committed reference files exist
         run: |
-          target=data/observed/weather_reference
-          rm -rf "$target"
-          mkdir -p "$target"
-          cp -R weather_reference_output/. "$target"/
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "$target"
-          if git diff --cached --quiet; then
-            echo "No generated weather changes to commit."
-            exit 0
-          fi
-          git commit -m "data: store weather reference screening output"
-          git push origin HEAD:"$TARGET_BRANCH"
+          test -f data/observed/weather_reference/weather_source_manifest.json
+          test -f data/observed/weather_reference/processed/dry_candidate_screening.csv
+
+# Generated outputs are intentionally not committed by GITHUB_TOKEN.
+# Automatic commits changed retrieval timestamps and could retrigger the PR
+# workflow repeatedly. Reviewed outputs already stored in the branch are updated
+# only by an explicit human-authored commit after artifact comparison.
