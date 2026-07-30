@@ -20,7 +20,7 @@ import hashlib
 import json
 import os
 from collections import defaultdict
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlencode
@@ -29,17 +29,18 @@ from urllib.request import Request, urlopen
 LAT = 36.48522
 LON = 127.24438
 STATION_ID = 239
-START_DATE = "2022-08-01"
-END_DATE = "2022-08-31"
-RAIN_DATE = "2022-08-10"
-DRY_CANDIDATES = ("2022-08-03", "2022-08-17", "2022-08-24", "2022-08-31")
+RAIN_DATE = date(2022, 8, 10)
+# The selection rule expands to ±28 days when no same-month/same-weekday dry
+# candidate exists. One extra leading day is fetched for the preceding-6h test.
+ANALYSIS_START_DATE = RAIN_DATE - timedelta(days=28)
+ANALYSIS_END_DATE = RAIN_DATE + timedelta(days=28)
+FETCH_START_DATE = ANALYSIS_START_DATE - timedelta(days=1)
+FETCH_END_DATE = ANALYSIS_END_DATE
 PROXY_MODEL = "ERA5"
-EXPECTED_HOURLY_ROWS = 31 * 24
-EXPECTED_DAILY_ROWS = 31
 
 
 def fetch_bytes(url: str) -> bytes:
-    request = Request(url, headers={"User-Agent": "RainFlow-evidence-fetch/1.1"})
+    request = Request(url, headers={"User-Agent": "RainFlow-evidence-fetch/1.2"})
     with urlopen(request, timeout=60) as response:
         body = response.read()
     if not body:
@@ -77,11 +78,12 @@ def require_numeric_series(name: str, values: Any, expected_rows: int) -> list[f
 
 
 def fetch_open_meteo(output_dir: Path) -> dict[str, Any]:
+    fetch_days = (FETCH_END_DATE - FETCH_START_DATE).days + 1
     params = {
         "latitude": LAT,
         "longitude": LON,
-        "start_date": START_DATE,
-        "end_date": END_DATE,
+        "start_date": FETCH_START_DATE.isoformat(),
+        "end_date": FETCH_END_DATE.isoformat(),
         "hourly": "precipitation",
         "daily": "precipitation_sum",
         "timezone": "Asia/Seoul",
@@ -95,23 +97,26 @@ def fetch_open_meteo(output_dir: Path) -> dict[str, Any]:
 
     hourly_times = payload.get("hourly", {}).get("time")
     daily_dates = payload.get("daily", {}).get("time")
-    if not isinstance(hourly_times, list) or len(hourly_times) != EXPECTED_HOURLY_ROWS:
+    expected_hourly_rows = fetch_days * 24
+    expected_daily_rows = fetch_days
+    if not isinstance(hourly_times, list) or len(hourly_times) != expected_hourly_rows:
         raise RuntimeError("unexpected hourly timestamp series")
-    if not isinstance(daily_dates, list) or len(daily_dates) != EXPECTED_DAILY_ROWS:
+    if not isinstance(daily_dates, list) or len(daily_dates) != expected_daily_rows:
         raise RuntimeError("unexpected daily date series")
 
     hourly_values = require_numeric_series(
         "hourly.precipitation",
         payload.get("hourly", {}).get("precipitation"),
-        EXPECTED_HOURLY_ROWS,
+        expected_hourly_rows,
     )
     daily_values = require_numeric_series(
         "daily.precipitation_sum",
         payload.get("daily", {}).get("precipitation_sum"),
-        EXPECTED_DAILY_ROWS,
+        expected_daily_rows,
     )
 
-    raw_path = output_dir / "proxy" / "open_meteo_era5_sejong_202208.json"
+    date_tag = f"{FETCH_START_DATE:%Y%m%d}_{FETCH_END_DATE:%Y%m%d}"
+    raw_path = output_dir / "proxy" / f"open_meteo_era5_sejong_{date_tag}.json"
     raw_path.parent.mkdir(parents=True, exist_ok=True)
     raw_path.write_bytes(raw)
 
@@ -124,7 +129,7 @@ def fetch_open_meteo(output_dir: Path) -> dict[str, Any]:
         }
         for timestamp, precipitation in zip(hourly_times, hourly_values, strict=True)
     ]
-    hourly_path = output_dir / "proxy" / "weather_hourly_proxy_202208.csv"
+    hourly_path = output_dir / "proxy" / f"weather_hourly_proxy_{date_tag}.csv"
     write_csv(
         hourly_path,
         ["timestamp_kst", "precipitation_mm", "source_class", "source_model"],
@@ -133,14 +138,14 @@ def fetch_open_meteo(output_dir: Path) -> dict[str, Any]:
 
     daily_rows = [
         {
-            "date_kst": date,
+            "date_kst": day,
             "precipitation_sum_mm": precipitation,
             "source_class": "reanalysis_proxy",
             "source_model": PROXY_MODEL,
         }
-        for date, precipitation in zip(daily_dates, daily_values, strict=True)
+        for day, precipitation in zip(daily_dates, daily_values, strict=True)
     ]
-    daily_path = output_dir / "proxy" / "weather_daily_proxy_202208.csv"
+    daily_path = output_dir / "proxy" / f"weather_daily_proxy_{date_tag}.csv"
     write_csv(
         daily_path,
         ["date_kst", "precipitation_sum_mm", "source_class", "source_model"],
@@ -152,17 +157,18 @@ def fetch_open_meteo(output_dir: Path) -> dict[str, Any]:
         for row in hourly_rows
     }
     daily_by_date = {
-        row["date_kst"]: float(row["precipitation_sum_mm"]) for row in daily_rows
+        date.fromisoformat(row["date_kst"]): float(row["precipitation_sum_mm"])
+        for row in daily_rows
     }
 
-    # Independent sanity check: sum the hourly values by local calendar date and
+    # Independent sanity check: sum hourly values by local calendar date and
     # compare with the daily series returned in the same API response.
-    hourly_sum_by_date: dict[str, float] = defaultdict(float)
+    hourly_sum_by_date: dict[date, float] = defaultdict(float)
     for timestamp, precipitation in hourly_by_time.items():
-        hourly_sum_by_date[timestamp.date().isoformat()] += precipitation
+        hourly_sum_by_date[timestamp.date()] += precipitation
     daily_hourly_differences = {
-        date: round(abs(daily_by_date[date] - hourly_sum_by_date[date]), 6)
-        for date in daily_by_date
+        day: round(abs(daily_by_date[day] - hourly_sum_by_date[day]), 6)
+        for day in daily_by_date
     }
     max_daily_hourly_difference = max(daily_hourly_differences.values())
     if max_daily_hourly_difference > 0.11:
@@ -172,39 +178,63 @@ def fetch_open_meteo(output_dir: Path) -> dict[str, Any]:
         )
 
     candidate_rows: list[dict[str, Any]] = []
-    for candidate in DRY_CANDIDATES:
-        midnight = datetime.fromisoformat(candidate)
-        prior_hours = [midnight - timedelta(hours=offset) for offset in range(1, 7)]
-        prior_total = sum(hourly_by_time[hour] for hour in prior_hours)
-        day_total = daily_by_date[candidate]
-        candidate_rows.append(
-            {
-                "date_kst": candidate,
-                "daily_precipitation_mm": round(day_total, 3),
-                "preceding_6h_precipitation_mm": round(prior_total, 3),
-                "proxy_dry_pass": bool(day_total == 0.0 and prior_total == 0.0),
-                "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED",
-            }
-        )
+    current = ANALYSIS_START_DATE
+    while current <= ANALYSIS_END_DATE:
+        if current != RAIN_DATE:
+            midnight = datetime.combine(current, datetime.min.time())
+            prior_hours = [midnight - timedelta(hours=offset) for offset in range(1, 7)]
+            prior_total = sum(hourly_by_time[hour] for hour in prior_hours)
+            day_total = daily_by_date[current]
+            proxy_dry_pass = bool(day_total == 0.0 and prior_total == 0.0)
+            candidate_rows.append(
+                {
+                    "date_kst": current.isoformat(),
+                    "weekday": current.strftime("%A"),
+                    "same_weekday_as_rain": current.weekday() == RAIN_DATE.weekday(),
+                    "same_month_as_rain": current.month == RAIN_DATE.month,
+                    "distance_days": abs((current - RAIN_DATE).days),
+                    "daily_precipitation_mm": round(day_total, 3),
+                    "preceding_6h_precipitation_mm": round(prior_total, 3),
+                    "proxy_dry_pass": proxy_dry_pass,
+                    "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED",
+                }
+            )
+        current += timedelta(days=1)
 
+    candidate_rows.sort(
+        key=lambda row: (
+            not row["proxy_dry_pass"],
+            not row["same_weekday_as_rain"],
+            not row["same_month_as_rain"],
+            row["distance_days"],
+            row["date_kst"],
+        )
+    )
+    ranked_rows = candidate_rows[:15]
     candidates_path = output_dir / "processed" / "dry_candidate_screening.csv"
     write_csv(
         candidates_path,
         [
             "date_kst",
+            "weekday",
+            "same_weekday_as_rain",
+            "same_month_as_rain",
+            "distance_days",
             "daily_precipitation_mm",
             "preceding_6h_precipitation_mm",
             "proxy_dry_pass",
             "final_status",
         ],
-        candidate_rows,
+        ranked_rows,
     )
 
     rain_hours = [
         value
         for timestamp, value in hourly_by_time.items()
-        if timestamp.date().isoformat() == RAIN_DATE
+        if timestamp.date() == RAIN_DATE
     ]
+    proxy_passes = [row for row in candidate_rows if row["proxy_dry_pass"]]
+    selected_proxy_candidate = proxy_passes[0] if proxy_passes else None
     return {
         "source_class": "reanalysis_proxy",
         "source_model": PROXY_MODEL,
@@ -212,14 +242,26 @@ def fetch_open_meteo(output_dir: Path) -> dict[str, Any]:
         "request_url": url,
         "raw_file": str(raw_path),
         "raw_sha256": sha256_bytes(raw),
+        "analysis_window": {
+            "start_date": ANALYSIS_START_DATE.isoformat(),
+            "end_date": ANALYSIS_END_DATE.isoformat(),
+            "selection_priority": [
+                "zero daily and preceding-6h proxy precipitation",
+                "same weekday as rain date",
+                "same month as rain date",
+                "smallest absolute day distance",
+            ],
+        },
         "hourly_rows": len(hourly_rows),
         "daily_rows": len(daily_rows),
         "null_precipitation_values": 0,
         "daily_hourly_max_abs_difference_mm": max_daily_hourly_difference,
-        "rain_date": RAIN_DATE,
+        "rain_date": RAIN_DATE.isoformat(),
         "rain_date_proxy_precipitation_mm": round(daily_by_date[RAIN_DATE], 3),
         "rain_date_proxy_max_hourly_mm": round(max(rain_hours), 3),
-        "dry_candidate_screening": candidate_rows,
+        "proxy_dry_pass_count": len(proxy_passes),
+        "selected_proxy_candidate": selected_proxy_candidate,
+        "ranked_dry_candidate_screening": ranked_rows,
     }
 
 
@@ -234,15 +276,15 @@ def fetch_kma_hourly_if_authorized(output_dir: Path) -> dict[str, Any]:
         }
 
     params = {
-        "tm1": "202208010000",
-        "tm2": "202208312300",
+        "tm1": f"{FETCH_START_DATE:%Y%m%d}0000",
+        "tm2": f"{FETCH_END_DATE:%Y%m%d}2300",
         "stn": str(STATION_ID),
         "help": "1",
         "authKey": auth_key,
     }
     url = "https://apihub.kma.go.kr/api/typ01/url/kma_sfctm3.php?" + urlencode(params)
     raw = fetch_bytes(url)
-    path = output_dir / "observed" / "kma_asos_239_hourly_202208.txt"
+    path = output_dir / "observed" / "kma_asos_239_hourly_reference_window.txt"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(raw)
     return {
