@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   fetch-weather-reference:
@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Check out branch
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Fetch screening data
         env:
@@ -40,3 +42,20 @@ jobs:
           path: weather_reference_output/
           if-no-files-found: error
           retention-days: 14
+
+      - name: Persist validated outputs on branch
+        if: github.event_name == 'push' && github.ref_name == 'agent/siwoo-weather-reference-selection-20260730'
+        run: |
+          target=data/observed/weather_reference
+          rm -rf "$target"
+          mkdir -p "$target"
+          cp -R weather_reference_output/. "$target"/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$target"
+          if git diff --cached --quiet; then
+            echo "No generated weather changes to commit."
+            exit 0
+          fi
+          git commit -m "data: store weather reference screening output"
+          git push origin HEAD:${{ github.ref_name }}
