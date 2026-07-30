@@ -1,0 +1,25 @@
+[
+  {
+    "at_utc": "2026-07-30T10:23:54.681290+00:00",
+    "decision": "allowed",
+    "method": "GET",
+    "resource_type": "document",
+    "url": "http://127.0.0.1:64752/"
+  },
+  {
+    "at_utc": "2026-07-30T10:23:55.158557+00:00",
+    "decision": "allowed",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "http://127.0.0.1:64752/demo_run.js"
+  },
+  {
+    "at_utc": "2026-07-30T10:23:55.269186+00:00",
+    "decision": "forced_fixture_fallback",
+    "method": "POST",
+    "reason": "Deterministic evidence injection: make the live simulation API unavailable so the UI must load its bundled fixture.",
+    "resource_type": "fetch",
+    "synthetic_status": 503,
+    "url": "http://127.0.0.1:64752/api/simulations"
+  }
+]

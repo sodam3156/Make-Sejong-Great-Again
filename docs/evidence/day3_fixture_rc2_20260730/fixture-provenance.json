@@ -1,0 +1,17 @@
+{
+  "backend_fixture_path": "C:\\Users\\ilhsh\\Downloads\\세종을 다시 위대하게\\Make-Sejong-Great-Again-day3\\backend\\fixtures\\demo_run.json",
+  "backend_fixture_sha256": "8efd893a5f603dd68e9ed174ae3bcc39dc4cd4a405a995a0183cc432c208a88b",
+  "data_origin": "bundled_static_fixture",
+  "fallback_trigger": {
+    "method": "POST",
+    "path": "/api/simulations",
+    "synthetic_status": 503
+  },
+  "frontend_fixture_path": "C:\\Users\\ilhsh\\Downloads\\세종을 다시 위대하게\\Make-Sejong-Great-Again-day3\\frontend\\demo_run.js",
+  "frontend_fixture_sha256": "aae70687b00c5b318eb7fc84be187fb07506ef3572720217b71440543518bc5b",
+  "is_live_integration": false,
+  "parsed_artifacts_equal": true,
+  "served_fixture_http_status": 200,
+  "served_fixture_matches_repo": true,
+  "served_fixture_sha256": "aae70687b00c5b318eb7fc84be187fb07506ef3572720217b71440543518bc5b"
+}

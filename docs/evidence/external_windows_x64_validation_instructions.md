@@ -11,6 +11,13 @@ Copy these three files to each clean Windows x64 PC:
 - `RainFlowSejong-windows-x64.zip.sha256`
 - `scripts/validate_external_windows.ps1`
 
+The rc2 candidate expected by this procedure is:
+
+- release tag: `v0.2.0-day3-rc2`
+- source commit: `15bab0cd08d0a734b169f554f9776611992419d3`
+- ZIP SHA-256:
+  `44458b041bf6cbe5b392dd6ec68efb8f0d71088349423eb6b0c5b1668265ad42`
+
 Before each run, disconnect Ethernet and disable Wi-Fi. The harness fails rather
 than records a pass when a physical adapter is `Up` or Windows reports Internet
 connectivity. It also fails if Node.js, Python, SUMO, a 32-bit host process, or a
@@ -22,6 +29,7 @@ non-personal PC identifiers:
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\validate_external_windows.ps1 `
   -ZipPath .\RainFlowSejong-windows-x64.zip `
+  -ExpectedSha256 44458b041bf6cbe5b392dd6ec68efb8f0d71088349423eb6b0c5b1668265ad42 `
   -PcIdentifier PC-A `
   -RunNumber 1 `
   -EvidenceRoot .\external-pc-evidence

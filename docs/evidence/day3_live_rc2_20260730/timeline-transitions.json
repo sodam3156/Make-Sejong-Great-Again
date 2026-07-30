@@ -1,0 +1,182 @@
+[
+  {
+    "at_utc": "2026-07-30T10:23:55.649942+00:00",
+    "clock": "t = 0초 (실측 스케일) / 강우: dry",
+    "current": 1,
+    "display_label": "정상 운영",
+    "elapsed_seconds": 4.078,
+    "screen_state": "normal",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:24:04.684596+00:00",
+    "clock": "t = 180초 (실측 스케일) / 강우: dry",
+    "current": 2,
+    "display_label": "정상 운영",
+    "elapsed_seconds": 13.11,
+    "screen_state": "normal",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:24:13.773455+00:00",
+    "clock": "t = 360초 (실측 스케일) / 강우: dry",
+    "current": 3,
+    "display_label": "정상 운영",
+    "elapsed_seconds": 22.203,
+    "screen_state": "normal",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:24:22.645405+00:00",
+    "clock": "t = 540초 (실측 스케일) / 강우: dry",
+    "current": 4,
+    "display_label": "정상 운영",
+    "elapsed_seconds": 31.078,
+    "screen_state": "normal",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:24:31.708101+00:00",
+    "clock": "t = 720초 (실측 스케일) / 강우: dry",
+    "current": 5,
+    "display_label": "정상 운영",
+    "elapsed_seconds": 40.141,
+    "screen_state": "normal",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:24:40.724829+00:00",
+    "clock": "t = 900초 (실측 스케일) / 강우: moderate",
+    "current": 6,
+    "display_label": "강우 경보",
+    "elapsed_seconds": 49.157,
+    "screen_state": "rain_warning",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:24:49.858733+00:00",
+    "clock": "t = 1080초 (실측 스케일) / 강우: moderate",
+    "current": 7,
+    "display_label": "강우 경보",
+    "elapsed_seconds": 58.282,
+    "screen_state": "rain_warning",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:24:58.700660+00:00",
+    "clock": "t = 1260초 (실측 스케일) / 강우: heavy",
+    "current": 8,
+    "display_label": "역류(spillback) 발생",
+    "elapsed_seconds": 67.125,
+    "screen_state": "spillback",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:25:07.915588+00:00",
+    "clock": "t = 1440초 (실측 스케일) / 강우: heavy",
+    "current": 9,
+    "display_label": "역류(spillback) 발생",
+    "elapsed_seconds": 76.344,
+    "screen_state": "spillback",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:25:16.796134+00:00",
+    "clock": "t = 1620초 (실측 스케일) / 강우: heavy",
+    "current": 10,
+    "display_label": "대응안 비교",
+    "elapsed_seconds": 85.219,
+    "screen_state": "policy_compare",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:25:25.756762+00:00",
+    "clock": "t = 1800초 (실측 스케일) / 강우: heavy",
+    "current": 11,
+    "display_label": "안전 가드 심사",
+    "elapsed_seconds": 94.188,
+    "screen_state": "safety_review",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:25:34.789493+00:00",
+    "clock": "t = 1980초 (실측 스케일) / 강우: heavy",
+    "current": 12,
+    "display_label": "운영자 승인",
+    "elapsed_seconds": 103.219,
+    "screen_state": "operator_approval",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:25:43.840440+00:00",
+    "clock": "t = 2160초 (실측 스케일) / 강우: heavy",
+    "current": 13,
+    "display_label": "운영자 승인",
+    "elapsed_seconds": 112.266,
+    "screen_state": "operator_approval",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:25:52.873346+00:00",
+    "clock": "t = 2340초 (실측 스케일) / 강우: heavy",
+    "current": 14,
+    "display_label": "운영자 승인",
+    "elapsed_seconds": 121.297,
+    "screen_state": "operator_approval",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:26:01.770354+00:00",
+    "clock": "t = 2520초 (실측 스케일) / 강우: heavy",
+    "current": 15,
+    "display_label": "운영자 승인",
+    "elapsed_seconds": 130.203,
+    "screen_state": "operator_approval",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:26:10.939983+00:00",
+    "clock": "t = 2700초 (실측 스케일) / 강우: dry",
+    "current": 16,
+    "display_label": "회복 비교",
+    "elapsed_seconds": 139.36,
+    "screen_state": "recovery_compare",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:26:19.919881+00:00",
+    "clock": "t = 2880초 (실측 스케일) / 강우: dry",
+    "current": 17,
+    "display_label": "회복 비교",
+    "elapsed_seconds": 148.344,
+    "screen_state": "recovery_compare",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:26:28.925564+00:00",
+    "clock": "t = 3060초 (실측 스케일) / 강우: dry",
+    "current": 18,
+    "display_label": "회복 비교",
+    "elapsed_seconds": 157.344,
+    "screen_state": "recovery_compare",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:26:37.826806+00:00",
+    "clock": "t = 3240초 (실측 스케일) / 강우: dry",
+    "current": 19,
+    "display_label": "회복 비교",
+    "elapsed_seconds": 166.25,
+    "screen_state": "recovery_compare",
+    "total": 20
+  },
+  {
+    "at_utc": "2026-07-30T10:26:46.714809+00:00",
+    "clock": "t = 3420초 (실측 스케일) / 강우: dry",
+    "current": 20,
+    "display_label": "회복 비교",
+    "elapsed_seconds": 175.141,
+    "screen_state": "recovery_compare",
+    "total": 20
+  }
+]

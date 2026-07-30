@@ -86,9 +86,9 @@ powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1 -PythonVers
 릴리스 후보는 먼저 현재 커밋에 태그를 만든 뒤 태그 검증을 켜서 빌드한다.
 
 ```powershell
-git tag -a v0.2.0-day3-rc1 -m "RainFlow Sejong v0.2.0 Day 3 RC1"
+git tag -a v0.2.0-day3-rc2 -m "RainFlow Sejong v0.2.0 Day 3 RC2"
 powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1 `
-  -ReleaseTag v0.2.0-day3-rc1
+  -ReleaseTag v0.2.0-day3-rc2
 ```
 
 빌드 스크립트는 다음을 자동 수행한다.

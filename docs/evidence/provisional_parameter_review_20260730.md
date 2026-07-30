@@ -63,7 +63,11 @@ diversion 한도는 KPI 또는 guard 판정에 영향을 주지 않았다. 특�
 - stale: 정확히 `120초`는 통과, 바로 위는 차단
 - hard-brake proxy: baseline과 같으면 통과, 1회 많으면 차단
 
-전체 Windows Python 3.11 x64 테스트 결과는 `83 passed, 1 warning`이다.
+민감도 원시 산출물은 위 rc1 SHA에서 생성됐다. rc2
+`15bab0cd08d0a734b169f554f9776611992419d3`는 안전 문구, 동결 생성기,
+TestClient 호환 정책과 증거 수집기를 변경했으며 provisional 수치·임계값은
+변경하지 않았다. rc2 전체 Windows Python 3.11 x64 테스트 결과는
+`87 passed`, 경고 0건이다.
 
 ## 문헌 대조
 
@@ -94,3 +98,10 @@ diversion 한도는 KPI 또는 guard 판정에 영향을 주지 않았다. 특�
 
 > 실제 세종 실측·공공 안전기준이 아닌 합성 provisional 값이며,
 > `JAM_OCC` 변화에서 내부 TTT 기준 통과 여부가 뒤집혔다.
+
+## 독립 검토 상태
+
+독립 검토자 이름, 검토 시각, 승인 또는 기각 서명은 아직 없다. 따라서 이
+문서는 재현 가능한 **내부 탐색 검토**이며 독립 검증 완료 증거로 사용할 수
+없다. 시우 또는 별도 검토자가 원시 JSON·CSV와 위 한계를 확인하고 승인/기각
+결론을 기록하기 전까지 `provisional=true`를 유지한다.
