@@ -1,0 +1,17 @@
+{
+    "captured_at_utc":  "2026-07-30T08:15:41.2302507Z",
+    "extracted_release_path":  "C:\\users\\ilhsh\\downloads\\세종을 다시 위대하게\\Day3 오프라인 실연동 20260730",
+    "initial_pid":  26848,
+    "initial_port":  64828,
+    "restart_pid":  26848,
+    "restart_port":  64828,
+    "restart_reused_same_pid":  true,
+    "restart_reused_same_port":  true,
+    "health_before_stop_status_code":  200,
+    "established_external_connection_count_before_stop":  0,
+    "stop_exit_code":  0,
+    "health_reachable_after_stop":  false,
+    "runtime_pid_file_exists_after_stop":  false,
+    "runtime_port_file_exists_after_stop":  false,
+    "pass":  true
+}

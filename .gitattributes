@@ -9,3 +9,7 @@ release/start_exe.bat text eol=crlf
 # Preserve downloaded public CSV snapshots byte-for-byte, including their
 # original encoding and CRLF line endings.
 data/public/**/*.csv -text -diff
+
+# Evidence captured by Windows tools is checksummed byte-for-byte. Preserve its
+# CRLF bytes and do not report them as trailing-whitespace defects.
+docs/evidence/day3_integration_20260730/** -text -whitespace
