@@ -2,7 +2,7 @@
 
 동결 기준: `backend/fixtures/demo_run.json`과 `docs/evidence/demo_freeze_20260729.json`. 이 문서는 fixture와 함께 생성되며 수치를 직접 편집하지 않는다.
 
-정본 메타데이터: freeze `freeze-20260729-202509-kst`, source run `live-rain_spillback_a-s42-3e5be2d480`, checksum `c9088907640696c315685619ce18ae1529ceb8bc1e993bb36c0f080b7ce4ed89`, seed `42`, `provisional=true`. 화면의 지명·링크 관계는 2026-07-16 전국표준노드링크 세종 8,768노드·11,893링크를 참조하며, 교통량·저장공간·정책 효과는 합성 결과라 세종 실측 성과가 아니다.
+정본 메타데이터: freeze `freeze-20260729-202509-kst`, source run `live-rain_spillback_a-s42-2b20402076`, checksum `4d2ffedf11b004dfe05c9da351bbf1b195f3c3d9e53a2941e7200eb64cac6d21`, seed `42`, `provisional=true`. 화면의 지명·링크 관계는 2026-07-16 전국표준노드링크 세종 8,768노드·11,893링크를 참조하며, 교통량·저장공간·정책 효과는 합성 결과라 세종 실측 성과가 아니다.
 
 ## 0. 시작 전 체크리스트
 

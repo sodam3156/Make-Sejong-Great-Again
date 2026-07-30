@@ -47,13 +47,13 @@ python scripts/generate_contract_artifacts.py --check
 | 링크 저장공간 | 성금–청사 22대, 청사–세종 18대 | 실제 링크 길이가 아닌 합성 큐 모델의 저장공간 가정 |
 | capacity drop | 포화 정체(occ≥0.95) 링크 선두 배출 ×0.70 | stop-and-go 방출 손실. spillback이 상류 처리량을 깎는 핵심 메커니즘 |
 | 게이팅 임계 | 하류 점유 0.80 초과 시 상류 유입 비례 감축 (하한 0.35) | 저장공간 초과 전 선제 조절 |
-| 고정 미터링 | 우천 중 부진입로(R1_W, R2_S) 유입 ×0.45 고정 | 공정성 가드 교육용 위반 사례 재현 |
+| 고정 미터링 | 우천 중 부진입로(성금교차로 서측, 청사교차로 남측) 유입 ×0.45 고정 | 공정성 가드 교육용 위반 사례 재현 |
 | 공정성 한도 | 진입로 P95 지체 +15% | 이슈 #9 가드 기준 |
 | 시드 재현 | `random.Random(f"{scenario_id}:{seed}")` | 동일 입력·시드 → 동일 결과 |
 
 ## QA v2 동결 결과 (seed 42, rain_spillback_a)
 
-정본 source run `live-rain_spillback_a-s42-3e5be2d480`, checksum `c9088907640696c315685619ce18ae1529ceb8bc1e993bb36c0f080b7ce4ed89`, `provisional=true`. 화면의 지명·링크 관계는 2026-07-16 세종 표준노드링크(8,768노드·11,893링크) 참조이며, 아래 값은 이 합성 run에만 해당하고 세종 실측 성과가 아니다.
+정본 source run `live-rain_spillback_a-s42-2b20402076`, checksum `4d2ffedf11b004dfe05c9da351bbf1b195f3c3d9e53a2941e7200eb64cac6d21`, `provisional=true`. 화면의 지명·링크 관계는 2026-07-16 세종 표준노드링크(8,768노드·11,893링크) 참조이며, 아래 값은 이 합성 run에만 해당하고 세종 실측 성과가 아니다.
 
 | 정책 | 회랑 spillback wall-clock | 모형 내 누적 체류시간 | 가드 |
 |---|---|---|---|
