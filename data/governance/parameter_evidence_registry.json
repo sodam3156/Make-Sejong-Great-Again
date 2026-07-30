@@ -1,0 +1,509 @@
+{
+  "schema_version": 1,
+  "registry_version": "rainflow-parameter-evidence-v1",
+  "as_of_date": "2026-07-31",
+  "default_dataset": "synthetic-v0",
+  "runtime_parameter_set_version": "rainflow-provisional-v2",
+  "base_commit": "fc10d9004bb6d2a3df8813bfa8c2d6ae0542f717",
+  "model_parameter_change_in_this_registry": false,
+  "approval_authority": "team_or_named_independent_reviewer_only",
+  "entries": [
+    {
+      "parameter_id": "weather.kma_239.precipitation_timeseries",
+      "value_kind": "timeseries",
+      "current_value": null,
+      "unit": "mm_per_interval",
+      "classification": "observed",
+      "lifecycle_status": "evidence_ready_pending_merge",
+      "runtime_active": false,
+      "target_dataset": "future_observed_weather_adapter",
+      "provisional": false,
+      "code_reference": null,
+      "source_refs": [
+        "PR#41@cba37eb6e353447ecf347a379de23dea279f6d4d",
+        "KMA station 239 AWS minute and ASOS hourly observations"
+      ],
+      "confidence": {
+        "source_quality": "high",
+        "transferability_to_traffic_effect": "not_assessed"
+      },
+      "allowed_usage": [
+        "weather_time_series_input_after_source_pr_merge",
+        "weather_source_qa"
+      ],
+      "prohibited_usage": [
+        "derive_traffic_capacity_factor_without_matched_traffic",
+        "claim_same_date_traffic_calibration"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "Rain day 2022-08-10 is complete; dry reference 2022-07-27 is valid for analysis starts at or after 06:00 KST unless prior-day data is added."
+    },
+    {
+      "parameter_id": "traffic.monthly_direction_share_mapping_candidate",
+      "value_kind": "mapping",
+      "current_value": {
+        "R1_N": 0.312042,
+        "R1_W": 0.206793,
+        "R2_S": 0.346572,
+        "R3_E": 0.173056
+      },
+      "unit": "share",
+      "classification": "observed_derived_candidate",
+      "lifecycle_status": "candidate_review_required",
+      "runtime_active": false,
+      "target_dataset": "none",
+      "provisional": true,
+      "code_reference": null,
+      "source_refs": [
+        "PR#42@b0a0aac9aed9054e751f45b0ead3214108b46c97",
+        "Sejong monthly intersection direction totals 2022-05 through 2023-03"
+      ],
+      "confidence": {
+        "source_quality": "medium",
+        "transferability_to_absolute_demand": "low"
+      },
+      "allowed_usage": [
+        "direction_share_context_only",
+        "sensitivity_design_only"
+      ],
+      "prohibited_usage": [
+        "replace_BASE_DEMAND",
+        "same_date_intraday_calibration",
+        "map_R2_N_or_R3_N_as_external_demand"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "Public direction columns are interpreted as travel direction while model suffixes indicate approach side; detector semantics and turn splits remain unverified."
+    },
+    {
+      "parameter_id": "traffic.same_date_intraday_absolute_demand",
+      "value_kind": "missing",
+      "current_value": null,
+      "unit": "veh_per_5min_or_15min",
+      "classification": "evidence_gap",
+      "lifecycle_status": "blocked_missing_data",
+      "runtime_active": false,
+      "target_dataset": "future_observed_traffic_adapter",
+      "provisional": false,
+      "code_reference": null,
+      "source_refs": [],
+      "confidence": {
+        "source_quality": "not_assessed",
+        "transferability": "not_assessed"
+      },
+      "allowed_usage": [
+        "record_missing_input"
+      ],
+      "prohibited_usage": [
+        "claim_field_replay",
+        "calibrate_absolute_demand"
+      ],
+      "independent_review": {
+        "status": "not_started",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "Requires 5-minute, 15-minute, or hourly direction and preferably turn-level traffic for the selected date and analysis window."
+    },
+    {
+      "parameter_id": "signal.actual_operating_plan",
+      "value_kind": "missing",
+      "current_value": null,
+      "unit": "cycle_phase_green_offset",
+      "classification": "evidence_gap",
+      "lifecycle_status": "blocked_missing_data",
+      "runtime_active": false,
+      "target_dataset": "future_signal_model_only",
+      "provisional": false,
+      "code_reference": null,
+      "source_refs": [],
+      "confidence": {
+        "source_quality": "not_assessed",
+        "transferability": "not_assessed"
+      },
+      "allowed_usage": [
+        "record_missing_input"
+      ],
+      "prohibited_usage": [
+        "claim_actual_signal_replay",
+        "label_2023_classification_as_2026_plan"
+      ],
+      "independent_review": {
+        "status": "not_started",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "Needed only if the scope is changed from the current signal-unmodeled synthetic queue abstraction to an actual signal model."
+    },
+    {
+      "parameter_id": "simulation.BASE_DEMAND",
+      "value_kind": "mapping",
+      "current_value": {
+        "R1_N": 0.9,
+        "R1_W": 0.35,
+        "R2_S": 0.4,
+        "R3_E": 0.35
+      },
+      "unit": "veh_per_5sec_step",
+      "classification": "synthetic_provisional",
+      "lifecycle_status": "active_synthetic_provisional",
+      "runtime_active": true,
+      "target_dataset": "synthetic-v0",
+      "provisional": true,
+      "code_reference": "backend/app/simulation.py:BASE_DEMAND",
+      "source_refs": [
+        "backend/app/simulation.py@fc10d9004bb6d2a3df8813bfa8c2d6ae0542f717"
+      ],
+      "confidence": {
+        "source_quality": "not_applicable_synthetic",
+        "transferability_to_real_corridor": "low"
+      },
+      "allowed_usage": [
+        "synthetic_demo_only",
+        "deterministic_policy_comparison"
+      ],
+      "prohibited_usage": [
+        "claim_observed_demand",
+        "claim_2022_or_2026_calibration"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "Do not overwrite with monthly direction shares."
+    },
+    {
+      "parameter_id": "simulation.APPROACH_CAP",
+      "value_kind": "mapping",
+      "current_value": {
+        "R1_N": 1.3,
+        "R1_W": 0.8,
+        "R2_N": 2.0,
+        "R2_S": 0.8,
+        "R3_N": 2.0,
+        "R3_E": 0.8
+      },
+      "unit": "veh_per_5sec_step",
+      "classification": "synthetic_provisional",
+      "lifecycle_status": "active_synthetic_provisional",
+      "runtime_active": true,
+      "target_dataset": "synthetic-v0",
+      "provisional": true,
+      "code_reference": "backend/app/simulation.py:APPROACH_CAP",
+      "source_refs": [
+        "backend/app/simulation.py@fc10d9004bb6d2a3df8813bfa8c2d6ae0542f717"
+      ],
+      "confidence": {
+        "source_quality": "not_applicable_synthetic",
+        "transferability_to_real_corridor": "low"
+      },
+      "allowed_usage": [
+        "synthetic_demo_only"
+      ],
+      "prohibited_usage": [
+        "claim_observed_service_rate",
+        "claim_actual_signal_capacity"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "No lane, saturation-flow, or signal-plan calibration is attached."
+    },
+    {
+      "parameter_id": "simulation.LINKS_storage",
+      "value_kind": "mapping",
+      "current_value": {
+        "L12": 22,
+        "L23": 18,
+        "BYPASS": 60
+      },
+      "unit": "veh",
+      "classification": "synthetic_provisional",
+      "lifecycle_status": "active_synthetic_provisional",
+      "runtime_active": true,
+      "target_dataset": "synthetic-v0",
+      "provisional": true,
+      "code_reference": "backend/app/simulation.py:LINKS",
+      "source_refs": [
+        "backend/app/simulation.py@fc10d9004bb6d2a3df8813bfa8c2d6ae0542f717"
+      ],
+      "confidence": {
+        "source_quality": "not_applicable_synthetic",
+        "transferability_to_real_corridor": "low"
+      },
+      "allowed_usage": [
+        "synthetic_demo_only",
+        "spillback_mechanism_demonstration"
+      ],
+      "prohibited_usage": [
+        "claim_geometry_derived_storage",
+        "claim_field_queue_capacity"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "Actual lane count, usable queue length, stop-line location, and vehicle-length assumptions are not yet connected."
+    },
+    {
+      "parameter_id": "simulation.RAIN_CAPACITY_FACTOR",
+      "value_kind": "mapping",
+      "current_value": {
+        "dry": 1.0,
+        "light": 0.95,
+        "moderate": 0.89,
+        "heavy": 0.84
+      },
+      "unit": "multiplier",
+      "classification": "transferred_provisional",
+      "lifecycle_status": "active_synthetic_provisional",
+      "runtime_active": true,
+      "target_dataset": "synthetic-v0",
+      "provisional": true,
+      "code_reference": "backend/app/simulation.py:RAIN_CAPACITY_FACTOR",
+      "source_refs": [
+        "docs/evidence/provisional_parameters.md",
+        "backend/app/simulation.py@fc10d9004bb6d2a3df8813bfa8c2d6ae0542f717"
+      ],
+      "evidence_range": {
+        "non_dry_capacity_multiplier_lower": 0.84,
+        "non_dry_capacity_multiplier_upper": 0.95
+      },
+      "confidence": {
+        "source_quality": "medium",
+        "transferability_to_named_sejong_intersections": "low"
+      },
+      "allowed_usage": [
+        "synthetic_demo_only",
+        "sensitivity_sweep"
+      ],
+      "prohibited_usage": [
+        "claim_kma_rainfall_directly_determines_capacity",
+        "claim_local_calibration"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "KMA precipitation supplies timing and intensity only; matched traffic is still required to estimate local capacity effects."
+    },
+    {
+      "parameter_id": "simulation.jam_and_capacity_drop",
+      "value_kind": "mapping",
+      "current_value": {
+        "JAM_OCC": 0.95,
+        "CAPACITY_DROP": 0.7
+      },
+      "unit": "ratio",
+      "classification": "synthetic_provisional",
+      "lifecycle_status": "active_synthetic_provisional",
+      "runtime_active": true,
+      "target_dataset": "synthetic-v0",
+      "provisional": true,
+      "code_reference": "backend/app/simulation.py:JAM_OCC,CAPACITY_DROP",
+      "source_refs": [
+        "backend/app/simulation.py@fc10d9004bb6d2a3df8813bfa8c2d6ae0542f717"
+      ],
+      "confidence": {
+        "source_quality": "not_applicable_synthetic",
+        "transferability_to_real_corridor": "low"
+      },
+      "allowed_usage": [
+        "synthetic_demo_only"
+      ],
+      "prohibited_usage": [
+        "claim_observed_breakdown_threshold",
+        "claim_calibrated_capacity_drop"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "The mechanism is qualitative; both thresholds remain uncalibrated."
+    },
+    {
+      "parameter_id": "scenario.surge_and_incident",
+      "value_kind": "mapping",
+      "current_value": {
+        "rain_spillback_a_surge": 1.1,
+        "rain_spillback_b_surge": 1.18,
+        "incident_L23_storage_multiplier": 0.8
+      },
+      "unit": "multiplier",
+      "classification": "synthetic_provisional",
+      "lifecycle_status": "active_synthetic_provisional",
+      "runtime_active": true,
+      "target_dataset": "synthetic-v0",
+      "provisional": true,
+      "code_reference": "backend/app/simulation.py:SCENARIOS,incident storage adjustment",
+      "source_refs": [
+        "backend/app/simulation.py@fc10d9004bb6d2a3df8813bfa8c2d6ae0542f717"
+      ],
+      "confidence": {
+        "source_quality": "not_applicable_synthetic",
+        "transferability_to_real_corridor": "low"
+      },
+      "allowed_usage": [
+        "synthetic_demo_only",
+        "stress_test"
+      ],
+      "prohibited_usage": [
+        "claim_observed_rain_demand_surge",
+        "claim_documented_incident_replay"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "No same-date event, incident, or intraday demand evidence is attached."
+    },
+    {
+      "parameter_id": "policy.metering_and_gating",
+      "value_kind": "mapping",
+      "current_value": {
+        "fixed_metering_factor": 0.45,
+        "corridor_gating_trigger_occupancy": 0.8,
+        "corridor_gating_min_factor": 0.35
+      },
+      "unit": "ratio",
+      "classification": "synthetic_provisional",
+      "lifecycle_status": "active_synthetic_provisional",
+      "runtime_active": true,
+      "target_dataset": "synthetic-v0",
+      "provisional": true,
+      "code_reference": "backend/app/policies.py:metering_factors",
+      "source_refs": [
+        "backend/app/policies.py@fc10d9004bb6d2a3df8813bfa8c2d6ae0542f717"
+      ],
+      "confidence": {
+        "source_quality": "not_applicable_synthetic",
+        "transferability_to_operations": "low"
+      },
+      "allowed_usage": [
+        "synthetic_demo_only",
+        "policy_comparison"
+      ],
+      "prohibited_usage": [
+        "claim_operationally_approved_control",
+        "send_to_field_controller"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "The fixed factor intentionally creates an educational fairness violation; it is not a field recommendation."
+    },
+    {
+      "parameter_id": "guard.safety_and_fairness_thresholds",
+      "value_kind": "mapping",
+      "current_value": {
+        "FAIRNESS_P95_LIMIT_PCT": 15.0,
+        "DIVERSION_DELAY_LIMIT_SEC": 180.0,
+        "P95_NOISE_FLOOR_SEC": 30.0,
+        "DATA_STALE_LIMIT_SEC": 120.0
+      },
+      "unit": "mixed",
+      "classification": "synthetic_provisional",
+      "lifecycle_status": "active_synthetic_provisional",
+      "runtime_active": true,
+      "target_dataset": "synthetic-v0",
+      "provisional": true,
+      "code_reference": "backend/app/safety.py",
+      "source_refs": [
+        "backend/app/safety.py@fc10d9004bb6d2a3df8813bfa8c2d6ae0542f717"
+      ],
+      "confidence": {
+        "source_quality": "not_applicable_synthetic",
+        "transferability_to_operational_approval": "low"
+      },
+      "allowed_usage": [
+        "synthetic_demo_only",
+        "approval_flow_demonstration"
+      ],
+      "prohibited_usage": [
+        "claim_regulatory_threshold",
+        "claim_independent_approval"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "Thresholds are provisional and require an independent reviewer plus an explicit approve-or-reject record."
+    },
+    {
+      "parameter_id": "simulation.recovery_criteria",
+      "value_kind": "mapping",
+      "current_value": {
+        "RECOVERY_OCCUPANCY_LIMIT": 0.5,
+        "RECOVERY_QUEUE_LIMIT": 5.0,
+        "RECOVERY_HOLD_SEC": 60
+      },
+      "unit": "mixed",
+      "classification": "synthetic_provisional",
+      "lifecycle_status": "active_synthetic_provisional",
+      "runtime_active": true,
+      "target_dataset": "synthetic-v0",
+      "provisional": true,
+      "code_reference": "backend/app/simulation.py:RECOVERY_*",
+      "source_refs": [
+        "backend/app/simulation.py@fc10d9004bb6d2a3df8813bfa8c2d6ae0542f717"
+      ],
+      "confidence": {
+        "source_quality": "not_applicable_synthetic",
+        "transferability_to_real_recovery": "low"
+      },
+      "allowed_usage": [
+        "synthetic_demo_only",
+        "consistent_kpi_censoring"
+      ],
+      "prohibited_usage": [
+        "claim_field_recovery_standard",
+        "claim_agency_approved_threshold"
+      ],
+      "independent_review": {
+        "status": "pending",
+        "reviewer": null
+      },
+      "approved_value": null,
+      "notes": "Used for deterministic KPI reporting, not as an externally validated operating standard."
+    }
+  ],
+  "required_external_inputs_before_real_parameter_calibration": [
+    {
+      "input_id": "same_date_intraday_traffic",
+      "minimum": "5-minute, 15-minute, or hourly direction-level traffic for the selected analysis window",
+      "purpose": "absolute demand and matched rain-traffic response"
+    },
+    {
+      "input_id": "turn_and_through_split",
+      "minimum": "turn-level or verified detector-direction semantics",
+      "purpose": "map public direction totals to model approaches"
+    },
+    {
+      "input_id": "lane_and_storage_geometry",
+      "minimum": "lane count, usable queue length, stop-line and lane-use information",
+      "purpose": "derive link storage and approach service ranges"
+    },
+    {
+      "input_id": "actual_signal_plan_if_signal_model_is_claimed",
+      "minimum": "cycle, phase order, effective green, clearance, offset, and time-of-day plan",
+      "purpose": "signal service modeling and any field-replay claim"
+    }
+  ]
+}
