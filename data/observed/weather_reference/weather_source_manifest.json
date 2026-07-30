@@ -1,0 +1,225 @@
+{
+  "generated_at_utc": "2026-07-30T14:32:58+00:00",
+  "station": {
+    "provider": "Korea Meteorological Administration",
+    "station_id": 239,
+    "station_name": "Sejong",
+    "latitude": 36.48522,
+    "longitude": 127.24438
+  },
+  "classification": {
+    "proxy": "Date screening and sensitivity only; never a Sejong observed value.",
+    "observed": "Required for calibration and claims about the selected date."
+  },
+  "proxy": {
+    "source_class": "reanalysis_proxy",
+    "source_model": "ERA5",
+    "usage_limit": "screening_and_sensitivity_only",
+    "request_url": "https://archive-api.open-meteo.com/v1/archive?latitude=36.48522&longitude=127.24438&start_date=2022-07-12&end_date=2022-09-07&hourly=precipitation&daily=precipitation_sum&timezone=Asia%2FSeoul&models=era5",
+    "raw_file": "weather_reference_output/proxy/open_meteo_era5_sejong_20220712_20220907.json",
+    "raw_sha256": "c0756bab7d857408c369dce2e58b9d51c266ba0f627b73445738bdb148a895ad",
+    "analysis_window": {
+      "start_date": "2022-07-13",
+      "end_date": "2022-09-07",
+      "selection_priority": [
+        "zero daily and preceding-6h proxy precipitation",
+        "same weekday as rain date",
+        "same month as rain date",
+        "smallest absolute day distance"
+      ]
+    },
+    "hourly_rows": 1392,
+    "daily_rows": 58,
+    "null_precipitation_values": 0,
+    "daily_hourly_max_abs_difference_mm": 0.0,
+    "rain_date": "2022-08-10",
+    "rain_date_proxy_precipitation_mm": 36.7,
+    "rain_date_proxy_max_hourly_mm": 2.8,
+    "proxy_dry_pass_count": 8,
+    "selected_proxy_candidate": {
+      "date_kst": "2022-07-27",
+      "weekday": "Wednesday",
+      "same_weekday_as_rain": true,
+      "same_month_as_rain": false,
+      "distance_days": 14,
+      "daily_precipitation_mm": 0.0,
+      "preceding_6h_precipitation_mm": 0.0,
+      "proxy_dry_pass": true,
+      "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+    },
+    "ranked_dry_candidate_screening": [
+      {
+        "date_kst": "2022-07-27",
+        "weekday": "Wednesday",
+        "same_weekday_as_rain": true,
+        "same_month_as_rain": false,
+        "distance_days": 14,
+        "daily_precipitation_mm": 0.0,
+        "preceding_6h_precipitation_mm": 0.0,
+        "proxy_dry_pass": true,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-09-07",
+        "weekday": "Wednesday",
+        "same_weekday_as_rain": true,
+        "same_month_as_rain": false,
+        "distance_days": 28,
+        "daily_precipitation_mm": 0.0,
+        "preceding_6h_precipitation_mm": 0.0,
+        "proxy_dry_pass": true,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-08-27",
+        "weekday": "Saturday",
+        "same_weekday_as_rain": false,
+        "same_month_as_rain": true,
+        "distance_days": 17,
+        "daily_precipitation_mm": 0.0,
+        "preceding_6h_precipitation_mm": 0.0,
+        "proxy_dry_pass": true,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-08-28",
+        "weekday": "Sunday",
+        "same_weekday_as_rain": false,
+        "same_month_as_rain": true,
+        "distance_days": 18,
+        "daily_precipitation_mm": 0.0,
+        "preceding_6h_precipitation_mm": 0.0,
+        "proxy_dry_pass": true,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-07-28",
+        "weekday": "Thursday",
+        "same_weekday_as_rain": false,
+        "same_month_as_rain": false,
+        "distance_days": 13,
+        "daily_precipitation_mm": 0.0,
+        "preceding_6h_precipitation_mm": 0.0,
+        "proxy_dry_pass": true,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-09-01",
+        "weekday": "Thursday",
+        "same_weekday_as_rain": false,
+        "same_month_as_rain": false,
+        "distance_days": 22,
+        "daily_precipitation_mm": 0.0,
+        "preceding_6h_precipitation_mm": 0.0,
+        "proxy_dry_pass": true,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-09-02",
+        "weekday": "Friday",
+        "same_weekday_as_rain": false,
+        "same_month_as_rain": false,
+        "distance_days": 23,
+        "daily_precipitation_mm": 0.0,
+        "preceding_6h_precipitation_mm": 0.0,
+        "proxy_dry_pass": true,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-09-03",
+        "weekday": "Saturday",
+        "same_weekday_as_rain": false,
+        "same_month_as_rain": false,
+        "distance_days": 24,
+        "daily_precipitation_mm": 0.0,
+        "preceding_6h_precipitation_mm": 0.0,
+        "proxy_dry_pass": true,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-08-03",
+        "weekday": "Wednesday",
+        "same_weekday_as_rain": true,
+        "same_month_as_rain": true,
+        "distance_days": 7,
+        "daily_precipitation_mm": 3.6,
+        "preceding_6h_precipitation_mm": 0.1,
+        "proxy_dry_pass": false,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-08-17",
+        "weekday": "Wednesday",
+        "same_weekday_as_rain": true,
+        "same_month_as_rain": true,
+        "distance_days": 7,
+        "daily_precipitation_mm": 2.7,
+        "preceding_6h_precipitation_mm": 0.0,
+        "proxy_dry_pass": false,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-08-24",
+        "weekday": "Wednesday",
+        "same_weekday_as_rain": true,
+        "same_month_as_rain": true,
+        "distance_days": 14,
+        "daily_precipitation_mm": 1.4,
+        "preceding_6h_precipitation_mm": 0.1,
+        "proxy_dry_pass": false,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-08-31",
+        "weekday": "Wednesday",
+        "same_weekday_as_rain": true,
+        "same_month_as_rain": true,
+        "distance_days": 21,
+        "daily_precipitation_mm": 10.0,
+        "preceding_6h_precipitation_mm": 10.5,
+        "proxy_dry_pass": false,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-07-20",
+        "weekday": "Wednesday",
+        "same_weekday_as_rain": true,
+        "same_month_as_rain": false,
+        "distance_days": 21,
+        "daily_precipitation_mm": 4.4,
+        "preceding_6h_precipitation_mm": 0.0,
+        "proxy_dry_pass": false,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-07-13",
+        "weekday": "Wednesday",
+        "same_weekday_as_rain": true,
+        "same_month_as_rain": false,
+        "distance_days": 28,
+        "daily_precipitation_mm": 38.4,
+        "preceding_6h_precipitation_mm": 0.4,
+        "proxy_dry_pass": false,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      },
+      {
+        "date_kst": "2022-08-09",
+        "weekday": "Tuesday",
+        "same_weekday_as_rain": false,
+        "same_month_as_rain": true,
+        "distance_days": 1,
+        "daily_precipitation_mm": 6.5,
+        "preceding_6h_precipitation_mm": 1.3,
+        "proxy_dry_pass": false,
+        "final_status": "SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED"
+      }
+    ]
+  },
+  "kma_hourly": {
+    "status": "NOT_FETCHED",
+    "reason": "KMA_API_AUTH_KEY not supplied",
+    "required_source": "KMA ASOS station 239 observation",
+    "next_action": "Add the key as a repository Actions secret; never commit it."
+  },
+  "final_dry_date_status": "PENDING_KMA_OBSERVATION"
+}
