@@ -1,0 +1,38 @@
+name: Weather Reference Probe
+
+on:
+  push:
+    branches:
+      - agent/siwoo-weather-reference-selection-20260730
+    paths:
+      - scripts/fetch_weather_reference.py
+      - .github/workflows/weather-reference-probe.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-weather-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+
+      - name: Fetch screening data
+        env:
+          KMA_API_AUTH_KEY: ${{ secrets.KMA_API_AUTH_KEY }}
+        run: |
+          python scripts/fetch_weather_reference.py --output-dir weather_reference_output
+
+      - name: Show generated files
+        run: |
+          find weather_reference_output -type f -maxdepth 3 -print -exec wc -c {} \;
+
+      - name: Upload weather reference artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: weather-reference-output
+          path: weather_reference_output/
+          if-no-files-found: error
+          retention-days: 14
