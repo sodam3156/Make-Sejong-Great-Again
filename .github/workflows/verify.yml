@@ -16,6 +16,10 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The artifact verifier resolves the last commit that changed its
+          # source files, so it needs history beyond the triggering commit.
+          fetch-depth: 0
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
