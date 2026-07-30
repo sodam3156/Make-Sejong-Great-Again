@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "scenario_id": "sejong-rain-observation-constrained-v1",
+  "scenario_date": "2022-08-10",
+  "analysis_start_kst": "2022-08-10T20:00:00+09:00",
+  "analysis_duration_minutes": 60,
+  "region": {
+    "name": "Sejong",
+    "target_intersections": ["성금교차로", "청사교차로", "세종교차로"],
+    "weather_station_id": 239,
+    "weather_station_max_target_distance_km": 4.93,
+    "weather_station_allowed_distance_km": 5.0
+  },
+  "weather": {
+    "source_class": "observed",
+    "source_system": "KMA_AWS_MINUTE",
+    "observation_date": "2022-08-10",
+    "resolution_minutes": 1,
+    "daily_precipitation_mm": 139.3,
+    "usage_class": "DIRECT_WEATHER_TIME_SERIES_INPUT"
+  },
+  "traffic": {
+    "source_class": "observed_public_monthly_aggregate",
+    "source_period_start": "2022-05-01",
+    "source_period_end": "2023-03-31",
+    "resolution": "monthly_direction_total",
+    "same_date_observation": false,
+    "usage_class": "DIRECTION_SHARE_CONTEXT_ONLY"
+  },
+  "signal": {
+    "reference_year": 2023,
+    "claimed_current_year": 2026,
+    "usage_class": "HISTORICAL_CLASSIFICATION_ONLY",
+    "included_as_model_input": false
+  },
+  "spatial": {
+    "reference_date": "2026-07-16",
+    "usage_class": "SPATIAL_IDENTITY_AND_CONNECTIVITY_ONLY",
+    "used_for_historical_operating_state": false
+  },
+  "dry_reference": {
+    "date": "2022-07-27",
+    "analysis_start_kst": "2022-07-27T20:00:00+09:00",
+    "minimum_start_for_local_day_6h_check": "06:00",
+    "prior_day_data_available": false
+  },
+  "claims": {
+    "field_replay": false,
+    "same_date_traffic_calibration": false,
+    "current_signal_plan": false,
+    "traffic_parameter_mapping": false
+  },
+  "model_input_status": "OBSERVED_WEATHER_INPUT_ONLY_NO_TRAFFIC_PARAMETER_MAPPING",
+  "assembly_status": "PENDING_SOURCE_PRS_MERGE"
+}
