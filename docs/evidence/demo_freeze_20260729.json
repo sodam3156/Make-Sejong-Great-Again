@@ -1,13 +1,13 @@
 {
   "artifacts": {
-    "backend/README.md": "6165a92d058ab0b75f97eb30db40bd64db24bc4ecda798c17be4eb4a8a026cf4",
-    "backend/fixtures/cached_run.json": "453a9aba42e28f2875385bf5eb2a9f3525deea99dcd1ed9446ba9f0a469ea0a2",
-    "backend/fixtures/demo_freeze_meta.json": "85ce9848e350721b40a0a25f269e7a8cc2e2566cfc158afff5b5a196bb33a592",
-    "backend/fixtures/demo_run.json": "1e22239a09f58cd91f2b6edbc550593a042a996790f8f53b90fdae9945e7ab1a",
+    "backend/README.md": "ab76a6479a67872b3cde2549fc8de90d70f46ecbbaef19ad2fac26b717f4e859",
+    "backend/fixtures/cached_run.json": "ae07bb49978b140ac4a9d215012894a6a01477cec2f92dd1bbbd1cb1cd45da5d",
+    "backend/fixtures/demo_freeze_meta.json": "3c7eab7483b9d53d4e0f47219c27d6198115f517c25168e2eeb14937b7c693e6",
+    "backend/fixtures/demo_run.json": "ed119061058604e373c85f7e2121b4031b82e5aeacfa06518d0d8d384826b007",
     "contracts/openapi.json": "b9de78d38d673df302ec42fabfe4c0ef17c8eb139de1e3d059a61495269ad1c5",
-    "docs/16_DEMO_SCRIPT.md": "22694936d4d7a5895edd377700d85506c6dc60a093b9c31a34ae84fed59971f0",
-    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "f35f71b5906ee6da2a61c7990ef0ba6c0a544d8845f66e255e7391afe25147b2",
-    "frontend/demo_run.js": "bab3493f48a17cd8ac77f2b4054cee99528cabaf6173a4d3a880cf15df0a5a75"
+    "docs/16_DEMO_SCRIPT.md": "a7e2a3a1fc0c3e7b64741035b9d6afa48127fa5df39c79d4e702583fac7307b3",
+    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "44953c75407b924716a58300bdc5745d2428187d3b54956c7ecadff6ce2c50ab",
+    "frontend/demo_run.js": "8ead95dc066cfd68ed382833fb7f8cb4f2f293edf93c7b2fe5af78d56b9b8290"
   },
   "freeze_id": "freeze-20260729-202509-kst",
   "frozen_at": "2026-07-29T20:25:09+09:00",
@@ -18,9 +18,9 @@
     "git_commit_sha": "4d706e4bfea13d1e38dd2dd5c6d44c410003bb27",
     "provisional": true,
     "result_checksum": "c9088907640696c315685619ce18ae1529ceb8bc1e993bb36c0f080b7ce4ed89",
-    "run_id": "live-rain_spillback_a-s42-3e5be2d480",
+    "run_id": "live-rain_spillback_a-s42-ebb1a4f537",
     "scenario_id": "rain_spillback_a",
     "seed": 42,
-    "source_tree_checksum": "65d5d7c17defd3a95b0a3c4ab462ae62ab198ca17d1d49dbe282180f65ae129b"
+    "source_tree_checksum": "cdb8945f79465bc9eb5dd36ed17c8b3ef29fc76eacc67e02bfce037c9a874dc9"
   }
 }

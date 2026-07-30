@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RainFlow Sejong — 3분 데모</title>
+<link rel="stylesheet" href="public/assets/design-tokens.css">
 <style>
   :root {
     --bg: #0a0e14;
@@ -13,20 +14,20 @@
     --text: #e6ebf5;
     --muted: #8a93a8;
     --accent: #4fd1c5;
-    --green: #34d399;
+    --green: var(--status-safe, #34d399);
     --yellow: #fbbf24;
-    --red: #f87171;
-    --blue: #60a5fa;
+    --red: var(--status-spillback, #f87171);
+    --blue: var(--status-approval, #60a5fa);
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+    font-family: Pretendard, "Noto Sans KR", "Segoe UI", Arial, sans-serif;
     font-size: 15px;
   }
-  .app { max-width: 1200px; margin: 0 auto; padding: 16px 20px 60px; }
+  .app { max-width: 1440px; margin: 0 auto; padding: 16px 24px 32px; }
 
   header.top {
     display: flex; align-items: center; justify-content: space-between;
@@ -34,7 +35,7 @@
     padding-bottom: 12px; margin-bottom: 16px;
     border-bottom: 1px solid var(--border);
   }
-  header.top h1 { font-size: 18px; margin: 0; letter-spacing: 0.3px; }
+  header.top h1 { font-size: 24px; margin: 0; letter-spacing: 0.3px; }
   header.top .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
 
   .badges { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -46,8 +47,10 @@
     background: var(--panel-2);
     color: var(--muted);
   }
+  .badge img, .asset-icon { width: 24px; height: 24px; flex: 0 0 24px; }
   .badge.fixture { color: var(--yellow); border-color: rgba(251,191,36,0.4); }
   .badge.live { color: var(--blue); border-color: rgba(96,165,250,0.4); }
+  .badge.cached { color: var(--status-comm-delay, #ffa75a); border-color: rgba(255,167,90,0.45); }
   .badge.provisional { color: var(--red); border-color: rgba(248,113,113,0.4); }
 
   .scenario-select {
@@ -66,6 +69,29 @@
   }
   .scenario-notice.show { display: block; }
 
+  .connection-panel, .state-banner {
+    display: flex; align-items: center; gap: 12px;
+    border: 1px solid var(--border); border-radius: var(--radius-card, 12px);
+    background: var(--panel); padding: 10px 14px; margin-bottom: 12px;
+  }
+  .connection-panel[hidden] { display: none; }
+  .connection-panel[data-mode="offline"] { border-color: rgba(251,191,36,0.55); background: rgba(251,191,36,0.07); }
+  .connection-panel[data-mode="retrying"] { border-color: rgba(96,165,250,0.55); background: rgba(96,165,250,0.07); }
+  .connection-copy, .state-copy { min-width: 0; flex: 1; }
+  .connection-copy strong, .state-copy strong { display: block; font-size: 14px; }
+  .connection-copy span, .state-copy span { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .connection-panel button {
+    min-width: 132px; min-height: 44px; padding: 8px 14px;
+    border: 1px solid rgba(96,165,250,0.5); border-radius: 8px;
+    background: rgba(96,165,250,0.12); color: var(--blue); font-weight: 700; cursor: pointer;
+  }
+  .connection-panel button:disabled { opacity: 0.55; cursor: wait; }
+  .state-banner { padding: 8px 14px; }
+  .state-banner[data-state="rain_warning"] { border-color: rgba(112,136,173,0.65); }
+  .state-banner[data-state="spillback"] { border-color: rgba(240,84,92,0.7); background: rgba(240,84,92,0.07); }
+  .state-banner[data-state="operator_approval"] { border-color: rgba(55,131,252,0.65); background: rgba(55,131,252,0.07); }
+  .state-banner[data-state="recovery_compare"] { border-color: rgba(54,179,134,0.65); background: rgba(54,179,134,0.07); }
+
   .controls {
     display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
     background: var(--panel); border: 1px solid var(--border);
@@ -74,17 +100,25 @@
   .controls button {
     background: var(--panel-2); color: var(--text);
     border: 1px solid var(--border); border-radius: 6px;
-    padding: 6px 14px; cursor: pointer; font-size: 13px;
+    min-height: 44px; padding: 8px 14px; cursor: pointer; font-size: 13px;
   }
   .controls button:hover { border-color: var(--accent); color: var(--accent); }
   .controls button:disabled { opacity: 0.4; cursor: not-allowed; }
   .step-dots { display: flex; gap: 6px; margin-left: 4px; flex-wrap: wrap; }
   .step-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: var(--border); cursor: pointer;
+    position: relative; width: 44px; height: 44px; padding: 0;
+    border-radius: 8px; background: transparent; cursor: pointer;
     border: 1px solid transparent;
   }
-  .step-dot.active { background: var(--accent); }
+  .step-dot::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--border); transform: translate(-50%, -50%);
+  }
+  .step-dot.active::after { background: var(--accent); box-shadow: 0 0 0 3px rgba(79,209,197,0.15); }
+  .step-dot:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 2px; }
+  .step-dot:disabled { opacity: 0.35; cursor: not-allowed; }
+  .step-dot:disabled::after { background: var(--red); }
   .clock { margin-left: auto; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
   .state-label {
     font-weight: 700; color: var(--accent); font-size: 14px;
@@ -107,7 +141,7 @@
     margin-bottom: 16px;
   }
   .panel h2 {
-    font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px;
+    font-size: 18px; letter-spacing: 0.2px;
     color: var(--muted); margin: 0 0 10px;
   }
 
@@ -122,7 +156,7 @@
     border-radius: 8px; padding: 10px 12px;
   }
   .kpi-card .label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-  .kpi-card .value { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi-card .value { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .kpi-card .unit { font-size: 11px; color: var(--muted); margin-left: 3px; }
 
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -141,26 +175,47 @@
   .guard-card.fail { border-color: rgba(248,113,113,0.5); background: rgba(248,113,113,0.06); }
   .guard-card .head { display: flex; align-items: center; justify-content: space-between; }
   .guard-card .head .name { font-weight: 700; }
-  .guard-pass { color: var(--green); font-size: 12px; font-weight: 700; }
-  .guard-fail { color: var(--red); font-size: 12px; font-weight: 700; }
+  .guard-result { display: inline-flex; align-items: center; gap: 6px; }
+  .guard-result img { width: 24px; height: 24px; }
+  .guard-pass { color: var(--green); font-size: 14px; font-weight: 800; }
+  .guard-fail { color: var(--red); font-size: 18px; font-weight: 900; letter-spacing: 0.8px; }
   .violation { margin-top: 6px; font-size: 12px; color: var(--muted); }
   .violation code { color: var(--red); background: rgba(248,113,113,0.1); padding: 1px 5px; border-radius: 4px; }
 
   .approval-box {
     background: var(--panel-2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 14px;
+    border-radius: var(--radius-modal, 16px); padding: 14px;
   }
+  body[data-screen-state="operator_approval"] #panel-approval {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 20;
+    width: min(460px, calc(100vw - 40px));
+    max-height: calc(100vh - 40px);
+    margin: 0;
+    overflow-y: auto;
+    box-shadow: 0 22px 64px rgba(0, 0, 0, 0.55);
+    border-color: rgba(55, 131, 252, 0.65);
+  }
+  .approval-box:focus { outline: 2px solid var(--blue); outline-offset: 3px; }
+  .approval-description { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
   .approval-box dl { display: grid; grid-template-columns: 100px 1fr; gap: 6px 10px; font-size: 13px; margin: 0 0 12px; }
   .approval-box dt { color: var(--muted); }
   .approval-actions { display: flex; gap: 10px; }
   .btn-approve, .btn-reject {
-    padding: 8px 18px; border-radius: 6px; border: 1px solid var(--border);
+    min-height: 44px; padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border);
     font-weight: 700; cursor: pointer; font-size: 13px;
   }
+  .btn-approve:disabled, .btn-reject:disabled { opacity: 0.45; cursor: not-allowed; filter: none; }
   .btn-approve { background: rgba(52,211,153,0.15); color: var(--green); border-color: rgba(52,211,153,0.4); }
   .btn-reject { background: rgba(248,113,113,0.15); color: var(--red); border-color: rgba(248,113,113,0.4); }
   .btn-approve:hover, .btn-reject:hover { filter: brightness(1.2); }
   .decision-note { margin-top: 10px; font-size: 13px; color: var(--accent); }
+  .decision-note.approved { color: var(--green); }
+  .decision-note.rejected, .approval-error { color: var(--red); }
+  .approval-error { margin-top: 8px; }
+  .decision-reset { margin-top: 10px; min-height: 44px; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
 
   .recovery-side { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .recovery-col { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
@@ -180,6 +235,36 @@
   .link-line { stroke-width: 8; stroke-linecap: round; transition: stroke 0.4s ease; }
   .link-line.blink { animation: blink-anim 0.9s infinite; }
   @keyframes blink-anim { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  @media (max-width: 1279px) {
+    .app { padding-left: 16px; padding-right: 16px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+  @media (min-width: 1280px) and (max-height: 760px) {
+    .app { padding: 8px 16px 12px; }
+    header.top { margin-bottom: 6px; padding-bottom: 6px; }
+    header.top h1 { font-size: 20px; }
+    .connection-panel, .state-banner { margin-bottom: 6px; padding-top: 6px; padding-bottom: 6px; }
+    .controls { margin-bottom: 6px; padding: 4px 8px; }
+    .panel { padding: 8px 10px; margin-bottom: 6px; }
+    .panel h2 { font-size: 15px; margin-bottom: 6px; }
+    #corridor-svg { height: 130px; }
+    .corridor-note { min-height: 18px; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .kpi-card { padding: 6px 8px; }
+    .kpi-card .value { font-size: 24px; }
+    .guard-card { padding: 6px 8px; margin-bottom: 5px; }
+    th, td { padding: 4px 6px; }
+    footer.note { margin-top: 8px; padding-top: 6px; }
+  }
+  @media (min-height: 761px) {
+    body[data-screen-state="recovery_compare"] #corridor-svg { height: 140px; }
+    body[data-screen-state="recovery_compare"] .corridor-note {
+      min-height: 18px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 </style>
 </head>
 <body>
@@ -191,7 +276,7 @@
       <div class="sub" id="scenario-sub"></div>
     </div>
     <div class="badges">
-      <span class="badge fixture" id="badge-source">result_source: fixture</span>
+      <span class="badge fixture" id="badge-source"><img id="badge-source-icon" src="public/assets/icons/status-data-fixture.svg" alt=""> <span id="badge-source-text">result_source: fixture</span></span>
       <span class="badge provisional">공간망: 실제 세종 · 흐름: provisional 합성</span>
     </div>
     <div class="scenario-select">
@@ -205,11 +290,28 @@
   </header>
   <div class="scenario-notice" id="scenario-notice"></div>
 
+  <div class="connection-panel" id="connection-panel" data-mode="offline" role="status" aria-live="polite" hidden>
+    <img class="asset-icon" id="connection-icon" src="public/assets/icons/status-data-fixture.svg" alt="">
+    <div class="connection-copy">
+      <strong id="connection-title">Fixture 데모 모드</strong>
+      <span id="connection-message">백엔드 연결 없이 합성 fixture로 시연합니다.</span>
+    </div>
+    <button id="btn-reconnect" type="button">백엔드 재연결</button>
+  </div>
+
+  <div class="state-banner" id="state-banner" data-state="normal" aria-live="polite">
+    <img class="asset-icon" id="state-icon" src="public/assets/icons/status-normal.svg" alt="">
+    <div class="state-copy">
+      <strong id="state-title">정상 운영</strong>
+      <span id="state-message">회랑 상태와 데이터 품질을 관찰합니다.</span>
+    </div>
+  </div>
+
   <div class="controls">
-    <button id="btn-prev">← 이전</button>
-    <button id="btn-playpause">일시정지</button>
-    <button id="btn-next">다음 →</button>
-    <div class="step-dots" id="step-dots"></div>
+    <button id="btn-prev" type="button">← 이전</button>
+    <button id="btn-playpause" type="button" aria-pressed="true">일시정지</button>
+    <button id="btn-next" type="button">다음 →</button>
+    <div class="step-dots" id="step-dots" aria-label="데모 단계 이동"></div>
     <span class="state-label" id="state-label"></span>
     <span class="clock" id="clock"></span>
   </div>
@@ -242,8 +344,8 @@
 
     <div>
       <div class="panel" id="panel-approval" style="display:none;">
-        <h2>운영자 승인</h2>
-        <div class="approval-box" id="approval-box"></div>
+        <h2 id="approval-heading">운영자 승인</h2>
+        <div class="approval-box" id="approval-box" role="dialog" aria-modal="false" aria-labelledby="approval-heading" aria-describedby="approval-description" tabindex="-1"></div>
       </div>
 
       <div class="panel" id="panel-recovery" style="display:none;">
@@ -254,7 +356,7 @@
   </div>
 
   <footer class="note">
-    이 화면은 backend/fixtures/demo_run.json 고정 데이터를 재생하는 3분 데모입니다.
+    <span id="footer-mode">이 화면은 backend/fixtures/demo_run.json 고정 데이터를 재생하는 3분 데모입니다.</span>
     지명·링크 관계는 2026-07-16 세종 표준노드링크(8,768노드·11,893링크) 참조이며,
     점유율·대기열·저장공간·정책 효과는 실제 세종시 실측이 아닌 provisional 합성 수치입니다.
     run_id: <span id="run-id"></span>
@@ -278,6 +380,11 @@
   var playing = true;
   var timer = null;
   var approvalDecision = null; // 'approved' | 'rejected' | null
+  var approvalPending = false;
+  var approvalMessage = '';
+  var approvalViolations = [];
+  var resultSource = 'fixture';
+  var lastRenderedState = null;
 
   var STATE_LABELS = {
     normal: '정상 운영',
@@ -289,17 +396,66 @@
     recovery_compare: '회복 비교'
   };
 
+  var STATE_META = {
+    normal: { icon: 'status-normal.svg', message: '회랑 상태와 데이터 품질을 관찰합니다.' },
+    rain_warning: { icon: 'status-rain-warning.svg', message: '강우 경보 단계입니다. 아직 spillback 발생 상태와는 구분됩니다.' },
+    spillback: { icon: 'status-spillback.svg', message: '상류 역류가 감지된 위험 상태입니다. 정책 적용 전 안전 검토가 필요합니다.' },
+    policy_compare: { icon: 'status-policy-recommended.svg', message: '동결 KPI로 무대응과 정책 후보를 비교합니다.' },
+    safety_review: { icon: 'status-safe.svg', message: '결정론적 안전 가드의 통과·탈락 코드와 사유를 확인합니다.' },
+    operator_approval: { icon: 'status-approval.svg', message: '운영자 결정 전에는 정책이 적용되지 않으며 회복 화면으로 이동할 수 없습니다.' },
+    recovery_compare: { icon: 'status-recovery.svg', message: '승인된 정책의 시뮬레이션 결과만 무대응 기준선과 비교합니다.' }
+  };
+
+  function currentState() {
+    return timeline[idx] ? timeline[idx].screen_state : null;
+  }
+
+  function findStateIndex(state) {
+    for (var i = 0; i < timeline.length; i++) {
+      if (timeline[i].screen_state === state) return i;
+    }
+    return -1;
+  }
+
+  function isRecoveryLocked(targetIdx) {
+    return !!timeline[targetIdx] &&
+      timeline[targetIdx].screen_state === 'recovery_compare' &&
+      approvalDecision !== 'approved';
+  }
+
+  function stopPlayback() {
+    playing = false;
+    clearTimeout(timer);
+    updatePlayButton();
+  }
+
+  function showApprovalGateNotice() {
+    showScenarioNotice('안전 게이트: 운영자 승인 성공 전에는 적용·회복 비교 단계로 이동할 수 없습니다.');
+  }
+
+  function canNavigateTo(targetIdx, announce) {
+    if (isRecoveryLocked(targetIdx)) {
+      stopPlayback();
+      if (announce) showApprovalGateNotice();
+      return false;
+    }
+    return true;
+  }
+
   // ---- step dots ----
   var dotsWrap = document.getElementById('step-dots');
 
   function rebuildDots() {
     dotsWrap.innerHTML = '';
     timeline.forEach(function (t, i) {
-      var d = document.createElement('div');
+      var d = document.createElement('button');
+      d.type = 'button';
       d.className = 'step-dot';
       d.title = t.screen_state;
+      d.setAttribute('aria-label', (i + 1) + '단계: ' + (STATE_LABELS[t.screen_state] || t.screen_state));
       d.addEventListener('click', function () {
-        playing = false; updatePlayButton(); clearTimeout(timer);
+        if (!canNavigateTo(i, true)) return;
+        stopPlayback();
         goTo(i);
       });
       dotsWrap.appendChild(d);
@@ -308,7 +464,13 @@
 
   function updateDots() {
     var dots = dotsWrap.querySelectorAll('.step-dot');
-    dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+    dots.forEach(function (d, i) {
+      var active = i === idx;
+      d.classList.toggle('active', active);
+      d.disabled = isRecoveryLocked(i);
+      if (active) d.setAttribute('aria-current', 'step');
+      else d.removeAttribute('aria-current');
+    });
   }
 
   // ---- corridor SVG ----
@@ -436,12 +598,14 @@
     var wrap = document.getElementById('safety-cards');
     wrap.innerHTML = DATA.policies.map(function (p) {
       var fail = p.guard.passed === false;
+      var icon = fail ? 'safety-reject.svg' : 'safety-pass.svg';
       var viol = (p.guard.violations || []).map(function (v) {
         return '<div class="violation"><code>' + v.code + '</code> ' + v.detail + '</div>';
       }).join('');
       return '<div class="guard-card ' + (fail ? 'fail' : '') + '">' +
         '<div class="head"><span class="name">' + p.label + (fail ? ' — 탈락' : '') + '</span>' +
-        '<span class="' + (fail ? 'guard-fail' : 'guard-pass') + '">' + (p.guard.passed ? 'PASS' : 'FAIL') + '</span></div>' +
+        '<span class="guard-result ' + (fail ? 'guard-fail' : 'guard-pass') + '">' +
+        '<img src="public/assets/icons/' + icon + '" alt="">' + (p.guard.passed ? 'PASS · 통과' : 'FAIL · 승인 불가') + '</span></div>' +
         (p.guard.note ? '<div class="violation">' + p.guard.note + '</div>' : '') +
         viol +
         '</div>';
@@ -453,42 +617,92 @@
     var box = document.getElementById('approval-box');
     var a = DATA.approval;
     var chosen = DATA.policies.filter(function (p) { return p.policy_id === a.policy_id; })[0];
+    var guardPassed = !!(chosen && chosen.guard && chosen.guard.passed);
+    var eligible = guardPassed && chosen.policy_id !== 'no_action';
+    var displayStatus = approvalPending ? 'approval_pending' : (approvalDecision || 'pending');
+    var displayOperator = approvalDecision ? (a.operator || 'demo_operator') : '-';
+    var displayReason = approvalDecision ? (a.reason || '-') : '-';
+    var decisionClass = approvalDecision === 'approved' ? ' approved' : (approvalDecision === 'rejected' ? ' rejected' : '');
+    var decisionText = approvalMessage || (
+      approvalDecision === 'approved'
+        ? '승인이 완료되었습니다. 승인된 시뮬레이션 적용 결과만 표시합니다.'
+        : (approvalDecision === 'rejected'
+          ? '제안을 거절했습니다. 무대응 상태를 유지하며 적용 결과는 표시하지 않습니다.'
+          : '승인 또는 거절을 선택해 주세요.')
+    );
+    var violations = approvalViolations.map(function (v) {
+      return '<div class="violation"><code>' + (v.code || 'APPROVAL_REJECTED') + '</code> ' + (v.detail || '') + '</div>';
+    }).join('');
+    var actionHtml = '';
+
+    if (approvalDecision === 'approved') {
+      actionHtml = '<div class="decision-note approved" id="decision-note" role="status">' + decisionText + '</div>';
+    } else if (approvalDecision === 'rejected') {
+      actionHtml = '<div class="decision-note rejected" id="decision-note" role="status">' + decisionText + '</div>' +
+        '<button class="decision-reset" id="btn-reset-decision" type="button">결정 다시 선택</button>';
+    } else {
+      actionHtml = '<div class="approval-actions">' +
+        '<button class="btn-approve" id="btn-approve" type="button"' + (!eligible || approvalPending ? ' disabled' : '') + '>승인</button>' +
+        '<button class="btn-reject" id="btn-reject" type="button"' + (approvalPending ? ' disabled' : '') + '>거절</button>' +
+        '</div>' +
+        '<div class="decision-note' + decisionClass + '" id="decision-note" role="status">' + decisionText + '</div>';
+    }
+
     box.innerHTML =
+      '<p class="approval-description" id="approval-description">승인 전에는 정책이 적용되지 않습니다. 거절하거나 요청이 실패하면 무대응 상태를 유지합니다.</p>' +
       '<dl>' +
       '<dt>대상 정책</dt><dd>' + (chosen ? chosen.label : a.policy_id) + '</dd>' +
-      '<dt>제안 상태</dt><dd>' + a.status + '</dd>' +
-      '<dt>운영자</dt><dd>' + (a.operator || '-') + '</dd>' +
-      '<dt>근거</dt><dd>' + (a.reason || '-') + '</dd>' +
+      '<dt>안전 상태</dt><dd>' + (eligible ? 'PASS · 승인 가능' : 'FAIL · 승인 불가') + '</dd>' +
+      '<dt>제안 상태</dt><dd>' + displayStatus + '</dd>' +
+      '<dt>운영자</dt><dd>' + displayOperator + '</dd>' +
+      '<dt>근거</dt><dd>' + displayReason + '</dd>' +
       '</dl>'.replace('<dl>', '<dl style="margin-bottom:12px">') +
-      '<div class="approval-actions">' +
-      '<button class="btn-approve" id="btn-approve">승인</button>' +
-      '<button class="btn-reject" id="btn-reject">거절</button>' +
-      '</div>' +
-      '<div class="decision-note" id="decision-note"></div>' +
-      '<div id="approval-error"></div>';
+      (!eligible ? '<div class="approval-error" role="alert">안전 가드를 통과하지 못했거나 무대응 정책이므로 승인할 수 없습니다.</div>' : '') +
+      actionHtml +
+      '<div class="approval-error" id="approval-error" role="alert">' + violations + '</div>';
 
-    document.getElementById('btn-approve').addEventListener('click', function () {
+    var approveButton = document.getElementById('btn-approve');
+    var rejectButton = document.getElementById('btn-reject');
+    var resetButton = document.getElementById('btn-reset-decision');
+
+    if (approveButton) approveButton.addEventListener('click', function () {
+      if (!eligible || approvalPending) return;
       if (MODE === 'live') {
         handleLiveApproval('approve', chosen);
         return;
       }
       approvalDecision = 'approved';
-      document.getElementById('decision-note').textContent =
-        '로컬 표시: 운영자가 ' + (chosen ? chosen.label : a.policy_id) + ' 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)';
+      approvalMessage = '로컬 데모 결정: ' + (chosen ? chosen.label : a.policy_id) + ' 정책을 승인했습니다. 실제 도로 제어에는 반영되지 않습니다.';
+      approvalViolations = [];
+      goToRecovery();
     });
-    document.getElementById('btn-reject').addEventListener('click', function () {
+    if (rejectButton) rejectButton.addEventListener('click', function () {
+      if (approvalPending) return;
       if (MODE === 'live') {
         handleLiveApproval('reject', chosen);
         return;
       }
       approvalDecision = 'rejected';
-      document.getElementById('decision-note').textContent = '로컬 표시: 운영자가 제안을 거절했습니다. (fixture 데모, 실제 반영 없음)';
+      approvalMessage = '로컬 데모 결정: 제안을 거절했습니다. 무대응 상태를 유지하며 실제 반영은 없습니다.';
+      approvalViolations = [];
+      render();
     });
-    if (MODE !== 'live' && approvalDecision) {
-      document.getElementById('decision-note').textContent =
-        approvalDecision === 'approved'
-          ? '로컬 표시: 운영자가 ' + (chosen ? chosen.label : a.policy_id) + ' 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)'
-          : '로컬 표시: 운영자가 제안을 거절했습니다. (fixture 데모, 실제 반영 없음)';
+    if (resetButton) resetButton.addEventListener('click', function () {
+      approvalDecision = null;
+      approvalMessage = '';
+      approvalViolations = [];
+      render();
+    });
+  }
+
+  function goToRecovery() {
+    var recoveryIdx = findStateIndex('recovery_compare');
+    if (approvalDecision === 'approved' && recoveryIdx >= 0) {
+      hideScenarioNotice();
+      stopPlayback();
+      goTo(recoveryIdx);
+    } else {
+      render();
     }
   }
 
@@ -510,11 +724,11 @@
   }
 
   function handleLiveApproval(decision, chosen) {
-    var noteEl = document.getElementById('decision-note');
-    var errEl = document.getElementById('approval-error');
-    if (!noteEl || !chosen) return;
-    noteEl.textContent = '요청 중...';
-    if (errEl) errEl.innerHTML = '';
+    if (!chosen || approvalPending) return;
+    approvalPending = true;
+    approvalMessage = '승인 API 응답을 기다리는 중입니다.';
+    approvalViolations = [];
+    render();
     fetchWithTimeout('/api/approvals', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -526,27 +740,53 @@
         reason: ''
       })
     }, FIXTURE_TIMEOUT_MS).then(function (resp) {
-      if (resp.status === 409) {
-        return resp.json().then(function (body) {
-          var detail = body.detail || {};
-          var violations = detail.violations || [];
-          noteEl.textContent = '승인 불가: ' + (detail.message || '안전·공정성 가드 위반');
-          if (errEl) {
-            errEl.innerHTML = violations.map(function (v) {
-              return '<div class="violation"><code>' + v.code + '</code> ' + v.detail + '</div>';
-            }).join('');
-          }
-        });
-      }
-      if (!resp.ok) { throw new Error('approval request failed: ' + resp.status); }
-      return resp.json().then(function (result) {
-        DATA.approval = result;
-        noteEl.textContent = result.status === 'approved'
-          ? '운영자가 ' + chosen.label + ' 정책을 승인했습니다. (live)'
-          : '운영자가 제안을 거절했습니다. (live)';
+      return resp.json().catch(function () { return {}; }).then(function (body) {
+        if (!resp.ok) {
+          var error = new Error('approval request failed: ' + resp.status);
+          error.status = resp.status;
+          error.body = body;
+          throw error;
+        }
+        return body;
       });
-    }).catch(function () {
-      noteEl.textContent = '승인 요청 실패(네트워크). 화면에는 반영되지 않았습니다.';
+    }).then(function (result) {
+      DATA.approval = result;
+      if (result.status === 'approved') {
+        approvalMessage = '승인 완료. 적용 결과를 다시 불러오는 중입니다.';
+        render();
+        return fetchWithTimeout('/api/simulations/' + encodeURIComponent(DATA.run_id), {}, FIXTURE_TIMEOUT_MS)
+          .then(function (runResp) {
+            if (!runResp.ok) {
+              throw new Error('approved run refresh failed: ' + runResp.status);
+            }
+            return runResp.json();
+          }).then(function (refreshedRun) {
+            DATA = synthesizeDecisionSteps(refreshedRun);
+            timeline = DATA.timeline;
+            totalSteps = timeline.length;
+            updateBadge(DATA.result_source || resultSource);
+            approvalPending = false;
+            approvalDecision = 'approved';
+            approvalMessage = '승인 API와 적용 결과 재조회가 성공했습니다. 승인된 시뮬레이션 결과를 표시합니다.';
+            goToRecovery();
+          });
+      }
+      approvalPending = false;
+      approvalDecision = 'rejected';
+      approvalMessage = '승인 API가 거절을 기록했습니다. 무대응 상태를 유지하며 적용 결과는 표시하지 않습니다.';
+      render();
+    }).catch(function (error) {
+      approvalPending = false;
+      approvalDecision = null;
+      if (error.status === 409) {
+        var detail = error.body && error.body.detail ? error.body.detail : {};
+        approvalMessage = '승인 불가: ' + (detail.message || '안전·공정성 가드 위반');
+        approvalViolations = detail.violations || [];
+      } else {
+        approvalMessage = '승인 요청 실패. 무대응 상태를 유지하며 화면에는 적용되지 않았습니다.';
+        approvalViolations = [{ code: 'APPROVAL_REQUEST_FAILED', detail: '백엔드 연결과 실행 로그를 확인한 뒤 다시 시도해 주세요.' }];
+      }
+      render();
     });
   }
 
@@ -554,6 +794,10 @@
   function renderRecovery() {
     var rc = DATA.recovery_compare;
     var wrap = document.getElementById('recovery-content');
+    var appliedPolicyId = (DATA.approval && DATA.approval.policy_id) ||
+      (rc.predicted_if_approved && rc.predicted_if_approved.policy_id) || 'corridor_gating';
+    var appliedPolicy = DATA.policies.filter(function (p) { return p.policy_id === appliedPolicyId; })[0];
+    var appliedLabel = appliedPolicy ? appliedPolicy.label : appliedPolicyId;
     function col(title, kpi) {
       return '<div class="recovery-col"><h3>' + title + '</h3>' +
         KPI_DEFS.map(function (d) {
@@ -562,7 +806,7 @@
     }
     var imp = rc.improvement || {};
     wrap.innerHTML =
-      '<div class="recovery-side">' + col('무대응', rc.no_action) + col('적용 (corridor_gating)', rc.applied) + '</div>' +
+      '<div class="recovery-side">' + col('무대응', rc.no_action) + col('적용 (' + appliedLabel + ')', rc.applied) + '</div>' +
       '<div class="improvement-row">개선율: Spillback ' + pctSpan(imp.spillback_time_pct) +
       ' · 회복시간 ' + (
         rc.no_action.recovery_observed === false
@@ -577,13 +821,16 @@
   function updatePanels(state) {
     document.getElementById('panel-policy').style.display = (state === 'policy_compare' || state === 'safety_review' || state === 'operator_approval' || state === 'recovery_compare') ? 'block' : 'none';
     document.getElementById('panel-safety').style.display = (state === 'safety_review' || state === 'operator_approval' || state === 'recovery_compare') ? 'block' : 'none';
-    document.getElementById('panel-approval').style.display = (state === 'operator_approval' || state === 'recovery_compare') ? 'block' : 'none';
-    document.getElementById('panel-recovery').style.display = (state === 'recovery_compare') ? 'block' : 'none';
+    document.getElementById('panel-approval').style.display = state === 'operator_approval' ? 'block' : 'none';
+    document.getElementById('panel-recovery').style.display = (state === 'recovery_compare' && approvalDecision === 'approved') ? 'block' : 'none';
   }
 
   // ---- KPI snapshot: choose kpi source based on state ----
   function kpiForState(state) {
     if (state === 'recovery_compare') return DATA.recovery_compare.applied;
+    if (approvalDecision === 'rejected') {
+      return DATA.policies.filter(function (p) { return p.policy_id === 'no_action'; })[0].kpi;
+    }
     // before approval, show no_action baseline as "current trajectory" snapshot;
     // corridor_gating kpi shown once approval reached
     if (state === 'operator_approval' || state === 'safety_review' || state === 'policy_compare') {
@@ -597,6 +844,12 @@
   function render() {
     var step = timeline[idx];
     var state = step.screen_state;
+    var enteringApproval = state === 'operator_approval' && lastRenderedState !== 'operator_approval';
+    document.body.dataset.screenState = state;
+
+    if (state === 'operator_approval' && approvalDecision !== 'approved') {
+      stopPlayback();
+    }
 
     document.getElementById('state-label').textContent =
       (idx + 1) + '/' + totalSteps + ' — ' + (STATE_LABELS[state] || state);
@@ -606,6 +859,7 @@
     updateCorridorState(step);
     renderKPI(kpiForState(state));
     updatePanels(state);
+    updateStateBanner(state);
 
     if (state === 'policy_compare' || state === 'safety_review' || state === 'operator_approval' || state === 'recovery_compare') {
       renderPolicyTable();
@@ -613,7 +867,7 @@
     if (state === 'safety_review' || state === 'operator_approval' || state === 'recovery_compare') {
       renderSafetyReview();
     }
-    if (state === 'operator_approval' || state === 'recovery_compare') {
+    if (state === 'operator_approval') {
       renderApproval();
     }
     if (state === 'recovery_compare') {
@@ -622,38 +876,62 @@
 
     updateDots();
     document.getElementById('btn-prev').disabled = idx === 0;
-    document.getElementById('btn-next').disabled = idx === totalSteps - 1;
+    document.getElementById('btn-next').disabled = idx === totalSteps - 1 || isRecoveryLocked(idx + 1);
+    document.getElementById('btn-playpause').disabled = state === 'operator_approval' && approvalDecision !== 'approved';
+    updatePlayButton();
+
+    if (enteringApproval) {
+      setTimeout(function () {
+        var firstAction = document.getElementById('btn-approve') || document.getElementById('btn-reject') || document.getElementById('approval-box');
+        if (firstAction) firstAction.focus();
+      }, 0);
+    }
+    lastRenderedState = state;
   }
 
   function goTo(newIdx) {
-    idx = Math.max(0, Math.min(totalSteps - 1, newIdx));
+    var targetIdx = Math.max(0, Math.min(totalSteps - 1, newIdx));
+    if (!canNavigateTo(targetIdx, true)) return false;
+    idx = targetIdx;
     render();
+    return true;
   }
 
   function scheduleNext() {
     clearTimeout(timer);
     if (!playing) return;
     if (idx >= totalSteps - 1) { playing = false; updatePlayButton(); return; }
-    timer = setTimeout(function () {
-      idx = idx + 1;
+    if (!canNavigateTo(idx + 1, false)) {
+      showApprovalGateNotice();
       render();
-      scheduleNext();
+      return;
+    }
+    timer = setTimeout(function () {
+      if (goTo(idx + 1)) scheduleNext();
     }, STEP_DURATION_MS);
   }
 
   function updatePlayButton() {
-    document.getElementById('btn-playpause').textContent = playing ? '일시정지' : '재생';
+    var button = document.getElementById('btn-playpause');
+    var approvalLocked = currentState() === 'operator_approval' && approvalDecision !== 'approved';
+    button.textContent = approvalLocked ? '승인 대기' : (playing ? '일시정지' : '재생');
+    button.setAttribute('aria-pressed', playing ? 'true' : 'false');
   }
 
   document.getElementById('btn-prev').addEventListener('click', function () {
-    playing = false; updatePlayButton(); clearTimeout(timer);
+    stopPlayback();
     goTo(idx - 1);
   });
   document.getElementById('btn-next').addEventListener('click', function () {
-    playing = false; updatePlayButton(); clearTimeout(timer);
+    if (!canNavigateTo(idx + 1, true)) return;
+    stopPlayback();
     goTo(idx + 1);
   });
   document.getElementById('btn-playpause').addEventListener('click', function () {
+    if (currentState() === 'operator_approval' && approvalDecision !== 'approved') {
+      showApprovalGateNotice();
+      return;
+    }
     playing = !playing;
     updatePlayButton();
     if (playing) {
@@ -665,13 +943,79 @@
     }
   });
 
+  document.addEventListener('keydown', function (event) {
+    if (event.key !== 'Escape' || currentState() !== 'operator_approval' || approvalDecision === 'approved') return;
+    event.preventDefault();
+    stopPlayback();
+    var safetyIdx = findStateIndex('safety_review');
+    if (safetyIdx >= 0) goTo(safetyIdx);
+    document.getElementById('btn-next').focus();
+  });
+
   // ---- badge / scenario notice ----
   function updateBadge(source) {
     var el = document.getElementById('badge-source');
+    var textEl = document.getElementById('badge-source-text');
+    var iconEl = document.getElementById('badge-source-icon');
+    var footerMode = document.getElementById('footer-mode');
     if (!el) return;
-    el.textContent = 'result_source: ' + source;
+    resultSource = source;
+    textEl.textContent = 'result_source: ' + source;
     el.classList.toggle('fixture', source === 'fixture');
-    el.classList.toggle('live', source !== 'fixture');
+    el.classList.toggle('live', source === 'live_simulation');
+    el.classList.toggle('cached', source === 'cached_simulation');
+    if (source === 'fixture') {
+      iconEl.src = 'public/assets/icons/status-data-fixture.svg';
+      footerMode.textContent = '이 화면은 backend/fixtures/demo_run.json 고정 데이터를 재생하는 fixture 데모입니다.';
+    } else if (source === 'cached_simulation') {
+      iconEl.src = 'public/assets/icons/status-comm-delay.svg';
+      footerMode.textContent = '이 화면은 연결 장애 시 보존된 cached_simulation 결과를 표시합니다.';
+    } else {
+      iconEl.src = 'public/assets/icons/status-safe.svg';
+      footerMode.textContent = '이 화면은 로컬 FastAPI가 계산한 live_simulation 결과를 표시합니다.';
+    }
+  }
+
+  function updateStateBanner(state) {
+    var meta = STATE_META[state] || STATE_META.normal;
+    var banner = document.getElementById('state-banner');
+    document.getElementById('state-icon').src = 'public/assets/icons/' + meta.icon;
+    document.getElementById('state-title').textContent = STATE_LABELS[state] || state;
+    document.getElementById('state-message').textContent = meta.message + ' 결과 출처: ' + resultSource + '.';
+    banner.setAttribute('data-state', state);
+  }
+
+  function setConnectionState(mode, message) {
+    var panel = document.getElementById('connection-panel');
+    var button = document.getElementById('btn-reconnect');
+    var title = document.getElementById('connection-title');
+    var icon = document.getElementById('connection-icon');
+    panel.setAttribute('data-mode', mode);
+    button.disabled = mode === 'retrying';
+
+    if (mode === 'live') {
+      panel.hidden = true;
+      return;
+    }
+
+    panel.hidden = false;
+    if (mode === 'retrying') {
+      title.textContent = '백엔드 재연결 중';
+      icon.src = 'public/assets/icons/status-comm-delay.svg';
+      button.textContent = '재연결 중…';
+      button.hidden = false;
+    } else if (mode === 'local') {
+      title.textContent = '로컬 fixture 데모 모드';
+      icon.src = 'public/assets/icons/status-data-fixture.svg';
+      button.textContent = '백엔드 재연결';
+      button.hidden = true;
+    } else {
+      title.textContent = '백엔드 연결 실패 · fixture 전환';
+      icon.src = 'public/assets/icons/status-comm-delay.svg';
+      button.textContent = '백엔드 재연결';
+      button.hidden = false;
+    }
+    document.getElementById('connection-message').textContent = message;
   }
 
   function showScenarioNotice(msg) {
@@ -762,6 +1106,10 @@
     idx = 0;
     playing = true;
     approvalDecision = null;
+    approvalPending = false;
+    approvalMessage = '';
+    approvalViolations = [];
+    lastRenderedState = null;
     clearTimeout(timer);
 
     document.getElementById('run-id').textContent = DATA.run_id;
@@ -799,6 +1147,7 @@
       loadLiveRun(chosen).then(function (res) {
         CURRENT_SCENARIO = chosen;
         init(res.run, 'live', res.resultSource);
+        setConnectionState('live', '로컬 FastAPI에 연결되었습니다.');
       }).catch(function () {
         showScenarioNotice('시나리오 요청 실패. 이전 데이터를 유지합니다.');
         e.target.value = CURRENT_SCENARIO;
@@ -808,16 +1157,35 @@
     });
   }
 
+  document.getElementById('btn-reconnect').addEventListener('click', function () {
+    if (!isHttpProtocol()) {
+      setConnectionState('local', '파일 직접 실행 모드에서는 API 재연결을 사용할 수 없습니다. start.bat로 실행하면 live 연결을 시도합니다.');
+      return;
+    }
+    setConnectionState('retrying', '동결 API 경로를 다시 호출하고 있습니다. 현재 fixture 데모는 그대로 유지됩니다.');
+    loadLiveRun(CURRENT_SCENARIO).then(function (res) {
+      init(res.run, 'live', res.resultSource);
+      setConnectionState('live', '로컬 FastAPI에 다시 연결되었습니다.');
+      hideScenarioNotice();
+    }).catch(function () {
+      updateBadge('fixture');
+      setConnectionState('offline', '재연결에 실패했습니다. result_source=fixture와 합성·provisional 표시를 유지하며 데모는 계속 사용할 수 있습니다.');
+    });
+  });
+
   // ---- bootstrap: live fetch with fixture fallback ----
   function bootstrap() {
     if (!isHttpProtocol()) {
       init(FIXTURE, 'fixture', 'fixture');
+      setConnectionState('local', '백엔드 없이 window.DEMO_RUN fixture로 실행 중입니다. 실제 도로 제어 또는 실측 결과가 아닙니다.');
       return;
     }
     loadLiveRun(CURRENT_SCENARIO).then(function (res) {
       init(res.run, 'live', res.resultSource);
+      setConnectionState('live', '로컬 FastAPI에 연결되었습니다.');
     }).catch(function () {
       init(FIXTURE, 'fixture', 'fixture');
+      setConnectionState('offline', 'API 연결에 실패해 window.DEMO_RUN fixture로 전환했습니다. 실제 도로 제어 또는 실측 결과가 아닙니다.');
     });
   }
 
