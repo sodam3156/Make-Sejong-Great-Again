@@ -22,8 +22,10 @@ from backend.app.main import (  # noqa: E402
     build_run,
 )
 
-FROZEN_AT = "2026-07-29T20:25:09+09:00"
-FREEZE_ID = "freeze-20260729-202509-kst"
+# 실제 세종 도로망 A안(절재로 회랑) 반영으로 재동결. 이전 동결은
+# freeze-20260729-202509-kst 이며 KPI 수치는 같고 회랑 식별과 표시명만 바뀌었다.
+FROZEN_AT = "2026-07-30T15:38:57+09:00"
+FREEZE_ID = "freeze-20260730-153857-kst"
 SCENARIO_ID = "rain_spillback_a"
 SEED = 42
 SOURCE_FILES = (
@@ -149,7 +151,7 @@ def _guard_worsen(policy: dict[str, Any], approach: str) -> str:
         item
         for item in policy["guard"]["violations"]
         if item["code"] == "FAIRNESS_P95_EXCEEDED"
-        and item["detail"].startswith(approach)
+        and item.get("approach") == approach
     )
     return _number(violation["observed_pct"])
 

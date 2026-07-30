@@ -1,6 +1,8 @@
 # RainFlow Sejong 백엔드
 
-세종형 연속 회전교차로 회랑(R1→L12→R2→L23→R3, 우회로 BYPASS)의 우천 spillback을 결정론적 큐 모델로 재현하고, 3개 정책을 같은 시드로 비교한 뒤 안전·공정성 가드와 운영자 승인을 거치는 FastAPI 백엔드다.
+세종시 절재로 회랑(성금교차로 → 청사교차로 → 세종교차로, 모형 가정 우회경로 포함)의 우천 spillback을 결정론적 큐 모델로 재현하고, 3개 정책을 같은 시드로 비교한 뒤 안전·공정성 가드와 운영자 승인을 거치는 FastAPI 백엔드다.
+
+교차로 이름과 위치는 국토교통부 표준노드링크로 확인한 실제 값이고, 교차로 형식·링크 길이·차로수·용량·수요는 미확인 모형 가정값이다. 엔진 내부 키는 `R1`/`R2`/`R3`, `L12`/`L23`/`BYPASS`이며 화면·문서에는 노출하지 않는다. 표시명 매핑은 `backend/app/simulation.py`의 회랑 식별부가 정본이다.
 
 이슈 [#9](https://github.com/sodam3156/Make-Sejong-Great-Again/issues/9) 스파이크의 Day 1 폴백 경로 구현이다. `docs/15_DAY1_FREEZE_DECISION.md` 결정에 따라 SUMO·TraCI 대신 큐 모델을 정식 경로로 사용한다.
 
@@ -44,10 +46,10 @@ python scripts/generate_contract_artifacts.py --check
 | 파라미터 | 값 | 근거 |
 |---|---|---|
 | 강우 용량 배율 | dry 1.00 / light 0.95 / moderate 0.89 / heavy 0.84 | QA v2 문헌 평균 기반 provisional 민감도 |
-| 링크 저장공간 | L12 22대, L23 18대 | 연속 회전교차로 사이 짧은 연결도로 가정 |
+| 링크 저장공간 | 성금→청사 22대, 청사→세종 18대 | 교차로 사이 짧은 연결도로 가정. 실제 링크 길이·차로수 미확인 |
 | capacity drop | 포화 정체(occ≥0.95) 링크 선두 배출 ×0.70 | stop-and-go 방출 손실. spillback이 상류 처리량을 깎는 핵심 메커니즘 |
 | 게이팅 임계 | 하류 점유 0.80 초과 시 상류 유입 비례 감축 (하한 0.35) | 저장공간 초과 전 선제 조절 |
-| 고정 미터링 | 우천 중 부진입로(R1_W, R2_S) 유입 ×0.45 고정 | 공정성 가드 교육용 위반 사례 재현 |
+| 고정 미터링 | 우천 중 부진입로(성금 서측, 청사 남측) 유입 ×0.45 고정 | 공정성 가드 교육용 위반 사례 재현 |
 | 공정성 한도 | 진입로 P95 지체 +15% | 이슈 #9 가드 기준 |
 | 시드 재현 | `random.Random(f"{scenario_id}:{seed}")` | 동일 입력·시드 → 동일 결과 |
 
@@ -58,7 +60,7 @@ python scripts/generate_contract_artifacts.py --check
 | 정책 | 회랑 spillback wall-clock | 모형 내 누적 체류시간 | 가드 |
 |---|---|---|---|
 | no_action | {{NO_ACTION_SPILLBACK}}초 | {{NO_ACTION_TTT}} vehicle-seconds | 기준선 |
-| fixed_metering | {{FIXED_SPILLBACK_DELTA}}% | {{FIXED_TTT_DELTA}}% | **탈락** (R1_W·R2_S P95 대기 proxy 내부 한도 초과) |
+| fixed_metering | {{FIXED_SPILLBACK_DELTA}}% | {{FIXED_TTT_DELTA}}% | **탈락** (성금 서측·청사 남측 진입로 P95 대기 proxy 내부 한도 초과) |
 | corridor_gating | {{GATING_SPILLBACK_DELTA}}% | {{GATING_TTT_DELTA}}% | 통과 |
 
 통과 기준(spillback 30%↓, 누적 체류시간 10%↓, 진입로 15% 악화 금지, 재현성)은 `backend/tests/test_spike.py`가 A/B 각각 seed 1~10에서 자동 검증한다.

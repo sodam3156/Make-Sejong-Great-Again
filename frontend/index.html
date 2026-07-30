@@ -112,6 +112,7 @@
   }
 
   .corridor-note { color: var(--muted); font-size: 13px; margin-top: 8px; min-height: 34px; }
+  .corridor-verify { color: var(--muted); font-size: 12px; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); line-height: 1.5; }
 
   .kpi-grid {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
@@ -215,11 +216,12 @@
   </div>
 
   <div class="panel">
-    <h2>회랑 상태 · R1 – R2 – R3</h2>
+    <h2>절재로 회랑 · 성금 – 청사 – 세종교차로</h2>
     <div class="svg-wrap">
       <svg id="corridor-svg" viewBox="0 0 760 220" width="100%" height="220" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
     <div class="corridor-note" id="corridor-note"></div>
+    <div class="corridor-verify" id="corridor-verify"></div>
   </div>
 
   <div class="panel">
@@ -311,11 +313,17 @@
   }
 
   // ---- corridor SVG ----
-  var RA_POS = { R1: { x: 120, y: 110 }, R2: { x: 380, y: 110 }, R3: { x: 640, y: 110 } };
+  // 내부 키(R1/L12 등)는 엔진 식별자일 뿐이고 화면에는 label 만 그린다.
+  // 절재로 회랑 정본 표시명 — 2026-07-29 13:28 실제 세종 도로망 A안 결정.
+  var RA_POS = {
+    R1: { x: 120, y: 110, label: '성금교차로' },
+    R2: { x: 380, y: 110, label: '청사교차로' },
+    R3: { x: 640, y: 110, label: '세종교차로' }
+  };
   var LINK_DEF = [
-    { link_id: 'L12', from: 'R1', to: 'R2', offsetY: 0 },
-    { link_id: 'L23', from: 'R2', to: 'R3', offsetY: 0 },
-    { link_id: 'BYPASS', from: 'R1', to: 'R3', offsetY: -70 }
+    { link_id: 'L12', from: 'R1', to: 'R2', offsetY: 0, label: '성금 → 청사' },
+    { link_id: 'L23', from: 'R2', to: 'R3', offsetY: 0, label: '청사 → 세종' },
+    { link_id: 'BYPASS', from: 'R1', to: 'R3', offsetY: -70, label: '모형 가정 우회경로' }
   ];
 
   function occColor(ratio) {
@@ -341,16 +349,25 @@
       parts.push('<path id="' + pathId + '" d="' + d + '" fill="none" class="link-line" stroke="var(--border)" />');
       var labelX = (a.x + b.x) / 2;
       var labelY = midY - 12;
-      parts.push('<text x="' + labelX + '" y="' + labelY + '" class="link-label" text-anchor="middle">' + l.link_id + '</text>');
+      parts.push('<text x="' + labelX + '" y="' + labelY + '" class="link-label" text-anchor="middle">' + l.label + '</text>');
     });
 
     Object.keys(RA_POS).forEach(function (ra) {
       var p = RA_POS[ra];
       parts.push('<circle cx="' + p.x + '" cy="' + p.y + '" r="26" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2" />');
-      parts.push('<text x="' + p.x + '" y="' + (p.y + 5) + '" class="ra-label" text-anchor="middle">' + ra + '</text>');
+      parts.push('<text x="' + p.x + '" y="' + (p.y + 44) + '" class="ra-label" text-anchor="middle">' + p.label + '</text>');
     });
 
     svg.innerHTML = parts.join('\n');
+  }
+
+  // 무엇이 공식 자료로 확인된 값이고 무엇이 모형 가정인지 화면에도 남긴다.
+  // 응답의 network.verification.note 를 그대로 쓰고 문구를 화면에서 새로 만들지 않는다.
+  function renderCorridorVerification() {
+    var el = document.getElementById('corridor-verify');
+    if (!el) return;
+    var v = (DATA.network || {}).verification;
+    el.textContent = v && v.note ? v.note : '';
   }
 
   function updateCorridorState(step) {
@@ -367,8 +384,10 @@
     });
 
     var noteEl = document.getElementById('corridor-note');
+    var labelOf = {};
+    LINK_DEF.forEach(function (d) { labelOf[d.link_id] = d.label; });
     var lines = step.links.map(function (l) {
-      return l.link_id + ': 점유율 ' + Math.round(l.occupancy_ratio * 100) + '%' +
+      return (labelOf[l.link_id] || l.link_id) + ': 점유율 ' + Math.round(l.occupancy_ratio * 100) + '%' +
         (l.queue_veh != null ? ', 대기 ' + l.queue_veh + '대' : '') +
         (l.spillback ? ' [역류]' : '');
     }).join(' · ');
@@ -771,6 +790,7 @@
     rebuildDots();
     updatePlayButton();
     renderCorridorSVG();
+    renderCorridorVerification();
     render();
     scheduleNext();
   }

@@ -5,7 +5,7 @@ import hashlib
 import json
 from typing import Any
 
-from .simulation import SimResult
+from .simulation import SimResult, approach_display_name
 
 FAIRNESS_P95_LIMIT_PCT = 15.0  # provisional, 시우 검증 대상
 DIVERSION_DELAY_LIMIT_SEC = 180.0
@@ -55,11 +55,13 @@ def evaluate_guard(
     violations = operational_violations(data_quality)
 
     for approach, base_p95 in baseline.approach_p95_delay.items():
+        label = approach_display_name(approach)
         if approach not in candidate.approach_p95_delay:
             violations.append(
                 {
                     "code": "FAIRNESS_INPUT_INVALID",
-                    "detail": f"{approach} 진입로 P95 대기 proxy가 누락되어 판정 불가",
+                    "approach": approach,
+                    "detail": f"{label} P95 대기 proxy가 누락되어 판정 불가",
                 }
             )
             continue
@@ -70,7 +72,8 @@ def evaluate_guard(
             violations.append(
                 {
                     "code": "FAIRNESS_P95_EXCEEDED",
-                    "detail": f"{approach} 진입로 P95 지체가 기준 대비 {worsen_pct:.1f}% 악화. 허용한도 {FAIRNESS_P95_LIMIT_PCT}% 초과",
+                    "approach": approach,
+                    "detail": f"{label} P95 지체가 기준 대비 {worsen_pct:.1f}% 악화. 허용한도 {FAIRNESS_P95_LIMIT_PCT}% 초과",
                     "threshold_pct": FAIRNESS_P95_LIMIT_PCT,
                     "observed_pct": round(worsen_pct, 1),
                 }

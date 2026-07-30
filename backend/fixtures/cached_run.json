@@ -1,10 +1,10 @@
 {
   "approval": {
-    "decided_at": "2026-07-29T20:25:09+09:00",
+    "decided_at": "2026-07-30T15:38:57+09:00",
     "operator": "demo_operator",
     "policy_id": "corridor_gating",
     "reason": "QA v2 가드 통과 후보 중 규칙 기반 안전 점수가 가장 높음",
-    "requested_at": "2026-07-29T20:25:09+09:00",
+    "requested_at": "2026-07-30T15:38:57+09:00",
     "result_source": "cached_simulation",
     "status": "approved",
     "workflow_state": "EVALUATED"
@@ -139,11 +139,11 @@
         "risks": [
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "R1_W 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과"
+            "detail": "성금교차로 서측 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과"
           },
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "R2_S 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과"
+            "detail": "청사교차로 남측 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과"
           }
         ],
         "score": 50.83
@@ -158,7 +158,7 @@
     "scoring_version": "rainflow-rule-v1"
   },
   "elapsed_ms": 0.0,
-  "generated_at": "2026-07-29T20:25:09+09:00",
+  "generated_at": "2026-07-30T15:38:57+09:00",
   "network": {
     "approaches": [
       "R1_N",
@@ -166,33 +166,99 @@
       "R2_S",
       "R3_E"
     ],
-    "links": [
+    "corridor_label": "절재로 회랑",
+    "intersections": [
       {
-        "from": "R1",
-        "link_id": "L12",
-        "storage_veh": 22,
-        "to": "R2"
+        "display_name": "성금교차로",
+        "engine_id": "R1",
+        "order": 1,
+        "representative_lonlat": [
+          127.2616548,
+          36.5086037
+        ],
+        "standard_node_ids": [
+          "4130092501",
+          "4130092502",
+          "4130092503",
+          "4130092504"
+        ]
       },
       {
-        "from": "R2",
-        "link_id": "L23",
-        "storage_veh": 18,
-        "to": "R3"
+        "display_name": "청사교차로",
+        "engine_id": "R2",
+        "order": 2,
+        "representative_lonlat": [
+          127.2678512,
+          36.5079813
+        ],
+        "standard_node_ids": [
+          "4130102901",
+          "4130102902",
+          "4130102903",
+          "4130102904"
+        ]
       },
       {
-        "from": "R1",
-        "link_id": "BYPASS",
-        "storage_veh": 60,
-        "to": "R3"
+        "display_name": "세종교차로",
+        "engine_id": "R3",
+        "order": 3,
+        "representative_lonlat": [
+          127.2961782,
+          36.5005138
+        ],
+        "standard_node_ids": [
+          "4130138001",
+          "4130138002",
+          "4130138003",
+          "4130138004"
+        ]
       }
     ],
-    "roundabouts": [
-      "R1",
-      "R2",
-      "R3"
-    ]
+    "links": [
+      {
+        "display_name": "성금교차로 → 청사교차로",
+        "from": "R1",
+        "from_display_name": "성금교차로",
+        "link_id": "L12",
+        "real_road": true,
+        "storage_veh": 22,
+        "to": "R2",
+        "to_display_name": "청사교차로"
+      },
+      {
+        "display_name": "청사교차로 → 세종교차로",
+        "from": "R2",
+        "from_display_name": "청사교차로",
+        "link_id": "L23",
+        "real_road": true,
+        "storage_veh": 18,
+        "to": "R3",
+        "to_display_name": "세종교차로"
+      },
+      {
+        "display_name": "모형 가정 우회경로 (실제 도로 아님)",
+        "from": "R1",
+        "from_display_name": "성금교차로",
+        "link_id": "BYPASS",
+        "real_road": false,
+        "storage_veh": 60,
+        "to": "R3",
+        "to_display_name": "세종교차로"
+      }
+    ],
+    "road_name": "절재로",
+    "verification": {
+      "demand": "synthetic",
+      "intersection_form": "unverified",
+      "intersection_identity": "verified",
+      "intersection_position": "verified",
+      "link_capacity": "synthetic",
+      "link_geometry": "unmodeled",
+      "note": "교차로 이름과 위치는 공식 표준노드링크로 확인했다. 교차로 형식(회전 또는 신호), 링크 길이·차로수·용량, 수요는 아직 확인하지 않았고 이 실행의 값은 모형 가정값이다. 확인 전 값을 실측값처럼 표시하지 않는다.",
+      "source": "국토교통부 표준노드링크 [2026-07-16] 전국 원본에서 세종 지역코드 413 추출"
+    }
   },
-  "network_version": "sejong-corridor-v0",
+  "network_version": "sejong-jeoljaero-v1",
   "note": "rainflow-kpi-v2로 재동결한 provisional 합성 데모 결과. 실제 세종시 실측 성과나 실제 도로 제어 결과가 아니다.",
   "policies": [
     {
@@ -242,7 +308,7 @@
       "score": 0.0
     },
     {
-      "candidate_hash": "f7b517d31c82f15987a5e6348a4bc45c320a6112447b2e446f0e986cf42d09e3",
+      "candidate_hash": "55304be81fe0117c93c98029a53023d1e2c49d6f3debe1506def365fbc47c0dc",
       "delta_vs_no_action": {
         "spillback_time_pct": -62.4,
         "total_travel_time_pct": -41.6,
@@ -274,14 +340,16 @@
         "rule_version": "rainflow-guard-v2",
         "violations": [
           {
+            "approach": "R1_W",
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "R1_W 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과",
+            "detail": "성금교차로 서측 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과",
             "observed_pct": 55.4,
             "threshold_pct": 15.0
           },
           {
+            "approach": "R2_S",
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "R2_S 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과",
+            "detail": "청사교차로 남측 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과",
             "observed_pct": 938.5,
             "threshold_pct": 15.0
           }
@@ -385,10 +453,10 @@
   "reproducibility": {
     "candidate_hashes": {
       "corridor_gating": "cddb4712471e0e2efd4672b5b62cdc0fdf0e617d8f9b77eef95dbef2a57050dc",
-      "fixed_metering": "f7b517d31c82f15987a5e6348a4bc45c320a6112447b2e446f0e986cf42d09e3",
+      "fixed_metering": "55304be81fe0117c93c98029a53023d1e2c49d6f3debe1506def365fbc47c0dc",
       "no_action": "1b8abf877414569c4d34b295385ba5ce79c7a7ed614c5d0e8dba4243e268af3e"
     },
-    "freeze_id": "freeze-20260729-202509-kst",
+    "freeze_id": "freeze-20260730-153857-kst",
     "git_commit_sha": "b9324ecfde1d74de154a21888e59632e1f50c329",
     "guard_version": "rainflow-guard-v2",
     "input": {
@@ -402,15 +470,15 @@
       "seed": 42
     },
     "kpi_definition_version": "rainflow-kpi-v2",
-    "network_version": "sejong-corridor-v0",
+    "network_version": "sejong-jeoljaero-v1",
     "parameter_set_version": "rainflow-provisional-v2",
     "policy_version": "rainflow-policy-v1",
-    "result_checksum": "80a4440cb798a8262e88e462a3088e3d128debbdb32ec3eb30cab119537d9c22",
+    "result_checksum": "d5e70cb728442cec8000e9790ea51b5d90b6dd6899737dc6f5d9ea1370995127",
     "rule_version": "rainflow-guard-v2",
     "scoring_version": "rainflow-rule-v1",
     "simulator_version": "rainflow-queue-v2",
-    "source_live_run_id": "live-rain_spillback_a-s42-ceedb562be",
-    "source_tree_checksum": "598c6348df0ec9c07362a62c297b1fa112d7daad9fc6758f15dc56d98c23e2ae"
+    "source_live_run_id": "live-rain_spillback_a-s42-218c686818",
+    "source_tree_checksum": "800f2e29c53525b3322d789d26d1c6b0af9d327028baf9912b7d95b88ad77b04"
   },
   "result_source": "cached_simulation",
   "run_id": "cached-qa-v2-001",

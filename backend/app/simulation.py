@@ -1,8 +1,11 @@
 """RainFlow Sejong 결정론적 큐 모델 시뮬레이터.
 
 docs/15 결정에 따라 SUMO 대신 사용하는 정식 Day 1~2 경로.
-연속 회전교차로 R1→L12→R2→L23→R3 회랑과 평행 우회로 BYPASS를 큐 모델로 재현한다.
-모든 수치는 합성이며 provisional이다. 같은 (scenario_id, seed)는 같은 결과를 반환한다.
+절재로 회랑(성금교차로 → 청사교차로 → 세종교차로)과 모형 가정 우회경로를 큐 모델로
+재현한다. 내부 키는 R1→L12→R2→L23→R3, BYPASS 이며 표시명은 아래 회랑 식별부를 쓴다.
+교차로 이름과 위치만 공식 표준노드링크로 확인됐고, 교차로 형식과 링크 길이·차로수·
+용량·수요는 미확인 모형 가정값이다. 모든 수치는 합성이며 provisional이다.
+같은 (scenario_id, seed)는 같은 결과를 반환한다.
 """
 from __future__ import annotations
 
@@ -28,6 +31,76 @@ RAIN_CAPACITY_FACTOR = {"dry": 1.00, "light": 0.95, "moderate": 0.89, "heavy": 0
 LINKS = {"L12": 22, "L23": 18, "BYPASS": 60}  # storage_veh
 DEMAND_APPROACHES = ["R1_N", "R1_W", "R2_S", "R3_E"]
 ALL_APPROACHES = ["R1_N", "R1_W", "R2_N", "R2_S", "R3_N", "R3_E"]
+
+# --- 절재로 회랑 정본 식별 (2026-07-29 13:28 KST 실제 세종 도로망 A안 결정) ---
+# R1/R2/R3 과 L12/L23/BYPASS 는 이 엔진 안에서만 쓰는 내부 키다. 화면·발표·문서에는
+# 아래 표시명만 노출한다. 내부 키는 국토교통부 표준노드 ID와 연결해 둔다.
+# 노드 ID·좌표 출처: docs/evidence/public_data_inventory_20260729.md 1-1절.
+CORRIDOR_ROAD_NAME = "절재로"
+CORRIDOR_INTERSECTIONS = [
+    {
+        "engine_id": "R1",
+        "display_name": "성금교차로",
+        "order": 1,
+        "standard_node_ids": ["4130092501", "4130092502", "4130092503", "4130092504"],
+        "representative_lonlat": [127.2616548, 36.5086037],
+    },
+    {
+        "engine_id": "R2",
+        "display_name": "청사교차로",
+        "order": 2,
+        "standard_node_ids": ["4130102901", "4130102902", "4130102903", "4130102904"],
+        "representative_lonlat": [127.2678512, 36.5079813],
+    },
+    {
+        "engine_id": "R3",
+        "display_name": "세종교차로",
+        "order": 3,
+        "standard_node_ids": ["4130138001", "4130138002", "4130138003", "4130138004"],
+        "representative_lonlat": [127.2961782, 36.5005138],
+    },
+]
+INTERSECTION_DISPLAY_NAME = {
+    item["engine_id"]: item["display_name"] for item in CORRIDOR_INTERSECTIONS
+}
+_DIRECTION_LABEL = {"N": "북측", "W": "서측", "S": "남측", "E": "동측"}
+
+
+def approach_display_name(approach: str) -> str:
+    """내부 진입로 키(R1_W)를 공식 교차로명 기반 표시명으로 바꾼다."""
+    node, _, direction = approach.partition("_")
+    intersection = INTERSECTION_DISPLAY_NAME.get(node)
+    if intersection is None or direction not in _DIRECTION_LABEL:
+        return approach
+    return f"{intersection} {_DIRECTION_LABEL[direction]} 진입로"
+
+
+# BYPASS 는 공식 노드·링크로 확인된 도로가 아니라 모형 가정 경로다. A안 사실성
+# 가드에 따라 실제 도로명을 붙이지 않고 가정이라는 사실을 표시명에 남긴다.
+LINK_DISPLAY = {
+    "L12": {"display_name": "성금교차로 → 청사교차로", "real_road": True},
+    "L23": {"display_name": "청사교차로 → 세종교차로", "real_road": True},
+    "BYPASS": {
+        "display_name": "모형 가정 우회경로 (실제 도로 아님)",
+        "real_road": False,
+    },
+}
+
+# 무엇이 공식 자료로 확인됐고 무엇이 아직 모형 가정인지 응답에 그대로 싣는다.
+CORRIDOR_VERIFICATION = {
+    "intersection_identity": "verified",
+    "intersection_position": "verified",
+    "intersection_form": "unverified",
+    "link_geometry": "unmodeled",
+    "link_capacity": "synthetic",
+    "demand": "synthetic",
+    "source": "국토교통부 표준노드링크 [2026-07-16] 전국 원본에서 세종 지역코드 413 추출",
+    "note": (
+        "교차로 이름과 위치는 공식 표준노드링크로 확인했다. 교차로 형식(회전 또는 "
+        "신호), 링크 길이·차로수·용량, 수요는 아직 확인하지 않았고 이 실행의 값은 "
+        "모형 가정값이다. 확인 전 값을 실측값처럼 표시하지 않는다."
+    ),
+}
 
 # 기본 수요 (veh per DT). provisional 합성값
 BASE_DEMAND = {"R1_N": 0.90, "R1_W": 0.35, "R2_S": 0.40, "R3_E": 0.35}

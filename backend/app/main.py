@@ -40,9 +40,14 @@ from .safety import (
     operational_violations,
 )
 from .simulation import (
+    CORRIDOR_INTERSECTIONS,
+    CORRIDOR_ROAD_NAME,
+    CORRIDOR_VERIFICATION,
     DURATION,
     DRY_PREP_END,
+    INTERSECTION_DISPLAY_NAME,
     KPI_DEFINITION_VERSION,
+    LINK_DISPLAY,
     LINKS,
     PARAMETER_SET_VERSION,
     RAIN_END,
@@ -62,7 +67,7 @@ FRONTEND_DIR = BACKEND_DIR.parent / "frontend"
 KST = timezone(timedelta(hours=9))
 
 VERSION = "0.2.0"
-NETWORK_VERSION = "sejong-corridor-v0"
+NETWORK_VERSION = "sejong-jeoljaero-v1"
 DATASET_ID = "synthetic-v0"
 DATASET_SCHEMA_VERSION = "rainflow-dataset-v1"
 DATASET_ADAPTER_VERSION = "builtin-synthetic-v1"
@@ -449,28 +454,40 @@ def build_run(
         },
         "screen_states": SCREEN_STATES,
         "network": {
-            "roundabouts": ["R1", "R2", "R3"],
+            "road_name": CORRIDOR_ROAD_NAME,
+            "corridor_label": f"{CORRIDOR_ROAD_NAME} 회랑",
+            "intersections": CORRIDOR_INTERSECTIONS,
             "links": [
                 {
                     "link_id": "L12",
                     "from": "R1",
                     "to": "R2",
+                    "from_display_name": INTERSECTION_DISPLAY_NAME["R1"],
+                    "to_display_name": INTERSECTION_DISPLAY_NAME["R2"],
                     "storage_veh": LINKS["L12"],
+                    **LINK_DISPLAY["L12"],
                 },
                 {
                     "link_id": "L23",
                     "from": "R2",
                     "to": "R3",
+                    "from_display_name": INTERSECTION_DISPLAY_NAME["R2"],
+                    "to_display_name": INTERSECTION_DISPLAY_NAME["R3"],
                     "storage_veh": LINKS["L23"],
+                    **LINK_DISPLAY["L23"],
                 },
                 {
                     "link_id": "BYPASS",
                     "from": "R1",
                     "to": "R3",
+                    "from_display_name": INTERSECTION_DISPLAY_NAME["R1"],
+                    "to_display_name": INTERSECTION_DISPLAY_NAME["R3"],
                     "storage_veh": LINKS["BYPASS"],
+                    **LINK_DISPLAY["BYPASS"],
                 },
             ],
             "approaches": list(baseline.approach_p95_delay),
+            "verification": CORRIDOR_VERIFICATION,
         },
         "timeline": _timeline(scenario_id, baseline),
         "policies": policy_records,
