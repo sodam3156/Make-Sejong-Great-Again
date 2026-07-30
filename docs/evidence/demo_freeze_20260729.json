@@ -1,13 +1,13 @@
 {
   "artifacts": {
     "backend/README.md": "d9fbd31997e3bbcfcd436cca36cfd61494f65fdf9532736d79355d5629450916",
-    "backend/fixtures/cached_run.json": "f2ed5376f0e5bcc0a94edd23d94b6ad1021f392d1b2124c102fa66b1e9fed443",
-    "backend/fixtures/demo_freeze_meta.json": "71952b684f21c2c73fab24d4695788c361ee9fa5c21da90ea39fd143de06695d",
-    "backend/fixtures/demo_run.json": "2eec3d745f2d77fa362adf3ed79355fb84c98e44aff8bfc691299da4dccaa5a8",
+    "backend/fixtures/cached_run.json": "2c51367520ba4f6f714858353d32f1abce1059117571d14910104f84caf7c3cb",
+    "backend/fixtures/demo_freeze_meta.json": "c8eef816c1b14ad2bfd3228de73727263df4981fa1b0ef27c7329ab05f128c0c",
+    "backend/fixtures/demo_run.json": "be092a323d8a75ed8d22a67fdba95e7e1176afbdf47ebe89c00378b016df8b83",
     "contracts/openapi.json": "b9de78d38d673df302ec42fabfe4c0ef17c8eb139de1e3d059a61495269ad1c5",
     "docs/16_DEMO_SCRIPT.md": "687381c560ad97980579aac0ba09422dcd866c4b3c15ef0f09819b0a36accbc3",
-    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "925f395ef4e6b51162efffa0126482ccea8df6fc3e18ee164e7d329ed4d09acd",
-    "frontend/demo_run.js": "7d49aa3376df20cf1f0011569b5d0ff45fa5d783bbc578ebb4957a2b57f325b1"
+    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "988488a5ea44a245e748e303c74a8e15e890b24ab02b71cab8f5a607ffebe122",
+    "frontend/demo_run.js": "c442f8edf78fe92ffe01701872baf6cb66cc89b5607b02ae4fa483e096d5642f"
   },
   "freeze_id": "freeze-20260730-153857-kst",
   "frozen_at": "2026-07-30T15:38:57+09:00",
@@ -15,7 +15,7 @@
     "fixture_run_id": "fixture-qa-v2-001",
     "freeze_id": "freeze-20260730-153857-kst",
     "frozen_at": "2026-07-30T15:38:57+09:00",
-    "git_commit_sha": "b9324ecfde1d74de154a21888e59632e1f50c329",
+    "git_commit_sha": "0287068580fe22aedcbd4828f482408c588da69d",
     "provisional": true,
     "result_checksum": "d5e70cb728442cec8000e9790ea51b5d90b6dd6899737dc6f5d9ea1370995127",
     "run_id": "live-rain_spillback_a-s42-218c686818",

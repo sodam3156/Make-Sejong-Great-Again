@@ -457,7 +457,7 @@
       "no_action": "1b8abf877414569c4d34b295385ba5ce79c7a7ed614c5d0e8dba4243e268af3e"
     },
     "freeze_id": "freeze-20260730-153857-kst",
-    "git_commit_sha": "b9324ecfde1d74de154a21888e59632e1f50c329",
+    "git_commit_sha": "0287068580fe22aedcbd4828f482408c588da69d",
     "guard_version": "rainflow-guard-v2",
     "input": {
       "data_quality": {
