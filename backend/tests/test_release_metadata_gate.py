@@ -1,4 +1,5 @@
 """Static gates for release commit/tag provenance in the Windows bundle."""
+import re
 from pathlib import Path
 
 
@@ -21,5 +22,10 @@ def test_windows_build_records_and_checks_release_tag_commit():
 def test_runbook_documents_release_metadata_and_tagged_build():
     runbook = RUNBOOK.read_text(encoding="utf-8")
 
-    assert "-ReleaseTag v0.2.0-day3-rc1" in runbook
+    release_tags = re.findall(
+        r"-ReleaseTag (v[0-9A-Za-z][0-9A-Za-z._-]+)",
+        runbook,
+    )
+    assert len(release_tags) == 1
+    assert f"git tag -a {release_tags[0]}" in runbook
     assert "`RELEASE-METADATA.json`" in runbook
