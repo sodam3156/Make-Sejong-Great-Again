@@ -38,6 +38,11 @@ docker compose down --volumes
 
 지원 버전은 Python 3.11 또는 3.12다.
 
+호환성 기준은 FastAPI 0.141.x, Starlette 1.3.x, HTTPX2 2.x다.
+Starlette 1.3의 `TestClient`는 기존 HTTPX가 아니라 HTTPX2를 사용한다.
+`requirements-dev.txt`는 이 조합을 설치하고, `pytest.ini`는 모든 테스트
+경고를 실패로 처리한다. 따라서 성공한 테스트 런은 경고도 0건이어야 한다.
+
 ```bash
 python -m venv .venv
 ```

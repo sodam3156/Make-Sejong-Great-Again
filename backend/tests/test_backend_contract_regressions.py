@@ -75,6 +75,18 @@ def test_live_rain_timeline_emits_all_seven_frozen_states():
     assert emitted_states == FROZEN_SCREEN_STATES
 
 
+def test_guard_detail_does_not_duplicate_approach_suffix():
+    run = backend_main.build_run("rain_spillback_a", 42)
+    details = [
+        violation["detail"]
+        for policy in run["policies"]
+        for violation in policy["guard"]["violations"]
+    ]
+
+    assert details, "가드 위반 문구를 검증할 후보가 필요하다"
+    assert all("진입로 진입로" not in detail for detail in details)
+
+
 def test_dry_base_never_emits_rain_or_recovery_states():
     run = backend_main.build_run("dry_base", 42)
 

@@ -22,8 +22,8 @@ from backend.app.main import (  # noqa: E402
     build_run,
 )
 
-FROZEN_AT = "2026-07-29T20:25:09+09:00"
-FREEZE_ID = "freeze-20260729-202509-kst"
+FROZEN_AT = "2026-07-30T19:17:23+09:00"
+FREEZE_ID = "freeze-20260730-191723-kst"
 SCENARIO_ID = "rain_spillback_a"
 SEED = 42
 SOURCE_FILES = (
@@ -54,18 +54,26 @@ def _sha256_text(content: str) -> str:
 
 
 def _source_git_sha() -> str:
-    # The generated artifact is committed together with its sources.  Recording
-    # HEAD would make the commit hash self-referential, so retain the last
-    # committed source baseline while source_tree_checksum pins the exact
-    # working tree included in this freeze.
+    # Resolve the latest committed source change from HEAD itself.  Starting at
+    # HEAD^ makes the answer depend on whether an unrelated commit happens to
+    # follow the source commit: the same tree can then produce a different SHA.
+    # Generated outputs are intentionally not SOURCE_FILES, so they can be
+    # committed after the source change without making this value
+    # self-referential.  source_tree_checksum separately pins the exact source
+    # contents rendered into the freeze.
     result = subprocess.run(
-        ["git", "log", "-1", "--format=%H", "HEAD^", "--", *SOURCE_FILES],
+        ["git", "log", "-1", "--format=%H", "HEAD", "--", *SOURCE_FILES],
         cwd=ROOT,
         check=True,
         capture_output=True,
         text=True,
     )
-    return result.stdout.strip()
+    source_sha = result.stdout.strip()
+    if not source_sha:
+        raise RuntimeError(
+            "no committed source change found for the contract freeze"
+        )
+    return source_sha
 
 
 def _source_tree_checksum() -> str:
