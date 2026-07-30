@@ -1,0 +1,37 @@
+{
+  "cheonan": {
+    "traffic_rows": 7290,
+    "traffic_intersections": 72,
+    "traffic_approaches": 243,
+    "camera_rows": 244,
+    "camera_intersections": 72,
+    "daily_sum_mismatch_rows": 0,
+    "name_map_unmatched": 3,
+    "name_map_ambiguous": 0,
+    "hourly_profile_rows": 3456,
+    "summary_rows": 72
+  },
+  "kict": {
+    "coordinate_rows": 3983,
+    "within_80km_rows": 1047,
+    "station_output_rows": 116,
+    "selected_continuous_stations": 30,
+    "hourly_source_rows_used": 7786,
+    "hourly_profile_rows": 960,
+    "vehicle_source_rows_used": 7786,
+    "vehicle_profile_rows": 40
+  },
+  "jeju": {
+    "movement_rows": 100,
+    "movement_sum_mismatch_rows": 78,
+    "vehicle_rows": 100,
+    "vehicle_sum_mismatch_rows": 79,
+    "intersection_set_difference": 0
+  },
+  "incheon": {
+    "rows": 3913,
+    "cycle_parse_failures": 0,
+    "quote_cleaned_cells": 2,
+    "duplicate_number_rows_preserved": 695
+  }
+}

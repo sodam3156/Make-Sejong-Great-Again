@@ -1,0 +1,43 @@
+{
+  "dataset_id": "regional-reference-v1",
+  "generated_at_kst": "2026-07-31T04:00:00+09:00",
+  "scenario_role": "regional_reference_and_external_fixture_only",
+  "runtime_activation": "disabled",
+  "raw_storage_policy": "Original binary and large files remain outside Git; exact filenames, byte sizes, and SHA-256 values are recorded here.",
+  "sources": [
+    {"source_id":"cheonan_traffic","filename":"스마트교차로_통계.xlsx","available":true,"bytes":6069518,"sha256":"030a8a7fcd9d8b38a35c7b850a6a5044646de4e576d3cdc9ed6c0620c455dc4d","source_class":"regional_reference","source_region":"Cheonan"},
+    {"source_id":"cheonan_camera","filename":"충청남도 천안시_스마트 교차로 카메라 관리_20260310.csv","available":true,"bytes":13592,"sha256":"c89c43440baafae31ca93f36658b987624a6b01965bf393fb1fdffea1ca70f7e","source_class":"regional_reference","source_region":"Cheonan"},
+    {"source_id":"kict_traffic","filename":"2025년 도로종류별 교통량 및 X,Y좌표.xlsx","available":true,"bytes":103502013,"sha256":"7ec335e20c335dacc9b4c0fa80c17acbc8dfaa258ae1cfe1a0a158f053fec671","source_class":"regional_reference","source_region":"national_near_Sejong"},
+    {"source_id":"jeju_movement","filename":"제주특별자치도_스마트교차로 교통량 데이터_20251231.csv","available":true,"bytes":6302,"sha256":"cc1fc8f62dd75056b319a299a87b53d11a36d3afbf554ed8f8d23ef7aadcb37c","source_class":"external_fixture","source_region":"Jeju"},
+    {"source_id":"jeju_vehicle","filename":"제주특별자치도_스마트교차로 차종별 운행정보_20251231.csv","available":true,"bytes":8111,"sha256":"518d2263d150c207f837f8bf0caad640f07226a8960f5d4d1f68f87ca4f3b024","source_class":"external_fixture","source_region":"Jeju"},
+    {"source_id":"incheon_signal","filename":"경찰청 인천광역시경찰청_인천시교통신호등신호주기_20241231.csv","available":true,"bytes":298660,"sha256":"2f79a501325bd0052d60aba690e2f41c887a28c2a9f7c78f51bf848c8290bb2f","source_class":"external_fixture","source_region":"Incheon"},
+    {"source_id":"police_signal_codebook","filename":"코드정의서.hwp","available":true,"bytes":284672,"sha256":"bb1c0137ec646119c2f2c92160efdd94152a876b83e3b6673588d9f01af89681","source_class":"external_fixture","source_region":"national_codebook"}
+  ],
+  "committed_outputs": [
+    "cheonan_candidate_intersections.json",
+    "cheonan_name_join_qa.json",
+    "cheonan_profiles.json",
+    "incheon_signal_cycle_summary_a.json",
+    "incheon_signal_cycle_summary_b.json",
+    "jeju_adapter_summaries.json",
+    "kict_expressway_profiles.json",
+    "kict_national_road_profiles.json",
+    "kict_near_sejong_stations.json",
+    "kict_vehicle_composition.json"
+  ],
+  "qa_summary": {
+    "cheonan": "7290 rows, 72 intersections, 243 approaches, 0 daily/hourly sum mismatches, 3 unresolved name joins preserved",
+    "kict": "3983 coordinate rows; 1047 within 80 km; nearest continuous-station profiles and vehicle composition summarized",
+    "jeju": "100 movement rows and 100 vehicle rows; component-total differences retained as QA flags",
+    "incheon": "3913 rows; 0 cycle parse failures; 2 quote artifacts normalized; duplicate controller-number rows preserved"
+  },
+  "missing_source_ids": [],
+  "limitations": [
+    "No Sejong time-resolved turning counts are included.",
+    "No current Sejong signal timing, phase sequence, TOD plan, or offset is included.",
+    "No official lane-group geometry or queue-storage length for the target corridor is included.",
+    "Cheonan and KICT data may shape reference ranges and adapters, not absolute Sejong calibration.",
+    "Jeju and Incheon data are external parser and UI fixtures only.",
+    "No BASE_DEMAND, capacity, storage, fairness, safety, or control threshold is changed."
+  ]
+}
