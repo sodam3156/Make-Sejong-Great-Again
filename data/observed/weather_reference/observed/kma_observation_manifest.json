@@ -1,0 +1,82 @@
+{
+  "schema_version": 3,
+  "processor_version": "kma-observation-compact-v1",
+  "station": {
+    "provider": "Korea Meteorological Administration",
+    "station_id": 239,
+    "station_name": "Sejong"
+  },
+  "evidence_storage": {
+    "committed_compact_precipitation": "data/observed/weather_reference/observed/normalized/kma_aws_239_precipitation_compact.csv.gz",
+    "compact_sha256": "fe2c92e3c5db069be9305e71365e21e78186fedef62b1c26ea262c78cdd18a74",
+    "original_api_responses_committed": false,
+    "original_response_hashes": [
+      {
+        "name": "kma_asos_239_20220810_hourly.txt",
+        "sha256": "b9f14f511bbb6558df4fb964d42615358fcedcb54c3cd73885f9beab0eda72a8",
+        "bytes": 9783
+      },
+      {
+        "name": "kma_aws_239_20220727_part1.txt",
+        "sha256": "022ef5c4f947333ed2e7b4336a09ae73e9f8d20e8fd614523f5eefcc00bb0064",
+        "bytes": 130178
+      },
+      {
+        "name": "kma_aws_239_20220727_part2.txt",
+        "sha256": "558950ea7c4d3195f738711ca7aee12e70f54cc7a6fc4c54a6ff80e96e158e07",
+        "bytes": 60757
+      },
+      {
+        "name": "kma_aws_239_20220810_part1.csv",
+        "sha256": "bfb0e37abd6f177138ac7dc82ef7d1b2be9c6240eb729bd7f30f2de662c729a8",
+        "bytes": 116964
+      },
+      {
+        "name": "kma_aws_239_20220810_part2.csv",
+        "sha256": "63485566a6fef260d30b8e01dcfe0a823ef69baf1d336b6e9d0083664943e575",
+        "bytes": 26945
+      }
+    ],
+    "reason": "Data minimization: retain exact source hashes and only precipitation fields needed for reproducible scenario QA."
+  },
+  "rain_observation": {
+    "date_kst": "2022-08-10",
+    "aws_minute_rows": 1440,
+    "asos_hourly_rows": 24,
+    "minute_gaps": 0,
+    "aws_daily_precipitation_mm": 139.3,
+    "asos_daily_precipitation_mm": 139.3,
+    "aws_asos_abs_difference_mm": 0.0,
+    "first_positive_minute_kst": "2022-08-10T01:58:00+09:00",
+    "last_positive_minute_kst": "2022-08-10T21:31:00+09:00",
+    "max_1m_increment_mm": 2.4,
+    "max_15m_rolling_mm": 17.0,
+    "max_15m_rolling_timestamp_kst": "2022-08-10T20:09:00+09:00",
+    "max_60m_rolling_mm": 32.9,
+    "max_60m_rolling_timestamp_kst": "2022-08-10T20:46:00+09:00",
+    "max_asos_hourly_mm": 29.2,
+    "max_5m_interval_mm": 9.3,
+    "max_5m_interval_start_kst": "2022-08-10T20:00:00+09:00",
+    "max_15m_interval_mm": 14.4,
+    "max_15m_interval_start_kst": "2022-08-10T20:00:00+09:00",
+    "status": "OBSERVED_COMPLETE"
+  },
+  "dry_reference_observation": {
+    "date_kst": "2022-07-27",
+    "aws_minute_rows": 1440,
+    "minute_gaps": 0,
+    "aws_daily_precipitation_mm": 0.0,
+    "all_precipitation_fields_zero": true,
+    "status": "OBSERVED_DRY_DAY_CONFIRMED_CONDITIONAL_ON_ANALYSIS_START_AT_OR_AFTER_06:00_KST",
+    "limitation": "Analysis starts before 06:00 require 2022-07-26 data for the preceding-six-hour test."
+  },
+  "outputs": {
+    "scenario_intervals_gzip": "data/observed/weather_reference/processed/kma_weather_scenario_inputs.csv.gz",
+    "rain_hourly": "data/observed/weather_reference/observed/normalized/kma_asos_239_20220810_hourly.csv"
+  },
+  "usage": {
+    "allowed": "Observed weather time-series input and weather-source QA.",
+    "not_allowed_without_separate_review": "Traffic capacity, demand, signal, fairness, or safety parameters."
+  },
+  "overall_status": "KMA_OBSERVED_RAIN_COMPLETE_DRY_DAY_CONDITIONALLY_CONFIRMED"
+}

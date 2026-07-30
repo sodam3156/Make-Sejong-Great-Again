@@ -6,10 +6,14 @@ on:
       - agent/siwoo-weather-reference-selection-20260730
     paths:
       - scripts/fetch_weather_reference.py
+      - scripts/ingest_kma_weather_observations.py
+      - data/observed/weather_reference/**
       - .github/workflows/weather-reference-probe.yml
   pull_request:
     paths:
       - scripts/fetch_weather_reference.py
+      - scripts/ingest_kma_weather_observations.py
+      - data/observed/weather_reference/**
       - .github/workflows/weather-reference-probe.yml
   workflow_dispatch:
 
@@ -26,17 +30,11 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref || github.ref_name }}
 
-      - name: Fetch screening data
-        env:
-          KMA_API_AUTH_KEY: ${{ secrets.KMA_API_AUTH_KEY }}
+      - name: Fetch proxy screening data
         run: |
           python scripts/fetch_weather_reference.py --output-dir weather_reference_output
 
-      - name: Show generated files
-        run: |
-          find weather_reference_output -maxdepth 3 -type f -print -exec wc -c {} \;
-
-      - name: Upload weather reference artifact
+      - name: Upload proxy probe artifact
         uses: actions/upload-artifact@v4
         with:
           name: weather-reference-output
@@ -44,12 +42,31 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Confirm committed reference files exist
+      - name: Validate committed KMA observations
+        run: |
+          python scripts/ingest_kma_weather_observations.py
+          git diff --exit-code -- \
+            data/observed/weather_reference/observed/normalized/kma_asos_239_20220810_hourly.csv \
+            data/observed/weather_reference/observed/kma_observation_manifest.json \
+            data/observed/weather_reference/processed/kma_weather_scenario_inputs.csv.gz
+
+      - name: Upload normalized KMA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kma-station239-normalized
+          path: |
+            data/observed/weather_reference/observed/normalized/
+            data/observed/weather_reference/observed/kma_observation_manifest.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Confirm committed evidence files
         run: |
           test -f data/observed/weather_reference/weather_source_manifest.json
           test -f data/observed/weather_reference/processed/dry_candidate_screening.csv
+          test -f data/observed/weather_reference/processed/kma_weather_scenario_inputs.csv.gz
+          test -f data/observed/weather_reference/observed/kma_observation_manifest.json
+          test -f data/observed/weather_reference/observed/normalized/kma_aws_239_precipitation_compact.csv.gz
 
-# Generated outputs are intentionally not committed by GITHUB_TOKEN.
-# Automatic commits changed retrieval timestamps and could retrigger the PR
-# workflow repeatedly. Reviewed outputs already stored in the branch are updated
-# only by an explicit human-authored commit after artifact comparison.
+# Generated outputs are never auto-committed. Reviewed source and compact derived
+# files change only through an explicit author commit, avoiding recursive runs.

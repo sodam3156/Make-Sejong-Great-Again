@@ -1,5 +1,5 @@
 date_kst,weekday,same_weekday_as_rain,same_month_as_rain,distance_days,daily_precipitation_mm,preceding_6h_precipitation_mm,proxy_dry_pass,final_status
-2022-07-27,Wednesday,True,False,14,0.0,0.0,True,SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED
+2022-07-27,Wednesday,True,False,14,0.0,0.0,True,KMA_AWS_DRY_DAY_CONFIRMED_IF_ANALYSIS_START_GE_0600_KST
 2022-09-07,Wednesday,True,False,28,0.0,0.0,True,SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED
 2022-08-27,Saturday,False,True,17,0.0,0.0,True,SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED
 2022-08-28,Sunday,False,True,18,0.0,0.0,True,SCREEN_ONLY_KMA_CONFIRMATION_REQUIRED
