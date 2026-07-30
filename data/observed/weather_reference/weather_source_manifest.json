@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-07-30T14:36:04+00:00",
+  "generated_at_utc": "2026-07-30T14:36:55+00:00",
   "station": {
     "provider": "Korea Meteorological Administration",
     "station_id": 239,
@@ -17,7 +17,7 @@
     "usage_limit": "screening_and_sensitivity_only",
     "request_url": "https://archive-api.open-meteo.com/v1/archive?latitude=36.48522&longitude=127.24438&start_date=2022-07-12&end_date=2022-09-07&hourly=precipitation&daily=precipitation_sum&timezone=Asia%2FSeoul&models=era5",
     "raw_file": "weather_reference_output/proxy/open_meteo_era5_sejong_20220712_20220907.json",
-    "raw_sha256": "e2b65f6f398f34431207c132f11f11e119aad81dfc1b60a8d3dc2c5c06a0940a",
+    "raw_sha256": "f06e95990e9444ecea1f7c71b44a805a9bc35a23f1ccdf6b3f00b2c6f9f03098",
     "analysis_window": {
       "start_date": "2022-07-13",
       "end_date": "2022-09-07",
