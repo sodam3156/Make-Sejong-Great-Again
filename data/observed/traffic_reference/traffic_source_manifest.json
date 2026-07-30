@@ -1,0 +1,56 @@
+{
+  "allowed_use": [
+    "historical intersection scale comparison",
+    "direction-share range and sensitivity design",
+    "data-quality review"
+  ],
+  "critical_findings": {
+    "direction_mapping_status": "PENDING_SEMANTICS_CONFIRMATION",
+    "likely_data_errors": [
+      {
+        "canonical_intersection_name": "세종교차로",
+        "direction": "west",
+        "handling": "EXCLUDE_FROM_SINGLE_MONTH_CALIBRATION_UNTIL_VERIFIED",
+        "median_absolute_deviation": 20100.0,
+        "month": "2022-08",
+        "monthly_median_veh": 199927.0,
+        "robust_z": -6.68,
+        "severity": "LIKELY_DATA_ERROR",
+        "value_to_median_ratio": 0.0043,
+        "value_veh": 856
+      }
+    ],
+    "model_input_status": "NOT_READY",
+    "time_resolution": "MONTHLY_ONLY"
+  },
+  "prohibited_use": [
+    "2026 current traffic volume",
+    "day-specific or 5/15-minute demand",
+    "direct model-approach mapping before direction semantics are confirmed",
+    "single-month calibration using a flagged value without verification"
+  ],
+  "script_version": "traffic-preprocess-v1",
+  "source": {
+    "encoding_used": "cp949",
+    "path": "data/public/2026-07-29/세종특별자치시_교차로 방향별 교통 통행량_20230420.csv",
+    "period": [
+      "2022-05",
+      "2023-03"
+    ],
+    "sha256": "9ff14fd0f1324fd50b69d63f9855cc9f8cb53dd57b3e8be1a1bc1f0390eae519",
+    "source_rows": 143,
+    "target_rows": 33
+  },
+  "targets": {
+    "성금사거리": "성금교차로",
+    "세종교차로": "세종교차로",
+    "청사교차로": "청사교차로"
+  },
+  "validation": {
+    "direction_sum_failures": 0,
+    "likely_data_error_count": 1,
+    "month_coverage": "PASS",
+    "quality_flag_count": 4,
+    "target_row_count": 33
+  }
+}
