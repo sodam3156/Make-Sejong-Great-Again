@@ -10,6 +10,7 @@
 - KICT 차종 12분류 구성비
 - 제주 직진·좌·우·유턴 및 차종 7분류 adapter 요약
 - 인천 운영코드·시간대별 신호주기 parser 요약
+- UTIC 예약계획 응답 계약 parser, 온라인 프로브 상태 endpoint, 비민감 fixture 생성 도구
 
 ## 자료 역할
 
@@ -19,14 +20,42 @@
 | `regional_reference` | KICT 인접 조사점 | 인접도로 시간대 분포와 차종범위 | 교차로 회전교통량으로 사용 |
 | `external_fixture` | 제주 | movement/vehicle adapter와 시각화 검증 | 세종 교통량으로 대입 |
 | `external_fixture` | 인천 | 주기·TOD parser와 화면 검증 | 세종 실제 신호계획으로 표시 |
+| `external_live_fixture` | UTIC 대구 예약계획 | 응답 계약, 온라인 경로, 폴백 기능 검증 | 세종 신호계획·실시간 현시·모델 보정 |
 
 모든 참조 파일은 `runtime_activation=disabled`이며 `usable_for_calibration=false`입니다. 현재 `synthetic-v0`의 `BASE_DEMAND`, 용량, 저장공간, 공정성·안전·제어 임계값은 변경하지 않습니다.
+
+## 읽기 전용 API
+
+```bash
+uvicorn backend.reference_api:app --host 127.0.0.1 --port 8011
+```
+
+UTIC 응답 계약과 온라인 프로브 상태:
+
+```text
+GET /api/reference/utic-reservation-contract
+```
+
+이 endpoint는 자격증명이나 원시 응답 행을 반환하지 않습니다. 필요한 필드, 프로브 성공 여부, QA 규칙과 사용 한계만 제공합니다.
+
+## UTIC 응답을 안전하게 fixture로 만드는 방법
+
+PowerShell 전체 기록이나 요청 URL을 저장하지 말고 **JSON 응답 본문만** 파일로 저장합니다. 그다음:
+
+```bash
+python scripts/sanitize_utic_reservation_response.py \
+  /path/to/utic_response_body.json \
+  /path/to/utic_reservation_normalized.json
+```
+
+도구는 요청 URL·환경변수·인증 헤더 흔적이 포함된 입력을 거절하고, `backend/app/utic_signal.py`의 canonical 계약으로 정규화합니다. 생성물은 별도 QA와 SHA-256 기록 후에만 fixture 후보로 추가합니다.
 
 ## QA
 
 ```bash
 python scripts/validate_regional_reference_package.py
 python -m pytest backend/tests/test_regional_reference_package.py -q
+python -m pytest backend/tests/test_utic_signal_adapter.py -q
 ```
 
 주요 검사:
@@ -37,6 +66,8 @@ python -m pytest backend/tests/test_regional_reference_package.py -q
 - KICT 인접지점 거리 정렬과 차종비 정규화
 - 제주 이동·차종 스키마 수 및 교차로 집합 일치
 - 인천 신호주기 숫자 변환과 운영코드 0~5 보존
+- UTIC 비정상 응답·필수 필드 누락 거절
+- UTIC 예약제어 코드 `0`을 임의 해석하지 않고 QA 플래그로 보존
 - 외부자료의 런타임 활성화 및 세종 보정 승격 차단
 
 ## 새 자료가 도착했을 때
@@ -71,4 +102,4 @@ python scripts/register_regional_reference_update.py attach-slot \
 
 ## 원자료 보존
 
-대형 XLSX와 HWP는 Git에 복제하지 않습니다. `regional_reference_manifest.json`에 원본 파일명·바이트 크기·SHA-256을 기록해 수령자료와 파생자료의 연결을 보존합니다.
+대형 XLSX와 HWP는 Git에 복제하지 않습니다. `regional_reference_manifest.json`에 원본 파일명·바이트 크기·SHA-256을 기록해 수령자료와 파생자료의 연결을 보존합니다. 외부 API 응답은 자격증명과 요청 로그를 제외한 JSON 본문만 로컬에 보존하고, sanitizer를 거친 파생자료만 fixture 후보로 취급합니다.
