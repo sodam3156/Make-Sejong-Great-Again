@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import pytest
+from fastapi.testclient import TestClient
 
 from backend.app.utic_signal import normalize_reservation_response
+from backend.reference_api import app
 
 
 def sample_payload() -> list[dict[str, str]]:
@@ -81,3 +83,18 @@ def test_rejects_service_error_and_incomplete_records():
     del incomplete[1]["INT_NO"]
     with pytest.raises(ValueError, match="missing fields"):
         normalize_reservation_response(incomplete)
+
+
+def test_reference_api_exposes_read_only_utic_contract():
+    client = TestClient(app)
+    response = client.get("/api/reference/utic-reservation-contract")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["adapter"] == "utic_reservation_plan_v1"
+    assert body["onlineProbe"]["status"] == "success"
+    assert body["onlineProbe"]["resultCode"] == "0"
+    assert body["onlineProbe"]["recordsCommitted"] is False
+    assert body["usableForCalibration"] is False
+    assert body["runtimeActivation"] == "disabled"
+    assert client.post("/api/reference/utic-reservation-contract").status_code == 405
