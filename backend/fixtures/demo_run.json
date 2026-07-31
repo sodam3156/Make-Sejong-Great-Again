@@ -139,11 +139,11 @@
         "risks": [
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "성금교차로 서측 진입로 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과"
+            "detail": "성금교차로 서측 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과"
           },
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "청사교차로 남측 진입로 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과"
+            "detail": "청사교차로 남측 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과"
           }
         ],
         "score": 50.83
@@ -328,7 +328,7 @@
       "score": 0.0
     },
     {
-      "candidate_hash": "42cc78249382a68b179f825a3db7880ce7da2a31513a9eed515a705c27f55cbb",
+      "candidate_hash": "3ce2b7b03b44b96e02cd99698553da9863f2af4f42a5bdbab8e72bc08adc857b",
       "delta_vs_no_action": {
         "spillback_time_pct": -62.4,
         "total_travel_time_pct": -41.6,
@@ -361,13 +361,13 @@
         "violations": [
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "성금교차로 서측 진입로 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과",
+            "detail": "성금교차로 서측 진입로 P95 지체가 기준 대비 55.4% 악화. 허용한도 15.0% 초과",
             "observed_pct": 55.4,
             "threshold_pct": 15.0
           },
           {
             "code": "FAIRNESS_P95_EXCEEDED",
-            "detail": "청사교차로 남측 진입로 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과",
+            "detail": "청사교차로 남측 진입로 P95 지체가 기준 대비 938.5% 악화. 허용한도 15.0% 초과",
             "observed_pct": 938.5,
             "threshold_pct": 15.0
           }
@@ -471,7 +471,7 @@
   "reproducibility": {
     "candidate_hashes": {
       "corridor_gating": "dad35cd61630783f4ea256d31759ea58a0207cf981e10bacaab9c82b75a98ad3",
-      "fixed_metering": "42cc78249382a68b179f825a3db7880ce7da2a31513a9eed515a705c27f55cbb",
+      "fixed_metering": "3ce2b7b03b44b96e02cd99698553da9863f2af4f42a5bdbab8e72bc08adc857b",
       "no_action": "60ed4286b4ee6490c1b08032ee944fd9e77ed07ccf0ff672b92b24b210b89d06"
     },
     "freeze_id": "freeze-20260729-202509-kst",
@@ -491,12 +491,12 @@
     "network_version": "sejong-nodelink-20260716-v1",
     "parameter_set_version": "rainflow-provisional-v2",
     "policy_version": "rainflow-policy-v1",
-    "result_checksum": "c9088907640696c315685619ce18ae1529ceb8bc1e993bb36c0f080b7ce4ed89",
+    "result_checksum": "4d2ffedf11b004dfe05c9da351bbf1b195f3c3d9e53a2941e7200eb64cac6d21",
     "rule_version": "rainflow-guard-v2",
     "scoring_version": "rainflow-rule-v1",
     "simulator_version": "rainflow-queue-v2",
-    "source_live_run_id": "live-rain_spillback_a-s42-3e5be2d480",
-    "source_tree_checksum": "65d5d7c17defd3a95b0a3c4ab462ae62ab198ca17d1d49dbe282180f65ae129b"
+    "source_live_run_id": "live-rain_spillback_a-s42-2b20402076",
+    "source_tree_checksum": "9e38505f558a844df25f409571ea82c61424525f32811844d3826f5b94a551d1"
   },
   "result_source": "fixture",
   "run_id": "fixture-qa-v2-001",

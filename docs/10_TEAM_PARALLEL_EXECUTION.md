@@ -34,7 +34,7 @@
 |---|---|---|---|
 | 입력과 출력 계약 | 시나리오 입력, 타임라인, KPI, 정책 후보, 안전 검증, 승인 결과 스키마를 확정하고 예제 JSON 제공 | 프론트가 백엔드 없이 예제만으로 전체 흐름 완주 | contracts/rainflow.schema.json, backend/fixtures/demo_run.json |
 | FastAPI 골격 | health, 시뮬레이션 실행, 결과 조회, 운영자 승인 엔드포인트 구현 | 자동 API 문서와 계약 테스트 통과 | backend/app/main.py, backend/app/api |
-| 교통 모델 | 연속 회전교차로 3개와 우회로 1개에서 건조 상태와 우천 spillback 재현 | 같은 seed에서 결과 재현, 우천 시 상류 역류 발생 | backend/app/simulation |
+| 교통 모델 | 절재로 회랑 교차로 3개(성금·청사·세종)와 대체 경로 1개에서 건조 상태와 우천 spillback 재현 | 같은 seed에서 결과 재현, 우천 시 상류 역류 발생 | backend/app/simulation |
 | 대응 정책 | 무대응, 고정 미터링, 연속 게이팅을 같은 조건에서 비교 | 세 후보의 KPI가 동일 구조로 반환 | backend/app/policies |
 | 안전 가드 | 시우가 정의한 최악 진입로 지체와 공정성 기준으로 위험 후보 차단 | 탈락 사유가 코드와 응답에 남고 승인 API가 차단 후보를 거부 | backend/app/safety |
 | AI 설계 | 수치와 규칙을 근거로 후보를 순위화하고 설명 생성 | 외부 LLM이 없어도 규칙 기반 설명으로 같은 응답 구조 유지 | backend/app/decision |
