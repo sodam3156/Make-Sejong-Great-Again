@@ -1,0 +1,64 @@
+{
+  "dataset_id": "sejong-historical-signal-plan-2023-v1",
+  "source": {
+    "filename": "세종특별자치시_교차로 신호 표준데이터_기타_20230510.csv",
+    "sha256": "1e6e80391c0d5523cd8909b4028ba6061067b2af6690ccf1ee5f9aa2fe87ac10",
+    "official_reference_date": "2023-05-10",
+    "source_class": "official_historical_signal_standard",
+    "official_url": "https://www.data.go.kr/data/15113728/fileData.do"
+  },
+  "runtime_activation": "disabled",
+  "usable_for_calibration": false,
+  "rows": [
+    {
+      "intersection": "성금교차로",
+      "installed_year_month": "2012-01",
+      "phase_method": "직좌동시/좌회전/양직",
+      "lighting_sequence": "녹색/녹색화살표/황색/적색+녹색/녹색화살표/황색/적색+녹색화살표/황색/적색+녹색/황색/적색",
+      "timing_vector_sec": [45, 45, 25, 45],
+      "nominal_cycle_candidate_sec": 160,
+      "control_method": "지역연동",
+      "timing_decision_method": "고정시간제어"
+    },
+    {
+      "intersection": "세종교차로",
+      "installed_year_month": "2014-06",
+      "phase_method": "직좌동시",
+      "lighting_sequence": "녹색/녹색화살표/황색/적색+녹색/녹색화살표/황색/적색+녹색/녹색화살표/황색/적색+녹색/녹색화살표/황색/적색",
+      "timing_vector_sec": [45, 35, 35, 45],
+      "nominal_cycle_candidate_sec": 160,
+      "control_method": "지역연동",
+      "timing_decision_method": "고정시간제어"
+    },
+    {
+      "intersection": "청사교차로",
+      "installed_year_month": "2012-07",
+      "phase_method": "양직/좌회전/오버랩",
+      "lighting_sequence": "녹색/황색/적색+녹색/녹색화살표/황색/적색+녹색/황색/적색+녹색화살표/황색/적색+녹색/녹색화살표/황색/적색",
+      "timing_vector_sec": [46, 20, 31, 23, 20],
+      "nominal_cycle_candidate_sec": 140,
+      "control_method": "지역연동",
+      "timing_decision_method": "고정시간제어"
+    }
+  ],
+  "interpretation": {
+    "timing_vector": "official published lighting-time vector",
+    "nominal_cycle_candidate": "arithmetic sum only; not verified as a current TOD cycle",
+    "effective_green_available": false,
+    "yellow_all_red_decomposition_available": false,
+    "offset_available": false,
+    "tod_plan_available": false,
+    "current_2026_operation_claim": false
+  },
+  "allowed_use": [
+    "historical fixed-time scenario after movement and phase mapping review",
+    "signal parser and user-interface display"
+  ],
+  "forbidden_use": [
+    "2026 current operation",
+    "effective-green calibration",
+    "field replay",
+    "automatic runtime activation"
+  ],
+  "decision": "HISTORICAL_SIGNAL_AVAILABLE_CURRENT_OPERATION_BLOCKED"
+}
