@@ -10,17 +10,19 @@ from __future__ import annotations
 
 from fastapi import FastAPI
 
-from backend.app.reference_data import router
+from backend.app.reference_data import router as reference_router
+from backend.app.utic_reference import router as utic_router
 
 app = FastAPI(
     title="RainFlow Regional Reference API",
-    version="0.1.0",
+    version="0.2.0",
     description=(
         "Read-only regional reference and external fixture data. "
         "Not a Sejong field replay or calibration API."
     ),
 )
-app.include_router(router)
+app.include_router(reference_router)
+app.include_router(utic_router)
 
 
 @app.get("/api/reference/health", summary="참조자료 API 준비 상태")
