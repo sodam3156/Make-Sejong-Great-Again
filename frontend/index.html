@@ -5,179 +5,298 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RainFlow Sejong — 3분 데모</title>
 <style>
+  /* design-tokens 반영 규격 */
   :root {
-    --bg: #0a0e14;
-    --panel: #10151f;
-    --panel-2: #151b28;
-    --border: #22293a;
-    --text: #e6ebf5;
-    --muted: #8a93a8;
-    --accent: #4fd1c5;
-    --green: #34d399;
-    --yellow: #fbbf24;
-    --red: #f87171;
-    --blue: #60a5fa;
+    --status-normal: #71A7FF;
+    --status-rain-warning: #7088AD;
+    --status-spillback: #F0545C;
+    --status-safe: #36B386;
+    --status-rejected: #F0545C;
+    --status-approval: #3783FC;
+    --status-recovery: #36B386;
+    --status-comm-delay: #FFA75A;
+    --status-sensor-missing: #F0545C;
+    --status-data-fixture: #3783FC;
+    --status-policy-selected: #3783FC;
+    --status-policy-recommended: #CD91FF;
+    --status-kpi-nodata: #7088AD;
+
+    --surface-canvas: #f8fafc;
+    --surface-panel: #ffffff;
+    --surface-muted: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-default: #cbd5e1;
   }
+
   * { box-sizing: border-box; }
-  html, body {
+  
+  body {
     margin: 0; padding: 0;
-    background: var(--bg);
-    color: var(--text);
+    background: #e2e8f0;
+    color: var(--text-primary);
     font-family: -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
-    font-size: 15px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
   }
-  .app { max-width: 1200px; margin: 0 auto; padding: 16px 20px 60px; }
+
+  /* 16:9 메인 컨테이너 */
+  .app {
+    width: 96vw;
+    max-width: 1800px;
+    height: 94vh;
+    max-height: 1000px;
+    aspect-ratio: 16 / 9;
+    background: var(--surface-canvas);
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.15);
+    overflow: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
   header.top {
     display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 10px;
-    padding-bottom: 12px; margin-bottom: 16px;
-    border-bottom: 1px solid var(--border);
+    flex-wrap: nowrap; gap: 10px;
+    padding-bottom: 8px; margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-default);
+    flex-shrink: 0;
   }
-  header.top h1 { font-size: 18px; margin: 0; letter-spacing: 0.3px; }
-  header.top .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  header.top h1 { font-size: 18px; margin: 0; letter-spacing: 0.3px; color: var(--text-primary); }
+  header.top .sub { color: var(--text-secondary); font-size: 11px; margin-top: 2px; }
 
-  .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badges { display: flex; gap: 6px; }
   .badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 10px; border-radius: 999px;
-    font-size: 12px; font-weight: 600;
-    border: 1px solid var(--border);
-    background: var(--panel-2);
-    color: var(--muted);
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px; border-radius: 999px;
+    font-size: 11px; font-weight: 600;
+    border: 1px solid var(--border-default);
+    background: var(--surface-panel);
+    color: var(--text-secondary);
   }
-  .badge.fixture { color: var(--yellow); border-color: rgba(251,191,36,0.4); }
-  .badge.live { color: var(--blue); border-color: rgba(96,165,250,0.4); }
-  .badge.provisional { color: var(--red); border-color: rgba(248,113,113,0.4); }
+  .badge.fixture { color: var(--status-data-fixture); border-color: var(--status-data-fixture); }
+  .badge.provisional { color: var(--status-rejected); border-color: var(--status-rejected); }
 
   .scenario-select {
     display: flex; align-items: center; gap: 6px;
-    font-size: 12px; color: var(--muted);
+    font-size: 11px; color: var(--text-secondary);
   }
   .scenario-select select {
-    background: var(--panel-2); color: var(--text);
-    border: 1px solid var(--border); border-radius: 6px;
-    padding: 4px 8px; font-size: 12px;
+    background: var(--surface-panel); color: var(--text-primary);
+    border: 1px solid var(--border-default); border-radius: 6px;
+    padding: 4px 8px; font-size: 11px;
   }
-  .scenario-select select:disabled { opacity: 0.5; cursor: not-allowed; }
+  
   .scenario-notice {
-    font-size: 12px; color: var(--yellow); margin-top: 6px;
-    display: none;
+    font-size: 11px; color: var(--status-comm-delay); margin-bottom: 6px;
+    display: none; align-items: center; gap: 6px; flex-shrink: 0;
   }
-  .scenario-notice.show { display: block; }
+  .scenario-notice.show { display: flex; }
 
+  /* 제어 바 */
   .controls {
-    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 10px; padding: 10px 14px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface-panel); border: 1px solid var(--border-default);
+    border-radius: 14px; padding: 8px 12px; margin-bottom: 10px;
+    flex-shrink: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.02);
   }
   .controls button {
-    background: var(--panel-2); color: var(--text);
-    border: 1px solid var(--border); border-radius: 6px;
-    padding: 6px 14px; cursor: pointer; font-size: 13px;
+    background: var(--surface-muted); color: var(--text-primary);
+    border: 1px solid var(--border-default); border-radius: 6px;
+    padding: 4px 12px; cursor: pointer; font-size: 12px; font-weight: 600;
+    transition: all 0.2s;
   }
-  .controls button:hover { border-color: var(--accent); color: var(--accent); }
-  .controls button:disabled { opacity: 0.4; cursor: not-allowed; }
-  .step-dots { display: flex; gap: 6px; margin-left: 4px; flex-wrap: wrap; }
+  .controls button:hover { border-color: var(--status-approval); color: var(--status-approval); background: #f0f7ff; }
+  
+  .step-dots { display: flex; gap: 5px; margin-left: 6px; }
   .step-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: var(--border); cursor: pointer;
-    border: 1px solid transparent;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border-default); cursor: pointer;
+    transition: background 0.2s;
   }
-  .step-dot.active { background: var(--accent); }
-  .clock { margin-left: auto; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
-  .state-label {
-    font-weight: 700; color: var(--accent); font-size: 14px;
+  .step-dot.active { background: var(--status-approval); box-shadow: 0 0 0 2px rgba(55,131,252,0.2); }
+  
+  .clock { margin-left: auto; color: var(--text-secondary); font-size: 12px; font-variant-numeric: tabular-nums; font-weight: 500; }
+  .state-label { font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; margin-left: 8px; }
+
+  /* 2단 메인 코어 */
+  .dashboard-core {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 14px;
+    flex: 1;
+    min-height: 0;
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 16px;
+  /* 좌측 영역 */
+  .col-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    overflow: hidden; /* 좌측 스크롤 방지 */
   }
-  @media (max-width: 900px) {
-    .grid { grid-template-columns: 1fr; }
+
+  /* 우측 영역 (스크롤 허용) */
+  .col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    padding-right: 4px;
   }
 
   .panel {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 16px;
+    background: var(--surface-panel);
+    border: 1px solid var(--border-default);
+    border-radius: 14px;
+    padding: 12px 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.015);
+    flex-shrink: 0;
   }
+
   .panel h2 {
-    font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px;
-    color: var(--muted); margin: 0 0 10px;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--text-secondary); margin: 0 0 8px;
   }
 
-  .corridor-note { color: var(--muted); font-size: 13px; margin-top: 8px; min-height: 34px; }
+  /* SVG 유연한 박스 설정 (말풍선 텍스트가 길어져도 스크롤 안생기게 축소) */
+  .panel-corridor {
+    display: flex;
+    flex-direction: column;
+    flex: 1; 
+    min-height: 0; 
+  }
 
+  .svg-wrap {
+    width: 100%;
+    flex: 1; /* 텍스트 크기에 맞춰 SVG 영역 높이가 자동으로 조절됨 */
+    min-height: 0;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid var(--border-default);
+    padding: 4px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* 텍스트 잘림 현상 해결 구역 */
+  .corridor-note {
+    color: var(--text-secondary);
+    font-size: 11px;
+    margin-top: 6px;
+    line-height: 1.4;
+    word-break: keep-all;
+  }
+
+  /* KPI 카드 영역 */
   .kpi-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
   }
-  @media (max-width: 700px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+
   .kpi-card {
-    background: var(--panel-2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 10px 12px;
+    background: var(--surface-muted);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
-  .kpi-card .label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-  .kpi-card .value { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .kpi-card .unit { font-size: 11px; color: var(--muted); margin-left: 3px; }
 
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
-  th { color: var(--muted); font-weight: 600; font-size: 12px; }
-  tr.rejected { background: rgba(248,113,113,0.08); }
-  tr.rejected td:first-child { border-left: 3px solid var(--red); }
-  tr.chosen td:first-child { border-left: 3px solid var(--green); }
-  .pct-good { color: var(--green); font-weight: 600; }
-  .pct-bad { color: var(--red); font-weight: 600; }
-
-  .guard-card {
-    background: var(--panel-2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;
+  .kpi-card .label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  .guard-card.fail { border-color: rgba(248,113,113,0.5); background: rgba(248,113,113,0.06); }
-  .guard-card .head { display: flex; align-items: center; justify-content: space-between; }
-  .guard-card .head .name { font-weight: 700; }
-  .guard-pass { color: var(--green); font-size: 12px; font-weight: 700; }
-  .guard-fail { color: var(--red); font-size: 12px; font-weight: 700; }
-  .violation { margin-top: 6px; font-size: 12px; color: var(--muted); }
-  .violation code { color: var(--red); background: rgba(248,113,113,0.1); padding: 1px 5px; border-radius: 4px; }
 
-  .approval-box {
-    background: var(--panel-2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 14px;
+  .kpi-card .value {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
   }
-  .approval-box dl { display: grid; grid-template-columns: 100px 1fr; gap: 6px 10px; font-size: 13px; margin: 0 0 12px; }
-  .approval-box dt { color: var(--muted); }
-  .approval-actions { display: flex; gap: 10px; }
+  
+  .unit { font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-left: 2px; }
+
+  /* 우측 패널 요소 규격 */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { text-align: left; padding: 6px 6px; border-bottom: 1px solid var(--border-default); }
+  th { color: var(--text-secondary); font-weight: 600; font-size: 11px; background: #f8fafc; }
+  tr.rejected { background: #fff5f5; }
+  tr.rejected td:first-child { border-left: 3px solid var(--status-rejected); }
+  tr.chosen { background: #f0f7ff; }
+  tr.chosen td:first-child { border-left: 3px solid var(--status-approval); }
+  .pct-good { color: var(--status-safe); font-weight: 700; }
+  .pct-bad { color: var(--status-rejected); font-weight: 700; }
+
+  .safety-card {
+    display: flex; flex-direction: column; padding: 8px 12px;
+    border-radius: 8px;
+    background-color: var(--surface-panel);
+    border: 1px solid var(--border-default);
+    margin-bottom: 8px;
+  }
+  .safety-card.pass { background-color: #f0fdf4; border-color: var(--status-safe); }
+  .safety-card.fail { background-color: #fef2f2; border-color: var(--status-rejected); }
+  
+  .safety-header { display: flex; justify-content: space-between; align-items: center; }
+  .safety-title { font-weight: 700; font-size: 12px; color: var(--text-primary); }
+  .safety-status-text { font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+  .safety-violation-item {
+    margin-top: 4px; font-size: 11px; color: var(--text-secondary);
+    background-color: rgba(240, 84, 92, 0.08); border-radius: 4px; padding: 4px 8px;
+  }
+
+  .approval-box { background: var(--surface-muted); border: 1px solid var(--border-default); border-radius: 8px; padding: 10px; }
+  .approval-box dl { display: grid; grid-template-columns: 80px 1fr; gap: 4px 8px; font-size: 12px; margin: 0 0 10px; }
+  .approval-box dt { color: var(--text-secondary); font-weight: 600; }
+  .approval-actions { display: flex; gap: 8px; }
   .btn-approve, .btn-reject {
-    padding: 8px 18px; border-radius: 6px; border: 1px solid var(--border);
-    font-weight: 700; cursor: pointer; font-size: 13px;
+    padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-default);
+    font-weight: 700; cursor: pointer; font-size: 12px; flex: 1; transition: all 0.2s;
   }
-  .btn-approve { background: rgba(52,211,153,0.15); color: var(--green); border-color: rgba(52,211,153,0.4); }
-  .btn-reject { background: rgba(248,113,113,0.15); color: var(--red); border-color: rgba(248,113,113,0.4); }
-  .btn-approve:hover, .btn-reject:hover { filter: brightness(1.2); }
-  .decision-note { margin-top: 10px; font-size: 13px; color: var(--accent); }
+  .btn-approve { background: #d5f5ce; color: #166534; border-color: var(--status-safe); }
+  .btn-reject { background: #ffd4d7; color: #991b1b; border-color: var(--status-rejected); }
+  .decision-note { margin-top: 8px; font-size: 11px; color: var(--status-approval); font-weight: 500; }
 
-  .recovery-side { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .recovery-col { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
-  .recovery-col h3 { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
-  .recovery-col .row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
-  .improvement-row { margin-top: 10px; font-size: 13px; }
-  .improvement-row span.pct { font-weight: 700; }
+  .recovery-side { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .recovery-col { background: var(--surface-muted); border: 1px solid var(--border-default); border-radius: 8px; padding: 10px; }
+  .recovery-col h3 { margin: 0 0 6px; font-size: 12px; color: var(--text-primary); border-bottom: 1px solid var(--border-default); padding-bottom: 4px; }
+  .recovery-col .row { display: flex; justify-content: space-between; font-size: 11px; padding: 4px 0; border-bottom: 1px dashed var(--border-default); }
+  .recovery-col .row:last-child { border-bottom: none; }
+
+  .improvement-row { margin-top: 10px; font-size: 12px; padding: 8px; background: #f0f7ff; border-radius: 6px; border: 1px solid #bae6fd; color: #0369a1; text-align: center; }
 
   footer.note {
-    margin-top: 24px; color: var(--muted); font-size: 11px; text-align: center;
-    border-top: 1px solid var(--border); padding-top: 12px;
+    margin-top: 8px; color: var(--text-secondary); font-size: 11px; text-align: center;
+    border-top: 1px solid var(--border-default); padding-top: 6px; flex-shrink: 0;
   }
 
-  .svg-wrap { width: 100%; overflow-x: auto; }
-  .link-label { fill: var(--muted); font-size: 11px; }
-  .ra-label { fill: var(--text); font-size: 13px; font-weight: 700; }
-  .link-line { stroke-width: 8; stroke-linecap: round; transition: stroke 0.4s ease; }
+  .link-label { fill: var(--text-secondary); font-size: 11px; font-weight: 500; }
+  .ra-label { fill: var(--text-primary); font-size: 13px; font-weight: 700; }
+  .link-line { stroke-width: 6; stroke-linecap: round; transition: stroke 0.4s ease; }
   .link-line.blink { animation: blink-anim 0.9s infinite; }
   @keyframes blink-anim { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 </style>
@@ -191,8 +310,14 @@
       <div class="sub" id="scenario-sub"></div>
     </div>
     <div class="badges">
-      <span class="badge fixture" id="badge-source">result_source: fixture</span>
-      <span class="badge provisional">공간망: 실제 세종 · 흐름: provisional 합성</span>
+      <span class="badge fixture" id="badge-source">
+        <img src="./public/assets/icons/status-data-fixture.svg" width="18" height="18" alt="fixture">
+        result_source: fixture
+      </span>
+      <span class="badge provisional">
+        <img src="./public/assets/icons/status-rejected.svg" width="18" height="18" alt="provisional">
+        공간망: 실제 세종 · 흐름: provisional 합성
+      </span>
     </div>
     <div class="scenario-select">
       <label for="scenario-picker">시나리오</label>
@@ -203,6 +328,7 @@
       </select>
     </div>
   </header>
+  
   <div class="scenario-notice" id="scenario-notice"></div>
 
   <div class="controls">
@@ -214,43 +340,49 @@
     <span class="clock" id="clock"></span>
   </div>
 
-  <div class="panel">
-    <h2>세종 표준노드링크 참조 · 성금교차로 – 청사교차로 – 세종교차로</h2>
-    <div class="svg-wrap">
-      <svg id="corridor-svg" viewBox="0 0 760 220" width="100%" height="220" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div class="dashboard-core">
+    
+    <!-- 좌측 영역 -->
+    <div class="col-left">
+      <div class="panel panel-corridor">
+        <h2>세종 표준노드링크 참조 · 성금교차로 – 청사교차로 – 세종교차로</h2>
+        <div class="svg-wrap">
+          <!-- height 100%로 변경하여 flex 컨테이너 내부에서 자동 스케일링되도록 함 -->
+          <svg id="corridor-svg" viewBox="0 0 760 170" width="100%" height="100%" style="max-height:160px;" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+        <!-- 말줄임(ellipsis) 없이 다 보이도록 CSS 수정 적용 -->
+        <div class="corridor-note" id="corridor-note"></div>
+      </div>
+
+      <div class="panel">
+        <h2>핵심 KPI (현재 run 계산값)</h2>
+        <div class="kpi-grid" id="kpi-grid"></div>
+      </div>
     </div>
-    <div class="corridor-note" id="corridor-note"></div>
-  </div>
 
-  <div class="panel">
-    <h2>핵심 KPI (현재 run 계산값)</h2>
-    <div class="kpi-grid" id="kpi-grid"></div>
-  </div>
-
-  <div class="grid">
-    <div>
+    <!-- 우측 영역 -->
+    <div class="col-right">
       <div class="panel" id="panel-policy" style="display:none;">
-        <h2>대응안 비교 (무대응 대비)</h2>
+        <h2><img src="./public/assets/icons/status-policy-selected.svg" width="18" height="18" alt="대응안 비교"> 대응안 비교 (무대응 대비)</h2>
         <table id="policy-table"></table>
       </div>
 
       <div class="panel" id="panel-safety" style="display:none;">
-        <h2>안전 가드 판정</h2>
+        <h2><img src="./public/assets/icons/status-safe.svg" width="18" height="18" alt="안전 가드"> 안전 가드 판정</h2>
         <div id="safety-cards"></div>
       </div>
-    </div>
 
-    <div>
       <div class="panel" id="panel-approval" style="display:none;">
-        <h2>운영자 승인</h2>
+        <h2><img src="./public/assets/icons/status-approval.svg" width="18" height="18" alt="승인"> 운영자 승인</h2>
         <div class="approval-box" id="approval-box"></div>
       </div>
 
       <div class="panel" id="panel-recovery" style="display:none;">
-        <h2>회복 비교 (무대응 vs 적용)</h2>
+        <h2><img src="./public/assets/icons/status-recovery.svg" width="18" height="18" alt="회복"> 회복 비교 (무대응 vs 적용)</h2>
         <div id="recovery-content"></div>
       </div>
     </div>
+
   </div>
 
   <footer class="note">
@@ -266,7 +398,7 @@
 (function () {
   var FIXTURE = window.DEMO_RUN;
   var DATA = null;
-  var MODE = 'fixture'; // 'fixture' | 'live'
+  var MODE = 'fixture';
   var CURRENT_SCENARIO = 'rain_spillback_a';
   var FIXTURE_TIMEOUT_MS = 5000;
 
@@ -277,7 +409,7 @@
   var idx = 0;
   var playing = true;
   var timer = null;
-  var approvalDecision = null; // 'approved' | 'rejected' | null
+  var approvalDecision = null;
 
   var STATE_LABELS = {
     normal: '정상 운영',
@@ -289,7 +421,26 @@
     recovery_compare: '회복 비교'
   };
 
-  // ---- step dots ----
+  var STATE_ICONS = {
+    normal: 'status-normal.svg',
+    rain_warning: 'status-rain-warning.svg',
+    spillback: 'status-spillback.svg',
+    policy_compare: 'status-policy-selected.svg',
+    safety_review: 'status-safe.svg',
+    operator_approval: 'status-approval.svg',
+    recovery_compare: 'status-recovery.svg'
+  };
+
+  var STATE_COLORS = {
+    normal: 'var(--status-normal)',
+    rain_warning: 'var(--status-rain-warning)',
+    spillback: 'var(--status-spillback)',
+    policy_compare: 'var(--status-policy-selected)',
+    safety_review: 'var(--status-safe)',
+    operator_approval: 'var(--status-approval)',
+    recovery_compare: 'var(--status-recovery)'
+  };
+
   var dotsWrap = document.getElementById('step-dots');
 
   function rebuildDots() {
@@ -311,22 +462,21 @@
     dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
   }
 
-  // ---- corridor SVG ----
   var RA_POS = {
-    '성금교차로': { x: 120, y: 110 },
-    '청사교차로': { x: 380, y: 110 },
-    '세종교차로': { x: 640, y: 110 }
+    '성금교차로': { x: 120, y: 85 },
+    '청사교차로': { x: 380, y: 85 },
+    '세종교차로': { x: 640, y: 85 }
   };
   var LINK_DEF = [
     { link_id: 'seonggeum-cheongsa-jeoljae', from: '성금교차로', to: '청사교차로', offsetY: 0, label: '절재로 · 6개 실제 링크' },
     { link_id: 'cheongsa-sejong-jeoljae', from: '청사교차로', to: '세종교차로', offsetY: 0, label: '절재로 · 10개 실제 링크' },
-    { link_id: 'seonggeum-sejong-alternative', from: '성금교차로', to: '세종교차로', offsetY: -70, label: '절재로 대체 경로 · 16개 실제 링크' }
+    { link_id: 'seonggeum-sejong-alternative', from: '성금교차로', to: '세종교차로', offsetY: -50, label: '절재로 대체 경로 · 16개 실제 링크' }
   ];
 
   function occColor(ratio) {
-    if (ratio >= 0.95) return 'var(--red)';
-    if (ratio >= 0.6) return 'var(--yellow)';
-    return 'var(--green)';
+    if (ratio >= 0.95) return 'var(--status-rejected)';
+    if (ratio >= 0.6) return 'var(--status-comm-delay)';
+    return 'var(--status-safe)';
   }
 
   function renderCorridorSVG() {
@@ -335,24 +485,22 @@
 
     LINK_DEF.forEach(function (l) {
       var a = RA_POS[l.from], b = RA_POS[l.to];
-      var midY = 110 + l.offsetY;
+      var midY = 85 + l.offsetY;
       var pathId = 'path-' + l.link_id;
-      var d;
-      if (l.offsetY === 0) {
-        d = 'M ' + a.x + ' ' + a.y + ' L ' + b.x + ' ' + b.y;
-      } else {
-        d = 'M ' + a.x + ' ' + a.y + ' Q ' + ((a.x + b.x) / 2) + ' ' + midY + ' ' + b.x + ' ' + b.y;
-      }
-      parts.push('<path id="' + pathId + '" d="' + d + '" fill="none" class="link-line" stroke="var(--border)" />');
+      var d = (l.offsetY === 0)
+        ? 'M ' + a.x + ' ' + a.y + ' L ' + b.x + ' ' + b.y
+        : 'M ' + a.x + ' ' + a.y + ' Q ' + ((a.x + b.x) / 2) + ' ' + midY + ' ' + b.x + ' ' + b.y;
+      
+      parts.push('<path id="' + pathId + '" d="' + d + '" fill="none" class="link-line" stroke="var(--border-default)" />');
       var labelX = (a.x + b.x) / 2;
-      var labelY = midY - 12;
+      var labelY = midY - 10;
       parts.push('<text x="' + labelX + '" y="' + labelY + '" class="link-label" text-anchor="middle">' + l.label + '</text>');
     });
 
     Object.keys(RA_POS).forEach(function (junction) {
       var p = RA_POS[junction];
-      parts.push('<circle cx="' + p.x + '" cy="' + p.y + '" r="26" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2" />');
-      parts.push('<text x="' + p.x + '" y="' + (p.y + 5) + '" class="ra-label" text-anchor="middle">' + junction + '</text>');
+      parts.push('<circle cx="' + p.x + '" cy="' + p.y + '" r="22" fill="var(--surface-muted)" stroke="var(--status-safe)" stroke-width="2" />');
+      parts.push('<text x="' + p.x + '" y="' + (p.y + 4) + '" class="ra-label" text-anchor="middle">' + junction + '</text>');
     });
 
     svg.innerHTML = parts.join('\n');
@@ -380,7 +528,6 @@
     noteEl.textContent = (step.note || '') + '  (' + lines + ')';
   }
 
-  // ---- KPI cards ----
   var KPI_DEFS = [
     { key: 'spillback_time_sec', label: '회랑 Spillback wall-clock', unit: '초' },
     { key: 'recovery_time_sec', label: '회복(60초 연속)', unit: '초' },
@@ -390,7 +537,7 @@
 
   function kpiValue(kpi, def) {
     if (def.key === 'recovery_time_sec' && kpi.recovery_observed === false) {
-      return '관측창 15분 내 미회복';
+      return '<span style="font-size:11px; font-weight:600; color:var(--text-secondary);">미회복</span>';
     }
     return kpi[def.key] + '<span class="unit">' + def.unit + '</span>';
   }
@@ -403,7 +550,6 @@
     }).join('');
   }
 
-  // ---- policy compare table ----
   function pctSpan(v) {
     if (v == null) return '<span class="pct-neutral">-</span>';
     var cls = v < 0 ? 'pct-good' : (v > 0 ? 'pct-bad' : '');
@@ -414,52 +560,69 @@
   function renderPolicyTable() {
     var policies = DATA.policies;
     var rows = policies.map(function (p) {
-      var rowClass = p.guard.passed === false ? 'rejected' : (p.policy_id === DATA.approval.policy_id ? 'chosen' : '');
+      var isFail = p.guard.passed === false;
+      var isChosen = p.policy_id === DATA.approval.policy_id;
+      var rowClass = isFail ? 'rejected' : (isChosen ? 'chosen' : '');
       var d = p.delta_vs_no_action || {};
+      
+      var badgeIcon = '';
+      if (isFail) {
+        badgeIcon = '<img src="./public/assets/icons/status-rejected.svg" width="18" height="18" alt="탈락">';
+      } else if (isChosen) {
+        badgeIcon = '<img src="./public/assets/icons/status-policy-selected.svg" width="18" height="18" alt="선택">';
+      }
+
       return '<tr class="' + rowClass + '">' +
-        '<td>' + p.label + (p.guard.passed === false ? ' (탈락)' : (p.policy_id === DATA.approval.policy_id ? ' (선택)' : '')) + '</td>' +
-        '<td>' + p.kpi.spillback_time_sec + '초</td>' +
-        '<td>' + p.kpi.total_travel_time_sec + '초</td>' +
-        '<td>' + p.kpi.worst_approach_delay_sec + '초</td>' +
+        '<td><div style="display:flex; align-items:center; gap:4px;">' + p.label + (badgeIcon ? badgeIcon : '') + '</div></td>' +
+        '<td>' + p.kpi.spillback_time_sec + '<span class="unit">초</span></td>' +
+        '<td>' + p.kpi.total_travel_time_sec + '<span class="unit">초</span></td>' +
+        '<td>' + p.kpi.worst_approach_delay_sec + '<span class="unit">초</span></td>' +
         '<td>' + pctSpan(d.spillback_time_pct) + '</td>' +
         '<td>' + pctSpan(d.total_travel_time_pct) + '</td>' +
         '<td>' + pctSpan(d.worst_approach_delay_pct) + '</td>' +
         '</tr>';
     }).join('');
     document.getElementById('policy-table').innerHTML =
-      '<thead><tr><th>정책</th><th>Spillback wall-clock</th><th>누적 체류시간</th><th>P95 대기 proxy</th>' +
+      '<thead><tr><th>정책</th><th>Spillback</th><th>체류시간</th><th>P95 대기</th>' +
       '<th>Δ Spillback</th><th>Δ 통행시간</th><th>Δ 최악지체</th></tr></thead><tbody>' + rows + '</tbody>';
   }
 
-  // ---- safety review ----
   function renderSafetyReview() {
     var wrap = document.getElementById('safety-cards');
     wrap.innerHTML = DATA.policies.map(function (p) {
       var fail = p.guard.passed === false;
+      var statusClass = fail ? 'fail' : 'pass';
+      var statusIcon = fail ? 'status-rejected.svg' : 'status-safe.svg';
+      
       var viol = (p.guard.violations || []).map(function (v) {
-        return '<div class="violation"><code>' + v.code + '</code> ' + v.detail + '</div>';
+        return '<div class="safety-violation-item"><span class="safety-violation-code">' + v.code + '</span> ' + v.detail + '</div>';
       }).join('');
-      return '<div class="guard-card ' + (fail ? 'fail' : '') + '">' +
-        '<div class="head"><span class="name">' + p.label + (fail ? ' — 탈락' : '') + '</span>' +
-        '<span class="' + (fail ? 'guard-fail' : 'guard-pass') + '">' + (p.guard.passed ? 'PASS' : 'FAIL') + '</span></div>' +
-        (p.guard.note ? '<div class="violation">' + p.guard.note + '</div>' : '') +
+
+      return '<div class="safety-card ' + statusClass + '">' +
+        '<div class="safety-header">' +
+          '<span class="safety-title">' + p.label + '</span>' +
+          '<span class="safety-status-text">' +
+            '<img src="./public/assets/icons/' + statusIcon + '" width="18" height="18" alt="상태">' +
+            (p.guard.passed ? 'PASS' : 'FAIL') +
+          '</span>' +
+        '</div>' +
+        (p.guard.note ? '<div class="safety-violation-item">' + p.guard.note + '</div>' : '') +
         viol +
         '</div>';
     }).join('');
   }
 
-  // ---- operator approval ----
   function renderApproval() {
     var box = document.getElementById('approval-box');
     var a = DATA.approval;
     var chosen = DATA.policies.filter(function (p) { return p.policy_id === a.policy_id; })[0];
     box.innerHTML =
       '<dl>' +
-      '<dt>대상 정책</dt><dd>' + (chosen ? chosen.label : a.policy_id) + '</dd>' +
+      '<dt>대상 정책</dt><dd><strong>' + (chosen ? chosen.label : a.policy_id) + '</strong></dd>' +
       '<dt>제안 상태</dt><dd>' + a.status + '</dd>' +
       '<dt>운영자</dt><dd>' + (a.operator || '-') + '</dd>' +
       '<dt>근거</dt><dd>' + (a.reason || '-') + '</dd>' +
-      '</dl>'.replace('<dl>', '<dl style="margin-bottom:12px">') +
+      '</dl>'.replace('<dl>', '<dl style="margin-bottom:8px">') +
       '<div class="approval-actions">' +
       '<button class="btn-approve" id="btn-approve">승인</button>' +
       '<button class="btn-reject" id="btn-reject">거절</button>' +
@@ -468,27 +631,21 @@
       '<div id="approval-error"></div>';
 
     document.getElementById('btn-approve').addEventListener('click', function () {
-      if (MODE === 'live') {
-        handleLiveApproval('approve', chosen);
-        return;
-      }
+      if (MODE === 'live') { handleLiveApproval('approve', chosen); return; }
       approvalDecision = 'approved';
       document.getElementById('decision-note').textContent =
-        '로컬 표시: 운영자가 ' + (chosen ? chosen.label : a.policy_id) + ' 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)';
+        '로컬 표시: 운영자가 ' + (chosen ? chosen.label : a.policy_id) + ' 정책을 승인했습니다. (fixture 데모)';
     });
     document.getElementById('btn-reject').addEventListener('click', function () {
-      if (MODE === 'live') {
-        handleLiveApproval('reject', chosen);
-        return;
-      }
+      if (MODE === 'live') { handleLiveApproval('reject', chosen); return; }
       approvalDecision = 'rejected';
-      document.getElementById('decision-note').textContent = '로컬 표시: 운영자가 제안을 거절했습니다. (fixture 데모, 실제 반영 없음)';
+      document.getElementById('decision-note').textContent = '로컬 표시: 운영자가 제안을 거절했습니다. (fixture 데모)';
     });
     if (MODE !== 'live' && approvalDecision) {
       document.getElementById('decision-note').textContent =
         approvalDecision === 'approved'
-          ? '로컬 표시: 운영자가 ' + (chosen ? chosen.label : a.policy_id) + ' 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)'
-          : '로컬 표시: 운영자가 제안을 거절했습니다. (fixture 데모, 실제 반영 없음)';
+          ? '로컬 표시: 운영자가 ' + (chosen ? chosen.label : a.policy_id) + ' 정책을 승인했습니다. (fixture 데모)'
+          : '로컬 표시: 운영자가 제안을 거절했습니다. (fixture 데모)';
     }
   }
 
@@ -533,7 +690,7 @@
           noteEl.textContent = '승인 불가: ' + (detail.message || '안전·공정성 가드 위반');
           if (errEl) {
             errEl.innerHTML = violations.map(function (v) {
-              return '<div class="violation"><code>' + v.code + '</code> ' + v.detail + '</div>';
+              return '<div class="safety-violation-item"><span class="safety-violation-code">' + v.code + '</span> ' + v.detail + '</div>';
             }).join('');
           }
         });
@@ -550,14 +707,13 @@
     });
   }
 
-  // ---- recovery compare ----
   function renderRecovery() {
     var rc = DATA.recovery_compare;
     var wrap = document.getElementById('recovery-content');
     function col(title, kpi) {
       return '<div class="recovery-col"><h3>' + title + '</h3>' +
         KPI_DEFS.map(function (d) {
-          return '<div class="row"><span>' + d.label + '</span><span>' + kpiValue(kpi, d) + '</span></div>';
+          return '<div class="row"><span class="row-label">' + d.label + '</span><span>' + kpiValue(kpi, d) + '</span></div>';
         }).join('') + '</div>';
     }
     var imp = rc.improvement || {};
@@ -573,7 +729,6 @@
       ' · 최악지체 ' + pctSpan(imp.worst_approach_delay_pct) + '</div>';
   }
 
-  // ---- panel visibility per state ----
   function updatePanels(state) {
     document.getElementById('panel-policy').style.display = (state === 'policy_compare' || state === 'safety_review' || state === 'operator_approval' || state === 'recovery_compare') ? 'block' : 'none';
     document.getElementById('panel-safety').style.display = (state === 'safety_review' || state === 'operator_approval' || state === 'recovery_compare') ? 'block' : 'none';
@@ -581,11 +736,8 @@
     document.getElementById('panel-recovery').style.display = (state === 'recovery_compare') ? 'block' : 'none';
   }
 
-  // ---- KPI snapshot: choose kpi source based on state ----
   function kpiForState(state) {
     if (state === 'recovery_compare') return DATA.recovery_compare.applied;
-    // before approval, show no_action baseline as "current trajectory" snapshot;
-    // corridor_gating kpi shown once approval reached
     if (state === 'operator_approval' || state === 'safety_review' || state === 'policy_compare') {
       var cg = DATA.policies.filter(function (p) { return p.policy_id === 'corridor_gating'; })[0];
       return cg.kpi;
@@ -598,10 +750,16 @@
     var step = timeline[idx];
     var state = step.screen_state;
 
-    document.getElementById('state-label').textContent =
+    var stateIconFile = STATE_ICONS[state] || 'status-approval.svg';
+    var stateLabelEl = document.getElementById('state-label');
+    
+    stateLabelEl.style.color = STATE_COLORS[state] || 'var(--status-approval)';
+    stateLabelEl.innerHTML =
+      '<img src="./public/assets/icons/' + stateIconFile + '" width="18" height="18" alt="상태"> ' +
       (idx + 1) + '/' + totalSteps + ' — ' + (STATE_LABELS[state] || state);
+      
     document.getElementById('clock').textContent =
-      't = ' + step.t_sec + '초 (실측 스케일) / 강우: ' + (step.rain_level || '-');
+      't = ' + step.t_sec + '초 (실측) / 강우: ' + (step.rain_level || '-');
 
     updateCorridorState(step);
     renderKPI(kpiForState(state));
@@ -665,35 +823,36 @@
     }
   });
 
-  // ---- badge / scenario notice ----
   function updateBadge(source) {
     var el = document.getElementById('badge-source');
     if (!el) return;
-    el.textContent = 'result_source: ' + source;
-    el.classList.toggle('fixture', source === 'fixture');
-    el.classList.toggle('live', source !== 'fixture');
+    
+    var isFix = source === 'fixture';
+    var icon = isFix ? 'status-data-fixture.svg' : 'status-approval.svg';
+    el.innerHTML = '<img src="./public/assets/icons/' + icon + '" width="18" height="18" alt="배지"> result_source: ' + source;
+    
+    el.classList.toggle('fixture', isFix);
+    el.classList.toggle('live', !isFix);
   }
 
   function showScenarioNotice(msg) {
     var el = document.getElementById('scenario-notice');
     if (!el) return;
-    el.textContent = msg;
+    el.innerHTML = '<img src="./public/assets/icons/status-comm-delay.svg" width="18" height="18" alt="알림"> <span>' + msg + '</span>';
     el.classList.add('show');
   }
 
   function hideScenarioNotice() {
     var el = document.getElementById('scenario-notice');
     if (!el) return;
-    el.textContent = '';
+    el.innerHTML = '';
     el.classList.remove('show');
   }
 
-  // ---- live/fixture data adapter ----
   function isHttpProtocol() {
     return typeof location !== 'undefined' &&
       (location.protocol === 'http:' || location.protocol === 'https:');
   }
-
   // 라이브 timeline은 4개 상태(normal/rain_warning/spillback/recovery_compare)만
   // 샘플링에 등장한다 (backend/app/main.py:_screen_state_at). 대응안 비교/안전 가드/
   // 운영자 승인 3단계를 fixture처럼 데모에 노출하기 위해, spillback 마지막 지점
@@ -706,13 +865,14 @@
         s.screen_state === 'safety_review' ||
         s.screen_state === 'operator_approval';
     });
-    if (hasDecisionStates) return run;
+    if (hasDecisionStates) return run; // spillback 없는 시나리오(dry_base 등)는 그대로 둔다
+
 
     var lastSpillIdx = -1;
     for (var i = 0; i < tl.length; i++) {
       if (tl[i].screen_state === 'spillback') lastSpillIdx = i;
     }
-    if (lastSpillIdx === -1) return run; // spillback 없는 시나리오(dry_base 등)는 그대로 둔다
+    if (lastSpillIdx === -1) return run;
 
     var base = tl[lastSpillIdx];
     var approvalPolicyId = run.approval && run.approval.policy_id;
@@ -768,6 +928,7 @@
     document.getElementById('scenario-sub').textContent =
       '시나리오: ' + DATA.scenario.scenario_id + ' · seed ' + DATA.scenario.seed +
       ' · 강우 ' + DATA.scenario.rain_level + ' · network ' + (DATA.network_version || '');
+    
     updateBadge(resultSource || DATA.result_source || 'fixture');
 
     var picker = document.getElementById('scenario-picker');
