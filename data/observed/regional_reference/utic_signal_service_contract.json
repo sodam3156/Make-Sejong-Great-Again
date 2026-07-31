@@ -1,0 +1,156 @@
+{
+  "contract_id": "utic-open-signal-service-contract-20220727-v1",
+  "source_class": "official_service_specification",
+  "provider": "Korea Road Traffic Authority Urban Traffic Information Center",
+  "document_received_at_kst": "2026-07-31",
+  "update_frequency": "daily_or_on_change",
+  "transport": {
+    "protocol": "HTTP",
+    "method": "GET",
+    "formats": ["json", "xml", "xlsx", "zip"],
+    "authentication": ["serviceKey", "registered_ip"],
+    "ssl_documented": false
+  },
+  "source_documents": [
+    {
+      "filename": "CrossRoadInfoService.hwp",
+      "sha256": "3cb9d7ab03e8e7c331f2b12afa5372de720bf49eb69f220997a3fa21411df39f"
+    },
+    {
+      "filename": "PlanCrossRoadInfoService.hwp",
+      "sha256": "9389feb9798fcc4e54fbe5808833e170a82b577cc8c9c5ab46477852374a5a7f"
+    },
+    {
+      "filename": "sig_code.hwp",
+      "sha256": "bb1c0137ec646119c2f2c92160efdd94152a876b83e3b6673588d9f01af89681"
+    }
+  ],
+  "common_query_parameters": {
+    "serviceKey": {"required": true, "secret": true},
+    "type": {"required": false, "allowed": ["json", "xml"]},
+    "numOfRows": {"required": false, "type": "integer"},
+    "pageNo": {"required": false, "type": "integer"},
+    "srchCTId": {"required": false, "description": "region code"},
+    "srchCRNm": {"required": false, "description": "intersection name"}
+  },
+  "services": [
+    {
+      "service": "CrossRoadInfoService",
+      "operation": "crossInfo",
+      "endpoint": "http://tsihub.utic.go.kr/tsi/api/CrossRoadInfoService/download/crossInfo",
+      "response_format": ["xlsx", "zip"],
+      "query_parameters": ["serviceKey", "srchCTId"],
+      "provides": ["REGION_CD", "INT_NO", "INT_NM", "intersection_x", "intersection_y"],
+      "schema_status": "download_workbook_required"
+    },
+    {
+      "service": "CrossRoadInfoService",
+      "operation": "crossDetailInfo",
+      "endpoint": "http://tsihub.utic.go.kr/tsi/api/CrossRoadInfoService/download/crossDetailInfo",
+      "response_format": ["xlsx", "zip"],
+      "query_parameters": ["serviceKey", "srchCTId"],
+      "provides": ["REGION_CD", "INT_NO", "INT_NM", "map_no", "A_ring_phase_direction_codes", "B_ring_phase_direction_codes"],
+      "schema_status": "download_workbook_required"
+    },
+    {
+      "service": "PlanCrossRoadInfoService",
+      "operation": "getPlanCRHDInfo",
+      "endpoint": "http://tsihub.utic.go.kr/tsi/api/PlanCrossRoadInfoService/getPlanCRHDInfo",
+      "response_format": ["json", "xml"],
+      "fields": ["REGION_CD", "INT_NO", "INT_NM", "PLAN_SN", "HOLYDD_PLAN_MM", "HOLYDD_PLAN_DD", "INT_PLAN_NO", "COLLCT_DTIME"]
+    },
+    {
+      "service": "PlanCrossRoadInfoService",
+      "operation": "getPlanCRWDInfo",
+      "endpoint": "http://tsihub.utic.go.kr/tsi/api/PlanCrossRoadInfoService/getPlanCRWDInfo",
+      "response_format": ["json", "xml"],
+      "fields": ["REGION_CD", "INT_NO", "INT_NM", "PLAN_DY", "INT_PLAN_NO", "COLLCT_DTIME"]
+    },
+    {
+      "service": "PlanCrossRoadInfoService",
+      "operation": "getPlanCRRSInfo",
+      "endpoint": "http://tsihub.utic.go.kr/tsi/api/PlanCrossRoadInfoService/getPlanCRRSInfo",
+      "response_format": ["json", "xml"],
+      "fields": ["REGION_CD", "INT_NO", "INT_NM", "RESRV_NO", "RESRV_MM", "RESRV_DD", "RESRV_DY", "RESRV_STRT_HH", "RESRV_STRT_MI", "RESRV_END_HH", "RESRV_END_MI", "RESRV_CONTRL_CD", "COLLCT_DTIME"]
+    },
+    {
+      "service": "PlanCrossRoadInfoService",
+      "operation": "getPlanCROPInfo",
+      "endpoint": "http://tsihub.utic.go.kr/tsi/api/PlanCrossRoadInfoService/getPlanCROPInfo",
+      "response_format": ["json", "xml"],
+      "fields": ["REGION_CD", "INT_NO", "INT_NM", "INT_PLAN_NO", "INT_PLAN_IDX_NO", "OPER_PLAN_HH", "OPER_PLAN_MI", "INT_OPER_CYCLE_VAL", "INT_OPER_OFFSET_VAL", "A_RING_1_PHASE_VAL", "A_RING_2_PHASE_VAL", "A_RING_3_PHASE_VAL", "A_RING_4_PHASE_VAL", "A_RING_5_PHASE_VAL", "A_RING_6_PHASE_VAL", "A_RING_7_PHASE_VAL", "A_RING_8_PHASE_VAL", "B_RING_1_PHASE_VAL", "B_RING_2_PHASE_VAL", "B_RING_3_PHASE_VAL", "B_RING_4_PHASE_VAL", "B_RING_5_PHASE_VAL", "B_RING_6_PHASE_VAL", "B_RING_7_PHASE_VAL", "B_RING_8_PHASE_VAL", "COLLCT_DTIME"]
+    },
+    {
+      "service": "SigMapCrossRoadInfoService",
+      "operation": "getSigMapCRInfo",
+      "endpoint": "http://tsihub.utic.go.kr/tsi/api/SigMapCrossRoadInfoService/getSigMapCRInfo",
+      "response_format": ["json", "xml"],
+      "fields": ["REGION_CD", "INT_NO", "INT_NM", "RING_NO", "PLAN_TP", "STEP_NO", "CAR1", "PED1", "CAR2", "PED2", "CAR3", "PED3", "CAR4", "PED4", "CAR5", "PED5", "CAR6", "PED6", "CAR7", "PED7", "CAR8", "PED8", "MIN_TM", "MAX_TM", "EOP"]
+    }
+  ],
+  "code_definitions": {
+    "PLAN_DY": {
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday",
+      "7": "Sunday"
+    },
+    "RESRV_CONTRL_CD": {
+      "0": "UNDOCUMENTED",
+      "1": "DIMMING",
+      "2": "FLASHING",
+      "3": "LIGHTS_OFF",
+      "4": "TIME_DIFFERENCE",
+      "5": "ACTUATED",
+      "6": "PEDESTRIAN_SIGNAL_ENABLE",
+      "7": "AUDIO_ENABLE",
+      "8": "ACTUATED_AND_PUSH_BUTTON_ENABLE",
+      "9": "TIME_DIFFERENCE_ACTUATED_PUSH_BUTTON_ENABLE",
+      "10": "PPC_CONTROL",
+      "11": "QUEUE_BLOCKING_CONTROL"
+    },
+    "PLAN_TP": {
+      "0": "GENERAL",
+      "1": "TIME_DIFFERENCE_1",
+      "2": "TIME_DIFFERENCE_2",
+      "3": "TIME_DIFFERENCE_3",
+      "4": "TIME_DIFFERENCE_4",
+      "5": "TIME_DIFFERENCE_5",
+      "6": "PEDESTRIAN_MAP"
+    },
+    "confirmed_service_regions": {
+      "L02": "Incheon",
+      "L29": "Daegu"
+    }
+  },
+  "error_codes": {
+    "1": "APPLICATION_ERROR",
+    "10": "INVALID_REQUEST_PARAMETER_ERROR",
+    "12": "NO_OPENAPI_SERVICE_ERROR",
+    "20": "SERVICE_ACCESS_DENIED_ERROR",
+    "22": "LIMITED_NUMBER_OF_SERVICE_REQUESTS_EXCEEDS_ERROR",
+    "30": "SERVICE_KEY_IS_NOT_REGISTERED_ERROR",
+    "31": "DEADLINE_HAS_EXPIRED_ERROR",
+    "32": "UNREGISTERED_IP_ERROR",
+    "99": "UNKNOWN_ERROR"
+  },
+  "tool_use": {
+    "allowed": [
+      "signal plan parser development",
+      "TOD and phase visualization",
+      "online API and offline fixture parity tests",
+      "cycle-offset-ring consistency QA"
+    ],
+    "forbidden": [
+      "Sejong signal plan calibration",
+      "live phase-state or remaining-time claims",
+      "automatic simulator activation",
+      "safety or policy-threshold approval"
+    ],
+    "usable_for_calibration": false,
+    "runtime_activation": "disabled"
+  }
+}
