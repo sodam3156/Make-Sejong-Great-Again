@@ -1,0 +1,110 @@
+{
+  "source": {
+    "filename": "[2026-07-16]NODELINKDATA.zip",
+    "size_bytes": 269698831,
+    "sha256": "adfb23b31592d264cfbc48458ae0fdb5daee707e8c7ba4dbced53c7c544c1a48",
+    "archive_entries": 14,
+    "expected_sha256_match": true
+  },
+  "crs": {
+    "source_wkt_name": "ITRF2000_Central_Belt_60",
+    "output": "EPSG:4326",
+    "dbf_encoding": "CP949"
+  },
+  "sejong_filter": {
+    "prefix": "413",
+    "node_count": 8768,
+    "link_count": 11893,
+    "all_node_ids_match_prefix": true,
+    "all_link_ids_match_prefix": true,
+    "node_bbox_wgs84": {
+      "min_lon": 127.1402412,
+      "max_lon": 127.4057523,
+      "min_lat": 36.4091632,
+      "max_lat": 36.7322489
+    }
+  },
+  "target_intersections": {
+    "성금교차로": {
+      "node_count": 4,
+      "node_ids": [
+        "4130092501",
+        "4130092502",
+        "4130092503",
+        "4130092504"
+      ],
+      "node_types": [
+        "101"
+      ],
+      "centroid_lon": 127.2615354,
+      "centroid_lat": 36.5085473,
+      "updatedates": [
+        "20250512"
+      ]
+    },
+    "세종교차로": {
+      "node_count": 4,
+      "node_ids": [
+        "4130138001",
+        "4130138002",
+        "4130138003",
+        "4130138004"
+      ],
+      "node_types": [
+        "101"
+      ],
+      "centroid_lon": 127.2960878,
+      "centroid_lat": 36.5004881,
+      "updatedates": [
+        "20250512"
+      ]
+    },
+    "청사교차로": {
+      "node_count": 4,
+      "node_ids": [
+        "4130102901",
+        "4130102902",
+        "4130102903",
+        "4130102904"
+      ],
+      "node_types": [
+        "101"
+      ],
+      "centroid_lon": 127.2677917,
+      "centroid_lat": 36.5078885,
+      "updatedates": [
+        "20250512"
+      ]
+    }
+  },
+  "corridor": {
+    "road_name": "절재로",
+    "route_count": 4,
+    "unique_route_links": 35,
+    "routes": {
+      "성금→청사": {
+        "length_m": 553.697,
+        "link_count": 6
+      },
+      "청사→세종": {
+        "length_m": 2669.852,
+        "link_count": 10
+      },
+      "세종→청사": {
+        "length_m": 2683.637,
+        "link_count": 15
+      },
+      "청사→성금": {
+        "length_m": 554.034,
+        "link_count": 4
+      }
+    },
+    "interpretation": "Shortest directed paths in the 413 network; not travel-time or signal-operation calibration."
+  },
+  "limitations": [
+    "NODE_TYPE 101 confirms intersection nodes but does not identify signalization or roundabout geometry.",
+    "Standard NODE/LINK does not contain current signal cycle, phase, offset, lane-group movement, or observed turning counts.",
+    "Road imagery supplied by the user visually shows conventional signalized intersections, but imagery is not encoded in the NODE/LINK attributes.",
+    "Boundary links with non-413 LINK_ID may be excluded by the official prefix filter."
+  ]
+}
