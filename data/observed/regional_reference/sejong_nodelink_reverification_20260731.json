@@ -1,0 +1,70 @@
+{
+  "dataset_id": "sejong-standard-nodelink-20260716-reverified-v1",
+  "source_class": "official_spatial_network",
+  "provider": "National Transport Information Center",
+  "source_filename": "[2026-07-16]NODELINKDATA.zip",
+  "source_size_bytes": 269698831,
+  "source_sha256": "adfb23b31592d264cfbc48458ae0fdb5daee707e8c7ba4dbced53c7c544c1a48",
+  "verified_at_kst": "2026-07-31T16:01:00+09:00",
+  "filter": {
+    "node_id_prefix": "413",
+    "link_id_prefix": "413",
+    "node_count": 8768,
+    "link_count": 11893,
+    "all_node_ids_match_prefix": true,
+    "all_link_ids_match_prefix": true
+  },
+  "crs": {
+    "source": "ITRF2000_Central_Belt_60",
+    "output": "EPSG:4326",
+    "dbf_encoding": "CP949"
+  },
+  "target_intersections": [
+    {
+      "name": "성금교차로",
+      "node_ids": ["4130092501", "4130092502", "4130092503", "4130092504"],
+      "node_type": "101",
+      "centroid_lon": 127.2615355,
+      "centroid_lat": 36.5085473,
+      "updatedate": "20250512"
+    },
+    {
+      "name": "청사교차로",
+      "node_ids": ["4130102901", "4130102902", "4130102903", "4130102904"],
+      "node_type": "101",
+      "centroid_lon": 127.2677918,
+      "centroid_lat": 36.5078885,
+      "updatedate": "20250512"
+    },
+    {
+      "name": "세종교차로",
+      "node_ids": ["4130138001", "4130138002", "4130138003", "4130138004"],
+      "node_type": "101",
+      "centroid_lon": 127.2960878,
+      "centroid_lat": 36.5004880,
+      "updatedate": "20250512"
+    }
+  ],
+  "directed_corridor_routes": [
+    {"from": "성금교차로", "to": "청사교차로", "road_name": "절재로", "length_m": 553.697, "link_count": 6},
+    {"from": "청사교차로", "to": "세종교차로", "road_name": "절재로", "length_m": 2669.852, "link_count": 10},
+    {"from": "세종교차로", "to": "청사교차로", "road_name": "절재로", "length_m": 2683.637, "link_count": 15},
+    {"from": "청사교차로", "to": "성금교차로", "road_name": "절재로", "length_m": 554.034, "link_count": 4}
+  ],
+  "usable_for": [
+    "spatial identity and coordinates",
+    "road-link connectivity",
+    "corridor path geometry",
+    "road name, lane-count and speed-limit display",
+    "mapping external traffic link IDs when identifiers are compatible"
+  ],
+  "not_usable_for": [
+    "current signal cycle, phase or offset",
+    "lane-group movement assignment",
+    "observed turning counts",
+    "queue-storage calibration",
+    "claiming field-replay or actual policy performance"
+  ],
+  "runtime_activation": "spatial_display_only",
+  "usable_for_calibration": false
+}
