@@ -11,17 +11,19 @@ from __future__ import annotations
 from fastapi import FastAPI
 
 from backend.app.reference_data import router as reference_router
+from backend.app.sejong_nodelink_reference import router as sejong_nodelink_router
 from backend.app.utic_reference import router as utic_router
 
 app = FastAPI(
     title="RainFlow Regional Reference API",
-    version="0.2.0",
+    version="0.3.0",
     description=(
         "Read-only regional reference and external fixture data. "
         "Not a Sejong field replay or calibration API."
     ),
 )
 app.include_router(reference_router)
+app.include_router(sejong_nodelink_router)
 app.include_router(utic_router)
 
 
