@@ -1,0 +1,60 @@
+{
+  "coverage_id": "utic-signal-region-coverage-20260731-v1",
+  "source_class": "official_code_definition",
+  "source_document": "sig_code.hwp",
+  "documented_region_codes": {
+    "L01": "서울특별시",
+    "L02": "인천광역시",
+    "L03": "부천시",
+    "L04": "광명시",
+    "L05": "안양시",
+    "L06": "과천시",
+    "L07": "안산시",
+    "L08": "용인시",
+    "L09": "성남시",
+    "L10": "고양시",
+    "L11": "시흥시",
+    "L12": "파주시",
+    "L13": "양주시",
+    "L14": "의정부시",
+    "L15": "김포시",
+    "L16": "의왕시",
+    "L17": "군포시",
+    "L18": "남양주시",
+    "L19": "수원시",
+    "L20": "광주시(경기)",
+    "L21": "구리시",
+    "L22": "하남시",
+    "L23": "부산광역시",
+    "L24": "양산시",
+    "L25": "창원시",
+    "L26": "김해시",
+    "L28": "거제시",
+    "L29": "대구광역시",
+    "L30": "대전광역시",
+    "L31": "광주광역시",
+    "L37": "포항시"
+  },
+  "validated_sample_regions": {
+    "L02": {
+      "region": "인천광역시",
+      "evidence": "기존 신호주기 파일 및 parser fixture"
+    },
+    "L29": {
+      "region": "대구광역시",
+      "evidence": "getPlanCRRSInfo 온라인 정상 응답"
+    }
+  },
+  "sejong": {
+    "utic_region_code_documented": false,
+    "status": "NOT_LISTED_IN_RECEIVED_CODE_DEFINITION",
+    "implication": "세종 신호계획이 UTIC 신호개방 API에 수록됐다고 주장할 수 없음"
+  },
+  "interpretation": [
+    "문서에 코드가 있다는 사실은 현재 모든 서비스와 모든 교차로가 응답된다는 뜻이 아니다.",
+    "validated_sample_regions는 실제 파일 또는 API 응답으로 기능검증한 지역만 뜻한다.",
+    "전국표준노드링크 지역코드 413은 UTIC REGION_CD와 별개의 식별체계다."
+  ],
+  "runtime_activation": "disabled",
+  "usable_for_sejong_signal_calibration": false
+}
