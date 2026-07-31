@@ -1,0 +1,56 @@
+{
+  "dataset_id": "sejong-probe-exclusion-v1",
+  "generated_at_kst": "2026-07-31T19:30:00+09:00",
+  "runtime_activation": "excluded",
+  "usable_for_calibration": false,
+  "target_corridor": "성금교차로-청사교차로-세종교차로 / 절재로",
+  "sources": [
+    {
+      "source_id": "sejong-b0-public-sample-20210913",
+      "filename": "BRT_1506.1510.2021.09.13.xlsx",
+      "bytes": 59095,
+      "sha256": "667c9548701145e468f290319a3311868aedd882a594c51332ec9d039e7ad698",
+      "point_count": 1354,
+      "minimum_corridor_distance_m": 100.973,
+      "within_30m_count": 0,
+      "within_50m_count": 0,
+      "within_100m_count": 0,
+      "within_300m_count": 17,
+      "decision": "EXCLUDE_NO_TARGET_LINK_OVERLAP",
+      "reason": "zero points within 100 m; bus-only single-day sample"
+    },
+    {
+      "source_id": "sejong-pvd-public-sample",
+      "filename": "PVD 데이터.zip",
+      "bytes": 131002,
+      "sha256": "56b8fd9f12744f7b9809e0e7acb8a57179bcff07c78c17a465eda0063285aca7",
+      "point_count": 2419,
+      "minimum_corridor_distance_m": 838.433,
+      "within_30m_count": 0,
+      "within_50m_count": 0,
+      "within_100m_count": 0,
+      "within_300m_count": 0,
+      "parsed_record_count": 2419,
+      "terminal_record_counts": {
+        "IDV3611000010001": 409,
+        "IDV3611000010002": 2010
+      },
+      "unique_link_id_count": 69,
+      "nonempty_text_file_count": 5,
+      "empty_text_file_count": 2,
+      "decision": "EXCLUDE_NO_TARGET_LINK_OVERLAP",
+      "reason": "zero points within 300 m and incomplete public sample files"
+    }
+  ],
+  "allowed_use": [
+    "parser regression fixture",
+    "negative map-matching test"
+  ],
+  "forbidden_use": [
+    "target speed validation",
+    "travel-time calibration",
+    "queue calibration",
+    "general passenger-car free-flow speed"
+  ],
+  "decision": "NO_LOCAL_PROBE_INPUT_FOR_TARGET_SIMULATION"
+}

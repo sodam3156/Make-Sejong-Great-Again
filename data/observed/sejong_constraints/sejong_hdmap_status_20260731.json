@@ -1,0 +1,188 @@
+{
+  "dataset_id": "sejong-hdmap-coverage-v1",
+  "generated_at_kst": "2026-07-31T19:30:00+09:00",
+  "source_class": "official_historical_hdmap_geometry",
+  "input_crs": "EPSG:5179",
+  "target_coordinate_source": "official Sejong 413 NODE/LINK extract",
+  "runtime_activation": "disabled",
+  "usable_for_calibration": false,
+  "source_packages": [
+    {
+      "package_id": "hdmap-happycity-sec02-2017",
+      "filename": "(B110)정밀도로지도_202607311789.zip",
+      "bytes": 1238091,
+      "sha256": "ce84bedbc62fbbdb452ac1bfa96fd32865600660ad30951020d53d11634e18b4",
+      "source_class": "official_historical_hdmap",
+      "construction_year": 2017,
+      "role": "성금·청사 및 서측 회랑",
+      "raw_committed": false
+    },
+    {
+      "package_id": "hdmap-sangsang-sec001-2021",
+      "filename": "(B110)정밀도로지도_202607311791.zip",
+      "bytes": 1931635,
+      "sha256": "ab196fd408b05a17d667b81010c78c80c762db5c6664646e2401ee2d1b5da542",
+      "source_class": "official_historical_hdmap",
+      "construction_year": 2021,
+      "role": "세종 및 동측 회랑",
+      "raw_committed": false
+    }
+  ],
+  "excluded_packages": [
+    {
+      "package_id": "hdmap-centralpark-sec09-2020",
+      "filename": "(B110)정밀도로지도_202607311790.zip",
+      "bytes": 114672,
+      "sha256": "96f7ba48a47c5e4d4a35e226081a9b8c7821aaa52ccca90fab1d8b420de97303",
+      "source_class": "official_historical_hdmap",
+      "construction_year": 2020,
+      "role": "excluded_not_target_corridor",
+      "raw_committed": false,
+      "minimum_corridor_distance_m": 463.732,
+      "decision": "EXCLUDE_FROM_SIMULATION_AND_TARGET_GEOMETRY"
+    }
+  ],
+  "target_intersections": [
+    {
+      "name": "성금교차로",
+      "center_wgs84": {
+        "longitude": 127.2615355,
+        "latitude": 36.5085473
+      },
+      "assigned_package_id": "hdmap-happycity-sec02-2017",
+      "link_features": {
+        "feature_count": 572,
+        "nearest_distance_m": 28.226,
+        "within_100m_count": 28
+      },
+      "stop_line_candidates": {
+        "feature_count": 120,
+        "nearest_distance_m": 31.18,
+        "within_100m_count": 2,
+        "selection_rule": "explicit_a2_stop"
+      },
+      "signal_features": {
+        "feature_count": 404,
+        "nearest_distance_m": 26.634,
+        "within_100m_count": 9
+      },
+      "coverage_status": "COVERED_FOR_GEOMETRY_QA",
+      "not_yet_derived": [
+        "approved approach lane count",
+        "approved movement-to-lane mapping",
+        "approved storage length",
+        "simulator approach ID mapping"
+      ]
+    },
+    {
+      "name": "청사교차로",
+      "center_wgs84": {
+        "longitude": 127.2677918,
+        "latitude": 36.5078885
+      },
+      "assigned_package_id": "hdmap-happycity-sec02-2017",
+      "link_features": {
+        "feature_count": 572,
+        "nearest_distance_m": 2.383,
+        "within_100m_count": 43
+      },
+      "stop_line_candidates": {
+        "feature_count": 120,
+        "nearest_distance_m": 30.927,
+        "within_100m_count": 4,
+        "selection_rule": "explicit_a2_stop"
+      },
+      "signal_features": {
+        "feature_count": 404,
+        "nearest_distance_m": 16.991,
+        "within_100m_count": 14
+      },
+      "coverage_status": "COVERED_FOR_GEOMETRY_QA",
+      "not_yet_derived": [
+        "approved approach lane count",
+        "approved movement-to-lane mapping",
+        "approved storage length",
+        "simulator approach ID mapping"
+      ]
+    },
+    {
+      "name": "세종교차로",
+      "center_wgs84": {
+        "longitude": 127.2960878,
+        "latitude": 36.500488
+      },
+      "assigned_package_id": "hdmap-sangsang-sec001-2021",
+      "link_features": {
+        "feature_count": 1228,
+        "nearest_distance_m": 0.439,
+        "within_100m_count": 100
+      },
+      "stop_line_candidates": {
+        "feature_count": 181,
+        "nearest_distance_m": 21.036,
+        "within_100m_count": 4,
+        "selection_rule": "b2_surfacelinemark.kind=530"
+      },
+      "signal_features": {
+        "feature_count": 583,
+        "nearest_distance_m": 16.97,
+        "within_100m_count": 19
+      },
+      "coverage_status": "COVERED_FOR_GEOMETRY_QA",
+      "not_yet_derived": [
+        "approved approach lane count",
+        "approved movement-to-lane mapping",
+        "approved storage length",
+        "simulator approach ID mapping"
+      ]
+    }
+  ],
+  "corridor_coverage": [
+    {
+      "route": "성금→청사",
+      "official_corridor_length_m": 553.392,
+      "sample_step_m": 10,
+      "sample_count": 57,
+      "nearest_hdmap_link_max_distance_m": 15.283,
+      "nearest_hdmap_link_p95_distance_m": 5.434,
+      "nearest_hdmap_link_mean_distance_m": 2.02,
+      "nearest_package_sample_counts": {
+        "2017": 57
+      },
+      "coverage_status": "CONTINUOUS_CENTERLINE_COVERAGE"
+    },
+    {
+      "route": "청사→세종",
+      "official_corridor_length_m": 2668.664,
+      "sample_step_m": 10,
+      "sample_count": 268,
+      "nearest_hdmap_link_max_distance_m": 5.967,
+      "nearest_hdmap_link_p95_distance_m": 2.734,
+      "nearest_hdmap_link_mean_distance_m": 1.155,
+      "nearest_package_sample_counts": {
+        "2017": 106,
+        "2021": 162
+      },
+      "coverage_status": "CONTINUOUS_CENTERLINE_COVERAGE"
+    }
+  ],
+  "allowed_use": [
+    "target lane-topology inspection",
+    "stop-line and signal-device spatial QA",
+    "corridor geometry display",
+    "future physical storage constraint after explicit mapping review"
+  ],
+  "forbidden_use": [
+    "automatic replacement of current queue-storage constants",
+    "traffic demand or queue observation",
+    "current 2026 road-operation claim",
+    "signal timing, phase, offset or effective-green inference"
+  ],
+  "activation_blockers": [
+    "model approach IDs are not mapped to exact HD-map incoming lane links",
+    "movement permissions and shared lanes are not independently reviewed",
+    "storage-length endpoint rule is not approved",
+    "source years differ between west and east corridor packages"
+  ],
+  "decision": "OFFICIAL_GEOMETRY_AVAILABLE_BUT_RUNTIME_MAPPING_BLOCKED"
+}

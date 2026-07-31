@@ -1,0 +1,97 @@
+{
+  "gate_id": "sejong-observed-input-gate-20260731-v1",
+  "evaluated_at_kst": "2026-07-31T19:30:00+09:00",
+  "target_corridor": "성금교차로-청사교차로-세종교차로 / 절재로",
+  "current_runtime_dataset": "synthetic-v0",
+  "runtime_change_in_this_package": false,
+  "field_calibration_status": "HARD_BLOCKED",
+  "claim_scope": "official-geometry-and-historical-signal evidence only; not field replay",
+  "inputs": [
+    {
+      "input": "target corridor identity and connectivity",
+      "status": "AVAILABLE",
+      "source": "official Sejong 413 NODE/LINK extract",
+      "runtime_role": "spatial display reference"
+    },
+    {
+      "input": "lane-level geometry, stop-line candidates and signal-device geometry",
+      "status": "AVAILABLE_REVIEW_GATED",
+      "source": "NGII historical HD-map packages, 2017 and 2021",
+      "runtime_role": "disabled until exact approach-link and storage-rule review"
+    },
+    {
+      "input": "historical signal lighting-time vectors",
+      "status": "AVAILABLE_HISTORICAL_ONLY",
+      "source": "Sejong signal standard dataset dated 2023-05-10",
+      "runtime_role": "disabled; nominal cycle candidates only"
+    },
+    {
+      "input": "KMA observed precipitation",
+      "status": "AVAILABLE_IN_PR_41",
+      "source": "KMA Sejong station 239",
+      "runtime_role": "weather input only; no traffic response calibration"
+    },
+    {
+      "input": "same-date 5/15-minute approach and turning counts",
+      "status": "MISSING_HARD_BLOCKER",
+      "runtime_role": "required for observed demand calibration"
+    },
+    {
+      "input": "current effective signal plan with TOD, offset and clearance",
+      "status": "MISSING_HARD_BLOCKER",
+      "runtime_role": "required for current signal-service calibration"
+    },
+    {
+      "input": "observed target queue, delay, LOS or target-link speed",
+      "status": "MISSING_VALIDATION_INPUT",
+      "runtime_role": "required for field validation"
+    }
+  ],
+  "completed_decisions": [
+    {
+      "item": "NGII HD-map geometry",
+      "decision": "KEEP_AS_OFFICIAL_GEOMETRY_EVIDENCE",
+      "reason": "all three intersections and both corridor sections have continuous lane-link coverage"
+    },
+    {
+      "item": "2020 central-park SEC09 HD-map package",
+      "decision": "EXCLUDE",
+      "reason": "minimum target-corridor distance is more than 460 m"
+    },
+    {
+      "item": "B0 public bus sample",
+      "decision": "EXCLUDE_FROM_TARGET_CALIBRATION",
+      "reason": "no points within 100 m of the target corridor and bus-only single-day sampling"
+    },
+    {
+      "item": "public PVD sample",
+      "decision": "EXCLUDE_FROM_TARGET_CALIBRATION",
+      "reason": "no points within 300 m of the target corridor and incomplete sample files"
+    },
+    {
+      "item": "monthly traffic to 5/15-minute conversion",
+      "decision": "DO_NOT_BUILD_FOR_RUNTIME",
+      "reason": "would add temporal-shape and direction assumptions without observed same-date counts"
+    },
+    {
+      "item": "Busan queue and LOS API",
+      "decision": "DEFER_EXTERNAL_FIXTURE",
+      "reason": "not required to unlock the Sejong runtime and would not validate the target corridor"
+    }
+  ],
+  "minimum_required_before_geometry_activation": [
+    "map each simulator approach ID to exact incoming HD-map lane-link IDs",
+    "independently review movement permissions and shared lanes",
+    "approve the storage-length upstream endpoint rule",
+    "record source-year limitations and rollback behavior",
+    "run regression tests proving synthetic-v0 remains the default"
+  ],
+  "minimum_required_before_field_calibration": [
+    "same-date time-resolved approach and turning counts",
+    "effective signal plan with cycle, phase sequence, green, yellow, all-red, offset and TOD",
+    "observed target queue, delay, LOS or speed/travel-time validation data",
+    "independent technical review and explicit activation PR"
+  ],
+  "allowed_next_step_without_new_external_data": "build read-only APIs, validation gates and a reviewed lane-link mapping candidate; do not change simulator constants",
+  "decision": "SAFE_EVIDENCE_PIPELINE_COMPLETE_RUNTIME_ACTIVATION_STOPPED"
+}
