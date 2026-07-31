@@ -1,0 +1,11 @@
+{
+  "cached_fixture_available": true,
+  "dataset_id": "synthetic-v0",
+  "fixture_available": true,
+  "llm": "rule_based_fallback",
+  "persisted_runs": 1,
+  "result_source": "fixture",
+  "runs_in_memory": 1,
+  "status": "ok",
+  "version": "0.2.0"
+}

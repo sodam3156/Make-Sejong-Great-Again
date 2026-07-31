@@ -1,0 +1,12 @@
+{
+    "schema_version":  1,
+    "artifact_name":  "RainFlowSejong-windows-x64.zip",
+    "source_commit_sha":  "45f997bea2ef8ee3274948f5f1bf48d888385e46",
+    "release_tag":  "v0.2.0-day3-rc1",
+    "release_tag_commit_sha":  "45f997bea2ef8ee3274948f5f1bf48d888385e46",
+    "model_freeze_git_sha":  "20ce47135281f1c93ebf84555ba94dae113c0418",
+    "model_source_tree_sha256":  "94d556a6de2f09c3d432465edd63be156df494a1548a6ef69516591ab0e55efd",
+    "python_version":  "3.11",
+    "architecture":  "windows-x64",
+    "built_at_utc":  "2026-07-30T08:10:00.0077138Z"
+}

@@ -1,0 +1,50 @@
+{
+    "captured_at_utc":  "2026-07-30T08:13:32.5738622Z",
+    "process_id":  26848,
+    "process_name":  "RainFlowSejong",
+    "executable_path":  "C:\\Users\\ilhsh\\Downloads\\세종을 다시 위대하게\\Day3 오프라인 실연동 20260730\\RainFlowSejong.exe",
+    "connections":  [
+                        {
+                            "state":  "Bound",
+                            "local_address":  "0.0.0.0",
+                            "local_port":  63592,
+                            "remote_address":  "0.0.0.0",
+                            "remote_port":  0,
+                            "owning_process":  26848
+                        },
+                        {
+                            "state":  "FinWait2",
+                            "local_address":  "127.0.0.1",
+                            "local_port":  64828,
+                            "remote_address":  "127.0.0.1",
+                            "remote_port":  61100,
+                            "owning_process":  26848
+                        },
+                        {
+                            "state":  "Listen",
+                            "local_address":  "127.0.0.1",
+                            "local_port":  64828,
+                            "remote_address":  "0.0.0.0",
+                            "remote_port":  0,
+                            "owning_process":  26848
+                        },
+                        {
+                            "state":  "Established",
+                            "local_address":  "127.0.0.1",
+                            "local_port":  63592,
+                            "remote_address":  "127.0.0.1",
+                            "remote_port":  63591,
+                            "owning_process":  26848
+                        },
+                        {
+                            "state":  "Established",
+                            "local_address":  "127.0.0.1",
+                            "local_port":  63591,
+                            "remote_address":  "127.0.0.1",
+                            "remote_port":  63592,
+                            "owning_process":  26848
+                        }
+                    ],
+    "established_external_connection_count":  0,
+    "claim_scope":  "Socket snapshot for the packaged process; this does not claim that physical network adapters were disabled."
+}

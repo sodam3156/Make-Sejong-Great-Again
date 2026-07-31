@@ -1,0 +1,44 @@
+[
+  {
+    "at_utc": "2026-07-30T10:23:54.690080+00:00",
+    "decision": "allowed",
+    "method": "GET",
+    "resource_type": "document",
+    "url": "http://127.0.0.1:64752/"
+  },
+  {
+    "at_utc": "2026-07-30T10:23:55.171031+00:00",
+    "decision": "allowed",
+    "method": "GET",
+    "resource_type": "script",
+    "url": "http://127.0.0.1:64752/demo_run.js"
+  },
+  {
+    "at_utc": "2026-07-30T10:23:55.304767+00:00",
+    "decision": "allowed",
+    "method": "POST",
+    "resource_type": "fetch",
+    "url": "http://127.0.0.1:64752/api/simulations"
+  },
+  {
+    "at_utc": "2026-07-30T10:23:55.529953+00:00",
+    "decision": "allowed",
+    "method": "GET",
+    "resource_type": "fetch",
+    "url": "http://127.0.0.1:64752/api/simulations/live-rain_spillback_a-s42-57ab9f71a5"
+  },
+  {
+    "at_utc": "2026-07-30T10:25:35.056416+00:00",
+    "decision": "allowed",
+    "method": "POST",
+    "resource_type": "fetch",
+    "url": "http://127.0.0.1:64752/api/approvals"
+  },
+  {
+    "at_utc": "2026-07-30T10:25:35.159143+00:00",
+    "decision": "allowed",
+    "method": "GET",
+    "resource_type": "fetch",
+    "url": "http://127.0.0.1:64752/api/simulations/live-rain_spillback_a-s42-57ab9f71a5"
+  }
+]

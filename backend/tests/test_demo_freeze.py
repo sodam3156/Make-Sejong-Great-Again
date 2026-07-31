@@ -192,3 +192,63 @@ def test_source_tree_checksum_is_line_ending_independent(
     source.write_bytes(b"first\r\nsecond\r\n")
 
     assert artifact_generator._source_tree_checksum() == lf_checksum
+
+
+def test_source_git_sha_stays_on_last_source_touch_across_docs_only_commits(
+    tmp_path,
+    monkeypatch,
+):
+    def git(*args: str) -> str:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=tmp_path,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return result.stdout.strip()
+
+    git("init")
+    git("config", "user.name", "Freeze Test")
+    git("config", "user.email", "freeze-test@example.invalid")
+
+    readme = tmp_path / "README.md"
+    readme.write_text("bootstrap\n", encoding="utf-8")
+    git("add", "README.md")
+    git("commit", "-m", "bootstrap repository")
+
+    source = tmp_path / "source.py"
+    source.write_text("VALUE = 1\n", encoding="utf-8")
+    git("add", "source.py")
+    git("commit", "-m", "change freeze source")
+    first_source_sha = git("rev-parse", "HEAD")
+
+    monkeypatch.setattr(artifact_generator, "ROOT", tmp_path)
+    monkeypatch.setattr(artifact_generator, "SOURCE_FILES", ("source.py",))
+
+    assert artifact_generator._source_git_sha() == first_source_sha
+
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    note = docs / "status.md"
+    note.write_text("first status\n", encoding="utf-8")
+    git("add", "docs/status.md")
+    git("commit", "-m", "docs: first status")
+    note.write_text("second status\n", encoding="utf-8")
+    git("add", "docs/status.md")
+    git("commit", "-m", "docs: second status")
+
+    assert artifact_generator._source_git_sha() == first_source_sha
+
+    source.write_text("VALUE = 2\n", encoding="utf-8")
+    git("add", "source.py")
+    git("commit", "-m", "change freeze source again")
+    second_source_sha = git("rev-parse", "HEAD")
+
+    assert artifact_generator._source_git_sha() == second_source_sha
+
+    note.write_text("third status\n", encoding="utf-8")
+    git("add", "docs/status.md")
+    git("commit", "-m", "docs: third status")
+
+    assert artifact_generator._source_git_sha() == second_source_sha

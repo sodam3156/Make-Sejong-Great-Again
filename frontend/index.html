@@ -254,7 +254,7 @@
   </div>
 
   <footer class="note">
-    이 화면은 backend/fixtures/demo_run.json 고정 데이터를 재생하는 3분 데모입니다.
+    <span id="run-mode-note">이 화면은 backend/fixtures/demo_run.json 고정 데이터를 재생하는 3분 데모입니다.</span>
     지명·링크 관계는 2026-07-16 세종 표준노드링크(8,768노드·11,893링크) 참조이며,
     점유율·대기열·저장공간·정책 효과는 실제 세종시 실측이 아닌 provisional 합성 수치입니다.
     run_id: <span id="run-id"></span>
@@ -509,6 +509,23 @@
     return fetch(url, opts);
   }
 
+  function refreshLiveRun() {
+    return fetchWithTimeout(
+      '/api/simulations/' + DATA.run_id,
+      {},
+      FIXTURE_TIMEOUT_MS
+    ).then(function (resp) {
+      if (!resp.ok) { throw new Error('simulation refresh failed: ' + resp.status); }
+      return resp.json();
+    }).then(function (updatedRun) {
+      DATA = synthesizeDecisionSteps(updatedRun);
+      timeline = DATA.timeline;
+      totalSteps = timeline.length;
+      idx = Math.max(0, Math.min(idx, totalSteps - 1));
+      return DATA;
+    });
+  }
+
   function handleLiveApproval(decision, chosen) {
     var noteEl = document.getElementById('decision-note');
     var errEl = document.getElementById('approval-error');
@@ -541,9 +558,19 @@
       if (!resp.ok) { throw new Error('approval request failed: ' + resp.status); }
       return resp.json().then(function (result) {
         DATA.approval = result;
-        noteEl.textContent = result.status === 'approved'
-          ? '운영자가 ' + chosen.label + ' 정책을 승인했습니다. (live)'
-          : '운영자가 제안을 거절했습니다. (live)';
+        approvalDecision = result.status;
+        return refreshLiveRun().then(function () {
+          render();
+          var refreshedNote = document.getElementById('decision-note');
+          if (refreshedNote) {
+            refreshedNote.textContent = result.status === 'approved'
+              ? '운영자가 ' + chosen.label + ' 정책을 승인했습니다. (live)'
+              : '운영자가 제안을 거절했습니다. (live)';
+          }
+        }, function () {
+          noteEl.textContent =
+            '승인은 저장됐지만 최신 적용 결과를 다시 불러오지 못했습니다. 새로고침 후 확인하세요.';
+        });
       });
     }).catch(function () {
       noteEl.textContent = '승인 요청 실패(네트워크). 화면에는 반영되지 않았습니다.';
@@ -765,6 +792,10 @@
     clearTimeout(timer);
 
     document.getElementById('run-id').textContent = DATA.run_id;
+    document.getElementById('run-mode-note').textContent =
+      mode === 'live'
+        ? '이 화면은 로컬 백엔드가 방금 계산하고 저장한 결과를 재생하는 3분 데모입니다.'
+        : '이 화면은 backend/fixtures/demo_run.json 고정 데이터를 재생하는 3분 데모입니다.';
     document.getElementById('scenario-sub').textContent =
       '시나리오: ' + DATA.scenario.scenario_id + ' · seed ' + DATA.scenario.seed +
       ' · 강우 ' + DATA.scenario.rain_level + ' · network ' + (DATA.network_version || '');

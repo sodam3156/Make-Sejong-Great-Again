@@ -1,0 +1,17 @@
+{
+  "approval_clicked": true,
+  "approval_note": "로컬 표시: 운영자가 연속 게이팅 정책을 승인했습니다. (fixture 데모, 실제 반영 없음)",
+  "badge_source": "result_source: fixture",
+  "final_state": {
+    "clock": "t = 3420초 (실측 스케일) / 강우: dry",
+    "current": 20,
+    "display_label": "회복 비교",
+    "screen_state": "recovery_compare",
+    "total": 20
+  },
+  "recovery_panel_visible": true,
+  "recovery_text": "무대응\n회랑 Spillback wall-clock\n1980초\n회복(60초 연속)\n관측창 15분 내 미회복\n모형 내 누적 체류시간\n265228vehicle-seconds\n최악 진입로 P95 대기 proxy\n1099.4초\n적용 (corridor_gating)\n회랑 Spillback wall-clock\n0초\n회복(60초 연속)\n495초\n모형 내 누적 체류시간\n60081vehicle-seconds\n최악 진입로 P95 대기 proxy\n36.1초\n개선율: Spillback -100% · 회복시간 비교 보류(기준선 미회복) · 총 통행시간 -77.3% · 최악지체 -96.7%",
+  "run_id": "fixture-qa-v2-001",
+  "run_mode_note": "이 화면은 backend/fixtures/demo_run.json 고정 데이터를 재생하는 3분 데모입니다.",
+  "scenario": "시나리오: rain_spillback_a · seed 42 · 강우 heavy · network sejong-nodelink-20260716-v1"
+}

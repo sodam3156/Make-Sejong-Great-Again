@@ -1,5 +1,7 @@
 -r requirements.txt
 
-httpx>=0.27,<1.0
+# Starlette 1.3 TestClient imports HTTPX2. Keeping legacy HTTPX here makes
+# Starlette fall back with a StarletteDeprecationWarning.
+httpx2>=2.9.1,<3.0
 jsonschema>=4.20,<5.0
 pytest>=8.0,<10.0

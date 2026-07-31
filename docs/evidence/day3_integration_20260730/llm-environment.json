@@ -1,0 +1,12 @@
+{
+    "captured_at_utc":  "2026-07-30T08:16:41.3245578Z",
+    "os":  "Microsoft Windows NT 10.0.26200.0",
+    "process_is_64_bit":  true,
+    "operating_system_is_64_bit":  true,
+    "detected_ai_credential_variable_names":  [
+
+                                              ],
+    "values_were_not_collected":  true,
+    "assertion_no_known_ai_credentials":  true,
+    "claim_scope":  "Environment-variable name scan in the Windows evidence shell; no secret values were read or stored."
+}

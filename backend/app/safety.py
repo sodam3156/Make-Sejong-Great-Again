@@ -59,7 +59,9 @@ def evaluate_guard(
             violations.append(
                 {
                     "code": "FAIRNESS_INPUT_INVALID",
-                    "detail": f"{approach} 진입로 P95 대기 proxy가 누락되어 판정 불가",
+                    # ``approach`` is already a display label such as
+                    # "성금교차로 서측 진입로".
+                    "detail": f"{approach} P95 대기 proxy가 누락되어 판정 불가",
                 }
             )
             continue
@@ -70,7 +72,7 @@ def evaluate_guard(
             violations.append(
                 {
                     "code": "FAIRNESS_P95_EXCEEDED",
-                    "detail": f"{approach} 진입로 P95 지체가 기준 대비 {worsen_pct:.1f}% 악화. 허용한도 {FAIRNESS_P95_LIMIT_PCT}% 초과",
+                    "detail": f"{approach} P95 지체가 기준 대비 {worsen_pct:.1f}% 악화. 허용한도 {FAIRNESS_P95_LIMIT_PCT}% 초과",
                     "threshold_pct": FAIRNESS_P95_LIMIT_PCT,
                     "observed_pct": round(worsen_pct, 1),
                 }

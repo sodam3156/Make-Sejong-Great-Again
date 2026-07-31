@@ -1,0 +1,16 @@
+{
+  "checked_at_utc": "2026-07-30T10:27:19.3184484Z",
+  "health_after_restart": 200,
+  "health_before": 200,
+  "pass": true,
+  "pid_after": 33528,
+  "pid_before": 33528,
+  "port_after": 64752,
+  "port_before": 64752,
+  "post_stop_health_reachable": false,
+  "restart_exit_code": 0,
+  "runtime_files_remain": false,
+  "same_pid": true,
+  "same_port": true,
+  "stop_exit_code": 0
+}

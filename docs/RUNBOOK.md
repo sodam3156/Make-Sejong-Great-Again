@@ -38,6 +38,11 @@ docker compose down --volumes
 
 지원 버전은 Python 3.11 또는 3.12다.
 
+호환성 기준은 FastAPI 0.141.x, Starlette 1.3.x, HTTPX2 2.x다.
+Starlette 1.3의 `TestClient`는 기존 HTTPX가 아니라 HTTPX2를 사용한다.
+`requirements-dev.txt`는 이 조합을 설치하고, `pytest.ini`는 모든 테스트
+경고를 실패로 처리한다. 따라서 성공한 테스트 런은 경고도 0건이어야 한다.
+
 ```bash
 python -m venv .venv
 ```
@@ -78,6 +83,14 @@ Python 3.12로 빌드하려면:
 powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1 -PythonVersion 3.12
 ```
 
+릴리스 후보는 먼저 현재 커밋에 태그를 만든 뒤 태그 검증을 켜서 빌드한다.
+
+```powershell
+git tag -a v0.2.0-day3-rc2 -m "RainFlow Sejong v0.2.0 Day 3 RC2"
+powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1 `
+  -ReleaseTag v0.2.0-day3-rc2
+```
+
 빌드 스크립트는 다음을 자동 수행한다.
 
 1. `.venv-build` 격리 환경 생성과 `requirements-build.txt` 설치
@@ -86,11 +99,14 @@ powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1 -PythonVers
 4. 패키지 실행파일 self-check 실행
 5. 깨끗한 `release/windows-x64`에 실행본과 필수 런처 5종
    (`start.bat`, `launch.ps1`, `stop.bat`, `stop.ps1`, `README.txt`) 배치
-6. `SHA256SUMS.txt`와 후보 ZIP 생성
-7. 새 임시 폴더에 후보 ZIP을 압축 해제하고
+6. 빌드 커밋·릴리스 태그 커밋·모델 동결 커밋을 분리 기록한
+   `RELEASE-METADATA.json` 배치. `-ReleaseTag`를 주면 태그와 빌드 커밋이
+   정확히 같지 않을 때 빌드 중단
+7. `SHA256SUMS.txt`와 후보 ZIP 생성
+8. 새 임시 폴더에 후보 ZIP을 압축 해제하고
    `start.bat → health HTTP 200 → start.bat 재실행(동일 PID·포트 재사용)
    → stop.bat → 프로세스·health·runtime 종료` 스모크 실행
-8. 스모크가 성공한 후보만 `release/RainFlowSejong-windows-x64.zip`으로 승격하고
+9. 스모크가 성공한 후보만 `release/RainFlowSejong-windows-x64.zip`으로 승격하고
    ZIP `.sha256` 생성
 
 스모크가 실패하면 최종 ZIP과 `.sha256`은 생성되지 않으며 빌드는 실패한다.
@@ -109,6 +125,7 @@ launch.ps1
 stop.bat
 stop.ps1
 README.txt
+RELEASE-METADATA.json
 SHA256SUMS.txt
 ```
 

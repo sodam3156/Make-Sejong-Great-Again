@@ -10,6 +10,7 @@ dist/
 backend/logs/
 
 release/*.zip
+release/*.zip.sha256
 release/windows-x64/RainFlowSejong.exe
 release/windows-x64/_internal/
 release/windows-x64/logs/

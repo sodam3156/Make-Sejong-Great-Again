@@ -1,0 +1,40 @@
+{
+  "ai_credential_variable_count": 0,
+  "ai_credential_variable_names": [],
+  "captured_at_utc": "2026-07-30T10:28:31.0289558Z",
+  "connections": [
+    {
+      "local_address": "0.0.0.0",
+      "local_port": 57195,
+      "remote_address": "0.0.0.0",
+      "remote_port": 0,
+      "state": "Bound"
+    },
+    {
+      "local_address": "127.0.0.1",
+      "local_port": 57947,
+      "remote_address": "0.0.0.0",
+      "remote_port": 0,
+      "state": "Listen"
+    },
+    {
+      "local_address": "127.0.0.1",
+      "local_port": 57195,
+      "remote_address": "127.0.0.1",
+      "remote_port": 57194,
+      "state": "Established"
+    },
+    {
+      "local_address": "127.0.0.1",
+      "local_port": 57194,
+      "remote_address": "127.0.0.1",
+      "remote_port": 57195,
+      "state": "Established"
+    }
+  ],
+  "external_established_count": 0,
+  "llm_health_mode": "rule_based_fallback",
+  "pass": true,
+  "port": 57947,
+  "process_id": 32928
+}
