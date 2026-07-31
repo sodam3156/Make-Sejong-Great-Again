@@ -1,11 +1,22 @@
-"""Read-only UTIC adapter contract and probe metadata endpoint."""
+"""Read-only UTIC adapter contracts and probe metadata endpoints."""
 from __future__ import annotations
 
-from fastapi import APIRouter
+import json
+from functools import lru_cache
+from pathlib import Path
 
-from .utic_signal import REQUIRED_FIELDS
+from fastapi import APIRouter, HTTPException
 
+from .utic_signal import RESERVATION_REQUIRED_FIELDS
+
+ROOT = Path(__file__).resolve().parents[2]
+CONTRACT_PATH = ROOT / "data" / "observed" / "regional_reference" / "utic_signal_service_contract.json"
 router = APIRouter(prefix="/api/reference", tags=["reference-data"])
+
+
+@lru_cache(maxsize=1)
+def _official_contract() -> dict:
+    return json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
 
 
 @router.get(
@@ -19,7 +30,7 @@ def utic_reservation_contract() -> dict:
         "sourceRegion": "Daegu",
         "usableForCalibration": False,
         "runtimeActivation": "disabled",
-        "requiredSourceFields": sorted(REQUIRED_FIELDS),
+        "requiredSourceFields": sorted(RESERVATION_REQUIRED_FIELDS),
         "onlineProbe": {
             "status": "success",
             "resultCode": "0",
@@ -43,3 +54,14 @@ def utic_reservation_contract() -> dict:
             "The online response body is not committed until locally sanitized.",
         ],
     }
+
+
+@router.get(
+    "/utic-signal-service-contract",
+    summary="도로교통공단 공식 UTIC 신호 서비스 명세",
+)
+def utic_signal_service_contract() -> dict:
+    try:
+        return _official_contract()
+    except (FileNotFoundError, json.JSONDecodeError) as error:
+        raise HTTPException(status_code=503, detail="UTIC signal service contract unavailable") from error
