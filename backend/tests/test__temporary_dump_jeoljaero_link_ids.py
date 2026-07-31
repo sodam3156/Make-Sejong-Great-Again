@@ -7,8 +7,10 @@ from pathlib import Path
 
 def _route(features, starts, goals):
     adjacency = {}
+    by_id = {}
     for feature in features:
         p = feature["properties"]
+        by_id[str(p["LINK_ID"])] = p
         if p.get("ROAD_NAME") != "절재로":
             continue
         adjacency.setdefault(str(p["F_NODE"]), []).append((str(p["T_NODE"]), float(p["LENGTH"]), str(p["LINK_ID"])))
@@ -23,7 +25,11 @@ def _route(features, starts, goals):
         if dist != best.get(node):
             continue
         if node in goals:
-            return dist, links
+            fields = ["LINK_ID", "F_NODE", "T_NODE", "LENGTH", "ROAD_NAME", "ROAD_RANK", "LANES", "MAX_SPD", "ROAD_TYPE", "CONNECT"]
+            return {
+                "distance_m": dist,
+                "links": [{key: by_id[link_id].get(key) for key in fields} for link_id in links],
+            }
         for nxt, length, link_id in adjacency.get(node, []):
             cand = dist + length
             if cand < best.get(nxt, float("inf")):
@@ -32,7 +38,7 @@ def _route(features, starts, goals):
     return None
 
 
-def test_dump_target_route_link_ids_for_taxi_join():
+def test_dump_target_route_link_details_for_taxi_join():
     root = Path(__file__).resolve().parents[2]
     data = json.loads((root / "data/public/2026-07-29/sejong_nodelink_link.geojson").read_text(encoding="utf-8"))
     groups = {
@@ -46,4 +52,4 @@ def test_dump_target_route_link_ids_for_taxi_join():
         "cheongsa_to_sejong": _route(data["features"], groups["cheongsa"], groups["sejong"]),
         "sejong_to_cheongsa": _route(data["features"], groups["sejong"], groups["cheongsa"]),
     }
-    raise AssertionError("TARGET_ROUTE_LINK_IDS=" + json.dumps(result, ensure_ascii=False, sort_keys=True))
+    raise AssertionError("TARGET_ROUTE_LINK_DETAILS=" + json.dumps(result, ensure_ascii=False, sort_keys=True))
