@@ -557,11 +557,24 @@ def evaluate_mission(
         traffic_satisfaction * 0.6 + pedestrian_satisfaction * 0.4,
         1,
     )
+    # docs/17 정의대로 미션 성공은 안전과 접근성으로만 판정한다.  AI 승리는
+    # 별도 도전 과제이고 Level 3 승급에만 관여한다.
+    #
+    #   성공 조건에 AI 승리를 넣으면 진행이 스스로를 잠근다.
+    #
+    #     잘한 플레이 → 건물 Lv↑ + 도전 모드 → 수요 ×1.25
+    #                                            ↓
+    #                        달성 가능한 margin 상한이 0으로 압축
+    #                                            ↓
+    #                     접근성 100점이어도 success=False, 보상 0
+    #
+    # 실측(2026-08-04): corridor_final / 도전 / Lv3 / 장비 2종에서 가능한
+    # 정책 735개 중 margin >= 0.1을 넘는 것이 0개였다.
+    defeated_opponent = margin >= 0.1
     success = bool(
         player["guard"]["passed"]
         and traffic_satisfaction >= 60
         and pedestrian_satisfaction >= 60
-        and margin >= 0.1
     )
 
     achieved_level = request.progress.building_level
@@ -596,6 +609,7 @@ def evaluate_mission(
         "attempts": request.progress.attempts,
         "completion_time_sec": request.progress.last_completion_time_sec,
         "score_margin": margin,
+        "defeated_opponent": defeated_opponent,
         "adaptive_mode": adaptive["mode"],
         "reality_level": "game",
         "data_version": GAME_DATA_VERSION,
@@ -614,6 +628,7 @@ def evaluate_mission(
         "opponent": opponent,
         "advice": advice,
         "success": success,
+        "defeated_opponent": defeated_opponent,
         "satisfaction": {
             "traffic": traffic_satisfaction,
             "pedestrian_proxy": pedestrian_satisfaction,

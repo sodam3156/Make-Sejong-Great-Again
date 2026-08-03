@@ -82,7 +82,76 @@ def test_each_bot_is_beatable_with_a_known_safe_policy(mission_id, region_id, ti
     assert body["opponent"]["tier"] == tier
     assert body["player"]["guard"]["passed"] is True
     assert body["progression"]["opponent_score_margin"] >= 0.1
+    assert body["defeated_opponent"] is True
     assert body["success"] is True
+
+
+REACHABLE_STATES = [
+    ("rain_commute", "seonggeum_cheongsa", {"building_level": 1}),
+    ("rain_incident", "cheongsa_sejong", {"building_level": 2}),
+    (
+        "corridor_final",
+        "eojin_corridor",
+        {
+            "building_level": 3,
+            "last_score_margin": 5.0,
+            "last_completion_time_sec": 90.0,
+            "equipment": ["smart_controller", "dynamic_guidance"],
+        },
+    ),
+]
+
+
+@pytest.mark.parametrize(("mission_id", "region_id", "progress"), REACHABLE_STATES)
+def test_progression_is_never_locked_in_a_reachable_state(
+    mission_id, region_id, progress
+):
+    """잘한 플레이어가 도달하는 상태에서도 미션 성공이 가능해야 한다.
+
+    건물 성장과 도전 모드가 다음 시도의 수요를 올린다.  성공 조건을 AI 승리에
+    묶어 두면 진행할수록 성공 가능 정책이 사라져서 보상이 처벌로 뒤집힌다.
+
+        잘한 플레이 → 건물 Lv↑ + 도전 모드 → 수요 ×1.25 → margin 상한 0
+
+    2026-08-04 실측에서 corridor_final / 도전 / Lv3 / 장비 2종은 가능한 정책
+    735개 중 0개만 통과했다.  이 테스트가 그 회귀를 막는다.
+    """
+    equipment = tuple(sorted(progress.get("equipment", ())))
+    for design in game._candidate_pool(equipment):
+        request = MissionEvaluationRequestV1.model_validate(
+            {
+                "region_id": region_id,
+                "seed": 42,
+                "policy_design": design,
+                "progress": progress,
+            }
+        )
+        if game.evaluate_mission(mission_id, request)["success"]:
+            return
+    pytest.fail(f"{mission_id}: 도달 가능한 상태에 성공 가능한 정책이 없다")
+
+
+def test_mission_success_does_not_require_beating_the_bot():
+    """안전하고 접근성이 높은 정책은 AI에게 져도 성장과 보상을 받는다."""
+    hard = {
+        "region_id": "eojin_corridor",
+        "seed": 42,
+        "policy_design": WINNING_POLICY,
+        "progress": {
+            "building_level": 3,
+            "last_score_margin": 5.0,
+            "last_completion_time_sec": 90.0,
+            "equipment": ["smart_controller", "dynamic_guidance"],
+        },
+    }
+    body = CLIENT.post("/api/missions/corridor_final/evaluate", json=hard).json()
+
+    assert body["adaptive_event"]["mode"] == "challenge"
+    assert body["player"]["guard"]["passed"] is True
+    assert body["satisfaction"]["accessibility"] >= 70
+    assert body["defeated_opponent"] is False
+    assert body["success"] is True
+    assert body["progression"]["credits_earned"] > 0
 
 
 def test_starting_region_choice_does_not_change_hidden_mechanics():

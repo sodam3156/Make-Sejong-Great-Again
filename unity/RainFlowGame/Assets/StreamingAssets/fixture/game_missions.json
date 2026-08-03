@@ -157,6 +157,7 @@
         }
       ],
       "data_version": "rainflow-game-synthetic-v1",
+      "defeated_opponent": true,
       "evaluation_version": "mission-evaluation-v1",
       "mission_id": "corridor_final",
       "note": "게임 시뮬레이션·합성 추정치입니다. 실제 부동산 가격이나 정책 효과를 예측하지 않습니다.",
@@ -738,6 +739,7 @@
         "attempts": 0,
         "completion_time_sec": null,
         "data_version": "rainflow-game-synthetic-v1",
+        "defeated_opponent": true,
         "mission_id": "corridor_final",
         "reality_level": "game",
         "region_id": "eojin_corridor",
@@ -772,6 +774,7 @@
         }
       ],
       "data_version": "rainflow-game-synthetic-v1",
+      "defeated_opponent": true,
       "evaluation_version": "mission-evaluation-v1",
       "mission_id": "rain_commute",
       "note": "게임 시뮬레이션·합성 추정치입니다. 실제 부동산 가격이나 정책 효과를 예측하지 않습니다.",
@@ -1353,6 +1356,7 @@
         "attempts": 0,
         "completion_time_sec": null,
         "data_version": "rainflow-game-synthetic-v1",
+        "defeated_opponent": true,
         "mission_id": "rain_commute",
         "reality_level": "game",
         "region_id": "seonggeum_cheongsa",
@@ -1387,6 +1391,7 @@
         }
       ],
       "data_version": "rainflow-game-synthetic-v1",
+      "defeated_opponent": true,
       "evaluation_version": "mission-evaluation-v1",
       "mission_id": "rain_incident",
       "note": "게임 시뮬레이션·합성 추정치입니다. 실제 부동산 가격이나 정책 효과를 예측하지 않습니다.",
@@ -1968,6 +1973,7 @@
         "attempts": 0,
         "completion_time_sec": null,
         "data_version": "rainflow-game-synthetic-v1",
+        "defeated_opponent": true,
         "mission_id": "rain_incident",
         "reality_level": "game",
         "region_id": "cheongsa_sejong",

@@ -16,6 +16,7 @@
     "opponent",
     "advice",
     "success",
+    "defeated_opponent",
     "satisfaction",
     "progression",
     "telemetry",
@@ -45,7 +46,14 @@
     "player": {"$ref": "#/$defs/evaluation"},
     "opponent": {"$ref": "#/$defs/evaluation"},
     "advice": {"type": "array", "minItems": 1},
-    "success": {"type": "boolean"},
+    "success": {
+      "type": "boolean",
+      "description": "안전 가드 통과와 접근성 임계 충족만으로 판정한다. AI 승리는 포함하지 않는다."
+    },
+    "defeated_opponent": {
+      "type": "boolean",
+      "description": "경쟁 규칙봇보다 점수가 높았는지. 성공과 별개인 도전 과제이며 Level 3 승급 조건에만 관여한다."
+    },
     "satisfaction": {
       "type": "object",
       "required": ["traffic", "pedestrian_proxy", "accessibility"]
