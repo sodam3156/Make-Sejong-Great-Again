@@ -475,7 +475,7 @@ window.DEMO_RUN = {
       "no_action": "60ed4286b4ee6490c1b08032ee944fd9e77ed07ccf0ff672b92b24b210b89d06"
     },
     "freeze_id": "freeze-20260729-202509-kst",
-    "git_commit_sha": "4d706e4bfea13d1e38dd2dd5c6d44c410003bb27",
+    "git_commit_sha": "b2a244dbb50b04ec1e79a6df63301aca14f227a3",
     "guard_version": "rainflow-guard-v2",
     "input": {
       "data_quality": {
