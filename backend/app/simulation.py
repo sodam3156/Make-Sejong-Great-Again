@@ -43,7 +43,7 @@ SCENARIOS = {
     "rain_spillback_b": {"rain_level": "heavy", "surge": 1.18, "incident": True},
 }
 
-def rain_level_at(t: int, scenario: dict) -> str:
+def rain_level_at(t: int, scenario: dict, *, rain_end: int = RAIN_END) -> str:
     peak = scenario["rain_level"]
     if peak == "dry":
         return "dry"
@@ -51,9 +51,43 @@ def rain_level_at(t: int, scenario: dict) -> str:
         return "dry"
     if t < DRY_PREP_END + 240:
         return "moderate"
-    if t < RAIN_END:
+    if t < rain_end:
         return peak
     return "dry"
+
+
+def _game_metering_factors(
+    design: dict,
+    *,
+    in_rain: bool,
+    link_occupancy: dict[str, float],
+    approaches: tuple[str, ...] | list[str],
+    focus_link: str,
+) -> dict[str, float]:
+    """Translate the game policy's three controls into meter multipliers."""
+
+    meter = {approach: 1.0 for approach in approaches}
+    if not in_rain:
+        return meter
+
+    trigger = float(design["trigger_occupancy_pct"]) / 100.0
+    strength = float(design["metering_strength_pct"]) / 100.0
+    factor = max(0.35, 1.0 - 0.65 * strength)
+    targets = (
+        (("L12", ("R1_N", "R1_W")),)
+        if focus_link == "L12"
+        else (("L23", ("R2_N", "R2_S")),)
+        if focus_link == "L23"
+        else (
+            ("L12", ("R1_N", "R1_W")),
+            ("L23", ("R2_N", "R2_S")),
+        )
+    )
+    for link_id, upstreams in targets:
+        if link_occupancy[link_id] >= trigger:
+            for approach in upstreams:
+                meter[approach] = min(meter[approach], factor)
+    return meter
 
 
 @dataclass
@@ -123,11 +157,31 @@ def _clearance_proxy(queue_veh: float, effective_service: float) -> float:
     return queue_veh / max(effective_service, 0.1) * DT
 
 
-def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
+def run_simulation(
+    scenario_id: str,
+    seed: int,
+    policy_id: str,
+    *,
+    policy_design: dict | None = None,
+    focus_link: str = "corridor",
+    demand_multiplier: float = 1.0,
+    incident_link: str | None = None,
+    rain_extension_sec: int = 0,
+) -> SimResult:
     if scenario_id not in SCENARIOS:
         raise ValueError(f"unknown scenario_id: {scenario_id}")
-    if policy_id not in POLICIES:
+    if policy_design is None and policy_id not in POLICIES:
         raise ValueError(f"unknown policy_id: {policy_id}")
+    if policy_design is not None and policy_id != "game_policy":
+        raise ValueError("custom policy_design requires policy_id='game_policy'")
+    if focus_link not in {"L12", "L23", "corridor"}:
+        raise ValueError(f"unknown focus_link: {focus_link}")
+    if not 0.5 <= demand_multiplier <= 2.0:
+        raise ValueError("demand_multiplier must be between 0.5 and 2.0")
+    if incident_link not in {None, "L12", "L23"}:
+        raise ValueError("incident_link must be L12, L23, or None")
+    if not 0 <= rain_extension_sec <= 900:
+        raise ValueError("rain_extension_sec must be between 0 and 900")
     sc = SCENARIOS[scenario_id]
     rng = random.Random(f"{scenario_id}:{seed}")
     res = SimResult(scenario_id, seed, policy_id)
@@ -143,19 +197,26 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
 
     # 사고 시나리오는 L23 저장공간 20% 축소 (차로 제한)
     storage = dict(LINKS)
-    if sc["incident"]:
-        storage["L23"] = storage["L23"] * 0.8
+    effective_incident_link = incident_link or ("L23" if sc["incident"] else None)
+    if effective_incident_link:
+        storage[effective_incident_link] = storage[effective_incident_link] * 0.8
+    effective_rain_end = min(DURATION - RECOVERY_HOLD_SEC, RAIN_END + rain_extension_sec)
 
     for step in range(DURATION // DT):
         t = step * DT
-        rain = rain_level_at(t, sc)
+        rain = rain_level_at(t, sc, rain_end=effective_rain_end)
         cap_factor = RAIN_CAPACITY_FACTOR[rain]
-        in_rain = DRY_PREP_END <= t < RAIN_END and sc["rain_level"] != "dry"
+        in_rain = DRY_PREP_END <= t < effective_rain_end and sc["rain_level"] != "dry"
         surge = sc["surge"] if in_rain else 1.0
 
         # 수요 도착 (seed 기반 지터로 재현 가능)
         for a in DEMAND_APPROACHES:
-            arrivals = BASE_DEMAND[a] * surge * (0.85 + 0.3 * rng.random())
+            arrivals = (
+                BASE_DEMAND[a]
+                * surge
+                * demand_multiplier
+                * (0.85 + 0.3 * rng.random())
+            )
             queues[a] += arrivals
 
         cap = {a: APPROACH_CAP[a] * cap_factor for a in ALL_APPROACHES}
@@ -166,21 +227,47 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
             cap["R3_N"] *= CAPACITY_DROP
 
         # 정책별 진입 제어
-        meter = metering_factors(
-            policy_id,
-            in_rain=in_rain,
-            link_occupancy={
-                "L12": links["L12"] / storage["L12"],
-                "L23": links["L23"] / storage["L23"],
-            },
-            approaches=ALL_APPROACHES,
-        )
+        occupancy = {
+            "L12": links["L12"] / storage["L12"],
+            "L23": links["L23"] / storage["L23"],
+        }
+        if policy_design is None:
+            meter = metering_factors(
+                policy_id,
+                in_rain=in_rain,
+                link_occupancy=occupancy,
+                approaches=ALL_APPROACHES,
+            )
+        else:
+            meter = _game_metering_factors(
+                policy_design,
+                in_rain=in_rain,
+                link_occupancy=occupancy,
+                approaches=ALL_APPROACHES,
+                focus_link=focus_link,
+            )
 
         # 연속 게이팅이 강하게 작동할 때 일부 운전자가 BYPASS를 선택한다.
         # 우회량과 추가 지체를 별도로 기록해 전가 피해 가드가 실제 값을 검사하게 한다.
-        if policy_id == "corridor_gating" and in_rain:
-            gate_strength = max(0.0, 1.0 - meter["R1_N"])
-            diverted = min(queues["R1_N"], 0.10 * gate_strength)
+        if (policy_id == "corridor_gating" or policy_design is not None) and in_rain:
+            gate_strength = max(
+                0.0,
+                1.0
+                - (
+                    min(meter.values())
+                    if policy_design is not None
+                    else meter["R1_N"]
+                ),
+            )
+            diversion_strength = (
+                10.0
+                if policy_design is None
+                else float(policy_design["diversion_strength"])
+            )
+            diverted = min(
+                queues["R1_N"],
+                diversion_strength / 100.0 * gate_strength,
+            )
             queues["R1_N"] -= diverted
             links["BYPASS"] = min(storage["BYPASS"], links["BYPASS"] + diverted)
             diverted_vehicles += diverted
@@ -256,7 +343,7 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
             )
 
         # 회복 판정: 우천 종료 후 calm이 연속 60초 유지된 구간의 시작 시각.
-        if t >= RAIN_END and recovered_at is None:
+        if t >= effective_rain_end and recovered_at is None:
             calm = all(
                 links[l] / storage[l] < RECOVERY_OCCUPANCY_LIMIT
                 for l in ("L12", "L23")
@@ -289,9 +376,9 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
     if sc["rain_level"] != "dry":
         res.recovery_observed = recovered_at is not None
         res.recovery_time_sec = (
-            recovered_at - RAIN_END
+            recovered_at - effective_rain_end
             if recovered_at is not None
-            else DURATION - RAIN_END
+            else DURATION - effective_rain_end
         )
     res.approach_p95_delay = {a: _p95(v) for a, v in delay_series.items()}
     res.worst_approach_delay_sec = max(res.approach_p95_delay.values())
@@ -306,3 +393,27 @@ def run_simulation(scenario_id: str, seed: int, policy_id: str) -> SimResult:
     res.spillback_time_sec = round(res.spillback_time_sec, 0)
     res.completed_trips = int(res.completed_trips)
     return res
+
+
+def run_game_simulation(
+    scenario_id: str,
+    seed: int,
+    design: dict,
+    *,
+    focus_link: str,
+    demand_multiplier: float,
+    incident_link: str | None = None,
+    rain_extension_sec: int = 0,
+) -> SimResult:
+    """Run one user-authored condition-action policy without changing legacy IDs."""
+
+    return run_simulation(
+        scenario_id,
+        seed,
+        "game_policy",
+        policy_design=design,
+        focus_link=focus_link,
+        demand_multiplier=demand_multiplier,
+        incident_link=incident_link,
+        rain_extension_sec=rain_extension_sec,
+    )

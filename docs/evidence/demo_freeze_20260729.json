@@ -1,13 +1,13 @@
 {
   "artifacts": {
-    "backend/README.md": "6165a92d058ab0b75f97eb30db40bd64db24bc4ecda798c17be4eb4a8a026cf4",
-    "backend/fixtures/cached_run.json": "453a9aba42e28f2875385bf5eb2a9f3525deea99dcd1ed9446ba9f0a469ea0a2",
-    "backend/fixtures/demo_freeze_meta.json": "85ce9848e350721b40a0a25f269e7a8cc2e2566cfc158afff5b5a196bb33a592",
-    "backend/fixtures/demo_run.json": "1e22239a09f58cd91f2b6edbc550593a042a996790f8f53b90fdae9945e7ab1a",
-    "contracts/openapi.json": "b9de78d38d673df302ec42fabfe4c0ef17c8eb139de1e3d059a61495269ad1c5",
-    "docs/16_DEMO_SCRIPT.md": "22694936d4d7a5895edd377700d85506c6dc60a093b9c31a34ae84fed59971f0",
-    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "f35f71b5906ee6da2a61c7990ef0ba6c0a544d8845f66e255e7391afe25147b2",
-    "frontend/demo_run.js": "bab3493f48a17cd8ac77f2b4054cee99528cabaf6173a4d3a880cf15df0a5a75"
+    "backend/README.md": "63706ab85962d8154c594478b24b518f9bf941c90e9c784cf23b15cb7a8ac492",
+    "backend/fixtures/cached_run.json": "f657458eb15e58a03546116149adf22996a1588f1cf1f69feb3aa8716398cbcb",
+    "backend/fixtures/demo_freeze_meta.json": "0f89bd44d3a0ae44f645eb69c85a5f08f9599c8c335b4a01831d7bf5e93ca614",
+    "backend/fixtures/demo_run.json": "a220e3d26a4aecc10dbb77cc02204ac63518c0671e07fb446b1bafa9e4b8b6bb",
+    "contracts/openapi.json": "4010adc7c098d75aa98c12c246034c392d87f24cfeced93ce3b6af73744dfd66",
+    "docs/16_DEMO_SCRIPT.md": "b06447752b99054c6f2e66a83ca89c4cb19a726b704fe59b836b4b0a454024a4",
+    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "aeaf30de031780419d9cc08746ee7bd62619823c8cb315964f785e55c7c7706c",
+    "frontend/demo_run.js": "0b165d94894acae98d57e28fbfe6c78cd4de2ba68eac389f3e1204871fc31c1c"
   },
   "freeze_id": "freeze-20260729-202509-kst",
   "frozen_at": "2026-07-29T20:25:09+09:00",
@@ -18,9 +18,9 @@
     "git_commit_sha": "4d706e4bfea13d1e38dd2dd5c6d44c410003bb27",
     "provisional": true,
     "result_checksum": "c9088907640696c315685619ce18ae1529ceb8bc1e993bb36c0f080b7ce4ed89",
-    "run_id": "live-rain_spillback_a-s42-3e5be2d480",
+    "run_id": "live-rain_spillback_a-s42-d8151109a7",
     "scenario_id": "rain_spillback_a",
     "seed": 42,
-    "source_tree_checksum": "65d5d7c17defd3a95b0a3c4ab462ae62ab198ca17d1d49dbe282180f65ae129b"
+    "source_tree_checksum": "b7b538c9cf5ba8f7831127a164de0cda7443d8847a3941c3473abebe8767497e"
   }
 }

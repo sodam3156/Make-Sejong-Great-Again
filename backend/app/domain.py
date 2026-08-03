@@ -200,3 +200,115 @@ class HealthResponse(ContractModel):
     persisted_runs: int
     result_source: ResultSource
     dataset_id: str
+
+
+# ---------------------------------------------------------------------------
+# Additive game-mode contracts
+# ---------------------------------------------------------------------------
+
+
+class RegionId(str, Enum):
+    SEONGGEUM_CHEONGSA = "seonggeum_cheongsa"
+    CHEONGSA_SEJONG = "cheongsa_sejong"
+    EOJIN_CORRIDOR = "eojin_corridor"
+
+
+class MissionId(str, Enum):
+    RAIN_COMMUTE = "rain_commute"
+    RAIN_INCIDENT = "rain_incident"
+    CORRIDOR_FINAL = "corridor_final"
+
+
+class BotTier(str, Enum):
+    LUNA = "luna"
+    TERRA = "terra"
+    SOL = "sol"
+
+
+class AdaptiveMode(str, Enum):
+    SUPPORT = "support"
+    STANDARD = "standard"
+    CHALLENGE = "challenge"
+
+
+class RealityLevel(str, Enum):
+    GAME = "game"
+    REALITY = "reality"
+    POLICY = "policy"
+
+
+EquipmentId = Literal["smart_controller", "dynamic_guidance"]
+
+
+class PolicyDesignV1(ContractModel):
+    """A deliberately small condition-action policy for the game client."""
+
+    schema_version: Literal["policy-design-v1"] = "policy-design-v1"
+    trigger_occupancy_pct: int = Field(default=80, ge=65, le=95, multiple_of=5)
+    metering_strength_pct: int = Field(default=60, ge=0, le=100, multiple_of=5)
+    diversion_strength: int = Field(default=10, ge=0, le=20, multiple_of=5)
+
+
+class PlayerProgressV1(ContractModel):
+    attempts: int = Field(default=0, ge=0, le=100)
+    last_score_margin: float | None = None
+    last_completion_time_sec: float | None = Field(default=None, ge=0, le=86_400)
+    building_level: int = Field(default=1, ge=1, le=3)
+    equipment: list[EquipmentId] = Field(default_factory=list)
+
+
+class MissionEvaluationRequestV1(ContractModel):
+    region_id: RegionId
+    seed: int = Field(default=42, ge=0, le=2_147_483_647)
+    policy_design: PolicyDesignV1 = Field(default_factory=PolicyDesignV1)
+    progress: PlayerProgressV1 = Field(default_factory=PlayerProgressV1)
+
+
+class AdaptiveEventV1(ContractModel):
+    mode: AdaptiveMode
+    title: str
+    reason: str
+    demand_multiplier: float = Field(ge=0.5, le=2.0)
+    rain_extension_sec: int = Field(default=0, ge=0, le=900)
+    incident: bool = False
+
+
+class PolicyAdviceV1(ContractModel):
+    code: str
+    title: str
+    reason: str
+    tradeoff: str
+    recommended_policy: PolicyDesignV1
+    precise: bool = False
+
+
+class RunTelemetryV1(ContractModel):
+    telemetry_version: Literal["run-telemetry-v1"] = "run-telemetry-v1"
+    mission_id: MissionId
+    region_id: RegionId
+    seed: int
+    attempts: int
+    completion_time_sec: float | None = None
+    score_margin: float
+    adaptive_mode: AdaptiveMode
+    reality_level: RealityLevel = RealityLevel.GAME
+    data_version: str
+
+
+class MissionEvaluationV1(ContractModel):
+    evaluation_version: Literal["mission-evaluation-v1"] = "mission-evaluation-v1"
+    mission_id: MissionId
+    region_id: RegionId
+    result_source: Literal["live_simulation"] = "live_simulation"
+    provisional: Literal[True] = True
+    reality_level: RealityLevel = RealityLevel.GAME
+    data_version: str
+    adaptive_event: AdaptiveEventV1
+    player: dict[str, Any]
+    opponent: dict[str, Any]
+    advice: list[PolicyAdviceV1]
+    success: bool
+    satisfaction: dict[str, float]
+    progression: dict[str, Any]
+    telemetry: RunTelemetryV1
+    note: str

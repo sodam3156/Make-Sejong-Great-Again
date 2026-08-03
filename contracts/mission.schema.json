@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rainflow.local/contracts/mission.schema.json",
+  "title": "MissionEvaluationV1",
+  "type": "object",
+  "required": [
+    "evaluation_version",
+    "mission_id",
+    "region_id",
+    "result_source",
+    "provisional",
+    "reality_level",
+    "data_version",
+    "adaptive_event",
+    "player",
+    "opponent",
+    "advice",
+    "success",
+    "satisfaction",
+    "progression",
+    "telemetry",
+    "note"
+  ],
+  "properties": {
+    "evaluation_version": {"const": "mission-evaluation-v1"},
+    "mission_id": {
+      "enum": ["rain_commute", "rain_incident", "corridor_final"]
+    },
+    "region_id": {
+      "enum": ["seonggeum_cheongsa", "cheongsa_sejong", "eojin_corridor"]
+    },
+    "result_source": {"const": "live_simulation"},
+    "provisional": {"const": true},
+    "reality_level": {"const": "game"},
+    "data_version": {"type": "string", "minLength": 1},
+    "adaptive_event": {
+      "type": "object",
+      "required": ["mode", "demand_multiplier", "incident"],
+      "properties": {
+        "mode": {"enum": ["support", "standard", "challenge"]},
+        "demand_multiplier": {"type": "number", "minimum": 0.5, "maximum": 2.0},
+        "incident": {"type": "boolean"}
+      }
+    },
+    "player": {"$ref": "#/$defs/evaluation"},
+    "opponent": {"$ref": "#/$defs/evaluation"},
+    "advice": {"type": "array", "minItems": 1},
+    "success": {"type": "boolean"},
+    "satisfaction": {
+      "type": "object",
+      "required": ["traffic", "pedestrian_proxy", "accessibility"]
+    },
+    "progression": {
+      "type": "object",
+      "required": [
+        "building_level_before",
+        "building_level_after",
+        "virtual_property_value_index",
+        "credits_earned",
+        "opponent_score_margin"
+      ]
+    },
+    "telemetry": {
+      "type": "object",
+      "required": [
+        "telemetry_version",
+        "mission_id",
+        "region_id",
+        "seed",
+        "score_margin",
+        "adaptive_mode",
+        "reality_level",
+        "data_version"
+      ]
+    },
+    "note": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "evaluation": {
+      "type": "object",
+      "required": ["policy_design", "score", "kpi", "delta_vs_no_action", "guard"],
+      "properties": {
+        "policy_design": {"$ref": "policy_design.schema.json"},
+        "score": {"type": "number"},
+        "kpi": {"type": "object"},
+        "delta_vs_no_action": {"type": "object"},
+        "guard": {
+          "type": "object",
+          "required": ["passed", "violations"],
+          "properties": {
+            "passed": {"type": "boolean"},
+            "violations": {"type": "array"}
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

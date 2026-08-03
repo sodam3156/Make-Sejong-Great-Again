@@ -1,0 +1,8 @@
+{
+  "name": "RainFlow.Game",
+  "rootNamespace": "RainFlow.Game",
+  "references": [
+    "Unity.Newtonsoft.Json"
+  ],
+  "autoReferenced": true
+}

@@ -9,6 +9,15 @@ dist/
 
 backend/logs/
 
+# Unity generated state (the project source under unity/ is tracked).
+unity/**/Library/
+unity/**/Logs/
+unity/**/Temp/
+unity/**/Obj/
+unity/**/UserSettings/
+unity/**/*.csproj
+unity/**/*.sln
+
 release/*.zip
 release/windows-x64/RainFlowSejong.exe
 release/windows-x64/_internal/

@@ -1,0 +1,15 @@
+{
+  "name": "RainFlow.Game.Tests",
+  "rootNamespace": "RainFlow.Game.Tests",
+  "references": [
+    "RainFlow.Game",
+    "Unity.Newtonsoft.Json"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

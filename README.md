@@ -1,5 +1,17 @@
 # Make Sejong Great Again
 
+## AI 교통복구 게임 세로 조각
+
+기존 동결형 교통 시뮬레이터 위에 additive 게임 API와 Unity 6.3 LTS 클라이언트를 추가했다.
+
+- 미션 목록: `GET /api/missions`
+- 플레이어 정책·AI 대결: `POST /api/missions/{mission_id}/evaluate`
+- Unity 프로젝트: `unity/RainFlowGame`
+- 게임 기획·현실성 경계: `docs/17_GAME_DESIGN_V1.md`
+- 실행 모드: 로컬 FastAPI 우선, 연결 실패 시 번들 fixture
+
+게임 화면의 교통·보행 만족도와 부동산 가치지수는 합성 게임 값이며 실제 부동산 가격이나 정책 효과를 예측하지 않는다.
+
 > **센서는 이미 있다. 이제 도시가 판단하게 만들 차례다.**
 
 **RainFlow Sejong**은 실제 세종 표준노드링크의 성금교차로–청사교차로–세종교차로와 절재로 연결 관계를 화면 기준으로 삼고, 합성 큐 모델에서 우천 위험과 세 가지 대응 정책을 비교한 뒤 결정론적 안전·공정성 가드와 운영자 승인을 거치는 오프라인 디지털 트윈 프로토타입입니다.

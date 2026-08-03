@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rainflow.local/contracts/policy_design.schema.json",
+  "title": "PolicyDesignV1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "trigger_occupancy_pct",
+    "metering_strength_pct",
+    "diversion_strength"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "policy-design-v1"
+    },
+    "trigger_occupancy_pct": {
+      "type": "integer",
+      "minimum": 65,
+      "maximum": 95,
+      "multipleOf": 5
+    },
+    "metering_strength_pct": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "multipleOf": 5
+    },
+    "diversion_strength": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 20,
+      "multipleOf": 5
+    }
+  },
+  "additionalProperties": true
+}

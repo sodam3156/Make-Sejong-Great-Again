@@ -28,10 +28,13 @@ from .domain import (
     ApprovalRequest,
     ApprovalResult,
     HealthResponse,
+    MissionEvaluationRequestV1,
+    MissionEvaluationV1,
     RunResult,
     SimulationCreatedResponse,
     SimulationRequest,
 )
+from .game import evaluate_mission, mission_catalog
 from .policies import POLICIES, POLICY_LABELS, POLICY_VERSION
 from .safety import (
     RULE_VERSION,
@@ -61,7 +64,7 @@ LOGS_DIR = BACKEND_DIR / "logs"
 FRONTEND_DIR = BACKEND_DIR.parent / "frontend"
 KST = timezone(timedelta(hours=9))
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 NETWORK_VERSION = "sejong-nodelink-20260716-v1"
 DATASET_ID = "synthetic-v0"
 DATASET_SCHEMA_VERSION = "rainflow-dataset-v1"
@@ -1143,6 +1146,30 @@ def get_audit(run_id: str) -> dict[str, Any]:
         "replay": run,
         "events": STORE.audit_for_run(run_id),
     }
+
+
+# Additive game-mode endpoints. They are separate from the frozen operator
+# workflow and are always labelled as synthetic/provisional.
+@app.get("/api/missions", summary="게임 미션·지역·정책 변수 목록")
+def list_missions() -> dict[str, Any]:
+    return mission_catalog()
+
+
+@app.post(
+    "/api/missions/{mission_id}/evaluate",
+    response_model=MissionEvaluationV1,
+    summary="사용자 정책과 적응형 AI 규칙봇 평가",
+)
+def evaluate_game_mission(
+    mission_id: str,
+    request: MissionEvaluationRequestV1,
+) -> dict[str, Any]:
+    try:
+        return evaluate_mission(mission_id, request)
+    except KeyError as error:
+        raise HTTPException(status_code=404, detail="mission_id not found") from error
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
 
 
 if FRONTEND_DIR.exists():

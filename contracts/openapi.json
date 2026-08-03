@@ -1,6 +1,57 @@
 {
   "components": {
     "schemas": {
+      "AdaptiveEventV1": {
+        "additionalProperties": true,
+        "properties": {
+          "demand_multiplier": {
+            "maximum": 2.0,
+            "minimum": 0.5,
+            "title": "Demand Multiplier",
+            "type": "number"
+          },
+          "incident": {
+            "default": false,
+            "title": "Incident",
+            "type": "boolean"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/AdaptiveMode"
+          },
+          "rain_extension_sec": {
+            "default": 0,
+            "maximum": 900.0,
+            "minimum": 0.0,
+            "title": "Rain Extension Sec",
+            "type": "integer"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode",
+          "title",
+          "reason",
+          "demand_multiplier"
+        ],
+        "title": "AdaptiveEventV1",
+        "type": "object"
+      },
+      "AdaptiveMode": {
+        "enum": [
+          "support",
+          "standard",
+          "challenge"
+        ],
+        "title": "AdaptiveMode",
+        "type": "string"
+      },
       "ApprovalRequest": {
         "additionalProperties": true,
         "examples": [
@@ -438,6 +489,269 @@
         "title": "LinkState",
         "type": "object"
       },
+      "MissionEvaluationRequestV1": {
+        "additionalProperties": true,
+        "properties": {
+          "policy_design": {
+            "$ref": "#/components/schemas/PolicyDesignV1"
+          },
+          "progress": {
+            "$ref": "#/components/schemas/PlayerProgressV1"
+          },
+          "region_id": {
+            "$ref": "#/components/schemas/RegionId"
+          },
+          "seed": {
+            "default": 42,
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "region_id"
+        ],
+        "title": "MissionEvaluationRequestV1",
+        "type": "object"
+      },
+      "MissionEvaluationV1": {
+        "additionalProperties": true,
+        "properties": {
+          "adaptive_event": {
+            "$ref": "#/components/schemas/AdaptiveEventV1"
+          },
+          "advice": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyAdviceV1"
+            },
+            "title": "Advice",
+            "type": "array"
+          },
+          "data_version": {
+            "title": "Data Version",
+            "type": "string"
+          },
+          "evaluation_version": {
+            "const": "mission-evaluation-v1",
+            "default": "mission-evaluation-v1",
+            "title": "Evaluation Version",
+            "type": "string"
+          },
+          "mission_id": {
+            "$ref": "#/components/schemas/MissionId"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string"
+          },
+          "opponent": {
+            "additionalProperties": true,
+            "title": "Opponent",
+            "type": "object"
+          },
+          "player": {
+            "additionalProperties": true,
+            "title": "Player",
+            "type": "object"
+          },
+          "progression": {
+            "additionalProperties": true,
+            "title": "Progression",
+            "type": "object"
+          },
+          "provisional": {
+            "const": true,
+            "default": true,
+            "title": "Provisional",
+            "type": "boolean"
+          },
+          "reality_level": {
+            "$ref": "#/components/schemas/RealityLevel",
+            "default": "game"
+          },
+          "region_id": {
+            "$ref": "#/components/schemas/RegionId"
+          },
+          "result_source": {
+            "const": "live_simulation",
+            "default": "live_simulation",
+            "title": "Result Source",
+            "type": "string"
+          },
+          "satisfaction": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Satisfaction",
+            "type": "object"
+          },
+          "success": {
+            "title": "Success",
+            "type": "boolean"
+          },
+          "telemetry": {
+            "$ref": "#/components/schemas/RunTelemetryV1"
+          }
+        },
+        "required": [
+          "mission_id",
+          "region_id",
+          "data_version",
+          "adaptive_event",
+          "player",
+          "opponent",
+          "advice",
+          "success",
+          "satisfaction",
+          "progression",
+          "telemetry",
+          "note"
+        ],
+        "title": "MissionEvaluationV1",
+        "type": "object"
+      },
+      "MissionId": {
+        "enum": [
+          "rain_commute",
+          "rain_incident",
+          "corridor_final"
+        ],
+        "title": "MissionId",
+        "type": "string"
+      },
+      "PlayerProgressV1": {
+        "additionalProperties": true,
+        "properties": {
+          "attempts": {
+            "default": 0,
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "building_level": {
+            "default": 1,
+            "maximum": 3.0,
+            "minimum": 1.0,
+            "title": "Building Level",
+            "type": "integer"
+          },
+          "equipment": {
+            "items": {
+              "enum": [
+                "smart_controller",
+                "dynamic_guidance"
+              ],
+              "type": "string"
+            },
+            "title": "Equipment",
+            "type": "array"
+          },
+          "last_completion_time_sec": {
+            "anyOf": [
+              {
+                "maximum": 86400.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Completion Time Sec"
+          },
+          "last_score_margin": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Score Margin"
+          }
+        },
+        "title": "PlayerProgressV1",
+        "type": "object"
+      },
+      "PolicyAdviceV1": {
+        "additionalProperties": true,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "precise": {
+            "default": false,
+            "title": "Precise",
+            "type": "boolean"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "recommended_policy": {
+            "$ref": "#/components/schemas/PolicyDesignV1"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "tradeoff": {
+            "title": "Tradeoff",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "reason",
+          "tradeoff",
+          "recommended_policy"
+        ],
+        "title": "PolicyAdviceV1",
+        "type": "object"
+      },
+      "PolicyDesignV1": {
+        "additionalProperties": true,
+        "description": "A deliberately small condition-action policy for the game client.",
+        "properties": {
+          "diversion_strength": {
+            "default": 10,
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "multipleOf": 5.0,
+            "title": "Diversion Strength",
+            "type": "integer"
+          },
+          "metering_strength_pct": {
+            "default": 60,
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "multipleOf": 5.0,
+            "title": "Metering Strength Pct",
+            "type": "integer"
+          },
+          "schema_version": {
+            "const": "policy-design-v1",
+            "default": "policy-design-v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "trigger_occupancy_pct": {
+            "default": 80,
+            "maximum": 95.0,
+            "minimum": 65.0,
+            "multipleOf": 5.0,
+            "title": "Trigger Occupancy Pct",
+            "type": "integer"
+          }
+        },
+        "title": "PolicyDesignV1",
+        "type": "object"
+      },
       "PolicyId": {
         "enum": [
           "no_action",
@@ -522,6 +836,24 @@
         ],
         "title": "PolicyResult",
         "type": "object"
+      },
+      "RealityLevel": {
+        "enum": [
+          "game",
+          "reality",
+          "policy"
+        ],
+        "title": "RealityLevel",
+        "type": "string"
+      },
+      "RegionId": {
+        "enum": [
+          "seonggeum_cheongsa",
+          "cheongsa_sejong",
+          "eojin_corridor"
+        ],
+        "title": "RegionId",
+        "type": "string"
       },
       "ResultSource": {
         "enum": [
@@ -719,6 +1051,68 @@
         "title": "RunResult",
         "type": "object"
       },
+      "RunTelemetryV1": {
+        "additionalProperties": true,
+        "properties": {
+          "adaptive_mode": {
+            "$ref": "#/components/schemas/AdaptiveMode"
+          },
+          "attempts": {
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "completion_time_sec": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completion Time Sec"
+          },
+          "data_version": {
+            "title": "Data Version",
+            "type": "string"
+          },
+          "mission_id": {
+            "$ref": "#/components/schemas/MissionId"
+          },
+          "reality_level": {
+            "$ref": "#/components/schemas/RealityLevel",
+            "default": "game"
+          },
+          "region_id": {
+            "$ref": "#/components/schemas/RegionId"
+          },
+          "score_margin": {
+            "title": "Score Margin",
+            "type": "number"
+          },
+          "seed": {
+            "title": "Seed",
+            "type": "integer"
+          },
+          "telemetry_version": {
+            "const": "run-telemetry-v1",
+            "default": "run-telemetry-v1",
+            "title": "Telemetry Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mission_id",
+          "region_id",
+          "seed",
+          "attempts",
+          "score_margin",
+          "adaptive_mode",
+          "data_version"
+        ],
+        "title": "RunTelemetryV1",
+        "type": "object"
+      },
       "ScenarioId": {
         "enum": [
           "dry_base",
@@ -905,7 +1299,7 @@
   "info": {
     "description": "합성 데이터 기반 우천 연속 회전교차로 디지털 트윈. 실제 세종시 교통 성과나 실제 신호 제어를 의미하지 않습니다.",
     "title": "RainFlow Sejong",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -1004,6 +1398,75 @@
           }
         },
         "summary": "오프라인 서비스 준비 상태"
+      }
+    },
+    "/api/missions": {
+      "get": {
+        "operationId": "list_missions_api_missions_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response List Missions Api Missions Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "게임 미션·지역·정책 변수 목록"
+      }
+    },
+    "/api/missions/{mission_id}/evaluate": {
+      "post": {
+        "operationId": "evaluate_game_mission_api_missions__mission_id__evaluate_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "mission_id",
+            "required": true,
+            "schema": {
+              "title": "Mission Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissionEvaluationRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissionEvaluationV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "사용자 정책과 적응형 AI 규칙봇 평가"
       }
     },
     "/api/scenarios": {

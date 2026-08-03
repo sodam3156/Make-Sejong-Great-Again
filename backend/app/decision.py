@@ -25,7 +25,9 @@ def _number(value: object) -> float | None:
     return float(value)
 
 
-def _score(delta: dict) -> float:
+def score_policy_delta(delta: dict) -> float:
+    """Return the versioned weighted score used by operator and game modes."""
+
     weighted_delta = 0.0
     for metric, weight in _METRIC_WEIGHTS:
         value = _number(delta.get(metric))
@@ -33,6 +35,12 @@ def _score(delta: dict) -> float:
             weighted_delta += value * weight
     score = round(-weighted_delta, 3)
     return 0.0 if score == 0 else score
+
+
+def _score(delta: dict) -> float:
+    """Backward-compatible private alias for the frozen decision workflow."""
+
+    return score_policy_delta(delta)
 
 
 def _guard_risks(guard: dict) -> list[dict]:
