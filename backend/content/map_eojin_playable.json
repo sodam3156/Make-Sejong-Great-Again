@@ -1,0 +1,4864 @@
+{
+  "schemaVersion": 1,
+  "mapVersion": "tats-playable-v1",
+  "realityLevel": {
+    "geometry": "public_nodelink_2026_07_16",
+    "adjacency": "public_nodelink_2026_07_16",
+    "turnMovements": "synthetic_generated",
+    "signalTiming": "synthetic_generated",
+    "demand": "synthetic_generated"
+  },
+  "note": "도로 형상과 연결 관계만 공개 표준노드링크에서 왔다. 회전 이동·신호 현시·교통량·건물 수요는 게임용 합성값이며 실제 세종 신호 운영을 나타내지 않는다.",
+  "origin": {
+    "longitude": 127.2785,
+    "latitude": 36.504
+  },
+  "bounds": {
+    "west": 127.255,
+    "south": 36.495,
+    "east": 127.302,
+    "north": 36.513
+  },
+  "startIntersectionIds": [
+    "ix_04",
+    "ix_09",
+    "ix_07"
+  ],
+  "initiallyOpenLinkIdsByStart": {
+    "ix_04": [
+      "lk_ix_01_ix_04",
+      "lk_ix_02_ix_04",
+      "lk_ix_03_ix_04",
+      "lk_ix_04_ix_01",
+      "lk_ix_04_ix_02",
+      "lk_ix_04_ix_03",
+      "lk_ix_04_ix_08",
+      "lk_ix_04_ix_09",
+      "lk_ix_08_ix_04",
+      "lk_ix_09_ix_04"
+    ],
+    "ix_09": [
+      "lk_ix_04_ix_09",
+      "lk_ix_09_ix_04",
+      "lk_ix_09_ix_10",
+      "lk_ix_10_ix_09"
+    ],
+    "ix_07": [
+      "lk_ix_00_ix_07",
+      "lk_ix_07_ix_00",
+      "lk_ix_07_ix_08",
+      "lk_ix_08_ix_07"
+    ]
+  },
+  "intersections": [
+    {
+      "id": "ix_00",
+      "name": "다솜2로교차로",
+      "position": [
+        -1526.11,
+        -609.46
+      ],
+      "sourceNodeIds": [
+        "4130092301",
+        "4130092302",
+        "4130092303",
+        "4130092304"
+      ],
+      "approaches": [
+        {
+          "id": "ix_00:L0",
+          "legIndex": 0,
+          "bearingDeg": 71.0,
+          "compassLabel": "동",
+          "fromLinkId": "lk_ix_02_ix_00",
+          "lanes": 1,
+          "saturationVehPerSec": 0.5,
+          "sourceNodeId": "4130092301"
+        },
+        {
+          "id": "ix_00:L1",
+          "legIndex": 1,
+          "bearingDeg": 160.9,
+          "compassLabel": "남",
+          "fromLinkId": "lk_ix_07_ix_00",
+          "lanes": 3,
+          "saturationVehPerSec": 1.5,
+          "sourceNodeId": "4130092302"
+        },
+        {
+          "id": "ix_00:L2",
+          "legIndex": 2,
+          "bearingDeg": 250.9,
+          "compassLabel": "서",
+          "fromLinkId": "lk_ix_07_ix_00",
+          "lanes": 3,
+          "saturationVehPerSec": 1.5,
+          "sourceNodeId": "4130092303"
+        },
+        {
+          "id": "ix_00:L3",
+          "legIndex": 3,
+          "bearingDeg": 341.0,
+          "compassLabel": "북",
+          "fromLinkId": "lk_ix_07_ix_00",
+          "lanes": 3,
+          "saturationVehPerSec": 1.5,
+          "sourceNodeId": "4130092304"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_00:L0>L1",
+          "approachId": "ix_00:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_00_ix_07"
+        },
+        {
+          "id": "ix_00:L0>L2",
+          "approachId": "ix_00:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_00_ix_07"
+        },
+        {
+          "id": "ix_00:L0>L3",
+          "approachId": "ix_00:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_00_ix_07"
+        },
+        {
+          "id": "ix_00:L1>L0",
+          "approachId": "ix_00:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_00_ix_02"
+        },
+        {
+          "id": "ix_00:L1>L2",
+          "approachId": "ix_00:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_00_ix_07"
+        },
+        {
+          "id": "ix_00:L1>L3",
+          "approachId": "ix_00:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_00_ix_07"
+        },
+        {
+          "id": "ix_00:L2>L0",
+          "approachId": "ix_00:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_00_ix_02"
+        },
+        {
+          "id": "ix_00:L2>L1",
+          "approachId": "ix_00:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_00_ix_07"
+        },
+        {
+          "id": "ix_00:L2>L3",
+          "approachId": "ix_00:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_00_ix_07"
+        },
+        {
+          "id": "ix_00:L3>L0",
+          "approachId": "ix_00:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_00_ix_02"
+        },
+        {
+          "id": "ix_00:L3>L1",
+          "approachId": "ix_00:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_00_ix_07"
+        },
+        {
+          "id": "ix_00:L3>L2",
+          "approachId": "ix_00:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_00_ix_07"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_00#L0",
+          "legIndex": 0,
+          "widthM": 6.5,
+          "walkSec": 11,
+          "conflictingMovementIds": [
+            "ix_00:L0>L1",
+            "ix_00:L0>L2",
+            "ix_00:L0>L3",
+            "ix_00:L1>L0",
+            "ix_00:L2>L0",
+            "ix_00:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_00#L1",
+          "legIndex": 1,
+          "widthM": 19.5,
+          "walkSec": 25,
+          "conflictingMovementIds": [
+            "ix_00:L0>L1",
+            "ix_00:L1>L0",
+            "ix_00:L1>L2",
+            "ix_00:L1>L3",
+            "ix_00:L2>L1",
+            "ix_00:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_00#L2",
+          "legIndex": 2,
+          "widthM": 19.5,
+          "walkSec": 25,
+          "conflictingMovementIds": [
+            "ix_00:L0>L2",
+            "ix_00:L1>L2",
+            "ix_00:L2>L0",
+            "ix_00:L2>L1",
+            "ix_00:L2>L3",
+            "ix_00:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_00#L3",
+          "legIndex": 3,
+          "widthM": 19.5,
+          "walkSec": 25,
+          "conflictingMovementIds": [
+            "ix_00:L0>L3",
+            "ix_00:L1>L3",
+            "ix_00:L2>L3",
+            "ix_00:L3>L0",
+            "ix_00:L3>L1",
+            "ix_00:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_00:L0>L1",
+          "ix_00:L1>L2"
+        ],
+        [
+          "ix_00:L0>L1",
+          "ix_00:L1>L3"
+        ],
+        [
+          "ix_00:L0>L1",
+          "ix_00:L2>L0"
+        ],
+        [
+          "ix_00:L0>L1",
+          "ix_00:L3>L0"
+        ],
+        [
+          "ix_00:L0>L2",
+          "ix_00:L1>L3"
+        ],
+        [
+          "ix_00:L0>L2",
+          "ix_00:L2>L3"
+        ],
+        [
+          "ix_00:L0>L2",
+          "ix_00:L3>L0"
+        ],
+        [
+          "ix_00:L0>L2",
+          "ix_00:L3>L1"
+        ],
+        [
+          "ix_00:L1>L2",
+          "ix_00:L2>L0"
+        ],
+        [
+          "ix_00:L1>L2",
+          "ix_00:L2>L3"
+        ],
+        [
+          "ix_00:L1>L2",
+          "ix_00:L3>L1"
+        ],
+        [
+          "ix_00:L1>L3",
+          "ix_00:L2>L0"
+        ],
+        [
+          "ix_00:L1>L3",
+          "ix_00:L3>L0"
+        ],
+        [
+          "ix_00:L2>L0",
+          "ix_00:L3>L1"
+        ],
+        [
+          "ix_00:L2>L3",
+          "ix_00:L3>L0"
+        ],
+        [
+          "ix_00:L2>L3",
+          "ix_00:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_00/default",
+        "intersectionId": "ix_00",
+        "stages": [
+          {
+            "stageId": "ix_00/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_00:L0>L2",
+              "ix_00:L0>L3",
+              "ix_00:L2>L0",
+              "ix_00:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_00/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_00:L0>L1",
+              "ix_00:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_00/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_00:L1>L0",
+              "ix_00:L1>L3",
+              "ix_00:L3>L1",
+              "ix_00:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_00/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_00:L1>L2",
+              "ix_00:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    },
+    {
+      "id": "ix_01",
+      "name": "방축사거리",
+      "position": [
+        -2036.88,
+        863.37
+      ],
+      "sourceNodeIds": [
+        "4130081901",
+        "4130081902",
+        "4130081903",
+        "4130081904"
+      ],
+      "approaches": [
+        {
+          "id": "ix_01:L0",
+          "legIndex": 0,
+          "bearingDeg": 32.4,
+          "compassLabel": "북동",
+          "fromLinkId": "lk_gate_ix_01_0_ix_01",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130081901"
+        },
+        {
+          "id": "ix_01:L1",
+          "legIndex": 1,
+          "bearingDeg": 133.9,
+          "compassLabel": "남동",
+          "fromLinkId": "lk_ix_03_ix_01",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130081902"
+        },
+        {
+          "id": "ix_01:L2",
+          "legIndex": 2,
+          "bearingDeg": 212.5,
+          "compassLabel": "남서",
+          "fromLinkId": "lk_ix_04_ix_01",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130081903"
+        },
+        {
+          "id": "ix_01:L3",
+          "legIndex": 3,
+          "bearingDeg": 314.0,
+          "compassLabel": "북서",
+          "fromLinkId": "lk_gate_ix_01_3_ix_01",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130081904"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_01:L0>L1",
+          "approachId": "ix_01:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_01_ix_03"
+        },
+        {
+          "id": "ix_01:L0>L2",
+          "approachId": "ix_01:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_01_ix_04"
+        },
+        {
+          "id": "ix_01:L0>L3",
+          "approachId": "ix_01:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_01_gate_ix_01_3"
+        },
+        {
+          "id": "ix_01:L1>L0",
+          "approachId": "ix_01:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_01_gate_ix_01_0"
+        },
+        {
+          "id": "ix_01:L1>L2",
+          "approachId": "ix_01:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_01_ix_04"
+        },
+        {
+          "id": "ix_01:L1>L3",
+          "approachId": "ix_01:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_01_gate_ix_01_3"
+        },
+        {
+          "id": "ix_01:L2>L0",
+          "approachId": "ix_01:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_01_gate_ix_01_0"
+        },
+        {
+          "id": "ix_01:L2>L1",
+          "approachId": "ix_01:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_01_ix_03"
+        },
+        {
+          "id": "ix_01:L2>L3",
+          "approachId": "ix_01:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_01_gate_ix_01_3"
+        },
+        {
+          "id": "ix_01:L3>L0",
+          "approachId": "ix_01:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_01_gate_ix_01_0"
+        },
+        {
+          "id": "ix_01:L3>L1",
+          "approachId": "ix_01:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_01_ix_03"
+        },
+        {
+          "id": "ix_01:L3>L2",
+          "approachId": "ix_01:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_01_ix_04"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_01#L0",
+          "legIndex": 0,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_01:L0>L1",
+            "ix_01:L0>L2",
+            "ix_01:L0>L3",
+            "ix_01:L1>L0",
+            "ix_01:L2>L0",
+            "ix_01:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_01#L1",
+          "legIndex": 1,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_01:L0>L1",
+            "ix_01:L1>L0",
+            "ix_01:L1>L2",
+            "ix_01:L1>L3",
+            "ix_01:L2>L1",
+            "ix_01:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_01#L2",
+          "legIndex": 2,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_01:L0>L2",
+            "ix_01:L1>L2",
+            "ix_01:L2>L0",
+            "ix_01:L2>L1",
+            "ix_01:L2>L3",
+            "ix_01:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_01#L3",
+          "legIndex": 3,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_01:L0>L3",
+            "ix_01:L1>L3",
+            "ix_01:L2>L3",
+            "ix_01:L3>L0",
+            "ix_01:L3>L1",
+            "ix_01:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_01:L0>L1",
+          "ix_01:L1>L2"
+        ],
+        [
+          "ix_01:L0>L1",
+          "ix_01:L1>L3"
+        ],
+        [
+          "ix_01:L0>L1",
+          "ix_01:L2>L0"
+        ],
+        [
+          "ix_01:L0>L1",
+          "ix_01:L3>L0"
+        ],
+        [
+          "ix_01:L0>L2",
+          "ix_01:L1>L3"
+        ],
+        [
+          "ix_01:L0>L2",
+          "ix_01:L2>L3"
+        ],
+        [
+          "ix_01:L0>L2",
+          "ix_01:L3>L0"
+        ],
+        [
+          "ix_01:L0>L2",
+          "ix_01:L3>L1"
+        ],
+        [
+          "ix_01:L1>L2",
+          "ix_01:L2>L0"
+        ],
+        [
+          "ix_01:L1>L2",
+          "ix_01:L2>L3"
+        ],
+        [
+          "ix_01:L1>L2",
+          "ix_01:L3>L1"
+        ],
+        [
+          "ix_01:L1>L3",
+          "ix_01:L2>L0"
+        ],
+        [
+          "ix_01:L1>L3",
+          "ix_01:L3>L0"
+        ],
+        [
+          "ix_01:L2>L0",
+          "ix_01:L3>L1"
+        ],
+        [
+          "ix_01:L2>L3",
+          "ix_01:L3>L0"
+        ],
+        [
+          "ix_01:L2>L3",
+          "ix_01:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_01/default",
+        "intersectionId": "ix_01",
+        "stages": [
+          {
+            "stageId": "ix_01/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_01:L0>L2",
+              "ix_01:L0>L3",
+              "ix_01:L2>L0",
+              "ix_01:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_01/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_01:L0>L1",
+              "ix_01:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_01/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_01:L1>L0",
+              "ix_01:L1>L3",
+              "ix_01:L3>L1",
+              "ix_01:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_01/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_01:L1>L2",
+              "ix_01:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    },
+    {
+      "id": "ix_02",
+      "name": "보건복지부북측교차로",
+      "position": [
+        -1484.43,
+        -75.41
+      ],
+      "sourceNodeIds": [
+        "4130093301",
+        "4130093302",
+        "4130093303",
+        "4130093304"
+      ],
+      "approaches": [
+        {
+          "id": "ix_02:L0",
+          "legIndex": 0,
+          "bearingDeg": 74.5,
+          "compassLabel": "동",
+          "fromLinkId": "lk_ix_04_ix_02",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130093301"
+        },
+        {
+          "id": "ix_02:L1",
+          "legIndex": 1,
+          "bearingDeg": 164.2,
+          "compassLabel": "남",
+          "fromLinkId": "lk_ix_00_ix_02",
+          "lanes": 1,
+          "saturationVehPerSec": 0.5,
+          "sourceNodeId": "4130093302"
+        },
+        {
+          "id": "ix_02:L2",
+          "legIndex": 2,
+          "bearingDeg": 254.4,
+          "compassLabel": "서",
+          "fromLinkId": "lk_ix_08_ix_02",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130093303"
+        },
+        {
+          "id": "ix_02:L3",
+          "legIndex": 3,
+          "bearingDeg": 344.3,
+          "compassLabel": "북",
+          "fromLinkId": "lk_ix_04_ix_02",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130093304"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_02:L0>L1",
+          "approachId": "ix_02:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_02_ix_00"
+        },
+        {
+          "id": "ix_02:L0>L2",
+          "approachId": "ix_02:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_02_ix_08"
+        },
+        {
+          "id": "ix_02:L0>L3",
+          "approachId": "ix_02:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_02_ix_04"
+        },
+        {
+          "id": "ix_02:L1>L0",
+          "approachId": "ix_02:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_02_ix_04"
+        },
+        {
+          "id": "ix_02:L1>L2",
+          "approachId": "ix_02:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_02_ix_08"
+        },
+        {
+          "id": "ix_02:L1>L3",
+          "approachId": "ix_02:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_02_ix_04"
+        },
+        {
+          "id": "ix_02:L2>L0",
+          "approachId": "ix_02:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_02_ix_04"
+        },
+        {
+          "id": "ix_02:L2>L1",
+          "approachId": "ix_02:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_02_ix_00"
+        },
+        {
+          "id": "ix_02:L2>L3",
+          "approachId": "ix_02:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_02_ix_04"
+        },
+        {
+          "id": "ix_02:L3>L0",
+          "approachId": "ix_02:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_02_ix_04"
+        },
+        {
+          "id": "ix_02:L3>L1",
+          "approachId": "ix_02:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_02_ix_00"
+        },
+        {
+          "id": "ix_02:L3>L2",
+          "approachId": "ix_02:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_02_ix_08"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_02#L0",
+          "legIndex": 0,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_02:L0>L1",
+            "ix_02:L0>L2",
+            "ix_02:L0>L3",
+            "ix_02:L1>L0",
+            "ix_02:L2>L0",
+            "ix_02:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_02#L1",
+          "legIndex": 1,
+          "widthM": 6.5,
+          "walkSec": 11,
+          "conflictingMovementIds": [
+            "ix_02:L0>L1",
+            "ix_02:L1>L0",
+            "ix_02:L1>L2",
+            "ix_02:L1>L3",
+            "ix_02:L2>L1",
+            "ix_02:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_02#L2",
+          "legIndex": 2,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_02:L0>L2",
+            "ix_02:L1>L2",
+            "ix_02:L2>L0",
+            "ix_02:L2>L1",
+            "ix_02:L2>L3",
+            "ix_02:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_02#L3",
+          "legIndex": 3,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_02:L0>L3",
+            "ix_02:L1>L3",
+            "ix_02:L2>L3",
+            "ix_02:L3>L0",
+            "ix_02:L3>L1",
+            "ix_02:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_02:L0>L1",
+          "ix_02:L1>L2"
+        ],
+        [
+          "ix_02:L0>L1",
+          "ix_02:L1>L3"
+        ],
+        [
+          "ix_02:L0>L1",
+          "ix_02:L2>L0"
+        ],
+        [
+          "ix_02:L0>L1",
+          "ix_02:L3>L0"
+        ],
+        [
+          "ix_02:L0>L2",
+          "ix_02:L1>L3"
+        ],
+        [
+          "ix_02:L0>L2",
+          "ix_02:L2>L3"
+        ],
+        [
+          "ix_02:L0>L2",
+          "ix_02:L3>L0"
+        ],
+        [
+          "ix_02:L0>L2",
+          "ix_02:L3>L1"
+        ],
+        [
+          "ix_02:L1>L2",
+          "ix_02:L2>L0"
+        ],
+        [
+          "ix_02:L1>L2",
+          "ix_02:L2>L3"
+        ],
+        [
+          "ix_02:L1>L2",
+          "ix_02:L3>L1"
+        ],
+        [
+          "ix_02:L1>L3",
+          "ix_02:L2>L0"
+        ],
+        [
+          "ix_02:L1>L3",
+          "ix_02:L3>L0"
+        ],
+        [
+          "ix_02:L2>L0",
+          "ix_02:L3>L1"
+        ],
+        [
+          "ix_02:L2>L3",
+          "ix_02:L3>L0"
+        ],
+        [
+          "ix_02:L2>L3",
+          "ix_02:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_02/default",
+        "intersectionId": "ix_02",
+        "stages": [
+          {
+            "stageId": "ix_02/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_02:L0>L2",
+              "ix_02:L0>L3",
+              "ix_02:L2>L0",
+              "ix_02:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_02/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_02:L0>L1",
+              "ix_02:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_02/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_02:L1>L0",
+              "ix_02:L1>L3",
+              "ix_02:L3>L1",
+              "ix_02:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_02/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_02:L1>L2",
+              "ix_02:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    },
+    {
+      "id": "ix_03",
+      "name": "보듬3로교차로",
+      "position": [
+        -1772.17,
+        924.19
+      ],
+      "sourceNodeIds": [
+        "4130087101",
+        "4130087102",
+        "4130087103",
+        "4130087104"
+      ],
+      "approaches": [
+        {
+          "id": "ix_03:L0",
+          "legIndex": 0,
+          "bearingDeg": 26.7,
+          "compassLabel": "북동",
+          "fromLinkId": "lk_gate_ix_03_0_ix_03",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130087101"
+        },
+        {
+          "id": "ix_03:L1",
+          "legIndex": 1,
+          "bearingDeg": 126.8,
+          "compassLabel": "남동",
+          "fromLinkId": "lk_ix_04_ix_03",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130087102"
+        },
+        {
+          "id": "ix_03:L2",
+          "legIndex": 2,
+          "bearingDeg": 206.6,
+          "compassLabel": "남서",
+          "fromLinkId": "lk_gate_ix_03_2_ix_03",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130087103"
+        },
+        {
+          "id": "ix_03:L3",
+          "legIndex": 3,
+          "bearingDeg": 306.8,
+          "compassLabel": "북서",
+          "fromLinkId": "lk_ix_01_ix_03",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130087104"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_03:L0>L1",
+          "approachId": "ix_03:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_03_ix_04"
+        },
+        {
+          "id": "ix_03:L0>L2",
+          "approachId": "ix_03:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_03_gate_ix_03_2"
+        },
+        {
+          "id": "ix_03:L0>L3",
+          "approachId": "ix_03:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_03_ix_01"
+        },
+        {
+          "id": "ix_03:L1>L0",
+          "approachId": "ix_03:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_03_gate_ix_03_0"
+        },
+        {
+          "id": "ix_03:L1>L2",
+          "approachId": "ix_03:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_03_gate_ix_03_2"
+        },
+        {
+          "id": "ix_03:L1>L3",
+          "approachId": "ix_03:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_03_ix_01"
+        },
+        {
+          "id": "ix_03:L2>L0",
+          "approachId": "ix_03:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_03_gate_ix_03_0"
+        },
+        {
+          "id": "ix_03:L2>L1",
+          "approachId": "ix_03:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_03_ix_04"
+        },
+        {
+          "id": "ix_03:L2>L3",
+          "approachId": "ix_03:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_03_ix_01"
+        },
+        {
+          "id": "ix_03:L3>L0",
+          "approachId": "ix_03:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_03_gate_ix_03_0"
+        },
+        {
+          "id": "ix_03:L3>L1",
+          "approachId": "ix_03:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_03_ix_04"
+        },
+        {
+          "id": "ix_03:L3>L2",
+          "approachId": "ix_03:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_03_gate_ix_03_2"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_03#L0",
+          "legIndex": 0,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_03:L0>L1",
+            "ix_03:L0>L2",
+            "ix_03:L0>L3",
+            "ix_03:L1>L0",
+            "ix_03:L2>L0",
+            "ix_03:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_03#L1",
+          "legIndex": 1,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_03:L0>L1",
+            "ix_03:L1>L0",
+            "ix_03:L1>L2",
+            "ix_03:L1>L3",
+            "ix_03:L2>L1",
+            "ix_03:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_03#L2",
+          "legIndex": 2,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_03:L0>L2",
+            "ix_03:L1>L2",
+            "ix_03:L2>L0",
+            "ix_03:L2>L1",
+            "ix_03:L2>L3",
+            "ix_03:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_03#L3",
+          "legIndex": 3,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_03:L0>L3",
+            "ix_03:L1>L3",
+            "ix_03:L2>L3",
+            "ix_03:L3>L0",
+            "ix_03:L3>L1",
+            "ix_03:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_03:L0>L1",
+          "ix_03:L1>L2"
+        ],
+        [
+          "ix_03:L0>L1",
+          "ix_03:L1>L3"
+        ],
+        [
+          "ix_03:L0>L1",
+          "ix_03:L2>L0"
+        ],
+        [
+          "ix_03:L0>L1",
+          "ix_03:L3>L0"
+        ],
+        [
+          "ix_03:L0>L2",
+          "ix_03:L1>L3"
+        ],
+        [
+          "ix_03:L0>L2",
+          "ix_03:L2>L3"
+        ],
+        [
+          "ix_03:L0>L2",
+          "ix_03:L3>L0"
+        ],
+        [
+          "ix_03:L0>L2",
+          "ix_03:L3>L1"
+        ],
+        [
+          "ix_03:L1>L2",
+          "ix_03:L2>L0"
+        ],
+        [
+          "ix_03:L1>L2",
+          "ix_03:L2>L3"
+        ],
+        [
+          "ix_03:L1>L2",
+          "ix_03:L3>L1"
+        ],
+        [
+          "ix_03:L1>L3",
+          "ix_03:L2>L0"
+        ],
+        [
+          "ix_03:L1>L3",
+          "ix_03:L3>L0"
+        ],
+        [
+          "ix_03:L2>L0",
+          "ix_03:L3>L1"
+        ],
+        [
+          "ix_03:L2>L3",
+          "ix_03:L3>L0"
+        ],
+        [
+          "ix_03:L2>L3",
+          "ix_03:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_03/default",
+        "intersectionId": "ix_03",
+        "stages": [
+          {
+            "stageId": "ix_03/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_03:L0>L2",
+              "ix_03:L0>L3",
+              "ix_03:L2>L0",
+              "ix_03:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_03/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_03:L0>L1",
+              "ix_03:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_03/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_03:L1>L0",
+              "ix_03:L1>L3",
+              "ix_03:L3>L1",
+              "ix_03:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_03/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_03:L1>L2",
+              "ix_03:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    },
+    {
+      "id": "ix_04",
+      "name": "성금교차로",
+      "position": [
+        -1518.01,
+        502.66
+      ],
+      "sourceNodeIds": [
+        "4130092501",
+        "4130092502",
+        "4130092503",
+        "4130092504"
+      ],
+      "approaches": [
+        {
+          "id": "ix_04:L0",
+          "legIndex": 0,
+          "bearingDeg": 59.8,
+          "compassLabel": "북동",
+          "fromLinkId": "lk_ix_09_ix_04",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130092501"
+        },
+        {
+          "id": "ix_04:L1",
+          "legIndex": 1,
+          "bearingDeg": 108.3,
+          "compassLabel": "동",
+          "fromLinkId": "lk_ix_09_ix_04",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130092502"
+        },
+        {
+          "id": "ix_04:L2",
+          "legIndex": 2,
+          "bearingDeg": 240.0,
+          "compassLabel": "남서",
+          "fromLinkId": "lk_ix_08_ix_04",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130092503"
+        },
+        {
+          "id": "ix_04:L3",
+          "legIndex": 3,
+          "bearingDeg": 288.2,
+          "compassLabel": "서",
+          "fromLinkId": "lk_ix_01_ix_04",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130092504"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_04:L0>L1",
+          "approachId": "ix_04:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_04_ix_09"
+        },
+        {
+          "id": "ix_04:L0>L2",
+          "approachId": "ix_04:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_04_ix_08"
+        },
+        {
+          "id": "ix_04:L0>L3",
+          "approachId": "ix_04:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_04_ix_01"
+        },
+        {
+          "id": "ix_04:L1>L0",
+          "approachId": "ix_04:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_04_ix_09"
+        },
+        {
+          "id": "ix_04:L1>L2",
+          "approachId": "ix_04:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_04_ix_08"
+        },
+        {
+          "id": "ix_04:L1>L3",
+          "approachId": "ix_04:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_04_ix_01"
+        },
+        {
+          "id": "ix_04:L2>L0",
+          "approachId": "ix_04:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_04_ix_09"
+        },
+        {
+          "id": "ix_04:L2>L1",
+          "approachId": "ix_04:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_04_ix_09"
+        },
+        {
+          "id": "ix_04:L2>L3",
+          "approachId": "ix_04:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_04_ix_01"
+        },
+        {
+          "id": "ix_04:L3>L0",
+          "approachId": "ix_04:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_04_ix_09"
+        },
+        {
+          "id": "ix_04:L3>L1",
+          "approachId": "ix_04:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_04_ix_09"
+        },
+        {
+          "id": "ix_04:L3>L2",
+          "approachId": "ix_04:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_04_ix_08"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_04#L0",
+          "legIndex": 0,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_04:L0>L1",
+            "ix_04:L0>L2",
+            "ix_04:L0>L3",
+            "ix_04:L1>L0",
+            "ix_04:L2>L0",
+            "ix_04:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_04#L1",
+          "legIndex": 1,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_04:L0>L1",
+            "ix_04:L1>L0",
+            "ix_04:L1>L2",
+            "ix_04:L1>L3",
+            "ix_04:L2>L1",
+            "ix_04:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_04#L2",
+          "legIndex": 2,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_04:L0>L2",
+            "ix_04:L1>L2",
+            "ix_04:L2>L0",
+            "ix_04:L2>L1",
+            "ix_04:L2>L3",
+            "ix_04:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_04#L3",
+          "legIndex": 3,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_04:L0>L3",
+            "ix_04:L1>L3",
+            "ix_04:L2>L3",
+            "ix_04:L3>L0",
+            "ix_04:L3>L1",
+            "ix_04:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_04:L0>L1",
+          "ix_04:L1>L2"
+        ],
+        [
+          "ix_04:L0>L1",
+          "ix_04:L1>L3"
+        ],
+        [
+          "ix_04:L0>L1",
+          "ix_04:L2>L0"
+        ],
+        [
+          "ix_04:L0>L1",
+          "ix_04:L3>L0"
+        ],
+        [
+          "ix_04:L0>L2",
+          "ix_04:L1>L3"
+        ],
+        [
+          "ix_04:L0>L2",
+          "ix_04:L2>L3"
+        ],
+        [
+          "ix_04:L0>L2",
+          "ix_04:L3>L0"
+        ],
+        [
+          "ix_04:L0>L2",
+          "ix_04:L3>L1"
+        ],
+        [
+          "ix_04:L1>L2",
+          "ix_04:L2>L0"
+        ],
+        [
+          "ix_04:L1>L2",
+          "ix_04:L2>L3"
+        ],
+        [
+          "ix_04:L1>L2",
+          "ix_04:L3>L1"
+        ],
+        [
+          "ix_04:L1>L3",
+          "ix_04:L2>L0"
+        ],
+        [
+          "ix_04:L1>L3",
+          "ix_04:L3>L0"
+        ],
+        [
+          "ix_04:L2>L0",
+          "ix_04:L3>L1"
+        ],
+        [
+          "ix_04:L2>L3",
+          "ix_04:L3>L0"
+        ],
+        [
+          "ix_04:L2>L3",
+          "ix_04:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_04/default",
+        "intersectionId": "ix_04",
+        "stages": [
+          {
+            "stageId": "ix_04/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_04:L0>L2",
+              "ix_04:L0>L3",
+              "ix_04:L2>L0",
+              "ix_04:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_04/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_04:L0>L1",
+              "ix_04:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_04/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_04:L1>L0",
+              "ix_04:L1>L3",
+              "ix_04:L3>L1",
+              "ix_04:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_04/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_04:L1>L2",
+              "ix_04:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    },
+    {
+      "id": "ix_05",
+      "name": "세종교차로",
+      "position": [
+        1573.77,
+        -388.21
+      ],
+      "sourceNodeIds": [
+        "4130138001",
+        "4130138002",
+        "4130138003",
+        "4130138004"
+      ],
+      "approaches": [
+        {
+          "id": "ix_05:L0",
+          "legIndex": 0,
+          "bearingDeg": 70.6,
+          "compassLabel": "동",
+          "fromLinkId": "lk_ix_06_ix_05",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130138001"
+        },
+        {
+          "id": "ix_05:L1",
+          "legIndex": 1,
+          "bearingDeg": 167.1,
+          "compassLabel": "남",
+          "fromLinkId": "lk_gate_ix_05_1_ix_05",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130138002"
+        },
+        {
+          "id": "ix_05:L2",
+          "legIndex": 2,
+          "bearingDeg": 246.9,
+          "compassLabel": "남서",
+          "fromLinkId": "lk_ix_10_ix_05",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130138003"
+        },
+        {
+          "id": "ix_05:L3",
+          "legIndex": 3,
+          "bearingDeg": 352.3,
+          "compassLabel": "북",
+          "fromLinkId": "lk_ix_10_ix_05",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130138004"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_05:L0>L1",
+          "approachId": "ix_05:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_05_gate_ix_05_1"
+        },
+        {
+          "id": "ix_05:L0>L2",
+          "approachId": "ix_05:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_05_ix_10"
+        },
+        {
+          "id": "ix_05:L0>L3",
+          "approachId": "ix_05:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_05_ix_10"
+        },
+        {
+          "id": "ix_05:L1>L0",
+          "approachId": "ix_05:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_05_ix_06"
+        },
+        {
+          "id": "ix_05:L1>L2",
+          "approachId": "ix_05:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_05_ix_10"
+        },
+        {
+          "id": "ix_05:L1>L3",
+          "approachId": "ix_05:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_05_ix_10"
+        },
+        {
+          "id": "ix_05:L2>L0",
+          "approachId": "ix_05:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_05_ix_06"
+        },
+        {
+          "id": "ix_05:L2>L1",
+          "approachId": "ix_05:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_05_gate_ix_05_1"
+        },
+        {
+          "id": "ix_05:L2>L3",
+          "approachId": "ix_05:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_05_ix_10"
+        },
+        {
+          "id": "ix_05:L3>L0",
+          "approachId": "ix_05:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_05_ix_06"
+        },
+        {
+          "id": "ix_05:L3>L1",
+          "approachId": "ix_05:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_05_gate_ix_05_1"
+        },
+        {
+          "id": "ix_05:L3>L2",
+          "approachId": "ix_05:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_05_ix_10"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_05#L0",
+          "legIndex": 0,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_05:L0>L1",
+            "ix_05:L0>L2",
+            "ix_05:L0>L3",
+            "ix_05:L1>L0",
+            "ix_05:L2>L0",
+            "ix_05:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_05#L1",
+          "legIndex": 1,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_05:L0>L1",
+            "ix_05:L1>L0",
+            "ix_05:L1>L2",
+            "ix_05:L1>L3",
+            "ix_05:L2>L1",
+            "ix_05:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_05#L2",
+          "legIndex": 2,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_05:L0>L2",
+            "ix_05:L1>L2",
+            "ix_05:L2>L0",
+            "ix_05:L2>L1",
+            "ix_05:L2>L3",
+            "ix_05:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_05#L3",
+          "legIndex": 3,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_05:L0>L3",
+            "ix_05:L1>L3",
+            "ix_05:L2>L3",
+            "ix_05:L3>L0",
+            "ix_05:L3>L1",
+            "ix_05:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_05:L0>L1",
+          "ix_05:L1>L2"
+        ],
+        [
+          "ix_05:L0>L1",
+          "ix_05:L1>L3"
+        ],
+        [
+          "ix_05:L0>L1",
+          "ix_05:L2>L0"
+        ],
+        [
+          "ix_05:L0>L1",
+          "ix_05:L3>L0"
+        ],
+        [
+          "ix_05:L0>L2",
+          "ix_05:L1>L3"
+        ],
+        [
+          "ix_05:L0>L2",
+          "ix_05:L2>L3"
+        ],
+        [
+          "ix_05:L0>L2",
+          "ix_05:L3>L0"
+        ],
+        [
+          "ix_05:L0>L2",
+          "ix_05:L3>L1"
+        ],
+        [
+          "ix_05:L1>L2",
+          "ix_05:L2>L0"
+        ],
+        [
+          "ix_05:L1>L2",
+          "ix_05:L2>L3"
+        ],
+        [
+          "ix_05:L1>L2",
+          "ix_05:L3>L1"
+        ],
+        [
+          "ix_05:L1>L3",
+          "ix_05:L2>L0"
+        ],
+        [
+          "ix_05:L1>L3",
+          "ix_05:L3>L0"
+        ],
+        [
+          "ix_05:L2>L0",
+          "ix_05:L3>L1"
+        ],
+        [
+          "ix_05:L2>L3",
+          "ix_05:L3>L0"
+        ],
+        [
+          "ix_05:L2>L3",
+          "ix_05:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_05/default",
+        "intersectionId": "ix_05",
+        "stages": [
+          {
+            "stageId": "ix_05/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_05:L0>L2",
+              "ix_05:L0>L3",
+              "ix_05:L2>L0",
+              "ix_05:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_05/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_05:L0>L1",
+              "ix_05:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_05/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_05:L1>L0",
+              "ix_05:L1>L3",
+              "ix_05:L3>L1",
+              "ix_05:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_05/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_05:L1>L2",
+              "ix_05:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    },
+    {
+      "id": "ix_06",
+      "name": "양화1교차로",
+      "position": [
+        1749.86,
+        -103.51
+      ],
+      "sourceNodeIds": [
+        "4130141101",
+        "4130141102",
+        "4130141103",
+        "4130141104"
+      ],
+      "approaches": [
+        {
+          "id": "ix_06:L0",
+          "legIndex": 0,
+          "bearingDeg": 16.3,
+          "compassLabel": "북",
+          "fromLinkId": "lk_ix_10_ix_06",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130141104"
+        },
+        {
+          "id": "ix_06:L1",
+          "legIndex": 1,
+          "bearingDeg": 82.9,
+          "compassLabel": "동",
+          "fromLinkId": "lk_gate_ix_06_1_ix_06",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130141101"
+        },
+        {
+          "id": "ix_06:L2",
+          "legIndex": 2,
+          "bearingDeg": 196.3,
+          "compassLabel": "남",
+          "fromLinkId": "lk_gate_ix_06_2_ix_06",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130141102"
+        },
+        {
+          "id": "ix_06:L3",
+          "legIndex": 3,
+          "bearingDeg": 262.9,
+          "compassLabel": "서",
+          "fromLinkId": "lk_ix_05_ix_06",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130141103"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_06:L0>L1",
+          "approachId": "ix_06:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_06_gate_ix_06_1"
+        },
+        {
+          "id": "ix_06:L0>L2",
+          "approachId": "ix_06:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_06_gate_ix_06_2"
+        },
+        {
+          "id": "ix_06:L0>L3",
+          "approachId": "ix_06:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_06_ix_05"
+        },
+        {
+          "id": "ix_06:L1>L0",
+          "approachId": "ix_06:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_06_ix_10"
+        },
+        {
+          "id": "ix_06:L1>L2",
+          "approachId": "ix_06:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_06_gate_ix_06_2"
+        },
+        {
+          "id": "ix_06:L1>L3",
+          "approachId": "ix_06:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_06_ix_05"
+        },
+        {
+          "id": "ix_06:L2>L0",
+          "approachId": "ix_06:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_06_ix_10"
+        },
+        {
+          "id": "ix_06:L2>L1",
+          "approachId": "ix_06:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_06_gate_ix_06_1"
+        },
+        {
+          "id": "ix_06:L2>L3",
+          "approachId": "ix_06:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_06_ix_05"
+        },
+        {
+          "id": "ix_06:L3>L0",
+          "approachId": "ix_06:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_06_ix_10"
+        },
+        {
+          "id": "ix_06:L3>L1",
+          "approachId": "ix_06:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_06_gate_ix_06_1"
+        },
+        {
+          "id": "ix_06:L3>L2",
+          "approachId": "ix_06:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_06_gate_ix_06_2"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_06#L0",
+          "legIndex": 0,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_06:L0>L1",
+            "ix_06:L0>L2",
+            "ix_06:L0>L3",
+            "ix_06:L1>L0",
+            "ix_06:L2>L0",
+            "ix_06:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_06#L1",
+          "legIndex": 1,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_06:L0>L1",
+            "ix_06:L1>L0",
+            "ix_06:L1>L2",
+            "ix_06:L1>L3",
+            "ix_06:L2>L1",
+            "ix_06:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_06#L2",
+          "legIndex": 2,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_06:L0>L2",
+            "ix_06:L1>L2",
+            "ix_06:L2>L0",
+            "ix_06:L2>L1",
+            "ix_06:L2>L3",
+            "ix_06:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_06#L3",
+          "legIndex": 3,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_06:L0>L3",
+            "ix_06:L1>L3",
+            "ix_06:L2>L3",
+            "ix_06:L3>L0",
+            "ix_06:L3>L1",
+            "ix_06:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_06:L0>L1",
+          "ix_06:L1>L2"
+        ],
+        [
+          "ix_06:L0>L1",
+          "ix_06:L1>L3"
+        ],
+        [
+          "ix_06:L0>L1",
+          "ix_06:L2>L0"
+        ],
+        [
+          "ix_06:L0>L1",
+          "ix_06:L3>L0"
+        ],
+        [
+          "ix_06:L0>L2",
+          "ix_06:L1>L3"
+        ],
+        [
+          "ix_06:L0>L2",
+          "ix_06:L2>L3"
+        ],
+        [
+          "ix_06:L0>L2",
+          "ix_06:L3>L0"
+        ],
+        [
+          "ix_06:L0>L2",
+          "ix_06:L3>L1"
+        ],
+        [
+          "ix_06:L1>L2",
+          "ix_06:L2>L0"
+        ],
+        [
+          "ix_06:L1>L2",
+          "ix_06:L2>L3"
+        ],
+        [
+          "ix_06:L1>L2",
+          "ix_06:L3>L1"
+        ],
+        [
+          "ix_06:L1>L3",
+          "ix_06:L2>L0"
+        ],
+        [
+          "ix_06:L1>L3",
+          "ix_06:L3>L0"
+        ],
+        [
+          "ix_06:L2>L0",
+          "ix_06:L3>L1"
+        ],
+        [
+          "ix_06:L2>L3",
+          "ix_06:L3>L0"
+        ],
+        [
+          "ix_06:L2>L3",
+          "ix_06:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_06/default",
+        "intersectionId": "ix_06",
+        "stages": [
+          {
+            "stageId": "ix_06/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_06:L0>L2",
+              "ix_06:L0>L3",
+              "ix_06:L2>L0",
+              "ix_06:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_06/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_06:L0>L1",
+              "ix_06:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_06/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_06:L1>L0",
+              "ix_06:L1>L3",
+              "ix_06:L3>L1",
+              "ix_06:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_06/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_06:L1>L2",
+              "ix_06:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    },
+    {
+      "id": "ix_07",
+      "name": "어진교차로",
+      "position": [
+        -1819.32,
+        -624.51
+      ],
+      "sourceNodeIds": [
+        "4130086701",
+        "4130086702",
+        "4130086703",
+        "4130086704"
+      ],
+      "approaches": [
+        {
+          "id": "ix_07:L0",
+          "legIndex": 0,
+          "bearingDeg": 85.6,
+          "compassLabel": "동",
+          "fromLinkId": "lk_ix_00_ix_07",
+          "lanes": 3,
+          "saturationVehPerSec": 1.5,
+          "sourceNodeId": "4130086701"
+        },
+        {
+          "id": "ix_07:L1",
+          "legIndex": 1,
+          "bearingDeg": 138.4,
+          "compassLabel": "남동",
+          "fromLinkId": "lk_ix_00_ix_07",
+          "lanes": 3,
+          "saturationVehPerSec": 1.5,
+          "sourceNodeId": "4130086702"
+        },
+        {
+          "id": "ix_07:L2",
+          "legIndex": 2,
+          "bearingDeg": 265.6,
+          "compassLabel": "서",
+          "fromLinkId": "lk_ix_00_ix_07",
+          "lanes": 3,
+          "saturationVehPerSec": 1.5,
+          "sourceNodeId": "4130086703"
+        },
+        {
+          "id": "ix_07:L3",
+          "legIndex": 3,
+          "bearingDeg": 318.4,
+          "compassLabel": "북서",
+          "fromLinkId": "lk_ix_08_ix_07",
+          "lanes": 4,
+          "saturationVehPerSec": 2.0,
+          "sourceNodeId": "4130086704"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_07:L0>L1",
+          "approachId": "ix_07:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_07_ix_00"
+        },
+        {
+          "id": "ix_07:L0>L2",
+          "approachId": "ix_07:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_07_ix_00"
+        },
+        {
+          "id": "ix_07:L0>L3",
+          "approachId": "ix_07:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_07_ix_08"
+        },
+        {
+          "id": "ix_07:L1>L0",
+          "approachId": "ix_07:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_07_ix_00"
+        },
+        {
+          "id": "ix_07:L1>L2",
+          "approachId": "ix_07:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_07_ix_00"
+        },
+        {
+          "id": "ix_07:L1>L3",
+          "approachId": "ix_07:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_07_ix_08"
+        },
+        {
+          "id": "ix_07:L2>L0",
+          "approachId": "ix_07:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_07_ix_00"
+        },
+        {
+          "id": "ix_07:L2>L1",
+          "approachId": "ix_07:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_07_ix_00"
+        },
+        {
+          "id": "ix_07:L2>L3",
+          "approachId": "ix_07:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_07_ix_08"
+        },
+        {
+          "id": "ix_07:L3>L0",
+          "approachId": "ix_07:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_07_ix_00"
+        },
+        {
+          "id": "ix_07:L3>L1",
+          "approachId": "ix_07:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_07_ix_00"
+        },
+        {
+          "id": "ix_07:L3>L2",
+          "approachId": "ix_07:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_07_ix_00"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_07#L0",
+          "legIndex": 0,
+          "widthM": 19.5,
+          "walkSec": 25,
+          "conflictingMovementIds": [
+            "ix_07:L0>L1",
+            "ix_07:L0>L2",
+            "ix_07:L0>L3",
+            "ix_07:L1>L0",
+            "ix_07:L2>L0",
+            "ix_07:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_07#L1",
+          "legIndex": 1,
+          "widthM": 19.5,
+          "walkSec": 25,
+          "conflictingMovementIds": [
+            "ix_07:L0>L1",
+            "ix_07:L1>L0",
+            "ix_07:L1>L2",
+            "ix_07:L1>L3",
+            "ix_07:L2>L1",
+            "ix_07:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_07#L2",
+          "legIndex": 2,
+          "widthM": 19.5,
+          "walkSec": 25,
+          "conflictingMovementIds": [
+            "ix_07:L0>L2",
+            "ix_07:L1>L2",
+            "ix_07:L2>L0",
+            "ix_07:L2>L1",
+            "ix_07:L2>L3",
+            "ix_07:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_07#L3",
+          "legIndex": 3,
+          "widthM": 26.0,
+          "walkSec": 31,
+          "conflictingMovementIds": [
+            "ix_07:L0>L3",
+            "ix_07:L1>L3",
+            "ix_07:L2>L3",
+            "ix_07:L3>L0",
+            "ix_07:L3>L1",
+            "ix_07:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_07:L0>L1",
+          "ix_07:L1>L2"
+        ],
+        [
+          "ix_07:L0>L1",
+          "ix_07:L1>L3"
+        ],
+        [
+          "ix_07:L0>L1",
+          "ix_07:L2>L0"
+        ],
+        [
+          "ix_07:L0>L1",
+          "ix_07:L3>L0"
+        ],
+        [
+          "ix_07:L0>L2",
+          "ix_07:L1>L3"
+        ],
+        [
+          "ix_07:L0>L2",
+          "ix_07:L2>L3"
+        ],
+        [
+          "ix_07:L0>L2",
+          "ix_07:L3>L0"
+        ],
+        [
+          "ix_07:L0>L2",
+          "ix_07:L3>L1"
+        ],
+        [
+          "ix_07:L1>L2",
+          "ix_07:L2>L0"
+        ],
+        [
+          "ix_07:L1>L2",
+          "ix_07:L2>L3"
+        ],
+        [
+          "ix_07:L1>L2",
+          "ix_07:L3>L1"
+        ],
+        [
+          "ix_07:L1>L3",
+          "ix_07:L2>L0"
+        ],
+        [
+          "ix_07:L1>L3",
+          "ix_07:L3>L0"
+        ],
+        [
+          "ix_07:L2>L0",
+          "ix_07:L3>L1"
+        ],
+        [
+          "ix_07:L2>L3",
+          "ix_07:L3>L0"
+        ],
+        [
+          "ix_07:L2>L3",
+          "ix_07:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_07/default",
+        "intersectionId": "ix_07",
+        "stages": [
+          {
+            "stageId": "ix_07/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_07:L0>L2",
+              "ix_07:L0>L3",
+              "ix_07:L2>L0",
+              "ix_07:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_07/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_07:L0>L1",
+              "ix_07:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_07/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_07:L1>L0",
+              "ix_07:L1>L3",
+              "ix_07:L3>L1",
+              "ix_07:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_07/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_07:L1>L2",
+              "ix_07:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    },
+    {
+      "id": "ix_08",
+      "name": "종촌사거리",
+      "position": [
+        -1852.2,
+        -78.5
+      ],
+      "sourceNodeIds": [
+        "4130086101",
+        "4130086102",
+        "4130086103",
+        "4130086104"
+      ],
+      "approaches": [
+        {
+          "id": "ix_08:L0",
+          "legIndex": 0,
+          "bearingDeg": 65.4,
+          "compassLabel": "북동",
+          "fromLinkId": "lk_ix_04_ix_08",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130086101"
+        },
+        {
+          "id": "ix_08:L1",
+          "legIndex": 1,
+          "bearingDeg": 154.9,
+          "compassLabel": "남동",
+          "fromLinkId": "lk_ix_02_ix_08",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130086102"
+        },
+        {
+          "id": "ix_08:L2",
+          "legIndex": 2,
+          "bearingDeg": 245.4,
+          "compassLabel": "남서",
+          "fromLinkId": "lk_ix_07_ix_08",
+          "lanes": 4,
+          "saturationVehPerSec": 2.0,
+          "sourceNodeId": "4130086103"
+        },
+        {
+          "id": "ix_08:L3",
+          "legIndex": 3,
+          "bearingDeg": 334.9,
+          "compassLabel": "북서",
+          "fromLinkId": "lk_ix_04_ix_08",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130086104"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_08:L0>L1",
+          "approachId": "ix_08:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_08_ix_02"
+        },
+        {
+          "id": "ix_08:L0>L2",
+          "approachId": "ix_08:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_08_ix_07"
+        },
+        {
+          "id": "ix_08:L0>L3",
+          "approachId": "ix_08:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_08_ix_04"
+        },
+        {
+          "id": "ix_08:L1>L0",
+          "approachId": "ix_08:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_08_ix_04"
+        },
+        {
+          "id": "ix_08:L1>L2",
+          "approachId": "ix_08:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_08_ix_07"
+        },
+        {
+          "id": "ix_08:L1>L3",
+          "approachId": "ix_08:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_08_ix_04"
+        },
+        {
+          "id": "ix_08:L2>L0",
+          "approachId": "ix_08:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_08_ix_04"
+        },
+        {
+          "id": "ix_08:L2>L1",
+          "approachId": "ix_08:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_08_ix_02"
+        },
+        {
+          "id": "ix_08:L2>L3",
+          "approachId": "ix_08:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_08_ix_04"
+        },
+        {
+          "id": "ix_08:L3>L0",
+          "approachId": "ix_08:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_08_ix_04"
+        },
+        {
+          "id": "ix_08:L3>L1",
+          "approachId": "ix_08:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_08_ix_02"
+        },
+        {
+          "id": "ix_08:L3>L2",
+          "approachId": "ix_08:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_08_ix_07"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_08#L0",
+          "legIndex": 0,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_08:L0>L1",
+            "ix_08:L0>L2",
+            "ix_08:L0>L3",
+            "ix_08:L1>L0",
+            "ix_08:L2>L0",
+            "ix_08:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_08#L1",
+          "legIndex": 1,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_08:L0>L1",
+            "ix_08:L1>L0",
+            "ix_08:L1>L2",
+            "ix_08:L1>L3",
+            "ix_08:L2>L1",
+            "ix_08:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_08#L2",
+          "legIndex": 2,
+          "widthM": 26.0,
+          "walkSec": 31,
+          "conflictingMovementIds": [
+            "ix_08:L0>L2",
+            "ix_08:L1>L2",
+            "ix_08:L2>L0",
+            "ix_08:L2>L1",
+            "ix_08:L2>L3",
+            "ix_08:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_08#L3",
+          "legIndex": 3,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_08:L0>L3",
+            "ix_08:L1>L3",
+            "ix_08:L2>L3",
+            "ix_08:L3>L0",
+            "ix_08:L3>L1",
+            "ix_08:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_08:L0>L1",
+          "ix_08:L1>L2"
+        ],
+        [
+          "ix_08:L0>L1",
+          "ix_08:L1>L3"
+        ],
+        [
+          "ix_08:L0>L1",
+          "ix_08:L2>L0"
+        ],
+        [
+          "ix_08:L0>L1",
+          "ix_08:L3>L0"
+        ],
+        [
+          "ix_08:L0>L2",
+          "ix_08:L1>L3"
+        ],
+        [
+          "ix_08:L0>L2",
+          "ix_08:L2>L3"
+        ],
+        [
+          "ix_08:L0>L2",
+          "ix_08:L3>L0"
+        ],
+        [
+          "ix_08:L0>L2",
+          "ix_08:L3>L1"
+        ],
+        [
+          "ix_08:L1>L2",
+          "ix_08:L2>L0"
+        ],
+        [
+          "ix_08:L1>L2",
+          "ix_08:L2>L3"
+        ],
+        [
+          "ix_08:L1>L2",
+          "ix_08:L3>L1"
+        ],
+        [
+          "ix_08:L1>L3",
+          "ix_08:L2>L0"
+        ],
+        [
+          "ix_08:L1>L3",
+          "ix_08:L3>L0"
+        ],
+        [
+          "ix_08:L2>L0",
+          "ix_08:L3>L1"
+        ],
+        [
+          "ix_08:L2>L3",
+          "ix_08:L3>L0"
+        ],
+        [
+          "ix_08:L2>L3",
+          "ix_08:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_08/default",
+        "intersectionId": "ix_08",
+        "stages": [
+          {
+            "stageId": "ix_08/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_08:L0>L2",
+              "ix_08:L0>L3",
+              "ix_08:L2>L0",
+              "ix_08:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_08/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_08:L0>L1",
+              "ix_08:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_08/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_08:L1>L0",
+              "ix_08:L1>L3",
+              "ix_08:L3>L1",
+              "ix_08:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_08/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_08:L1>L2",
+              "ix_08:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    },
+    {
+      "id": "ix_09",
+      "name": "청사교차로",
+      "position": [
+        -958.18,
+        429.83
+      ],
+      "sourceNodeIds": [
+        "4130102901",
+        "4130102902",
+        "4130102903",
+        "4130102904"
+      ],
+      "approaches": [
+        {
+          "id": "ix_09:L0",
+          "legIndex": 0,
+          "bearingDeg": 27.4,
+          "compassLabel": "북동",
+          "fromLinkId": "lk_ix_04_ix_09",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130102901"
+        },
+        {
+          "id": "ix_09:L1",
+          "legIndex": 1,
+          "bearingDeg": 158.6,
+          "compassLabel": "남",
+          "fromLinkId": "lk_ix_10_ix_09",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130102902"
+        },
+        {
+          "id": "ix_09:L2",
+          "legIndex": 2,
+          "bearingDeg": 207.7,
+          "compassLabel": "남서",
+          "fromLinkId": "lk_ix_04_ix_09",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130102903"
+        },
+        {
+          "id": "ix_09:L3",
+          "legIndex": 3,
+          "bearingDeg": 338.5,
+          "compassLabel": "북",
+          "fromLinkId": "lk_ix_04_ix_09",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130102904"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_09:L0>L1",
+          "approachId": "ix_09:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_09_ix_10"
+        },
+        {
+          "id": "ix_09:L0>L2",
+          "approachId": "ix_09:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_09_ix_04"
+        },
+        {
+          "id": "ix_09:L0>L3",
+          "approachId": "ix_09:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_09_ix_04"
+        },
+        {
+          "id": "ix_09:L1>L0",
+          "approachId": "ix_09:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_09_ix_04"
+        },
+        {
+          "id": "ix_09:L1>L2",
+          "approachId": "ix_09:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_09_ix_04"
+        },
+        {
+          "id": "ix_09:L1>L3",
+          "approachId": "ix_09:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_09_ix_04"
+        },
+        {
+          "id": "ix_09:L2>L0",
+          "approachId": "ix_09:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_09_ix_04"
+        },
+        {
+          "id": "ix_09:L2>L1",
+          "approachId": "ix_09:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_09_ix_10"
+        },
+        {
+          "id": "ix_09:L2>L3",
+          "approachId": "ix_09:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_09_ix_04"
+        },
+        {
+          "id": "ix_09:L3>L0",
+          "approachId": "ix_09:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_09_ix_04"
+        },
+        {
+          "id": "ix_09:L3>L1",
+          "approachId": "ix_09:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_09_ix_10"
+        },
+        {
+          "id": "ix_09:L3>L2",
+          "approachId": "ix_09:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_09_ix_04"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_09#L0",
+          "legIndex": 0,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_09:L0>L1",
+            "ix_09:L0>L2",
+            "ix_09:L0>L3",
+            "ix_09:L1>L0",
+            "ix_09:L2>L0",
+            "ix_09:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_09#L1",
+          "legIndex": 1,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_09:L0>L1",
+            "ix_09:L1>L0",
+            "ix_09:L1>L2",
+            "ix_09:L1>L3",
+            "ix_09:L2>L1",
+            "ix_09:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_09#L2",
+          "legIndex": 2,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_09:L0>L2",
+            "ix_09:L1>L2",
+            "ix_09:L2>L0",
+            "ix_09:L2>L1",
+            "ix_09:L2>L3",
+            "ix_09:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_09#L3",
+          "legIndex": 3,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_09:L0>L3",
+            "ix_09:L1>L3",
+            "ix_09:L2>L3",
+            "ix_09:L3>L0",
+            "ix_09:L3>L1",
+            "ix_09:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_09:L0>L1",
+          "ix_09:L1>L2"
+        ],
+        [
+          "ix_09:L0>L1",
+          "ix_09:L1>L3"
+        ],
+        [
+          "ix_09:L0>L1",
+          "ix_09:L2>L0"
+        ],
+        [
+          "ix_09:L0>L1",
+          "ix_09:L3>L0"
+        ],
+        [
+          "ix_09:L0>L2",
+          "ix_09:L1>L3"
+        ],
+        [
+          "ix_09:L0>L2",
+          "ix_09:L2>L3"
+        ],
+        [
+          "ix_09:L0>L2",
+          "ix_09:L3>L0"
+        ],
+        [
+          "ix_09:L0>L2",
+          "ix_09:L3>L1"
+        ],
+        [
+          "ix_09:L1>L2",
+          "ix_09:L2>L0"
+        ],
+        [
+          "ix_09:L1>L2",
+          "ix_09:L2>L3"
+        ],
+        [
+          "ix_09:L1>L2",
+          "ix_09:L3>L1"
+        ],
+        [
+          "ix_09:L1>L3",
+          "ix_09:L2>L0"
+        ],
+        [
+          "ix_09:L1>L3",
+          "ix_09:L3>L0"
+        ],
+        [
+          "ix_09:L2>L0",
+          "ix_09:L3>L1"
+        ],
+        [
+          "ix_09:L2>L3",
+          "ix_09:L3>L0"
+        ],
+        [
+          "ix_09:L2>L3",
+          "ix_09:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_09/default",
+        "intersectionId": "ix_09",
+        "stages": [
+          {
+            "stageId": "ix_09/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_09:L0>L2",
+              "ix_09:L0>L3",
+              "ix_09:L2>L0",
+              "ix_09:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_09/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_09:L0>L1",
+              "ix_09:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_09/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_09:L1>L0",
+              "ix_09:L1>L3",
+              "ix_09:L3>L1",
+              "ix_09:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_09/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_09:L1>L2",
+              "ix_09:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    },
+    {
+      "id": "ix_10",
+      "name": "호수공원교차로",
+      "position": [
+        67.34,
+        71.24
+      ],
+      "sourceNodeIds": [
+        "4130116101",
+        "4130116102",
+        "4130116103",
+        "4130116104"
+      ],
+      "approaches": [
+        {
+          "id": "ix_10:L0",
+          "legIndex": 0,
+          "bearingDeg": 59.0,
+          "compassLabel": "북동",
+          "fromLinkId": "lk_ix_09_ix_10",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130116101"
+        },
+        {
+          "id": "ix_10:L1",
+          "legIndex": 1,
+          "bearingDeg": 148.8,
+          "compassLabel": "남동",
+          "fromLinkId": "lk_ix_05_ix_10",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130116102"
+        },
+        {
+          "id": "ix_10:L2",
+          "legIndex": 2,
+          "bearingDeg": 241.2,
+          "compassLabel": "남서",
+          "fromLinkId": "lk_ix_09_ix_10",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130116103"
+        },
+        {
+          "id": "ix_10:L3",
+          "legIndex": 3,
+          "bearingDeg": 326.0,
+          "compassLabel": "북서",
+          "fromLinkId": "lk_ix_09_ix_10",
+          "lanes": 2,
+          "saturationVehPerSec": 1.0,
+          "sourceNodeId": "4130116104"
+        }
+      ],
+      "movements": [
+        {
+          "id": "ix_10:L0>L1",
+          "approachId": "ix_10:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 1,
+          "turn": "left",
+          "toLinkId": "lk_ix_10_ix_05"
+        },
+        {
+          "id": "ix_10:L0>L2",
+          "approachId": "ix_10:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 2,
+          "turn": "through",
+          "toLinkId": "lk_ix_10_ix_09"
+        },
+        {
+          "id": "ix_10:L0>L3",
+          "approachId": "ix_10:L0",
+          "fromLegIndex": 0,
+          "toLegIndex": 3,
+          "turn": "right",
+          "toLinkId": "lk_ix_10_ix_09"
+        },
+        {
+          "id": "ix_10:L1>L0",
+          "approachId": "ix_10:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 0,
+          "turn": "right",
+          "toLinkId": "lk_ix_10_ix_09"
+        },
+        {
+          "id": "ix_10:L1>L2",
+          "approachId": "ix_10:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 2,
+          "turn": "left",
+          "toLinkId": "lk_ix_10_ix_09"
+        },
+        {
+          "id": "ix_10:L1>L3",
+          "approachId": "ix_10:L1",
+          "fromLegIndex": 1,
+          "toLegIndex": 3,
+          "turn": "through",
+          "toLinkId": "lk_ix_10_ix_09"
+        },
+        {
+          "id": "ix_10:L2>L0",
+          "approachId": "ix_10:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 0,
+          "turn": "through",
+          "toLinkId": "lk_ix_10_ix_09"
+        },
+        {
+          "id": "ix_10:L2>L1",
+          "approachId": "ix_10:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 1,
+          "turn": "right",
+          "toLinkId": "lk_ix_10_ix_05"
+        },
+        {
+          "id": "ix_10:L2>L3",
+          "approachId": "ix_10:L2",
+          "fromLegIndex": 2,
+          "toLegIndex": 3,
+          "turn": "left",
+          "toLinkId": "lk_ix_10_ix_09"
+        },
+        {
+          "id": "ix_10:L3>L0",
+          "approachId": "ix_10:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 0,
+          "turn": "left",
+          "toLinkId": "lk_ix_10_ix_09"
+        },
+        {
+          "id": "ix_10:L3>L1",
+          "approachId": "ix_10:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 1,
+          "turn": "through",
+          "toLinkId": "lk_ix_10_ix_05"
+        },
+        {
+          "id": "ix_10:L3>L2",
+          "approachId": "ix_10:L3",
+          "fromLegIndex": 3,
+          "toLegIndex": 2,
+          "turn": "right",
+          "toLinkId": "lk_ix_10_ix_09"
+        }
+      ],
+      "crossings": [
+        {
+          "id": "ix_10#L0",
+          "legIndex": 0,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_10:L0>L1",
+            "ix_10:L0>L2",
+            "ix_10:L0>L3",
+            "ix_10:L1>L0",
+            "ix_10:L2>L0",
+            "ix_10:L3>L0"
+          ]
+        },
+        {
+          "id": "ix_10#L1",
+          "legIndex": 1,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_10:L0>L1",
+            "ix_10:L1>L0",
+            "ix_10:L1>L2",
+            "ix_10:L1>L3",
+            "ix_10:L2>L1",
+            "ix_10:L3>L1"
+          ]
+        },
+        {
+          "id": "ix_10#L2",
+          "legIndex": 2,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_10:L0>L2",
+            "ix_10:L1>L2",
+            "ix_10:L2>L0",
+            "ix_10:L2>L1",
+            "ix_10:L2>L3",
+            "ix_10:L3>L2"
+          ]
+        },
+        {
+          "id": "ix_10#L3",
+          "legIndex": 3,
+          "widthM": 13.0,
+          "walkSec": 18,
+          "conflictingMovementIds": [
+            "ix_10:L0>L3",
+            "ix_10:L1>L3",
+            "ix_10:L2>L3",
+            "ix_10:L3>L0",
+            "ix_10:L3>L1",
+            "ix_10:L3>L2"
+          ]
+        }
+      ],
+      "conflictingMovementPairs": [
+        [
+          "ix_10:L0>L1",
+          "ix_10:L1>L2"
+        ],
+        [
+          "ix_10:L0>L1",
+          "ix_10:L1>L3"
+        ],
+        [
+          "ix_10:L0>L1",
+          "ix_10:L2>L0"
+        ],
+        [
+          "ix_10:L0>L1",
+          "ix_10:L3>L0"
+        ],
+        [
+          "ix_10:L0>L2",
+          "ix_10:L1>L3"
+        ],
+        [
+          "ix_10:L0>L2",
+          "ix_10:L2>L3"
+        ],
+        [
+          "ix_10:L0>L2",
+          "ix_10:L3>L0"
+        ],
+        [
+          "ix_10:L0>L2",
+          "ix_10:L3>L1"
+        ],
+        [
+          "ix_10:L1>L2",
+          "ix_10:L2>L0"
+        ],
+        [
+          "ix_10:L1>L2",
+          "ix_10:L2>L3"
+        ],
+        [
+          "ix_10:L1>L2",
+          "ix_10:L3>L1"
+        ],
+        [
+          "ix_10:L1>L3",
+          "ix_10:L2>L0"
+        ],
+        [
+          "ix_10:L1>L3",
+          "ix_10:L3>L0"
+        ],
+        [
+          "ix_10:L2>L0",
+          "ix_10:L3>L1"
+        ],
+        [
+          "ix_10:L2>L3",
+          "ix_10:L3>L0"
+        ],
+        [
+          "ix_10:L2>L3",
+          "ix_10:L3>L1"
+        ]
+      ],
+      "defaultPlan": {
+        "planId": "ix_10/default",
+        "intersectionId": "ix_10",
+        "stages": [
+          {
+            "stageId": "ix_10/s1",
+            "order": 1,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_10:L0>L2",
+              "ix_10:L0>L3",
+              "ix_10:L2>L0",
+              "ix_10:L2>L1"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 직진·우회전"
+          },
+          {
+            "stageId": "ix_10/s2",
+            "order": 2,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_10:L0>L1",
+              "ix_10:L2>L3"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L0·2 좌회전"
+          },
+          {
+            "stageId": "ix_10/s3",
+            "order": 3,
+            "durationSec": 30,
+            "allowedVehicleMovements": [
+              "ix_10:L1>L0",
+              "ix_10:L1>L3",
+              "ix_10:L3>L1",
+              "ix_10:L3>L2"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 직진·우회전"
+          },
+          {
+            "stageId": "ix_10/s4",
+            "order": 4,
+            "durationSec": 15,
+            "allowedVehicleMovements": [
+              "ix_10:L1>L2",
+              "ix_10:L3>L0"
+            ],
+            "allowedPedestrianCrossings": [],
+            "priorityTarget": "None",
+            "label": "L1·3 좌회전"
+          }
+        ],
+        "yellowSec": 3,
+        "allRedSec": 2,
+        "offsetSec": 0
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "lk_gate_ix_01_0_ix_01",
+      "kind": "inbound_gate",
+      "fromIntersectionId": "gate_ix_01_0",
+      "toIntersectionId": "ix_01",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_gate_ix_01_3_ix_01",
+      "kind": "inbound_gate",
+      "fromIntersectionId": "gate_ix_01_3",
+      "toIntersectionId": "ix_01",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_gate_ix_03_0_ix_03",
+      "kind": "inbound_gate",
+      "fromIntersectionId": "gate_ix_03_0",
+      "toIntersectionId": "ix_03",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_gate_ix_03_2_ix_03",
+      "kind": "inbound_gate",
+      "fromIntersectionId": "gate_ix_03_2",
+      "toIntersectionId": "ix_03",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_gate_ix_05_1_ix_05",
+      "kind": "inbound_gate",
+      "fromIntersectionId": "gate_ix_05_1",
+      "toIntersectionId": "ix_05",
+      "lengthM": 395.8,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 113,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_gate_ix_06_1_ix_06",
+      "kind": "inbound_gate",
+      "fromIntersectionId": "gate_ix_06_1",
+      "toIntersectionId": "ix_06",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_gate_ix_06_2_ix_06",
+      "kind": "inbound_gate",
+      "fromIntersectionId": "gate_ix_06_2",
+      "toIntersectionId": "ix_06",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_ix_00_ix_02",
+      "kind": "street",
+      "fromIntersectionId": "ix_00",
+      "toIntersectionId": "ix_02",
+      "lengthM": 647.9,
+      "lanes": 1,
+      "maxSpeedKph": 30,
+      "storageVeh": 92,
+      "saturationVehPerSec": 0.5,
+      "sourceRoadIds": [
+        "4130211300",
+        "4130211301",
+        "4130218500",
+        "4130218501",
+        "4130223500",
+        "4130223501",
+        "4130229900",
+        "4130229901",
+        "4130232701",
+        "4130235702",
+        "4130236100"
+      ]
+    },
+    {
+      "id": "lk_ix_00_ix_07",
+      "kind": "street",
+      "fromIntersectionId": "ix_00",
+      "toIntersectionId": "ix_07",
+      "lengthM": 884.6,
+      "lanes": 3,
+      "maxSpeedKph": 50,
+      "storageVeh": 379,
+      "saturationVehPerSec": 1.5,
+      "sourceRoadIds": [
+        "4130203400",
+        "4130203402",
+        "4130203700",
+        "4130204601",
+        "4130206900",
+        "4130206901",
+        "4130208800",
+        "4130209400"
+      ]
+    },
+    {
+      "id": "lk_ix_01_gate_ix_01_0",
+      "kind": "outbound_gate",
+      "fromIntersectionId": "ix_01",
+      "toIntersectionId": "gate_ix_01_0",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_ix_01_gate_ix_01_3",
+      "kind": "outbound_gate",
+      "fromIntersectionId": "ix_01",
+      "toIntersectionId": "gate_ix_01_3",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_ix_01_ix_03",
+      "kind": "street",
+      "fromIntersectionId": "ix_01",
+      "toIntersectionId": "ix_03",
+      "lengthM": 262.2,
+      "lanes": 2,
+      "maxSpeedKph": 40,
+      "storageVeh": 74,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130271100",
+        "4130271102",
+        "4130271103"
+      ]
+    },
+    {
+      "id": "lk_ix_01_ix_04",
+      "kind": "street",
+      "fromIntersectionId": "ix_01",
+      "toIntersectionId": "ix_04",
+      "lengthM": 825.7,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 235,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130256101",
+        "4130257500",
+        "4130257501",
+        "4130257800",
+        "4130257801",
+        "4130259500",
+        "4130261600",
+        "4130261601",
+        "4130264400",
+        "4130264401",
+        "4130267800",
+        "4130267801"
+      ]
+    },
+    {
+      "id": "lk_ix_02_ix_00",
+      "kind": "street",
+      "fromIntersectionId": "ix_02",
+      "toIntersectionId": "ix_00",
+      "lengthM": 647.9,
+      "lanes": 1,
+      "maxSpeedKph": 30,
+      "storageVeh": 92,
+      "saturationVehPerSec": 0.5,
+      "sourceRoadIds": [
+        "4130211300",
+        "4130211301",
+        "4130218500",
+        "4130218501",
+        "4130223500",
+        "4130223501",
+        "4130229900",
+        "4130229901",
+        "4130232701",
+        "4130235702",
+        "4130236100"
+      ]
+    },
+    {
+      "id": "lk_ix_02_ix_04",
+      "kind": "street",
+      "fromIntersectionId": "ix_02",
+      "toIntersectionId": "ix_04",
+      "lengthM": 672.1,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 192,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130238500",
+        "4130238501",
+        "4130238502",
+        "4130242101",
+        "4130243100",
+        "4130243700",
+        "4130249500",
+        "4130249501",
+        "4130253300"
+      ]
+    },
+    {
+      "id": "lk_ix_02_ix_08",
+      "kind": "street",
+      "fromIntersectionId": "ix_02",
+      "toIntersectionId": "ix_08",
+      "lengthM": 441.9,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 126,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130234400",
+        "4130234700",
+        "4130234701",
+        "4130235500",
+        "4130235502"
+      ]
+    },
+    {
+      "id": "lk_ix_03_gate_ix_03_0",
+      "kind": "outbound_gate",
+      "fromIntersectionId": "ix_03",
+      "toIntersectionId": "gate_ix_03_0",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_ix_03_gate_ix_03_2",
+      "kind": "outbound_gate",
+      "fromIntersectionId": "ix_03",
+      "toIntersectionId": "gate_ix_03_2",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_ix_03_ix_01",
+      "kind": "street",
+      "fromIntersectionId": "ix_03",
+      "toIntersectionId": "ix_01",
+      "lengthM": 262.2,
+      "lanes": 2,
+      "maxSpeedKph": 40,
+      "storageVeh": 74,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130271100",
+        "4130271102",
+        "4130271103"
+      ]
+    },
+    {
+      "id": "lk_ix_03_ix_04",
+      "kind": "street",
+      "fromIntersectionId": "ix_03",
+      "toIntersectionId": "ix_04",
+      "lengthM": 532.5,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 152,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130261400",
+        "4130264600",
+        "4130264601",
+        "4130265400",
+        "4130265401",
+        "4130269200",
+        "4130273700"
+      ]
+    },
+    {
+      "id": "lk_ix_04_ix_01",
+      "kind": "street",
+      "fromIntersectionId": "ix_04",
+      "toIntersectionId": "ix_01",
+      "lengthM": 825.7,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 235,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130256101",
+        "4130257500",
+        "4130257501",
+        "4130257800",
+        "4130257801",
+        "4130259500",
+        "4130261600",
+        "4130261601",
+        "4130264400",
+        "4130264401",
+        "4130267800",
+        "4130267801"
+      ]
+    },
+    {
+      "id": "lk_ix_04_ix_02",
+      "kind": "street",
+      "fromIntersectionId": "ix_04",
+      "toIntersectionId": "ix_02",
+      "lengthM": 672.1,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 192,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130238500",
+        "4130238501",
+        "4130238502",
+        "4130242101",
+        "4130243100",
+        "4130243700",
+        "4130249500",
+        "4130249501",
+        "4130253300"
+      ]
+    },
+    {
+      "id": "lk_ix_04_ix_03",
+      "kind": "street",
+      "fromIntersectionId": "ix_04",
+      "toIntersectionId": "ix_03",
+      "lengthM": 532.5,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 152,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130261400",
+        "4130264600",
+        "4130264601",
+        "4130265400",
+        "4130265401",
+        "4130269200",
+        "4130273700"
+      ]
+    },
+    {
+      "id": "lk_ix_04_ix_08",
+      "kind": "street",
+      "fromIntersectionId": "ix_04",
+      "toIntersectionId": "ix_08",
+      "lengthM": 869.9,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 248,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130238400",
+        "4130248800",
+        "4130248801",
+        "4130253000",
+        "4130253001",
+        "4130253002",
+        "4130253201",
+        "4130253400",
+        "4130253900",
+        "4130253901"
+      ]
+    },
+    {
+      "id": "lk_ix_04_ix_09",
+      "kind": "street",
+      "fromIntersectionId": "ix_04",
+      "toIntersectionId": "ix_09",
+      "lengthM": 1089.1,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 311,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130258200",
+        "4130260400",
+        "4130260800",
+        "4130260801",
+        "4130260802",
+        "4130261101",
+        "4130261300",
+        "4130261301",
+        "4130264500",
+        "4130265100",
+        "4130265103"
+      ]
+    },
+    {
+      "id": "lk_ix_05_gate_ix_05_1",
+      "kind": "outbound_gate",
+      "fromIntersectionId": "ix_05",
+      "toIntersectionId": "gate_ix_05_1",
+      "lengthM": 395.8,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 113,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_ix_05_ix_06",
+      "kind": "street",
+      "fromIntersectionId": "ix_05",
+      "toIntersectionId": "ix_06",
+      "lengthM": 320.2,
+      "lanes": 2,
+      "maxSpeedKph": 60,
+      "storageVeh": 91,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130224500"
+      ]
+    },
+    {
+      "id": "lk_ix_05_ix_10",
+      "kind": "street",
+      "fromIntersectionId": "ix_05",
+      "toIntersectionId": "ix_10",
+      "lengthM": 2315.4,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 661,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130233300",
+        "4130233303",
+        "4130469101",
+        "4130469601",
+        "4130469604",
+        "4130469701",
+        "4130469703"
+      ]
+    },
+    {
+      "id": "lk_ix_06_gate_ix_06_1",
+      "kind": "outbound_gate",
+      "fromIntersectionId": "ix_06",
+      "toIntersectionId": "gate_ix_06_1",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_ix_06_gate_ix_06_2",
+      "kind": "outbound_gate",
+      "fromIntersectionId": "ix_06",
+      "toIntersectionId": "gate_ix_06_2",
+      "lengthM": 200.0,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 57,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": []
+    },
+    {
+      "id": "lk_ix_06_ix_05",
+      "kind": "street",
+      "fromIntersectionId": "ix_06",
+      "toIntersectionId": "ix_05",
+      "lengthM": 320.2,
+      "lanes": 2,
+      "maxSpeedKph": 60,
+      "storageVeh": 91,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130224500"
+      ]
+    },
+    {
+      "id": "lk_ix_06_ix_10",
+      "kind": "street",
+      "fromIntersectionId": "ix_06",
+      "toIntersectionId": "ix_10",
+      "lengthM": 1800.5,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 514,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130238100",
+        "4130238101",
+        "4130238103",
+        "4130238104",
+        "4130241000",
+        "4130241900",
+        "4130241902",
+        "4130243601"
+      ]
+    },
+    {
+      "id": "lk_ix_07_ix_00",
+      "kind": "street",
+      "fromIntersectionId": "ix_07",
+      "toIntersectionId": "ix_00",
+      "lengthM": 884.6,
+      "lanes": 3,
+      "maxSpeedKph": 50,
+      "storageVeh": 379,
+      "saturationVehPerSec": 1.5,
+      "sourceRoadIds": [
+        "4130203400",
+        "4130203402",
+        "4130203700",
+        "4130204601",
+        "4130206900",
+        "4130206901",
+        "4130208800",
+        "4130209400"
+      ]
+    },
+    {
+      "id": "lk_ix_07_ix_08",
+      "kind": "street",
+      "fromIntersectionId": "ix_07",
+      "toIntersectionId": "ix_08",
+      "lengthM": 737.5,
+      "lanes": 4,
+      "maxSpeedKph": 50,
+      "storageVeh": 421,
+      "saturationVehPerSec": 2.0,
+      "sourceRoadIds": [
+        "4130211100",
+        "4130211700",
+        "4130212200",
+        "4130212700",
+        "4130212701",
+        "4130219901",
+        "4130220001",
+        "4130221300",
+        "4130221301",
+        "4130227900",
+        "4130227901",
+        "4130234900"
+      ]
+    },
+    {
+      "id": "lk_ix_08_ix_02",
+      "kind": "street",
+      "fromIntersectionId": "ix_08",
+      "toIntersectionId": "ix_02",
+      "lengthM": 441.9,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 126,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130234400",
+        "4130234700",
+        "4130234701",
+        "4130235500",
+        "4130235502"
+      ]
+    },
+    {
+      "id": "lk_ix_08_ix_04",
+      "kind": "street",
+      "fromIntersectionId": "ix_08",
+      "toIntersectionId": "ix_04",
+      "lengthM": 869.9,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 248,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130238400",
+        "4130248800",
+        "4130248801",
+        "4130253000",
+        "4130253001",
+        "4130253002",
+        "4130253201",
+        "4130253400",
+        "4130253900",
+        "4130253901"
+      ]
+    },
+    {
+      "id": "lk_ix_08_ix_07",
+      "kind": "street",
+      "fromIntersectionId": "ix_08",
+      "toIntersectionId": "ix_07",
+      "lengthM": 737.5,
+      "lanes": 4,
+      "maxSpeedKph": 50,
+      "storageVeh": 421,
+      "saturationVehPerSec": 2.0,
+      "sourceRoadIds": [
+        "4130211100",
+        "4130211700",
+        "4130212200",
+        "4130212700",
+        "4130212701",
+        "4130219901",
+        "4130220001",
+        "4130221300",
+        "4130221301",
+        "4130227900",
+        "4130227901",
+        "4130234900"
+      ]
+    },
+    {
+      "id": "lk_ix_09_ix_04",
+      "kind": "street",
+      "fromIntersectionId": "ix_09",
+      "toIntersectionId": "ix_04",
+      "lengthM": 1089.1,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 311,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130258200",
+        "4130260400",
+        "4130260800",
+        "4130260801",
+        "4130260802",
+        "4130261101",
+        "4130261300",
+        "4130261301",
+        "4130264500",
+        "4130265100",
+        "4130265103"
+      ]
+    },
+    {
+      "id": "lk_ix_09_ix_10",
+      "kind": "street",
+      "fromIntersectionId": "ix_09",
+      "toIntersectionId": "ix_10",
+      "lengthM": 1076.2,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 307,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130251800",
+        "4130251802",
+        "4130254200"
+      ]
+    },
+    {
+      "id": "lk_ix_10_ix_05",
+      "kind": "street",
+      "fromIntersectionId": "ix_10",
+      "toIntersectionId": "ix_05",
+      "lengthM": 2315.4,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 661,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130233300",
+        "4130233303",
+        "4130469101",
+        "4130469601",
+        "4130469604",
+        "4130469701",
+        "4130469703"
+      ]
+    },
+    {
+      "id": "lk_ix_10_ix_06",
+      "kind": "street",
+      "fromIntersectionId": "ix_10",
+      "toIntersectionId": "ix_06",
+      "lengthM": 1800.5,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 514,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130238100",
+        "4130238101",
+        "4130238103",
+        "4130238104",
+        "4130241000",
+        "4130241900",
+        "4130241902",
+        "4130243601"
+      ]
+    },
+    {
+      "id": "lk_ix_10_ix_09",
+      "kind": "street",
+      "fromIntersectionId": "ix_10",
+      "toIntersectionId": "ix_09",
+      "lengthM": 1076.2,
+      "lanes": 2,
+      "maxSpeedKph": 50,
+      "storageVeh": 307,
+      "saturationVehPerSec": 1.0,
+      "sourceRoadIds": [
+        "4130251800",
+        "4130251802",
+        "4130254200"
+      ]
+    }
+  ],
+  "buildings": [
+    {
+      "id": "bd_lk_ix_00_ix_02_0",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_00_ix_02",
+      "positionRatio": 0.333,
+      "baseVehiclePerCityHour": 120,
+      "basePedestrianPerCityHour": 40,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_00_ix_02_1",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_00_ix_02",
+      "positionRatio": 0.667,
+      "baseVehiclePerCityHour": 100,
+      "basePedestrianPerCityHour": 120,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_00_ix_07_0",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_00_ix_07",
+      "positionRatio": 0.25,
+      "baseVehiclePerCityHour": 90,
+      "basePedestrianPerCityHour": 110,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_00_ix_07_1",
+      "buildingType": "residential",
+      "level": 1,
+      "linkId": "lk_ix_00_ix_07",
+      "positionRatio": 0.5,
+      "baseVehiclePerCityHour": 70,
+      "basePedestrianPerCityHour": 100,
+      "currentVisualId": "residential_lv1"
+    },
+    {
+      "id": "bd_lk_ix_00_ix_07_2",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_00_ix_07",
+      "positionRatio": 0.75,
+      "baseVehiclePerCityHour": 140,
+      "basePedestrianPerCityHour": 40,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_01_ix_03_0",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_01_ix_03",
+      "positionRatio": 0.5,
+      "baseVehiclePerCityHour": 90,
+      "basePedestrianPerCityHour": 110,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_01_ix_04_0",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_01_ix_04",
+      "positionRatio": 0.25,
+      "baseVehiclePerCityHour": 120,
+      "basePedestrianPerCityHour": 40,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_01_ix_04_1",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_01_ix_04",
+      "positionRatio": 0.5,
+      "baseVehiclePerCityHour": 100,
+      "basePedestrianPerCityHour": 120,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_01_ix_04_2",
+      "buildingType": "residential",
+      "level": 1,
+      "linkId": "lk_ix_01_ix_04",
+      "positionRatio": 0.75,
+      "baseVehiclePerCityHour": 80,
+      "basePedestrianPerCityHour": 90,
+      "currentVisualId": "residential_lv1"
+    },
+    {
+      "id": "bd_lk_ix_02_ix_04_0",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_02_ix_04",
+      "positionRatio": 0.333,
+      "baseVehiclePerCityHour": 120,
+      "basePedestrianPerCityHour": 40,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_02_ix_04_1",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_02_ix_04",
+      "positionRatio": 0.667,
+      "baseVehiclePerCityHour": 100,
+      "basePedestrianPerCityHour": 120,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_02_ix_08_0",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_02_ix_08",
+      "positionRatio": 0.333,
+      "baseVehiclePerCityHour": 90,
+      "basePedestrianPerCityHour": 110,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_02_ix_08_1",
+      "buildingType": "residential",
+      "level": 1,
+      "linkId": "lk_ix_02_ix_08",
+      "positionRatio": 0.667,
+      "baseVehiclePerCityHour": 70,
+      "basePedestrianPerCityHour": 100,
+      "currentVisualId": "residential_lv1"
+    },
+    {
+      "id": "bd_lk_ix_03_ix_04_0",
+      "buildingType": "residential",
+      "level": 1,
+      "linkId": "lk_ix_03_ix_04",
+      "positionRatio": 0.333,
+      "baseVehiclePerCityHour": 60,
+      "basePedestrianPerCityHour": 90,
+      "currentVisualId": "residential_lv1"
+    },
+    {
+      "id": "bd_lk_ix_03_ix_04_1",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_03_ix_04",
+      "positionRatio": 0.667,
+      "baseVehiclePerCityHour": 130,
+      "basePedestrianPerCityHour": 50,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_04_ix_08_0",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_04_ix_08",
+      "positionRatio": 0.25,
+      "baseVehiclePerCityHour": 120,
+      "basePedestrianPerCityHour": 40,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_04_ix_08_1",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_04_ix_08",
+      "positionRatio": 0.5,
+      "baseVehiclePerCityHour": 100,
+      "basePedestrianPerCityHour": 120,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_04_ix_08_2",
+      "buildingType": "residential",
+      "level": 1,
+      "linkId": "lk_ix_04_ix_08",
+      "positionRatio": 0.75,
+      "baseVehiclePerCityHour": 80,
+      "basePedestrianPerCityHour": 90,
+      "currentVisualId": "residential_lv1"
+    },
+    {
+      "id": "bd_lk_ix_04_ix_09_0",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_04_ix_09",
+      "positionRatio": 0.25,
+      "baseVehiclePerCityHour": 120,
+      "basePedestrianPerCityHour": 40,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_04_ix_09_1",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_04_ix_09",
+      "positionRatio": 0.5,
+      "baseVehiclePerCityHour": 100,
+      "basePedestrianPerCityHour": 120,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_04_ix_09_2",
+      "buildingType": "residential",
+      "level": 1,
+      "linkId": "lk_ix_04_ix_09",
+      "positionRatio": 0.75,
+      "baseVehiclePerCityHour": 80,
+      "basePedestrianPerCityHour": 90,
+      "currentVisualId": "residential_lv1"
+    },
+    {
+      "id": "bd_lk_ix_05_ix_06_0",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_05_ix_06",
+      "positionRatio": 0.5,
+      "baseVehiclePerCityHour": 120,
+      "basePedestrianPerCityHour": 40,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_05_ix_10_0",
+      "buildingType": "residential",
+      "level": 1,
+      "linkId": "lk_ix_05_ix_10",
+      "positionRatio": 0.25,
+      "baseVehiclePerCityHour": 60,
+      "basePedestrianPerCityHour": 90,
+      "currentVisualId": "residential_lv1"
+    },
+    {
+      "id": "bd_lk_ix_05_ix_10_1",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_05_ix_10",
+      "positionRatio": 0.5,
+      "baseVehiclePerCityHour": 130,
+      "basePedestrianPerCityHour": 50,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_05_ix_10_2",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_05_ix_10",
+      "positionRatio": 0.75,
+      "baseVehiclePerCityHour": 110,
+      "basePedestrianPerCityHour": 110,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_06_ix_10_0",
+      "buildingType": "residential",
+      "level": 1,
+      "linkId": "lk_ix_06_ix_10",
+      "positionRatio": 0.25,
+      "baseVehiclePerCityHour": 60,
+      "basePedestrianPerCityHour": 90,
+      "currentVisualId": "residential_lv1"
+    },
+    {
+      "id": "bd_lk_ix_06_ix_10_1",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_06_ix_10",
+      "positionRatio": 0.5,
+      "baseVehiclePerCityHour": 130,
+      "basePedestrianPerCityHour": 50,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_06_ix_10_2",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_06_ix_10",
+      "positionRatio": 0.75,
+      "baseVehiclePerCityHour": 110,
+      "basePedestrianPerCityHour": 110,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_07_ix_08_0",
+      "buildingType": "residential",
+      "level": 1,
+      "linkId": "lk_ix_07_ix_08",
+      "positionRatio": 0.333,
+      "baseVehiclePerCityHour": 60,
+      "basePedestrianPerCityHour": 90,
+      "currentVisualId": "residential_lv1"
+    },
+    {
+      "id": "bd_lk_ix_07_ix_08_1",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_07_ix_08",
+      "positionRatio": 0.667,
+      "baseVehiclePerCityHour": 130,
+      "basePedestrianPerCityHour": 50,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_09_ix_10_0",
+      "buildingType": "office",
+      "level": 1,
+      "linkId": "lk_ix_09_ix_10",
+      "positionRatio": 0.25,
+      "baseVehiclePerCityHour": 120,
+      "basePedestrianPerCityHour": 40,
+      "currentVisualId": "office_lv1"
+    },
+    {
+      "id": "bd_lk_ix_09_ix_10_1",
+      "buildingType": "commercial",
+      "level": 1,
+      "linkId": "lk_ix_09_ix_10",
+      "positionRatio": 0.5,
+      "baseVehiclePerCityHour": 100,
+      "basePedestrianPerCityHour": 120,
+      "currentVisualId": "commercial_lv1"
+    },
+    {
+      "id": "bd_lk_ix_09_ix_10_2",
+      "buildingType": "residential",
+      "level": 1,
+      "linkId": "lk_ix_09_ix_10",
+      "positionRatio": 0.75,
+      "baseVehiclePerCityHour": 80,
+      "basePedestrianPerCityHour": 90,
+      "currentVisualId": "residential_lv1"
+    }
+  ]
+}

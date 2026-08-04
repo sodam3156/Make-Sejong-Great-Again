@@ -12,6 +12,22 @@
 - 저장/재개용 버전·seed·map version 기록
 - A/B Street pinned commit과 headless 응답 버전을 TATS 계약으로 변환
 
+## 플레이 가능 지도
+
+`content/map_eojin_playable.json` — 시뮬레이션이 도는 그래프다. Unity의
+`StreamingAssets/map/eojin_map.json`(도로 884개)은 **표시 전용**이고 이 파일과 역할이 다르다.
+
+교차로 11곳(4지), 도로 링크 28개, 경계 유입·유출구 14개, 건물 33개를 담는다.
+교차로마다 접근로 4개, 회전 이동 12개, 교차상충 16쌍과 상충 없는 기본 신호 계획이 들어 있다.
+
+```bash
+python scripts/build_playable_map.py && python -m pytest backend/tests -q
+```
+
+공개 표준노드링크에서 오는 것은 **도로 형상과 연결 관계뿐**이다. 회전 이동·신호 현시·
+교통량·건물 수요는 게임용 합성값이며 `realityLevel` 필드로 구분해 표시한다.
+같은 입력이면 같은 바이트가 나오므로 `mapVersion`으로 결정론을 보장할 수 있다.
+
 ## 첫 구현 게이트
 
 1. 대표가 보류한 세종 기술 스파이크의 착수 여부 결정
