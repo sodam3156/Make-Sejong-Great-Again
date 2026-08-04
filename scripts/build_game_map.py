@@ -10,7 +10,7 @@ SOURCE = ROOT / "data" / "public" / "2026-07-29" / "sejong_nodelink_link.geojson
 OUTPUT = (
     ROOT
     / "unity"
-    / "RainFlowGame"
+    / "TATSGame"
     / "Assets"
     / "StreamingAssets"
     / "map"
@@ -74,7 +74,7 @@ def render() -> str:
         )
     roads.sort(key=lambda road: road["road_id"])
     payload = {
-        "map_version": "eojin-game-map-v1",
+        "map_version": "tats-eojin-map-v1",
         "source": "국가교통정보센터 전국표준노드링크 2026-07-16",
         "reality_level": "game",
         "note": "실제 도로 형상을 단순화한 게임 지도이며 신호 현시와 수요는 합성값입니다.",
@@ -100,7 +100,7 @@ def render() -> str:
 
 def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(render(), encoding="utf-8")
+    OUTPUT.write_bytes(render().encode("utf-8"))
     print(f"{OUTPUT.relative_to(ROOT)} ({OUTPUT.stat().st_size:,} bytes)")
 
 

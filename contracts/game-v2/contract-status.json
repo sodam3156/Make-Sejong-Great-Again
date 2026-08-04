@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-08-04",
+  "status": "logical-fields-defined_implementation-contract-pending",
+  "engineDecision": "abstreet-headless-approved_spike-deferred",
+  "enginePin": "0964f29315820c91b171b585eb51e300164e9197",
+  "models": [
+    { "name": "SignalPlan", "owner": "준·최영", "status": "needs_schema" },
+    { "name": "ImpactPreview", "owner": "최영", "status": "needs_schema" },
+    { "name": "OverlaySnapshot", "owner": "최영·여하윤", "status": "needs_schema" },
+    { "name": "BuildingInspector", "owner": "최영·여하윤", "status": "needs_schema" },
+    { "name": "RoadUnlockInspector", "owner": "최영·여하윤", "status": "needs_schema" },
+    { "name": "AlgorithmSkill", "owner": "손시우·최영", "status": "needs_content-and-schema" },
+    { "name": "AiComparisonSnapshot", "owner": "준·최영", "status": "needs_schema" }
+  ]
+}

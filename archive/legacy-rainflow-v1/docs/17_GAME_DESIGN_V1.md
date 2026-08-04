@@ -1,5 +1,13 @@
 # RainFlow Game Design v1
 
+> [!CAUTION]
+> **최신 기획 대체 공지 — 2026-08-04**
+>
+> 아래의 3개 정책 변수, 정책 카드, AI 조언 중심 조작과 성과 기반 자동 건물 승급은
+> 역사 기록으로만 유지한다. 최신 MVP는 교차로별 신호 단계 순서·지속시간·차량·보행자
+> 우선순위를 직접 편집하고, 포인트로 도로 개방권과 개별 건물 Level 1~3을 구매한다.
+> 화면·상호작용 기준은 [`19_TATS_UI_UX_DIRECTION_V1.md`](19_TATS_UI_UX_DIRECTION_V1.md)를 따른다.
+
 상태: 해커톤 세로 조각 구현 기준  
 Product Owner: 준  
 Game Design Lead: 손시우
