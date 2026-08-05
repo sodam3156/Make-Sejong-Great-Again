@@ -1,0 +1,327 @@
+schema_version: "1.1"
+updated_at: "2026-07-28"
+
+project:
+  id: "make-sejong-great-again"
+  name: "RainFlow Sejong"
+  product_type: "Offline-first operator-approved rain and roundabout traffic digital-twin prototype"
+  authoritative_scope: "Synthetic three-roundabout corridor plus one parallel bypass"
+  submission_variant: "RainFlow Sejong only"
+  repository_state: "implemented_prototype_with_windows_release"
+  implementation_status_note: "The shared worktree contains the executable FastAPI backend, deterministic simulation/policy/safety/decision modules, JSON persistence and audit logs, synchronized fixture/cache/OpenAPI artifacts, 42 passing tests, Docker reproduction files, and a native Windows Python 3.11 PyInstaller release with ZIP and checksums. Local Korean/space-path start, reuse, API, and stop checks pass; two clean external-PC offline validations remain."
+  excluded_claims:
+    - "Real-time synchronization with the actual Sejong traffic network"
+    - "Direct control of real signal controllers or field devices"
+    - "Field-level safety certification"
+    - "Actual Sejong traffic improvement performance"
+  legacy_reference:
+    name: "Synthetic five-signal-intersection core MVP"
+    document: "docs/12_TECH_STACK_AND_BACKEND_SCOPE.md"
+    status: "reference_only_excluded_from_submission"
+    note: "Retain its general FastAPI, deterministic simulation, offline packaging, AI-boundary, and safety principles, but do not import its five-intersection topology, TOD candidate model, scenario IDs, KPI names, or expanded API contract into RainFlow."
+
+source_precedence:
+  - "docs/15_DAY1_FREEZE_DECISION.md for the RainFlow-only submission decision and frozen IDs"
+  - "contracts/rainflow.schema.json and backend/fixtures/demo_run.json for the additive result contract and canonical fixture"
+  - "docs/10_TEAM_PARALLEL_EXECUTION.md for ownership, frozen paths, gates, and offline release criteria"
+  - "ai-context/PROJECT_STACK.yaml for current implementation context consistent with docs/15"
+  - "docs/11_PROJECT_FEASIBILITY_VALIDATION.md for claim limits, evidence, and safety wording"
+  - "docs/09_RAINFLOW_SEJONG.md for RainFlow product intent and spike criteria where it does not conflict with docs/15"
+  - "docs/12_TECH_STACK_AND_BACKEND_SCOPE.md only as a legacy technical reference"
+
+frozen_contract:
+  frozen_at: "2026-07-28"
+  scenarios:
+    - "dry_base"
+    - "rain_spillback_a"
+    - "rain_spillback_b"
+  policies:
+    - "no_action"
+    - "fixed_metering"
+    - "corridor_gating"
+  kpis:
+    - "spillback_time_sec"
+    - "recovery_time_sec"
+    - "total_travel_time_sec"
+    - "worst_approach_delay_sec"
+  api_paths:
+    - method: "GET"
+      path: "/api/health"
+    - method: "POST"
+      path: "/api/simulations"
+    - method: "GET"
+      path: "/api/simulations/{run_id}"
+    - method: "POST"
+      path: "/api/approvals"
+  result_sources:
+    - "live_simulation"
+    - "cached_simulation"
+    - "fixture"
+  screen_states:
+    - "normal"
+    - "rain_warning"
+    - "spillback"
+    - "policy_compare"
+    - "safety_review"
+    - "operator_approval"
+    - "recovery_compare"
+  change_policy:
+    - "Do not rename or delete frozen IDs, KPI fields, or API paths."
+    - "Additive optional response fields and additive diagnostic endpoints are allowed."
+    - "A frozen-contract change requires joint approval from Jun and Choi Young."
+
+hard_constraints:
+  demo_duration_minutes: 3
+  network:
+    roundabouts: 3
+    roundabout_ids:
+      - "R1"
+      - "R2"
+      - "R3"
+    corridor_links:
+      - "L12"
+      - "L23"
+    parallel_bypass: "BYPASS"
+  execution_target: "Windows x64"
+  launch_command: "start.bat"
+  external_runtime_dependencies: []
+  must_run_without:
+    - "Internet"
+    - "API key"
+    - "Node.js installation"
+    - "Python installation"
+    - "SUMO installation"
+    - "External LLM"
+  deterministic_execution: true
+  fixed_seed_required: true
+  human_approval_required: true
+  safety_guard_must_be_deterministic: true
+  live_llm_must_not_be_critical_path: true
+  synthetic_and_provisional_label_required: true
+
+technology_stack:
+  frontend:
+    status: "implemented_fixture_mode"
+    implementation: "Static offline HTML, CSS, and JavaScript"
+    data_mode: "frontend/demo_run.js copied from the canonical fixture"
+    server_delivery: "FastAPI static file mount"
+    offline_file_mode: true
+    api_adapter_status: "remaining"
+    constraints:
+      - "No external CDN"
+      - "No map tile API"
+      - "Always display synthetic/provisional and result-source labels"
+  backend:
+    status: "implemented"
+    language: "Python"
+    runtime_policy: ">=3.11,<3.13"
+    framework: "FastAPI"
+    schema_validation: "Pydantic v2"
+    asgi_server: "Uvicorn"
+    serialization: "JSON"
+    persistence: "JSON run snapshots and JSONL audit events through backend/app/storage.py"
+    persistence_status: "implemented"
+    database_note: "SQLite and SQLAlchemy from the legacy core design are not used in the current RainFlow implementation."
+  simulation:
+    status: "implemented"
+    engine: "Deterministic custom queue-based RainFlow corridor simulator"
+    version: "rainflow-queue-v1"
+    network_model: "R1 to L12 to R2 to L23 to R3, with parallel BYPASS"
+    random_source: "Python random.Random instantiated per scenario ID and recorded seed"
+    required_mechanics:
+      - "Dry, rain, and incident conditions"
+      - "Rain-dependent approach capacity"
+      - "Storage-limited L12 and L23 links"
+      - "Spillback blocks or constrains upstream entry"
+      - "Policy-specific metering factors"
+      - "KPI and timeline generation"
+    exclusions:
+      - "SUMO runtime in the submission path"
+      - "Microscopic vehicle animation"
+      - "Machine-learned traffic prediction"
+  policies:
+    status: "implemented"
+    version: "rainflow-policy-v1"
+    implementation: "backend/app/policies.py"
+    method: "Execute and compare the three frozen policies under the same scenario and seed"
+    p0_exclusions:
+      - "Unbounded LLM-generated control plans"
+      - "Reinforcement learning"
+      - "Additional policy IDs that alter the frozen three-policy contract"
+  decision:
+    status: "implemented"
+    version: "rainflow-rule-v1"
+    implementation: "backend/app/decision.py"
+    explanation_mode: "rule_based"
+    input: "Already serialized policy KPI, delta, and guard results"
+    output:
+      - "recommended_policy_id"
+      - "ranked_policy_ids"
+      - "Per-policy evidence"
+      - "Per-policy risks"
+      - "Per-policy reasons"
+    invariant: "A guard-failing policy is never recommended; no_action is the safe fallback."
+    external_llm: false
+  safety:
+    status: "implemented"
+    version: "rainflow-safety-v1"
+    implementation: "backend/app/safety.py"
+    implemented_rules:
+      - "FAIRNESS_P95_EXCEEDED"
+      - "DIVERSION_DELAY_EXCEEDED"
+      - "SAFETY_TTC_DEGRADED"
+      - "DATA_STALE"
+      - "DEVICE_FAULT"
+      - "CANDIDATE_HASH_MISMATCH"
+      - "RULE_VERSION_MISMATCH"
+    approval_recheck:
+      - "Candidate hash"
+      - "Rule-set version"
+      - "Current data age and sensor availability"
+      - "Current device status"
+      - "Policy guard result"
+  fallback:
+    live_simulation: "implemented"
+    cached_simulation:
+      status: "implemented"
+      implementation: "backend/app/main.py"
+      dedicated_cached_fixture_present: true
+      fixture_path: "backend/fixtures/cached_run.json"
+      current_behavior: "Uses the schema-validated dedicated cache and retains demo_run.json as a final fixture fallback."
+    fixture:
+      status: "implemented"
+      path: "backend/fixtures/demo_run.json"
+    llm_failure: "Not applicable to the critical path because the decision/explanation layer is local and rule based."
+  testing:
+    framework: "pytest"
+    last_local_result: "42 passed on Linux and native Windows Python 3.11 on 2026-07-28"
+    covered:
+      - "Same-input and same-seed determinism"
+      - "Dry and rainy spillback behavior"
+      - "Three-policy spike thresholds"
+      - "Guard-failing policy rejection"
+      - "Approval revalidation and state transitions"
+      - "Contract and fixture validation"
+      - "Decision ranking, safe fallback, and byte-stable output"
+      - "Persistence, audit, cached/fixture source selection"
+  packaging:
+    status: "native_windows_x64_release_built"
+    backend_binary: "PyInstaller onedir"
+    spec: "rainflow-sejong.spec"
+    build_script: "scripts/build_windows.ps1"
+    source_launcher: "launcher/run_rainflow.py"
+    windows_launcher:
+      - "release/windows-x64/start.bat"
+      - "release/windows-x64/launch.ps1"
+      - "release/windows-x64/stop.bat"
+      - "release/windows-x64/stop.ps1"
+      - "release/windows-x64/README.txt"
+    development_reproduction:
+      - "Dockerfile"
+      - "compose.yaml"
+      - "docs/RUNBOOK.md"
+    release_artifacts:
+      - "release/windows-x64/RainFlowSejong.exe"
+      - "release/windows-x64/SHA256SUMS.txt"
+      - "release/RainFlowSejong-windows-x64.zip"
+    validation_status: "Native Windows 3.11 build/self-check, extracted-ZIP health/API, seven states, repeated launch reuse, stop, and SHA256 verification pass in the current Korean/space-containing path. Two clean external Windows x64 PCs with Internet disabled remain."
+
+state_machine:
+  normal_flow:
+    - "CREATED"
+    - "PREDICTED"
+    - "AI_REVIEWED (deterministic rule-based decision layer)"
+    - "SAFETY_PASSED or SAFETY_REJECTED"
+    - "HUMAN_APPROVED, HUMAN_REJECTED, or HUMAN_HELD"
+    - "TWIN_APPLIED"
+    - "EVALUATED"
+  approval_invariants:
+    - "A guard-failing policy cannot be approved."
+    - "Approval rechecks candidate hash, rule version, data quality, and device status."
+    - "Before approval, the applied KPI remains the no_action baseline."
+    - "Repeated identical approval is idempotent; invalid terminal transitions are rejected."
+
+p0_api_contract:
+  - method: "GET"
+    path: "/api/health"
+    purpose: "Return process, fixture/cache, storage, and offline readiness."
+  - method: "POST"
+    path: "/api/simulations"
+    purpose: "Create a deterministic three-policy run or select cached/fixture fallback."
+  - method: "GET"
+    path: "/api/simulations/{run_id}"
+    purpose: "Return the stored timeline, KPI, policies, guards, decision, source, and workflow state."
+  - method: "POST"
+    path: "/api/approvals"
+    purpose: "Approve, reject, or hold after deterministic revalidation."
+
+additive_diagnostic_endpoints:
+  contract_status: "Optional additions; not part of the four frozen API paths"
+  endpoints:
+    - method: "GET"
+      path: "/api/scenarios"
+    - method: "GET"
+      path: "/api/audit/{run_id}"
+
+backend_module_map:
+  - path: "backend/app/main.py"
+    status: "implemented"
+    responsibility: "Frozen API orchestration, fallback selection, state transitions, revalidation, and static frontend serving"
+  - path: "backend/app/domain.py"
+    status: "implemented"
+    responsibility: "Pydantic request and response models with additive optional fields"
+  - path: "backend/app/simulation.py"
+    status: "implemented"
+    responsibility: "Three-roundabout queue simulation, RainFlow scenarios, timeline, and KPI"
+  - path: "backend/app/policies.py"
+    status: "implemented"
+    responsibility: "Frozen policy IDs, labels, version, and metering behavior"
+  - path: "backend/app/safety.py"
+    status: "implemented"
+    responsibility: "Versioned safety/fairness rules, operational checks, and candidate hashes"
+  - path: "backend/app/decision.py"
+    status: "implemented"
+    responsibility: "Deterministic safe policy ranking and structured evidence, risks, and reasons"
+  - path: "backend/app/storage.py"
+    status: "implemented"
+    responsibility: "Atomic JSON run persistence and JSONL audit lookup"
+  - path: "backend/fixtures/demo_run.json"
+    status: "implemented"
+    responsibility: "Canonical offline fixture and current fallback source"
+  - path: "backend/fixtures/cached_run.json"
+    status: "implemented"
+    responsibility: "Dedicated validated cached-simulation result"
+  - path: "backend/tests"
+    status: "implemented"
+    responsibility: "Simulation, API, contract, safety, decision, fallback, and persistence tests"
+
+implementation_status:
+  implemented:
+    - "RainFlow schema and canonical seven-state fixture"
+    - "Three frozen scenarios, three frozen policies, and four frozen KPI"
+    - "Deterministic queue simulator and policy comparison"
+    - "Versioned safety/fairness guard and approval-time revalidation"
+    - "Rule-based deterministic decision ranking without an external LLM"
+    - "Four frozen API paths with additive response fields"
+    - "JSON run persistence, JSONL audit log, and stored-run lookup"
+    - "Live-to-cached/fixture fallback code with explicit result_source"
+    - "Fixture-driven offline frontend"
+    - "Docker reproduction files and a native Windows x64 executable, ZIP, and SHA256 checksum set"
+  remaining:
+    - "Connect the frontend API adapter while preserving fixture mode"
+    - "Build and run the Docker image when a Docker daemon is available"
+    - "Pass two consecutive runs on each of two clean Windows x64 PCs, including Korean and space-containing paths"
+    - "Synchronize final logs, README, source, video, presentation numbers, and release tag"
+
+coding_rules_for_ai:
+  - "Treat docs/15 and the frozen RainFlow contract as authoritative."
+  - "Do not reintroduce the legacy five-intersection topology, TOD plans, or core scenario IDs."
+  - "Do not invent real Sejong sensor data; label all fixtures and results synthetic and provisional."
+  - "Do not hardcode target improvement percentages; use simulator or stored-run outputs."
+  - "Do not let an LLM calculate KPI, generate unrestricted policies, make safety decisions, or approve a policy."
+  - "Keep no_action as the safe fallback and never recommend or approve a guard-failing policy."
+  - "Use the same additive result shape for live_simulation, cached_simulation, and fixture."
+  - "Preserve the four frozen API paths and add only optional fields or diagnostic endpoints."
+  - "Record scenario input, seed, result source, simulator/policy/rule/scoring versions, candidate hash, decision, approval, and KPI."
+  - "Keep the submission runnable without Internet, API keys, Node.js, Python, SUMO, or an external LLM."
+  - "Resolve claim and safety-limit conflicts in favor of docs/11_PROJECT_FEASIBILITY_VALIDATION.md."

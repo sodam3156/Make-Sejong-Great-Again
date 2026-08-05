@@ -2,7 +2,7 @@
 
 이 디렉터리는 시우가 2026-07-29 내려받은 정부·공공기관 공개자료의 원본 스냅샷이다. 파일은 내용·인코딩을 바꾸지 않고 보존한다.
 
-자료의 출처 URL, SHA-256, 행·열 수, 대상 교차로 포함 여부와 사용 한계는 [`docs/evidence/public_data_inventory_20260729.md`](../../../docs/evidence/public_data_inventory_20260729.md)를 따른다.
+자료의 출처 URL, SHA-256, 행·열 수, 대상 교차로 포함 여부와 사용 한계는 레거시 근거 인벤토리 [`public_data_inventory_20260729.md`](../../../archive/legacy-rainflow-v1/docs/evidence/public_data_inventory_20260729.md)를 따른다.
 
 ## 사용 원칙
 

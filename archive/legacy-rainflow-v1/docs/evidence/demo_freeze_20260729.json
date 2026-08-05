@@ -1,0 +1,26 @@
+{
+  "artifacts": {
+    "backend/README.md": "63706ab85962d8154c594478b24b518f9bf941c90e9c784cf23b15cb7a8ac492",
+    "backend/fixtures/cached_run.json": "7bd7018475f9d620057c89db75b613b4e81b1aa3ba10a0d55a13ed6637befcd9",
+    "backend/fixtures/demo_freeze_meta.json": "4e0fb5e5185fda01c3853a0d15cea8834de4ea820d74b45337126252d4cc7cf7",
+    "backend/fixtures/demo_run.json": "cdbbf319ccccf8b58e64a1a39c8e3fd019a8f16642454b97eadc0d3222f4d455",
+    "contracts/openapi.json": "4010adc7c098d75aa98c12c246034c392d87f24cfeced93ce3b6af73744dfd66",
+    "docs/16_DEMO_SCRIPT.md": "b06447752b99054c6f2e66a83ca89c4cb19a726b704fe59b836b4b0a454024a4",
+    "docs/evidence/demo_kpi_seed_matrix_20260729.json": "3a46ca64246d00835efb936feabe3549526d99259d6934c5da5a0ce9581eefb3",
+    "frontend/demo_run.js": "2e067ccb473ef88c9946e49bf9517bf69fc957e85d241ed527f27045f27ace22"
+  },
+  "freeze_id": "freeze-20260729-202509-kst",
+  "frozen_at": "2026-07-29T20:25:09+09:00",
+  "source": {
+    "fixture_run_id": "fixture-qa-v2-001",
+    "freeze_id": "freeze-20260729-202509-kst",
+    "frozen_at": "2026-07-29T20:25:09+09:00",
+    "git_commit_sha": "b2a244dbb50b04ec1e79a6df63301aca14f227a3",
+    "provisional": true,
+    "result_checksum": "c9088907640696c315685619ce18ae1529ceb8bc1e993bb36c0f080b7ce4ed89",
+    "run_id": "live-rain_spillback_a-s42-d8151109a7",
+    "scenario_id": "rain_spillback_a",
+    "seed": 42,
+    "source_tree_checksum": "b7b538c9cf5ba8f7831127a164de0cda7443d8847a3941c3473abebe8767497e"
+  }
+}

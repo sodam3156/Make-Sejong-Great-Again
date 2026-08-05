@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-04T22:03:42+09:00",
+  "product": "TATS",
+  "branch": "codex/ai-traffic-game-slice",
+  "automationId": "automation-3",
+  "notionBoardId": "3b25d8c2-5aa4-813e-bb67-c1f92c7828a1",
+  "currentGate": "product-safety-freeze-to-manyfast-v9-to-abstreet-spike-decision-to-game-v2-contract-to-unity-ui-shell",
+  "tasks": [
+    {
+      "id": "pm-product-safety-freeze",
+      "priority": "P0",
+      "owner": "준",
+      "status": "blocked_on_decision",
+      "summary": "타깃 플레이어·첫 3분 MVP·hard safety/soft risk 경계를 동결한다."
+    },
+    {
+      "id": "design-manyfast-v9-core",
+      "priority": "P0",
+      "owner": "준·여하윤·김경은",
+      "status": "approval_required",
+      "summary": "지도·신호 편집·영향 미리보기 핵심 화면을 승인한다."
+    },
+    {
+      "id": "contract-game-v2",
+      "priority": "P0",
+      "owner": "준·최영",
+      "status": "logical_fields_defined",
+      "summary": "7개 논리 모델을 JSON Schema와 OpenAPI로 동결한다."
+    },
+    {
+      "id": "engine-abstreet-adoption",
+      "priority": "P0",
+      "owner": "준·최영",
+      "status": "approved_forked_and_pinned",
+      "summary": "A/B Street headless + Unity 구조와 fork·기준 SHA·Apache-2.0 고지를 고정했다."
+    },
+    {
+      "id": "engine-sejong-technical-spike-decision",
+      "priority": "P0",
+      "owner": "준",
+      "status": "deferred_by_owner",
+      "summary": "세종 지도 import·신호 변경 E2E 기술 스파이크 착수 여부를 추후 결정한다."
+    },
+    {
+      "id": "unity-tats-ui-shell",
+      "priority": "P0",
+      "owner": "김경은·여하윤",
+      "status": "clean_shell_ready",
+      "summary": "Unity 6000.3.20f1에서 UI Toolkit 셸과 mock ViewModel을 만든다."
+    },
+    {
+      "id": "backend-tats-authority",
+      "priority": "P0",
+      "owner": "최영",
+      "status": "architecture_approved_spike_deferred",
+      "summary": "A/B Street headless를 game-v2 adapter로 격리해 tick·미리보기·적용·성장 경로를 구현한다."
+    },
+    {
+      "id": "map-tats-adapter",
+      "priority": "P1",
+      "owner": "김경은·최영",
+      "status": "public_data_retained",
+      "summary": "세종 공개 도로 형상을 TATS 지도 어댑터 입력으로 변환한다."
+    },
+    {
+      "id": "github-tats-rewrite-pr",
+      "priority": "P1",
+      "owner": "준",
+      "status": "local_changes_not_published",
+      "summary": "저장소 리셋 변경을 검토하고 단일 PR로 공개한다."
+    }
+  ]
+}

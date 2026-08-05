@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "decisionStatus": "architecture_approved_spike_deferred",
+  "approvedAt": "2026-08-04",
+  "upstream": "https://github.com/a-b-street/abstreet",
+  "fork": "https://github.com/sodam3156/abstreet",
+  "defaultBranch": "main",
+  "pinnedCommit": "0964f29315820c91b171b585eb51e300164e9197",
+  "pinnedCommitDate": "2025-09-10T09:11:25Z",
+  "pinnedCommitUrl": "https://github.com/a-b-street/abstreet/commit/0964f29315820c91b171b585eb51e300164e9197",
+  "license": {
+    "spdx": "Apache-2.0",
+    "path": "LICENSE",
+    "blobSha": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+    "sourceUrl": "https://github.com/a-b-street/abstreet/blob/0964f29315820c91b171b585eb51e300164e9197/LICENSE"
+  },
+  "integration": {
+    "mode": "headless_sidecar_behind_game_v2_adapter",
+    "client": "unity/TATSGame",
+    "sourceVendored": false,
+    "binaryVendored": false,
+    "sejongTechnicalSpike": "deferred_pending_owner_decision"
+  }
+}
+

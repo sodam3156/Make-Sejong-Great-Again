@@ -9,14 +9,21 @@ dist/
 
 backend/logs/
 
-release/*.zip
-release/windows-x64/RainFlowSejong.exe
-release/windows-x64/_internal/
-release/windows-x64/logs/
-release/windows-x64/runtime/
-release/windows-x64/SHA256SUMS.txt
-release/windows-x64/start.bat
-release/windows-x64/launch.ps1
-release/windows-x64/stop.bat
-release/windows-x64/stop.ps1
-release/windows-x64/README.txt
+# Unity generated state (the project source under unity/ is tracked).
+unity/**/Library/
+unity/**/Logs/
+unity/**/Temp/
+unity/**/Obj/
+unity/**/UserSettings/
+unity/**/*.csproj
+unity/**/*.sln
+
+# Local artifacts carried with the archived RainFlow snapshot.
+archive/legacy-rainflow-v1/backend/logs/
+archive/legacy-rainflow-v1/release/windows-x64/
+archive/legacy-rainflow-v1/release/*.zip
+archive/legacy-rainflow-v1/unity/**/Library/
+archive/legacy-rainflow-v1/unity/**/Logs/
+archive/legacy-rainflow-v1/unity/**/Temp/
+archive/legacy-rainflow-v1/unity/**/Obj/
+archive/legacy-rainflow-v1/unity/**/UserSettings/

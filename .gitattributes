@@ -1,10 +1,10 @@
 # cmd.exe requires CRLF line endings in .bat files; a bare LF has corrupted
 # the submission launcher twice before (C-021). Force CRLF regardless of the
 # committer/checkout machine's core.autocrlf setting.
-scripts/launcher_assets/start.bat text eol=crlf
-scripts/launcher_assets/stop.bat text eol=crlf
-release/start.bat text eol=crlf
-release/start_exe.bat text eol=crlf
+archive/legacy-rainflow-v1/scripts/launcher_assets/start.bat text eol=crlf
+archive/legacy-rainflow-v1/scripts/launcher_assets/stop.bat text eol=crlf
+archive/legacy-rainflow-v1/release/start.bat text eol=crlf
+archive/legacy-rainflow-v1/release/start_exe.bat text eol=crlf
 
 # Preserve downloaded public CSV snapshots byte-for-byte, including their
 # original encoding and CRLF line endings.

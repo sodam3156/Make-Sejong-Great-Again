@@ -1,0 +1,11 @@
+{
+  "name": "RainFlow.Game.Editor",
+  "rootNamespace": "RainFlow.Game.Editor",
+  "references": [
+    "RainFlow.Game"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": true
+}

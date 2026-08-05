@@ -1,0 +1,1987 @@
+{
+  "catalog": {
+    "catalog_version": "mission-catalog-v1",
+    "data_version": "rainflow-game-synthetic-v1",
+    "equipment": [
+      {
+        "cost_credits": 50,
+        "effect": "유입 제한 강도를 5% 단위로 조정",
+        "equipment_id": "smart_controller",
+        "label": "스마트 신호제어기"
+      },
+      {
+        "cost_credits": 50,
+        "effect": "우회 유도 강도 상한을 20으로 확장",
+        "equipment_id": "dynamic_guidance",
+        "label": "동적 우회 안내판"
+      }
+    ],
+    "missions": [
+      {
+        "allowed_regions": [
+          "seonggeum_cheongsa",
+          "cheongsa_sejong"
+        ],
+        "base_demand_multiplier": 1.0,
+        "base_incident": false,
+        "bot_candidate_budget": 9,
+        "bot_tier": "luna",
+        "description": "첫 생활권의 역류를 줄이고 Luna보다 안전한 정책을 설계하세요.",
+        "mission_id": "rain_commute",
+        "reward_bonus": 20,
+        "scenario_id": "rain_spillback_a",
+        "stage": 1,
+        "title": "출퇴근 집중호우"
+      },
+      {
+        "allowed_regions": [
+          "seonggeum_cheongsa",
+          "cheongsa_sejong"
+        ],
+        "base_demand_multiplier": 1.03,
+        "base_incident": true,
+        "bot_candidate_budget": 36,
+        "bot_tier": "terra",
+        "description": "인접 생활권의 사고 병목을 복구하고 Terra를 이기세요.",
+        "mission_id": "rain_incident",
+        "reward_bonus": 40,
+        "scenario_id": "rain_spillback_b",
+        "stage": 2,
+        "title": "강우·사고 복구"
+      },
+      {
+        "allowed_regions": [
+          "eojin_corridor"
+        ],
+        "base_demand_multiplier": 1.08,
+        "base_incident": true,
+        "bot_candidate_budget": 128,
+        "bot_tier": "sol",
+        "description": "성장한 두 생활권의 추가 수요를 견디고 Sol을 이기세요.",
+        "mission_id": "corridor_final",
+        "reward_bonus": 100,
+        "scenario_id": "rain_spillback_b",
+        "stage": 3,
+        "title": "어진동 AI 회랑전"
+      }
+    ],
+    "out_of_scope": [
+      "실제 부동산 가격 예측",
+      "정부 정책 성과 주장",
+      "사용자 기록 서버 업로드",
+      "건물·공장 직접 건설"
+    ],
+    "policy_controls": {
+      "diversion_strength": {
+        "base_maximum": 10,
+        "dynamic_guidance_maximum": 20,
+        "minimum": 0,
+        "step": 5
+      },
+      "metering_strength_pct": {
+        "base_step": 10,
+        "maximum": 100,
+        "minimum": 0,
+        "smart_controller_step": 5
+      },
+      "trigger_occupancy_pct": {
+        "maximum": 95,
+        "minimum": 65,
+        "step": 5
+      }
+    },
+    "provisional": true,
+    "reality_level": "game",
+    "reality_note": "게임 시뮬레이션·합성 추정치입니다. 실제 부동산 가격이나 정책 효과를 예측하지 않습니다.",
+    "regions": [
+      {
+        "adjacent_region_id": "cheongsa_sejong",
+        "center": {
+          "latitude": 36.5019,
+          "longitude": 127.2638
+        },
+        "focus_link": "L12",
+        "label": "성금–청사 생활권",
+        "region_id": "seonggeum_cheongsa",
+        "starting_region": true
+      },
+      {
+        "adjacent_region_id": "seonggeum_cheongsa",
+        "center": {
+          "latitude": 36.5048,
+          "longitude": 127.2826
+        },
+        "focus_link": "L23",
+        "label": "청사–세종 생활권",
+        "region_id": "cheongsa_sejong",
+        "starting_region": true
+      },
+      {
+        "adjacent_region_id": null,
+        "center": {
+          "latitude": 36.5035,
+          "longitude": 127.2734
+        },
+        "focus_link": "corridor",
+        "label": "어진동 통합 회랑",
+        "region_id": "eojin_corridor",
+        "starting_region": false
+      }
+    ],
+    "result_source": "live_simulation"
+  },
+  "evaluations": {
+    "corridor_final": {
+      "adaptive_event": {
+        "demand_multiplier": 1.0,
+        "effective_demand_multiplier": 1.08,
+        "incident": true,
+        "mode": "standard",
+        "rain_extension_sec": 0,
+        "reason": "현재 진행 기록에 맞는 표준 수요를 적용합니다.",
+        "title": "표준 이벤트"
+      },
+      "advice": [
+        {
+          "code": "FINE_TUNE_DIVERSION",
+          "precise": false,
+          "reason": "안전 기준을 지켰습니다. 남은 정체를 우회로 분산할 수 있습니다.",
+          "recommended_policy": {
+            "diversion_strength": 10,
+            "metering_strength_pct": 90,
+            "schema_version": "policy-design-v1",
+            "trigger_occupancy_pct": 65
+          },
+          "title": "우회 여력을 미세 조정하세요",
+          "tradeoff": "우회를 늘리면 우회 차량의 자유주행 시간이 추가됩니다."
+        }
+      ],
+      "data_version": "rainflow-game-synthetic-v1",
+      "defeated_opponent": true,
+      "evaluation_version": "mission-evaluation-v1",
+      "mission_id": "corridor_final",
+      "note": "게임 시뮬레이션·합성 추정치입니다. 실제 부동산 가격이나 정책 효과를 예측하지 않습니다.",
+      "opponent": {
+        "candidate_budget": 128,
+        "delta_vs_no_action": {
+          "recovery_time_pct": 0.0,
+          "spillback_time_pct": -65.07,
+          "total_travel_time_pct": -52.819,
+          "worst_approach_delay_pct": -49.145
+        },
+        "guard": {
+          "passed": true,
+          "rule_version": "rainflow-guard-v2",
+          "violations": []
+        },
+        "kpi": {
+          "approach_p95_delay": {
+            "R1_N": 1196.0,
+            "R1_W": 55.7,
+            "R2_S": 113.7,
+            "R3_E": 0.0
+          },
+          "completed_trips": 1492,
+          "diverted_vehicles": 16.4,
+          "recovery_observed": false,
+          "recovery_time_sec": 900,
+          "spillback_time_sec": 875.0,
+          "total_travel_time_sec": 273851.0,
+          "worst_approach_delay_sec": 1196.0
+        },
+        "policy_design": {
+          "diversion_strength": 10,
+          "metering_strength_pct": 80,
+          "schema_version": "policy-design-v1",
+          "trigger_occupancy_pct": 65
+        },
+        "score": 58.393,
+        "tier": "sol"
+      },
+      "player": {
+        "delta_vs_no_action": {
+          "recovery_time_pct": 0.0,
+          "spillback_time_pct": -65.269,
+          "total_travel_time_pct": -53.237,
+          "worst_approach_delay_pct": -49.702
+        },
+        "guard": {
+          "passed": true,
+          "rule_version": "rainflow-guard-v2",
+          "violations": []
+        },
+        "kpi": {
+          "approach_p95_delay": {
+            "R1_N": 1182.9,
+            "R1_W": 55.8,
+            "R2_S": 128.4,
+            "R3_E": 0.0
+          },
+          "completed_trips": 1494,
+          "diverted_vehicles": 18.0,
+          "recovery_observed": false,
+          "recovery_time_sec": 900,
+          "spillback_time_sec": 870.0,
+          "total_travel_time_sec": 271428.0,
+          "worst_approach_delay_sec": 1182.9
+        },
+        "policy_design": {
+          "diversion_strength": 10,
+          "metering_strength_pct": 90,
+          "schema_version": "policy-design-v1",
+          "trigger_occupancy_pct": 65
+        },
+        "score": 58.723,
+        "timeline": [
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.07,
+                "queue_veh": 1.5,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.03,
+                "queue_veh": 0.4,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 0
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.3,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.11,
+                "queue_veh": 1.6,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 180
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.3,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.12,
+                "queue_veh": 1.8,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 360
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.2,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.14,
+                "queue_veh": 1.9,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 540
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.3,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.12,
+                "queue_veh": 1.7,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 720
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.07,
+                "queue_veh": 1.4,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.13,
+                "queue_veh": 1.8,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "moderate",
+            "t_sec": 900
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.22,
+                "queue_veh": 4.9,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.65,
+                "queue_veh": 9.3,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "moderate",
+            "t_sec": 1080
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.68,
+                "queue_veh": 14.9,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.61,
+                "queue_veh": 8.8,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1260
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.64,
+                "queue_veh": 14.0,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.66,
+                "queue_veh": 9.6,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1440
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.68,
+                "queue_veh": 14.9,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.62,
+                "queue_veh": 9.0,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1620
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.62,
+                "queue_veh": 13.7,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.68,
+                "queue_veh": 9.8,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1800
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.68,
+                "queue_veh": 15.0,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.64,
+                "queue_veh": 9.2,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1980
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.63,
+                "queue_veh": 13.8,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.7,
+                "queue_veh": 10.0,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 2160
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.63,
+                "queue_veh": 13.9,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.66,
+                "queue_veh": 9.5,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 2340
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.67,
+                "queue_veh": 14.6,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.62,
+                "queue_veh": 8.9,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 2520
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.68,
+                "queue_veh": 14.9,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.68,
+                "queue_veh": 9.8,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 2700
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 14.4,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 2880
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 14.4,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 3060
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 14.4,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 3240
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 14.4,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 3420
+          }
+        ]
+      },
+      "progression": {
+        "building_level_after": 2,
+        "building_level_before": 1,
+        "credits_earned": 300,
+        "next_demand_bonus_pct": 5,
+        "opponent_score_margin": 0.33,
+        "virtual_property_value_index": 120.0
+      },
+      "provisional": true,
+      "reality_level": "game",
+      "region_id": "eojin_corridor",
+      "result_source": "live_simulation",
+      "rule_version": "rainflow-game-rules-v1",
+      "satisfaction": {
+        "accessibility": 100.0,
+        "pedestrian_proxy": 100.0,
+        "traffic": 100.0
+      },
+      "success": true,
+      "telemetry": {
+        "adaptive_mode": "standard",
+        "attempts": 0,
+        "completion_time_sec": null,
+        "data_version": "rainflow-game-synthetic-v1",
+        "defeated_opponent": true,
+        "mission_id": "corridor_final",
+        "reality_level": "game",
+        "region_id": "eojin_corridor",
+        "score_margin": 0.33,
+        "seed": 42,
+        "telemetry_version": "run-telemetry-v1"
+      }
+    },
+    "rain_commute": {
+      "adaptive_event": {
+        "demand_multiplier": 1.0,
+        "effective_demand_multiplier": 1.0,
+        "incident": false,
+        "mode": "standard",
+        "rain_extension_sec": 0,
+        "reason": "현재 진행 기록에 맞는 표준 수요를 적용합니다.",
+        "title": "표준 이벤트"
+      },
+      "advice": [
+        {
+          "code": "FINE_TUNE_DIVERSION",
+          "precise": false,
+          "reason": "안전 기준을 지켰습니다. 남은 정체를 우회로 분산할 수 있습니다.",
+          "recommended_policy": {
+            "diversion_strength": 10,
+            "metering_strength_pct": 90,
+            "schema_version": "policy-design-v1",
+            "trigger_occupancy_pct": 65
+          },
+          "title": "우회 여력을 미세 조정하세요",
+          "tradeoff": "우회를 늘리면 우회 차량의 자유주행 시간이 추가됩니다."
+        }
+      ],
+      "data_version": "rainflow-game-synthetic-v1",
+      "defeated_opponent": true,
+      "evaluation_version": "mission-evaluation-v1",
+      "mission_id": "rain_commute",
+      "note": "게임 시뮬레이션·합성 추정치입니다. 실제 부동산 가격이나 정책 효과를 예측하지 않습니다.",
+      "opponent": {
+        "candidate_budget": 9,
+        "delta_vs_no_action": {
+          "recovery_time_pct": 0.0,
+          "spillback_time_pct": -55.808,
+          "total_travel_time_pct": -63.992,
+          "worst_approach_delay_pct": -77.406
+        },
+        "guard": {
+          "passed": true,
+          "rule_version": "rainflow-guard-v2",
+          "violations": []
+        },
+        "kpi": {
+          "approach_p95_delay": {
+            "R1_N": 248.4,
+            "R1_W": 4.9,
+            "R2_S": 3.4,
+            "R3_E": 0.0
+          },
+          "completed_trips": 1430,
+          "diverted_vehicles": 7.5,
+          "recovery_observed": false,
+          "recovery_time_sec": 900,
+          "spillback_time_sec": 875.0,
+          "total_travel_time_sec": 95504.0,
+          "worst_approach_delay_sec": 248.4
+        },
+        "policy_design": {
+          "diversion_strength": 10,
+          "metering_strength_pct": 90,
+          "schema_version": "policy-design-v1",
+          "trigger_occupancy_pct": 85
+        },
+        "score": 61.912,
+        "tier": "luna"
+      },
+      "player": {
+        "delta_vs_no_action": {
+          "recovery_time_pct": 0.0,
+          "spillback_time_pct": -58.333,
+          "total_travel_time_pct": -67.278,
+          "worst_approach_delay_pct": -83.227
+        },
+        "guard": {
+          "passed": true,
+          "rule_version": "rainflow-guard-v2",
+          "violations": []
+        },
+        "kpi": {
+          "approach_p95_delay": {
+            "R1_N": 184.4,
+            "R1_W": 4.8,
+            "R2_S": 3.9,
+            "R3_E": 0.0
+          },
+          "completed_trips": 1438,
+          "diverted_vehicles": 9.8,
+          "recovery_observed": false,
+          "recovery_time_sec": 900,
+          "spillback_time_sec": 825.0,
+          "total_travel_time_sec": 86788.0,
+          "worst_approach_delay_sec": 184.4
+        },
+        "policy_design": {
+          "diversion_strength": 10,
+          "metering_strength_pct": 90,
+          "schema_version": "policy-design-v1",
+          "trigger_occupancy_pct": 65
+        },
+        "score": 65.198,
+        "timeline": [
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.2,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.02,
+                "queue_veh": 0.4,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 0
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.05,
+                "queue_veh": 1.2,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.08,
+                "queue_veh": 1.5,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 180
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.3,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.1,
+                "queue_veh": 1.8,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 360
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.4,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.1,
+                "queue_veh": 1.7,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 540
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.3,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.1,
+                "queue_veh": 1.7,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 720
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.4,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.1,
+                "queue_veh": 1.7,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "moderate",
+            "t_sec": 900
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.3,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.21,
+                "queue_veh": 3.8,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "moderate",
+            "t_sec": 1080
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.07,
+                "queue_veh": 1.5,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.45,
+                "queue_veh": 8.0,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1260
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.1,
+                "queue_veh": 2.2,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.63,
+                "queue_veh": 11.3,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1440
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.27,
+                "queue_veh": 5.9,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.66,
+                "queue_veh": 11.8,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1620
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.43,
+                "queue_veh": 9.4,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.66,
+                "queue_veh": 11.9,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1800
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.63,
+                "queue_veh": 13.9,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.61,
+                "queue_veh": 11.0,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1980
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.65,
+                "queue_veh": 14.4,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.62,
+                "queue_veh": 11.1,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 2160
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.67,
+                "queue_veh": 14.7,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.63,
+                "queue_veh": 11.3,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 2340
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.62,
+                "queue_veh": 13.6,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.65,
+                "queue_veh": 11.6,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 2520
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.65,
+                "queue_veh": 14.2,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.65,
+                "queue_veh": 11.7,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 2700
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.91,
+                "queue_veh": 20.1,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 18.0,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 2880
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 18.0,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 3060
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 18.0,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 3240
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 18.0,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 3420
+          }
+        ]
+      },
+      "progression": {
+        "building_level_after": 2,
+        "building_level_before": 1,
+        "credits_earned": 220,
+        "next_demand_bonus_pct": 5,
+        "opponent_score_margin": 3.286,
+        "virtual_property_value_index": 120.0
+      },
+      "provisional": true,
+      "reality_level": "game",
+      "region_id": "seonggeum_cheongsa",
+      "result_source": "live_simulation",
+      "rule_version": "rainflow-game-rules-v1",
+      "satisfaction": {
+        "accessibility": 100.0,
+        "pedestrian_proxy": 100.0,
+        "traffic": 100.0
+      },
+      "success": true,
+      "telemetry": {
+        "adaptive_mode": "standard",
+        "attempts": 0,
+        "completion_time_sec": null,
+        "data_version": "rainflow-game-synthetic-v1",
+        "defeated_opponent": true,
+        "mission_id": "rain_commute",
+        "reality_level": "game",
+        "region_id": "seonggeum_cheongsa",
+        "score_margin": 3.286,
+        "seed": 42,
+        "telemetry_version": "run-telemetry-v1"
+      }
+    },
+    "rain_incident": {
+      "adaptive_event": {
+        "demand_multiplier": 1.0,
+        "effective_demand_multiplier": 1.03,
+        "incident": true,
+        "mode": "standard",
+        "rain_extension_sec": 0,
+        "reason": "현재 진행 기록에 맞는 표준 수요를 적용합니다.",
+        "title": "표준 이벤트"
+      },
+      "advice": [
+        {
+          "code": "FINE_TUNE_DIVERSION",
+          "precise": false,
+          "reason": "안전 기준을 지켰습니다. 남은 정체를 우회로 분산할 수 있습니다.",
+          "recommended_policy": {
+            "diversion_strength": 10,
+            "metering_strength_pct": 90,
+            "schema_version": "policy-design-v1",
+            "trigger_occupancy_pct": 65
+          },
+          "title": "우회 여력을 미세 조정하세요",
+          "tradeoff": "우회를 늘리면 우회 차량의 자유주행 시간이 추가됩니다."
+        }
+      ],
+      "data_version": "rainflow-game-synthetic-v1",
+      "defeated_opponent": true,
+      "evaluation_version": "mission-evaluation-v1",
+      "mission_id": "rain_incident",
+      "note": "게임 시뮬레이션·합성 추정치입니다. 실제 부동산 가격이나 정책 효과를 예측하지 않습니다.",
+      "opponent": {
+        "candidate_budget": 36,
+        "delta_vs_no_action": {
+          "recovery_time_pct": 0.0,
+          "spillback_time_pct": -64.417,
+          "total_travel_time_pct": -58.898,
+          "worst_approach_delay_pct": -59.223
+        },
+        "guard": {
+          "passed": true,
+          "rule_version": "rainflow-guard-v2",
+          "violations": []
+        },
+        "kpi": {
+          "approach_p95_delay": {
+            "R1_N": 841.4,
+            "R1_W": 5.9,
+            "R2_S": 25.7,
+            "R3_E": 0.0
+          },
+          "completed_trips": 1464,
+          "diverted_vehicles": 17.1,
+          "recovery_observed": false,
+          "recovery_time_sec": 900,
+          "spillback_time_sec": 870.0,
+          "total_travel_time_sec": 203351.0,
+          "worst_approach_delay_sec": 841.4
+        },
+        "policy_design": {
+          "diversion_strength": 10,
+          "metering_strength_pct": 100,
+          "schema_version": "policy-design-v1",
+          "trigger_occupancy_pct": 65
+        },
+        "score": 61.706,
+        "tier": "terra"
+      },
+      "player": {
+        "delta_vs_no_action": {
+          "recovery_time_pct": 0.0,
+          "spillback_time_pct": -64.417,
+          "total_travel_time_pct": -59.023,
+          "worst_approach_delay_pct": -62.319
+        },
+        "guard": {
+          "passed": true,
+          "rule_version": "rainflow-guard-v2",
+          "violations": []
+        },
+        "kpi": {
+          "approach_p95_delay": {
+            "R1_N": 777.5,
+            "R1_W": 5.7,
+            "R2_S": 21.3,
+            "R3_E": 0.0
+          },
+          "completed_trips": 1465,
+          "diverted_vehicles": 17.1,
+          "recovery_observed": false,
+          "recovery_time_sec": 900,
+          "spillback_time_sec": 870.0,
+          "total_travel_time_sec": 202735.0,
+          "worst_approach_delay_sec": 777.5
+        },
+        "policy_design": {
+          "diversion_strength": 10,
+          "metering_strength_pct": 90,
+          "schema_version": "policy-design-v1",
+          "trigger_occupancy_pct": 65
+        },
+        "score": 62.214,
+        "timeline": [
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.4,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.03,
+                "queue_veh": 0.4,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 0
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.2,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.11,
+                "queue_veh": 1.6,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 180
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.05,
+                "queue_veh": 1.2,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.12,
+                "queue_veh": 1.7,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 360
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.05,
+                "queue_veh": 1.2,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.13,
+                "queue_veh": 1.9,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 540
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.3,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.11,
+                "queue_veh": 1.6,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 720
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.06,
+                "queue_veh": 1.4,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.12,
+                "queue_veh": 1.7,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "moderate",
+            "t_sec": 900
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.1,
+                "queue_veh": 2.1,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.6,
+                "queue_veh": 8.7,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "moderate",
+            "t_sec": 1080
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.52,
+                "queue_veh": 11.4,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.65,
+                "queue_veh": 9.4,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1260
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.67,
+                "queue_veh": 14.8,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.61,
+                "queue_veh": 8.8,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1440
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.63,
+                "queue_veh": 13.9,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.67,
+                "queue_veh": 9.6,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1620
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.69,
+                "queue_veh": 15.1,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.63,
+                "queue_veh": 9.0,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1800
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.64,
+                "queue_veh": 14.1,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.68,
+                "queue_veh": 9.8,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 1980
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.67,
+                "queue_veh": 14.8,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.64,
+                "queue_veh": 9.2,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 2160
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.67,
+                "queue_veh": 14.8,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.6,
+                "queue_veh": 8.7,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 2340
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.62,
+                "queue_veh": 13.6,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.66,
+                "queue_veh": 9.5,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "heavy",
+            "t_sec": 2520
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 0.63,
+                "queue_veh": 13.8,
+                "spillback": false
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 0.72,
+                "queue_veh": 10.4,
+                "spillback": false
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 2700
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 14.4,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 2880
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 14.4,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 3060
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 14.4,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 3240
+          },
+          {
+            "links": [
+              {
+                "link_id": "L12",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 22.0,
+                "spillback": true
+              },
+              {
+                "link_id": "L23",
+                "occupancy_ratio": 1.0,
+                "queue_veh": 14.4,
+                "spillback": true
+              },
+              {
+                "link_id": "BYPASS",
+                "occupancy_ratio": 0.0,
+                "queue_veh": 0.0,
+                "spillback": false
+              }
+            ],
+            "rain_level": "dry",
+            "t_sec": 3420
+          }
+        ]
+      },
+      "progression": {
+        "building_level_after": 2,
+        "building_level_before": 1,
+        "credits_earned": 240,
+        "next_demand_bonus_pct": 5,
+        "opponent_score_margin": 0.508,
+        "virtual_property_value_index": 120.0
+      },
+      "provisional": true,
+      "reality_level": "game",
+      "region_id": "cheongsa_sejong",
+      "result_source": "live_simulation",
+      "rule_version": "rainflow-game-rules-v1",
+      "satisfaction": {
+        "accessibility": 100.0,
+        "pedestrian_proxy": 100.0,
+        "traffic": 100.0
+      },
+      "success": true,
+      "telemetry": {
+        "adaptive_mode": "standard",
+        "attempts": 0,
+        "completion_time_sec": null,
+        "data_version": "rainflow-game-synthetic-v1",
+        "defeated_opponent": true,
+        "mission_id": "rain_incident",
+        "reality_level": "game",
+        "region_id": "cheongsa_sejong",
+        "score_margin": 0.508,
+        "seed": 42,
+        "telemetry_version": "run-telemetry-v1"
+      }
+    }
+  },
+  "fixture_version": "game-fixture-v1"
+}
