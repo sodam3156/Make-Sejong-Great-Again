@@ -60,7 +60,7 @@ Unity 코드를 쓸 때는 아래를 지킨다.
 
 ## 백로그
 
-- [ ] **T1 TitleScreen 셸** — UXML/USS/presenter, 메뉴 5개(새로 시작·이어하기·환경설정·도움말·기여자),
+- [x] **T1 TitleScreen 셸** — UXML/USS/presenter, 메뉴 5개(새로 시작·이어하기·환경설정·도움말·기여자),
       키보드 상하/Enter/Esc 이동, 포커스 표시, 1440×900과 1280×720. 서버 연결 없이 뜬다.
 - [ ] **T2 새로 시작** — 시작 교차로 3곳과 상대 AI(Luna·Terra·Sol) 선택 화면.
       백엔드 `POST /api/game-sessions`와 `GameSessionSnapshot` 계약.
@@ -94,3 +94,4 @@ Unity 코드를 쓸 때는 아래를 지킨다.
 | 날짜 | 항목 | 결과 | 검증하지 못한 것 |
 |---|---|---|---|
 | 2026-08-05 | — | 원장 개설 | — |
+| 2026-08-05 | T1 | `Assets/UI/TitleScreen/TitleScreen.{uxml,uss}`, `Assets/Scripts/UI/TitleScreen/{TitleScreenMenuItem,TitleScreenPresenter,TitleScreenView}.cs`, EditMode 테스트 `TitleScreenPresenterTests.cs` 추가. 메뉴 5개는 순서대로 새로 시작·이어하기·환경설정·도움말·기여자. 상하 화살표로 포커스 이동(마지막에서 순환), Enter로 활성화 이벤트 발행, Esc는 §12.1 계약에 따라 닫을 오버레이가 없어 입력만 흡수. 1440×900/1280×720 대응은 % 기반 flex 레이아웃으로 구현. 씬에 `TitleScreenView`를 붙이는 작업(UIDocument/PanelSettings 연결)은 Unity Editor가 필요해 사람 몫으로 남김. | C# 컴파일 자체를 확인 못함(클라우드에 Unity Editor 없음). EditMode 테스트 작성만 하고 Test Runner로 실행 못함 — asmdef의 `optionalUnityReferences: TestAssemblies` 참조와 `EditorWindow` 기반 이벤트 디스패치가 실제로 동작하는지 미검증. `TitleScreen.uxml.meta`/`TitleScreen.uss.meta`의 `ScriptedImporter.script` GUID(`76c8bcbf6cd1f4880a6f6a5686000eb2`, fileID 13804/13805)는 기억에 의존한 값이라 Unity가 실제로 인식하는지 미검증 — 처음 프로젝트를 열 때 콘솔 경고가 뜨는지 확인 필요. 1440×900/1280×720에서 실제로 잘리지 않는지 화면으로 확인 못함.

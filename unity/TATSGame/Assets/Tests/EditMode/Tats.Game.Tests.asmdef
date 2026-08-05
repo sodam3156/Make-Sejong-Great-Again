@@ -1,0 +1,14 @@
+{
+  "name": "Tats.Game.Tests",
+  "rootNamespace": "Tats.Game.Tests",
+  "references": [
+    "Tats.Game"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

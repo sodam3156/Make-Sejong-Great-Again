@@ -1,0 +1,52 @@
+/* T1 셸: 최종 아트/스타일은 Manyfast V9 승인 전까지 회색 박스로 둔다 (docs/00_TATS_SOURCE_OF_TRUTH.md). */
+
+.title-screen {
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(24, 26, 30);
+    padding: 5%;
+}
+
+.title-screen__logo {
+    width: 40%;
+    min-width: 240px;
+    max-width: 480px;
+    height: 18%;
+    min-height: 96px;
+    max-height: 160px;
+    margin-bottom: 5%;
+    background-color: rgb(64, 67, 74);
+    border-radius: 4px;
+}
+
+.title-screen__menu {
+    flex-direction: column;
+    width: 32%;
+    min-width: 280px;
+    max-width: 420px;
+}
+
+.title-screen__menu-item {
+    min-height: 44px;
+    margin-bottom: 12px;
+    padding: 8px 16px;
+    font-size: 20px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.title-screen__menu-item:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.title-screen__menu-item:focus,
+.title-screen__menu-item--focused {
+    background-color: rgb(54, 58, 66);
+    border-color: rgb(122, 171, 255);
+}

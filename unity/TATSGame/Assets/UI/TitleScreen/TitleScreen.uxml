@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="TitleScreen.uss" />
+    <ui:VisualElement name="title-screen-root" class="title-screen">
+        <ui:VisualElement name="title-screen-logo" class="title-screen__logo" />
+        <ui:VisualElement name="title-screen-menu" class="title-screen__menu">
+            <ui:Button name="new-game-button" text="새로 시작" class="title-screen__menu-item" />
+            <ui:Button name="continue-button" text="이어하기" class="title-screen__menu-item" />
+            <ui:Button name="settings-button" text="환경설정" class="title-screen__menu-item" />
+            <ui:Button name="help-button" text="도움말" class="title-screen__menu-item" />
+            <ui:Button name="credits-button" text="기여자" class="title-screen__menu-item" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
