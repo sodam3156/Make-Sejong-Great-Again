@@ -1,0 +1,33 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="SettingsScreen.uss" />
+    <ui:VisualElement name="settings-root" class="settings">
+        <ui:Label text="환경설정" class="settings__title" />
+        <ui:VisualElement name="settings-rows" class="settings__rows">
+            <ui:VisualElement name="settings-resolution-row" class="settings__row">
+                <ui:Label text="해상도" class="settings__row-label" />
+                <ui:Button name="settings-resolution-value" text="" class="settings__row-value" />
+            </ui:VisualElement>
+            <ui:VisualElement name="settings-speed-row" class="settings__row">
+                <ui:Label text="기본 배속" class="settings__row-label" />
+                <ui:Button name="settings-speed-value" text="" class="settings__row-value" />
+            </ui:VisualElement>
+            <ui:VisualElement name="settings-master-volume-row" class="settings__row">
+                <ui:Label text="마스터 볼륨" class="settings__row-label" />
+                <ui:Button name="settings-master-volume-value" text="" class="settings__row-value" />
+            </ui:VisualElement>
+            <ui:VisualElement name="settings-effect-volume-row" class="settings__row">
+                <ui:Label text="효과음 볼륨" class="settings__row-label" />
+                <ui:Button name="settings-effect-volume-value" text="" class="settings__row-value" />
+            </ui:VisualElement>
+            <ui:VisualElement name="settings-language-row" class="settings__row">
+                <ui:Label text="언어" class="settings__row-label" />
+                <ui:Button name="settings-language-value" text="" class="settings__row-value" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Label name="settings-saved-label" text="" class="settings__saved-label" />
+        <ui:VisualElement class="settings__actions">
+            <ui:Button name="settings-back-button" text="뒤로" class="settings__action settings__action--secondary" />
+            <ui:Button name="settings-save-button" text="저장" class="settings__action settings__action--primary" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,105 @@
+/* T4 셸: 최종 아트/스타일은 Manyfast V9 승인 전까지 회색 박스로 둔다 (docs/00_TATS_SOURCE_OF_TRUTH.md). */
+
+.settings {
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(24, 26, 30);
+    padding: 5%;
+}
+
+.settings__title {
+    font-size: 28px;
+    color: rgb(232, 234, 237);
+    margin-bottom: 4%;
+    -unity-text-align: middle-center;
+}
+
+.settings__rows {
+    flex-direction: column;
+    width: 60%;
+    min-width: 360px;
+    max-width: 640px;
+    margin-bottom: 2%;
+}
+
+.settings__row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.settings__row-label {
+    min-height: 44px;
+    padding: 8px 0;
+    font-size: 16px;
+    -unity-text-align: middle-left;
+    color: rgb(200, 204, 210);
+}
+
+.settings__row-value {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 16px;
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.settings__row-value:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.settings__row-value:disabled {
+    color: rgb(120, 124, 130);
+}
+
+.settings__focusable--focused {
+    border-color: rgb(122, 171, 255);
+}
+
+.settings__saved-label {
+    width: 60%;
+    min-width: 360px;
+    max-width: 640px;
+    color: rgb(122, 214, 149);
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    margin-bottom: 2%;
+}
+
+.settings__actions {
+    flex-direction: row;
+    width: 60%;
+    min-width: 360px;
+    max-width: 640px;
+    justify-content: space-between;
+    margin-top: 2%;
+}
+
+.settings__action {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 24px;
+    font-size: 18px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.settings__action:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.settings__action--primary {
+    background-color: rgb(58, 84, 132);
+}
