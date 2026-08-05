@@ -1,0 +1,506 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="TatsMainShell.uss" />
+    <ui:VisualElement name="tats-app" class="tats-app">
+        <ui:VisualElement name="game-hud" class="game-hud">
+            <ui:VisualElement class="hud-brand">
+                <ui:Label text="TATS" class="hud-brand__title" />
+                <ui:Label text="신호 설계 · 도시 성장" class="hud-brand__subtitle" />
+            </ui:VisualElement>
+            <ui:VisualElement class="hud-value-group">
+                <ui:Label text="도시 시각" class="eyebrow" />
+                <ui:Label name="city-clock" text="Day 1 · 03:00" class="hud-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="hud-value-group">
+                <ui:Label text="포인트" class="eyebrow" />
+                <ui:VisualElement class="hud-inline">
+                    <ui:Label name="points-value" text="40 pt" class="hud-value" />
+                    <ui:Label name="settlement-value" text="다음 정산 00:42" class="hud-note" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="hud-speed-group">
+                <ui:Label text="도시 속도" class="eyebrow" />
+                <ui:VisualElement class="speed-buttons">
+                    <ui:Button name="speed-paused" text="정지" class="speed-button" />
+                    <ui:Button name="speed-x1" text="1×" class="speed-button" />
+                    <ui:Button name="speed-x3" text="3×" class="speed-button" />
+                    <ui:Button name="speed-x5" text="5×" class="speed-button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="hud-spacer" />
+            <ui:VisualElement class="hud-value-group hud-value-group--right">
+                <ui:Label text="AI 상대" class="eyebrow" />
+                <ui:Label name="ai-opponent" text="Luna · +84 flow" class="hud-value hud-value--small" />
+            </ui:VisualElement>
+            <ui:VisualElement name="connection-control" tooltip="개발 fixture · 연결 중단 흐름 시험" class="connection-pill">
+                <ui:VisualElement class="connection-dot" />
+                <ui:Label name="connection-state" text="연결됨" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement class="workspace">
+            <ui:VisualElement name="map-interaction-layer" class="map-layer">
+                <ui:VisualElement class="map-toolbar">
+                    <ui:Label name="map-mode-badge" text="선택 모드" class="map-mode-badge" />
+                    <ui:Label text="실제 지도 어댑터 연결 영역" class="map-adapter-note" />
+                </ui:VisualElement>
+                <ui:VisualElement class="map-canvas">
+                    <ui:VisualElement class="map-block map-block--one" />
+                    <ui:VisualElement class="map-block map-block--two" />
+                    <ui:VisualElement class="map-block map-block--three" />
+                    <ui:VisualElement class="map-road map-road--north" />
+                    <ui:VisualElement class="map-road map-road--south" />
+                    <ui:VisualElement class="map-road map-road--vertical" />
+                    <ui:Button name="intersection-seonggeum" text="성금" tooltip="성금사거리 선택" class="map-node map-node--one" />
+                    <ui:Button name="intersection-cheongsa" text="청사" tooltip="청사교차로 선택" class="map-node map-node--two" />
+                    <ui:Button name="intersection-sejong" text="세종" tooltip="세종교차로 선택" class="map-node map-node--three" />
+                    <ui:Label text="MapInteractionLayer" class="map-watermark" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="context-inspector" class="context-inspector">
+                <ui:Label text="CONTEXT INSPECTOR" class="eyebrow" />
+                <ui:Label name="context-title" text="선택 대상 없음" class="context-title" />
+                <ui:Label name="context-subtitle" text="지도에서 교차로·건물·도로를 선택하세요." class="context-subtitle" />
+                <ui:VisualElement class="context-divider" />
+                <ui:VisualElement class="context-row">
+                    <ui:Label text="현재 상태" class="context-label" />
+                    <ui:Label name="context-primary-value" text="—" class="context-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="context-row">
+                    <ui:Label text="운영 근거" class="context-label" />
+                    <ui:Label name="context-secondary-value" text="—" class="context-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="context-callout">
+                    <ui:Label text="다음 행동" class="eyebrow" />
+                    <ui:Label text="교차로를 선택하면 신호 편집과 진단으로 이어갈 수 있습니다." class="context-callout__text" />
+                </ui:VisualElement>
+                <ui:VisualElement class="context-spacer" />
+                <ui:Label text="마지막 서버 tick · 개발 mock" class="context-footnote" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement class="command-region">
+            <ui:VisualElement name="overlay-tray" class="overlay-tray">
+                <ui:Label text="진단 레이어" class="overlay-tray__label" />
+                <ui:Button name="overlay-traffic" text="교통량" class="overlay-button" />
+                <ui:Button name="overlay-queue" text="대기열" class="overlay-button" />
+                <ui:Button name="overlay-pedestrian" text="보행 이탈" class="overlay-button" />
+                <ui:Button name="overlay-signal" text="신호 현시" class="overlay-button" />
+                <ui:Button name="overlay-safety" text="안전 위험" class="overlay-button" />
+                <ui:Button name="overlay-building" text="건물 유입" class="overlay-button" />
+                <ui:Button name="overlay-road" text="도로 개방" class="overlay-button" />
+            </ui:VisualElement>
+            <ui:Label name="tool-help" text="교차로·건물·도로를 선택합니다." class="tool-help" />
+            <ui:VisualElement name="tool-dock" class="tool-dock">
+                <ui:Button name="mode-select" text="선택" tooltip="교차로·건물·도로 선택" class="tool-button" />
+                <ui:Button name="mode-diagnose" text="진단" tooltip="문제 원인을 지도에서 진단" class="tool-button" />
+                <ui:Button name="mode-signal-edit" text="신호 편집" tooltip="선택 교차로의 신호 계획 편집" class="tool-button" />
+                <ui:Button name="mode-skillbook" text="스킬북" tooltip="알고리즘 학습과 AI 초안" class="tool-button" />
+                <ui:Button name="mode-road-unlock" text="도로 개방" tooltip="연결 도로 구매 후보 확인" class="tool-button" />
+                <ui:Button name="mode-building" text="건물" tooltip="건물 생산량과 업그레이드" class="tool-button" />
+                <ui:Button name="mode-ai-compare" text="AI 비교" tooltip="Luna·Terra·Sol 기록 비교" class="tool-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="signal-editor-overlay" class="workflow-overlay">
+            <ui:VisualElement class="workflow-card workflow-card--editor">
+                <ui:VisualElement class="workflow-header">
+                    <ui:VisualElement class="workflow-header__copy">
+                        <ui:Label text="SIGNAL PLAN · LOCAL DRAFT" class="eyebrow" />
+                        <ui:Label name="signal-editor-title" text="교차로 신호 편집" class="workflow-title" />
+                        <ui:Label text="단계 시간만 로컬에서 편집합니다. 교통·안전 결과는 서버 fixture를 표시합니다." class="workflow-subtitle" />
+                    </ui:VisualElement>
+                    <ui:Button name="signal-editor-close" text="×" tooltip="신호 편집 닫기" class="workflow-close" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="draft-summary">
+                    <ui:VisualElement class="summary-item">
+                        <ui:Label text="서버 운영 계획" class="summary-label" />
+                        <ui:Label text="전체 주기 120초 · 4단계" class="summary-value" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="summary-item">
+                        <ui:Label text="로컬 초안" class="summary-label" />
+                        <ui:Label name="draft-cycle" text="120초" class="summary-value summary-value--accent" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="summary-item summary-item--wide">
+                        <ui:Label text="입력 범위" class="summary-label" />
+                        <ui:Label text="차량 20~70초 · 보행 5~40초 · 전체 90~150초" class="summary-value" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="phase-list">
+                    <ui:VisualElement class="phase-row">
+                        <ui:VisualElement class="phase-copy">
+                            <ui:Label text="1단계 · 남북 직진" class="phase-title" />
+                            <ui:Label text="차량 우선 · 북↔남 이동" class="phase-subtitle" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="phase-controls">
+                            <ui:Button name="phase-ns-minus" text="−5" class="step-button" />
+                            <ui:Label name="phase-ns-value" text="45초" class="phase-duration" />
+                            <ui:Button name="phase-ns-plus" text="+5" class="step-button" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="phase-row">
+                        <ui:VisualElement class="phase-copy">
+                            <ui:Label text="2단계 · 동서 직진" class="phase-title" />
+                            <ui:Label text="차량 우선 · 동↔서 이동" class="phase-subtitle" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="phase-controls">
+                            <ui:Button name="phase-ew-minus" text="−5" class="step-button" />
+                            <ui:Label name="phase-ew-value" text="35초" class="phase-duration" />
+                            <ui:Button name="phase-ew-plus" text="+5" class="step-button" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="phase-row">
+                        <ui:VisualElement class="phase-copy">
+                            <ui:Label text="3단계 · 전방향 보행" class="phase-title" />
+                            <ui:Label text="보행자 우선 · 횡단보도 전체" class="phase-subtitle" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="phase-controls">
+                            <ui:Button name="phase-ped-minus" text="−5" class="step-button" />
+                            <ui:Label name="phase-ped-value" text="25초" class="phase-duration" />
+                            <ui:Button name="phase-ped-plus" text="+5" class="step-button" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="phase-row phase-row--locked">
+                        <ui:VisualElement class="phase-copy">
+                            <ui:Label text="4단계 · 전적색 정리" class="phase-title" />
+                            <ui:Label text="충돌 방지 고정 구간" class="phase-subtitle" />
+                        </ui:VisualElement>
+                        <ui:Label text="15초 · 고정" class="phase-duration phase-duration--locked" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement name="draft-validation-banner" class="validation-banner">
+                    <ui:Label text="안전 검토" class="validation-title" />
+                    <ui:Label name="draft-validation" text="충돌 관계 없음 · 최소 시간 충족" class="validation-copy" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="workflow-footer">
+                    <ui:Button name="signal-reset" text="초안 초기화" class="secondary-action" />
+                    <ui:VisualElement class="workflow-footer__spacer" />
+                    <ui:Label name="draft-summary-label" text="남북 45초 · 동서 35초 · 보행 25초 · 정리 15초" class="footer-summary" />
+                    <ui:Button name="signal-preview" text="영향 미리보기" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="impact-preview-overlay" class="workflow-overlay">
+            <ui:VisualElement class="workflow-card workflow-card--preview">
+                <ui:VisualElement class="workflow-header">
+                    <ui:VisualElement class="workflow-header__copy">
+                        <ui:Label text="IMPACT PREVIEW · FIXTURE" class="eyebrow" />
+                        <ui:Label name="preview-title" text="영향 미리보기" class="workflow-title" />
+                        <ui:Label text="예측값은 서버 fixture입니다. 로컬 UI에서 교통·안전 결과를 계산하지 않습니다." class="workflow-subtitle" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="comparison-grid">
+                    <ui:VisualElement class="comparison-card">
+                        <ui:Label text="신호 계획" class="comparison-label" />
+                        <ui:Label name="preview-cycle" text="현재 120초 → 초안 120초" class="comparison-value" />
+                        <ui:Label text="현재 주기 종료 후 안전 전환" class="comparison-note" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="comparison-card">
+                        <ui:Label text="예상 대기열" class="comparison-label" />
+                        <ui:Label name="preview-queue" text="북→남 대기 12대 → 9대" class="comparison-value" />
+                        <ui:Label text="서버 검증 전 표시값" class="comparison-note" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="comparison-card">
+                        <ui:Label text="안전 점수" class="comparison-label" />
+                        <ui:Label name="preview-safety" text="98.4 → 98.4" class="comparison-value" />
+                        <ui:Label text="충돌 가능 구간 없음" class="comparison-note" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="comparison-card">
+                        <ui:Label text="연쇄 영향" class="comparison-label" />
+                        <ui:Label name="preview-neighbor" text="인접 오프셋 검토" class="comparison-value comparison-value--small" />
+                        <ui:Label text="직접·연쇄·미영향 범위 구분" class="comparison-note" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="impact-scope">
+                    <ui:Label text="영향받는 교차로" class="impact-scope__title" />
+                    <ui:VisualElement class="impact-row">
+                        <ui:VisualElement class="impact-chip impact-chip--direct"><ui:Label text="성금사거리 · 직접 영향" /></ui:VisualElement>
+                        <ui:VisualElement class="impact-chip impact-chip--linked"><ui:Label text="세종교차로 · 연쇄 영향" /></ui:VisualElement>
+                        <ui:VisualElement class="impact-chip"><ui:Label text="청사교차로 · 미영향" /></ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="safety-banner">
+                    <ui:Label text="안전 전환 가능" class="safety-banner__title" />
+                    <ui:Label name="preview-validation" text="충돌 관계 없음 · 최소 시간 충족 · 인접 오프셋 검토 완료" class="safety-banner__copy" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="workflow-footer">
+                    <ui:Button name="preview-back" text="신호 편집으로 돌아가기" class="secondary-action" />
+                    <ui:VisualElement class="workflow-footer__spacer" />
+                    <ui:Button name="preview-schedule" text="서버에 적용 예약" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="apply-status-overlay" class="workflow-overlay">
+            <ui:VisualElement class="workflow-card workflow-card--status">
+                <ui:Label text="SAFE TRANSITION" class="eyebrow" />
+                <ui:Label text="신호 계획 적용 예약 완료" class="workflow-title" />
+                <ui:Label text="명령이 접수됐습니다. 현재 주기가 끝난 뒤 안전 전환을 거쳐 활성화됩니다." class="workflow-subtitle" />
+                <ui:VisualElement class="receipt-card">
+                    <ui:VisualElement class="receipt-row"><ui:Label text="명령 정보" class="receipt-label" /><ui:Label name="apply-receipt" text="CMD-MOCK-2047-B" class="receipt-value" /></ui:VisualElement>
+                    <ui:VisualElement class="receipt-row"><ui:Label text="적용 시점" class="receipt-label" /><ui:Label text="현재 주기 종료 후 · 예상 tick 3,842" class="receipt-value" /></ui:VisualElement>
+                    <ui:VisualElement class="receipt-row"><ui:Label text="전환 상태" class="receipt-label" /><ui:Label text="ACCEPTED → SAFE_TRANSITION" class="receipt-value receipt-value--accent" /></ui:VisualElement>
+                    <ui:VisualElement class="receipt-row"><ui:Label text="초안 요약" class="receipt-label" /><ui:Label name="apply-summary" text="전체 주기 120초" class="receipt-value" /></ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="status-note">
+                    <ui:Label text="fixture 동작" class="validation-title" />
+                    <ui:Label text="실제 명령 전송은 game-v2 계약과 서버 어댑터 연결 뒤 활성화됩니다." class="validation-copy" />
+                </ui:VisualElement>
+                <ui:VisualElement class="workflow-footer">
+                    <ui:VisualElement class="workflow-footer__spacer" />
+                    <ui:Button name="apply-confirm" text="적용 상태 확인" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="connection-recovery-overlay" class="workflow-overlay">
+            <ui:VisualElement name="connection-lost-panel" class="workflow-card recovery-card">
+                <ui:Label text="CONNECTION_LOST · AUTO PAUSE" class="eyebrow" />
+                <ui:Label text="연결이 중단되어 시뮬레이션을 정지했습니다" class="workflow-title" />
+                <ui:Label text="명령·신호 편집·배속 입력을 잠그고 마지막 확인 tick을 GameSave.json에 보존했습니다." class="workflow-subtitle" />
+
+                <ui:VisualElement class="recovery-pipeline">
+                    <ui:Label text="CONNECTION_LOST" class="pipeline-step pipeline-step--active" />
+                    <ui:Label text="→" class="pipeline-arrow" />
+                    <ui:Label text="로컬 저장" class="pipeline-step pipeline-step--done" />
+                    <ui:Label text="→" class="pipeline-arrow" />
+                    <ui:Label text="RECONNECTING" class="pipeline-step pipeline-step--active" />
+                    <ui:Label text="→" class="pipeline-arrow" />
+                    <ui:Label text="검증 대기" class="pipeline-step" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="recovery-grid">
+                    <ui:VisualElement class="recovery-card-item">
+                        <ui:Label text="중단 시점" class="comparison-label" />
+                        <ui:Label text="Day 1 · 07:42:15" class="recovery-value" />
+                        <ui:Label text="cityClock fixture" class="comparison-note" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="recovery-card-item">
+                        <ui:Label text="마지막 확인 tick" class="comparison-label" />
+                        <ui:Label text="#18,430" class="recovery-value" />
+                        <ui:Label text="서버 서명 보관 완료" class="comparison-note" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="recovery-card-item">
+                        <ui:Label text="재시도 횟수" class="comparison-label" />
+                        <ui:Label name="reconnect-retry" text="0회 / 최대 3회" class="recovery-value" />
+                        <ui:Label text="지수 백오프 fixture" class="comparison-note" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="recovery-card-item">
+                        <ui:Label text="로컬 저장" class="comparison-label" />
+                        <ui:Label text="GameSave.json 저장 완료" class="recovery-value recovery-value--small" />
+                        <ui:Label text="원본 자동 덮어쓰기 금지" class="comparison-note" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="input-lock-banner">
+                    <ui:Label text="입력 잠금 상태" class="validation-title" />
+                    <ui:Label text="연결이 끊어진 동안 지도·신호 편집·배속 입력이 모두 잠겼습니다. 검증 후 명시적 재개가 필요합니다." class="validation-copy" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="workflow-footer">
+                    <ui:Button name="connection-details" text="저장 검증 상세" class="secondary-action" />
+                    <ui:VisualElement class="workflow-footer__spacer" />
+                    <ui:Button name="connection-retry" text="지금 다시 시도" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="save-verification-panel" class="workflow-card verification-card">
+                <ui:Label text="LOCAL SAVE · VERIFICATION" class="eyebrow" />
+                <ui:Label text="저장 검증 및 복구" class="workflow-title" />
+                <ui:Label text="서버가 서명한 체크포인트와 로컬 저장의 스키마·tick·state hash를 대조합니다." class="workflow-subtitle" />
+
+                <ui:VisualElement class="verification-grid">
+                    <ui:VisualElement class="verification-column">
+                        <ui:Label text="GameSave.json 상태" class="verification-title" />
+                        <ui:VisualElement class="verification-row"><ui:Label text="서버 서명" class="receipt-label" /><ui:Label text="검증 완료 ✓" class="verification-value" /></ui:VisualElement>
+                        <ui:VisualElement class="verification-row"><ui:Label text="schemaVersion" class="receipt-label" /><ui:Label text="v2.4.1" class="verification-value" /></ui:VisualElement>
+                        <ui:VisualElement class="verification-row"><ui:Label text="마지막 확인 tick" class="receipt-label" /><ui:Label text="#18,430" class="verification-value" /></ui:VisualElement>
+                        <ui:VisualElement class="verification-row"><ui:Label text="state hash" class="receipt-label" /><ui:Label text="a3f9…c12e · 일치" class="verification-value" /></ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="verification-column">
+                        <ui:Label text="서명·스키마 검증 결과" class="verification-title" />
+                        <ui:VisualElement class="verification-row"><ui:Label text="run ID" class="receipt-label" /><ui:Label text="RUN-0001 · 일치" class="verification-value" /></ui:VisualElement>
+                        <ui:VisualElement class="verification-row"><ui:Label text="명령 sequence" class="receipt-label" /><ui:Label text="연속성 확인됨" class="verification-value" /></ui:VisualElement>
+                        <ui:VisualElement class="verification-row"><ui:Label text="manifest" class="receipt-label" /><ui:Label text="규칙·맵·콘텐츠 일치" class="verification-value" /></ui:VisualElement>
+                        <ui:VisualElement class="verification-row"><ui:Label text="백업" class="receipt-label" /><ui:Label text="GameSave.bak 검증됨" class="verification-value" /></ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="verification-log">
+                    <ui:Label text="검증 로그" class="validation-title" />
+                    <ui:Label text="① 파일 파싱 → ② 서버 서명 확인 → ③ state hash 대조 → ④ PAUSED_READY 전환 준비" class="validation-copy" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="workflow-footer">
+                    <ui:Button name="verification-back" text="연결 중단 화면으로" class="secondary-action" />
+                    <ui:VisualElement class="workflow-footer__spacer" />
+                    <ui:Button name="verification-confirm" text="검증 결과 확인 및 재개 준비" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="resume-ready-panel" class="workflow-card resume-card">
+                <ui:Label text="PAUSED_READY" class="eyebrow" />
+                <ui:Label text="재개 준비 완료" class="workflow-title" />
+                <ui:Label text="서버 검증이 완료됐습니다. 아래 상태를 확인한 뒤 명시적으로 재개하세요." class="workflow-subtitle" />
+                <ui:VisualElement class="resume-summary">
+                    <ui:VisualElement class="receipt-row"><ui:Label text="재개 tick" class="receipt-label" /><ui:Label text="#18,430" class="receipt-value" /></ui:VisualElement>
+                    <ui:VisualElement class="receipt-row"><ui:Label text="도시 시각" class="receipt-label" /><ui:Label text="Day 1 · 07:42" class="receipt-value" /></ui:VisualElement>
+                    <ui:VisualElement class="receipt-row"><ui:Label text="저장 검증" class="receipt-label" /><ui:Label text="서명·스키마·state hash 일치" class="receipt-value receipt-value--accent" /></ui:VisualElement>
+                    <ui:VisualElement class="receipt-row"><ui:Label text="재개 배속" class="receipt-label" /><ui:Label name="resume-speed" text="정지 상태로 재개" class="receipt-value" /></ui:VisualElement>
+                    <ui:VisualElement class="receipt-row"><ui:Label text="재시도" class="receipt-label" /><ui:Label name="resume-retry" text="1회 / 최대 3회" class="receipt-value" /></ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="safety-banner">
+                    <ui:Label text="명시적 재개 필요" class="safety-banner__title" />
+                    <ui:Label text="자동 재개하지 않습니다. 버튼을 누를 때까지 시뮬레이션과 입력은 정지 상태를 유지합니다." class="safety-banner__copy" />
+                </ui:VisualElement>
+                <ui:VisualElement class="workflow-footer">
+                    <ui:VisualElement class="workflow-footer__spacer" />
+                    <ui:Button name="resume-confirm" text="검증된 상태에서 재개" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="feature-panel-overlay" class="workflow-overlay">
+            <ui:VisualElement name="skillbook-panel" class="workflow-card feature-card">
+                <ui:VisualElement class="workflow-header">
+                    <ui:VisualElement class="workflow-header__copy">
+                        <ui:Label text="ALGORITHM SKILLBOOK" class="eyebrow" />
+                        <ui:Label text="신호 알고리즘 스킬북" class="workflow-title" />
+                        <ui:Label text="규칙의 trade-off를 읽고 선택한 교차로에 적용할 AI 초안을 만듭니다." class="workflow-subtitle" />
+                    </ui:VisualElement>
+                    <ui:Button name="skillbook-close" text="×" class="workflow-close" />
+                </ui:VisualElement>
+                <ui:VisualElement class="algorithm-grid">
+                    <ui:Button name="algorithm-balanced" text="균형 최적화&#10;차량·보행 균형" class="algorithm-card" />
+                    <ui:Button name="algorithm-vehicle" text="차량 흐름 우선&#10;대기열 감소 집중" class="algorithm-card" />
+                    <ui:Button name="algorithm-pedestrian" text="보행 안전 우선&#10;횡단 시간 확대" class="algorithm-card" />
+                </ui:VisualElement>
+                <ui:VisualElement class="feature-detail">
+                    <ui:Label text="선택 규칙" class="comparison-label" />
+                    <ui:Label name="algorithm-selected" text="균형 최적화" class="feature-value" />
+                    <ui:Label text="AI는 규칙 기반 초안만 생성합니다. 자동 최적화·자동 적용은 하지 않습니다." class="comparison-note" />
+                </ui:VisualElement>
+                <ui:VisualElement class="feature-receipt">
+                    <ui:Label name="skillbook-target" text="적용 대상 · 교차로를 먼저 선택하세요" class="validation-title" />
+                    <ui:Label name="skillbook-receipt" text="아직 접수된 fixture 명령이 없습니다." class="validation-copy" />
+                </ui:VisualElement>
+                <ui:VisualElement class="workflow-footer">
+                    <ui:VisualElement class="workflow-footer__spacer" />
+                    <ui:Button name="skillbook-generate" text="AI 신호 초안 만들기" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="road-panel" class="workflow-card feature-card">
+                <ui:VisualElement class="workflow-header">
+                    <ui:VisualElement class="workflow-header__copy">
+                        <ui:Label text="ROAD UNLOCK · FIXTURE" class="eyebrow" />
+                        <ui:Label text="연결 도로 개방" class="workflow-title" />
+                        <ui:Label text="개방 비용과 신규 수요는 서버 표시값입니다. UI는 구매 의사만 전달합니다." class="workflow-subtitle" />
+                    </ui:VisualElement>
+                    <ui:Button name="road-close" text="×" class="workflow-close" />
+                </ui:VisualElement>
+                <ui:VisualElement class="road-preview">
+                    <ui:VisualElement class="road-map-card">
+                        <ui:Label text="어진동 중심도로" class="road-node road-node--start" />
+                        <ui:VisualElement class="road-link-line" />
+                        <ui:Label text="신규 연결로" class="road-link-label" />
+                        <ui:VisualElement class="road-link-line" />
+                        <ui:Label text="세종교차로" class="road-node" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="road-facts">
+                        <ui:Label text="구매 비용" class="comparison-label" /><ui:Label text="20 pt · 서버 fixture" class="feature-value" />
+                        <ui:Label text="예상 신규 수요" class="comparison-label feature-label-spaced" /><ui:Label text="차량 +180 / 시간 · 보행 +42 / 시간" class="feature-value feature-value--small" />
+                        <ui:Label text="다음 개방 조건" class="comparison-label feature-label-spaced" /><ui:Label text="Level 2 건물 1개 이상" class="feature-value feature-value--small" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="feature-receipt">
+                    <ui:Label name="road-status" text="구매 가능 · 20 pt" class="validation-title" />
+                    <ui:Label name="road-receipt" text="아직 접수된 fixture 명령이 없습니다." class="validation-copy" />
+                </ui:VisualElement>
+                <ui:VisualElement class="workflow-footer">
+                    <ui:VisualElement class="workflow-footer__spacer" />
+                    <ui:Button name="road-purchase" text="20 pt로 도로 개방" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="building-panel" class="workflow-card feature-card">
+                <ui:VisualElement class="workflow-header">
+                    <ui:VisualElement class="workflow-header__copy">
+                        <ui:Label text="BUILDING GROWTH · FIXTURE" class="eyebrow" />
+                        <ui:Label text="건물 성장" class="workflow-title" />
+                        <ui:Label text="건물 레벨과 유동인구 생산량은 서버 fixture를 표시합니다." class="workflow-subtitle" />
+                    </ui:VisualElement>
+                    <ui:Button name="building-close" text="×" class="workflow-close" />
+                </ui:VisualElement>
+                <ui:VisualElement class="building-preview">
+                    <ui:VisualElement class="building-illustration">
+                        <ui:VisualElement class="building-body" />
+                        <ui:VisualElement class="building-roof" />
+                        <ui:Label text="시청 복합건물" class="building-caption" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="building-facts">
+                        <ui:Label name="building-level" text="Level 1 · 시청 복합건물" class="feature-value" />
+                        <ui:Label name="building-output" text="유동인구 +12 / 시간 · fixture" class="feature-value feature-value--small feature-label-spaced" />
+                        <ui:Label text="다음 레벨 비용 · 10 pt" class="comparison-note feature-label-spaced" />
+                        <ui:Label text="인접 도로 영향 · 한누리대로 수요 증가" class="comparison-note" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="feature-receipt">
+                    <ui:Label text="서버 권위 fixture" class="validation-title" />
+                    <ui:Label name="building-receipt" text="아직 접수된 fixture 명령이 없습니다." class="validation-copy" />
+                </ui:VisualElement>
+                <ui:VisualElement class="workflow-footer">
+                    <ui:VisualElement class="workflow-footer__spacer" />
+                    <ui:Button name="building-upgrade" text="다음 Level 업그레이드" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="ai-compare-panel" class="workflow-card feature-card feature-card--wide">
+                <ui:VisualElement class="workflow-header">
+                    <ui:VisualElement class="workflow-header__copy">
+                        <ui:Label text="AI RECORD · LUNA" class="eyebrow" />
+                        <ui:Label text="24시간 운영 결과 비교" class="workflow-title" />
+                        <ui:Label text="동일 시작점·동일 조건에서 플레이어 운영과 Luna AI Record를 비교합니다." class="workflow-subtitle" />
+                    </ui:VisualElement>
+                    <ui:Button name="ai-compare-close" text="×" class="workflow-close" />
+                </ui:VisualElement>
+                <ui:VisualElement class="ai-comparison">
+                    <ui:VisualElement class="ai-column ai-column--player">
+                        <ui:Label text="플레이어" class="ai-column-title" />
+                        <ui:VisualElement class="metric-row"><ui:Label text="목적지 도착 합계" class="receipt-label" /><ui:Label text="4,820 flowWeight" class="metric-value" /></ui:VisualElement>
+                        <ui:VisualElement class="metric-row"><ui:Label text="안전 점수" class="receipt-label" /><ui:Label text="92 / 100" class="metric-value" /></ui:VisualElement>
+                        <ui:VisualElement class="metric-row"><ui:Label text="사고 발생" class="receipt-label" /><ui:Label text="1건" class="metric-value" /></ui:VisualElement>
+                        <ui:VisualElement class="metric-row"><ui:Label text="신호 계획 적용" class="receipt-label" /><ui:Label text="7회" class="metric-value" /></ui:VisualElement>
+                        <ui:VisualElement class="metric-row"><ui:Label text="도로 개방" class="receipt-label" /><ui:Label text="2단계" class="metric-value" /></ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="ai-versus"><ui:Label text="VS" /></ui:VisualElement>
+                    <ui:VisualElement class="ai-column">
+                        <ui:Label text="Luna AI Record" class="ai-column-title" />
+                        <ui:VisualElement class="metric-row"><ui:Label text="목적지 도착 합계" class="receipt-label" /><ui:Label text="4,690 flowWeight" class="metric-value" /></ui:VisualElement>
+                        <ui:VisualElement class="metric-row"><ui:Label text="안전 점수" class="receipt-label" /><ui:Label text="96 / 100" class="metric-value" /></ui:VisualElement>
+                        <ui:VisualElement class="metric-row"><ui:Label text="사고 발생" class="receipt-label" /><ui:Label text="0건" class="metric-value" /></ui:VisualElement>
+                        <ui:VisualElement class="metric-row"><ui:Label text="AI 행동" class="receipt-label" /><ui:Label text="24회" class="metric-value" /></ui:VisualElement>
+                        <ui:VisualElement class="metric-row"><ui:Label text="도로 개방" class="receipt-label" /><ui:Label text="2단계" class="metric-value" /></ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="ai-verdict">
+                    <ui:Label text="최종 판정 · 유동량은 플레이어 우세, 안전은 Luna 우세" class="validation-title" />
+                    <ui:Label text="AI 행동은 10분 주기 fixture이며 실제 Record Pack 검증과 서버 비교 연결 전의 UI 시안입니다." class="validation-copy" />
+                </ui:VisualElement>
+                <ui:VisualElement class="workflow-footer">
+                    <ui:VisualElement class="workflow-footer__spacer" />
+                    <ui:Button name="ai-compare-confirm" text="비교 확인" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
