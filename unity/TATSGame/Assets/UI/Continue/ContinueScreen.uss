@@ -1,0 +1,119 @@
+/* T3 셸: 최종 아트/스타일은 Manyfast V9 승인 전까지 회색 박스로 둔다 (docs/00_TATS_SOURCE_OF_TRUTH.md). */
+
+.continue {
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(24, 26, 30);
+    padding: 5%;
+}
+
+.continue__panel {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#continue-resume-ready,
+#continue-resume-failed {
+    display: none;
+}
+
+.continue__title {
+    font-size: 28px;
+    color: rgb(232, 234, 237);
+    margin-bottom: 4%;
+    -unity-text-align: middle-center;
+}
+
+.continue__slot-list {
+    width: 60%;
+    min-width: 360px;
+    max-width: 640px;
+    flex-direction: column;
+    margin-bottom: 2%;
+}
+
+.continue__empty-label {
+    width: 60%;
+    min-width: 360px;
+    max-width: 640px;
+    color: rgb(150, 154, 161);
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    margin-bottom: 4%;
+    display: none;
+}
+
+.continue__option {
+    min-height: 44px;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    font-size: 16px;
+    -unity-text-align: middle-left;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.continue__option:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.continue__option--selected {
+    background-color: rgb(58, 84, 64);
+    border-color: rgb(122, 214, 149);
+}
+
+.continue__summary {
+    width: 60%;
+    min-width: 360px;
+    max-width: 640px;
+    color: rgb(200, 204, 210);
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    margin-bottom: 4%;
+    white-space: normal;
+}
+
+.continue__actions {
+    flex-direction: row;
+    width: 60%;
+    min-width: 360px;
+    max-width: 640px;
+    justify-content: space-between;
+    margin-top: 2%;
+}
+
+.continue__action {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 24px;
+    font-size: 18px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.continue__action:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.continue__action--primary {
+    background-color: rgb(58, 84, 132);
+}
+
+.continue__action--primary:disabled {
+    background-color: rgb(42, 45, 52);
+    color: rgb(120, 124, 130);
+}
+
+.continue__focusable--focused {
+    border-color: rgb(122, 171, 255);
+}
