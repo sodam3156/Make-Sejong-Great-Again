@@ -38,6 +38,7 @@
 .new-game__option {
     flex-grow: 1;
     min-height: 44px;
+    min-width: 44px;
     margin-right: 8px;
     padding: 8px 12px;
     font-size: 16px;
@@ -88,9 +89,11 @@
     background-color: rgb(58, 84, 132);
 }
 
+/* T8: 비활성 대비 4.5:1 이상(docs/23 T8) — rgb(120,124,130)은 이 배경에서 3.28:1로 미달이라
+   rgb(152,156,160)(4.99:1)로 올렸다. */
 .new-game__action--primary:disabled {
     background-color: rgb(42, 45, 52);
-    color: rgb(120, 124, 130);
+    color: rgb(152, 156, 160);
 }
 
 .new-game__focusable--focused {

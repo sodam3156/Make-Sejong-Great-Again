@@ -28,12 +28,15 @@
     max-width: 420px;
 }
 
+/* T8: 클릭 영역 최소 44x44px(docs/20 4.1절, docs/23 T8) — min-width를 명시해 폭이 좁은 부모
+   레이아웃에서도 보장한다. flex-direction: row로 바꿔 아이콘 + 이름/설명을 나란히 배치한다. */
 .title-screen__menu-item {
+    flex-direction: row;
+    align-items: center;
     min-height: 44px;
+    min-width: 44px;
     margin-bottom: 12px;
     padding: 8px 16px;
-    font-size: 20px;
-    -unity-text-align: middle-center;
     color: rgb(232, 234, 237);
     background-color: rgb(42, 45, 52);
     border-width: 2px;
@@ -51,10 +54,46 @@
     border-color: rgb(122, 171, 255);
 }
 
+/* T8: 비활성 텍스트 대비 4.5:1 이상(docs/20 12.1, docs/23 T8). 기존 rgb(110,114,120)은 이
+   배경(rgb(32,34,39))에서 3.29:1로 미달이라 rgb(152,156,160)(5.76:1)로 올렸다 — WCAG 1.4.3은
+   비활성 컨트롤을 대비 요구에서 제외하지만, 백로그 체크 항목이 예외 없이 "본문 대비 4.5:1"을
+   요구해 비활성 상태도 맞춘다. */
 .title-screen__menu-item:disabled {
     background-color: rgb(32, 34, 39);
-    color: rgb(110, 114, 120);
+    color: rgb(152, 156, 160);
     border-color: rgba(0, 0, 0, 0);
+}
+
+/* T8: 아이콘은 최종 아트 승인 전 회색 박스로 둔다(docs/00_TATS_SOURCE_OF_TRUTH.md). */
+.title-screen__menu-item-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    margin-right: 12px;
+    background-color: rgb(140, 145, 153);
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.title-screen__menu-item-text {
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: flex-start;
+}
+
+.title-screen__menu-item-name {
+    font-size: 20px;
+    white-space: normal;
+}
+
+/* T8: 설명 텍스트는 rgb(42,45,52)/rgb(54,58,66)/rgb(32,34,39) 배경 모두에서 4.5:1 이상
+   (6.92:1 / 5.73:1 / 7.99:1)인 고정 회색을 쓴다. color를 지정하지 않으면 버튼의 color를
+   상속해 name과 구분되지 않으므로 이름보다 옅은 톤으로 고정했다 — 비활성 상태에서도 밝기가
+   그대로인 점은 이번 구현이 감수한 시각적 트레이드오프다(대비 기준 자체는 항상 만족한다). */
+.title-screen__menu-item-description {
+    font-size: 13px;
+    color: rgb(180, 184, 191);
+    white-space: normal;
 }
 
 .title-screen__menu-disabled-reason {
