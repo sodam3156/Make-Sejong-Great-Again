@@ -50,3 +50,122 @@
     background-color: rgb(54, 58, 66);
     border-color: rgb(122, 171, 255);
 }
+
+.title-screen__menu-item:disabled {
+    background-color: rgb(32, 34, 39);
+    color: rgb(110, 114, 120);
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.title-screen__menu-disabled-reason {
+    display: none;
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgb(224, 150, 150);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* T7: 연결 표시. docs/23_TITLE_SCREEN_BACKLOG.md — 연결됨·재시도·끊김 3상태. */
+
+.title-screen__connection-status {
+    position: absolute;
+    top: 4%;
+    right: 5%;
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 280px;
+}
+
+.title-screen__connection-label {
+    min-height: 28px;
+    padding: 4px 12px;
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(64, 67, 74);
+    border-radius: 4px;
+}
+
+.title-screen__connection-status--connected .title-screen__connection-label {
+    background-color: rgb(40, 74, 48);
+    color: rgb(163, 230, 180);
+}
+
+.title-screen__connection-status--retrying .title-screen__connection-label {
+    background-color: rgb(90, 78, 38);
+    color: rgb(235, 202, 130);
+}
+
+.title-screen__connection-status--disconnected .title-screen__connection-label {
+    background-color: rgb(90, 42, 42);
+    color: rgb(240, 165, 165);
+}
+
+.title-screen__connection-reason {
+    display: none;
+    margin-top: 4px;
+    font-size: 12px;
+    color: rgb(200, 204, 210);
+    -unity-text-align: upper-right;
+    white-space: normal;
+}
+
+/* T7: 종료 확인 오버레이. Esc가 유일한 진입점이다(시작 화면에 별도 `종료` 메뉴가 없다). */
+
+.title-screen__menu-panel {
+    flex-direction: column;
+    align-items: center;
+}
+
+.title-screen__quit-confirm {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    min-width: 320px;
+    padding: 24px 32px;
+    background-color: rgb(32, 34, 39);
+    border-width: 2px;
+    border-color: rgb(64, 67, 74);
+    border-radius: 6px;
+}
+
+.title-screen__quit-message {
+    font-size: 18px;
+    color: rgb(232, 234, 237);
+    margin-bottom: 16px;
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+.title-screen__quit-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.title-screen__quit-action {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 24px;
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.title-screen__quit-action:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.title-screen__quit-action--primary {
+    background-color: rgb(120, 56, 56);
+}
+
+.title-screen__quit-action:focus,
+.title-screen__quit-action--focused {
+    border-color: rgb(122, 171, 255);
+}
