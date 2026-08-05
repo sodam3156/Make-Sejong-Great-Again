@@ -1,0 +1,110 @@
+/* T6 셸: 최종 아트/스타일은 Manyfast V9 승인 전까지 회색 박스로 둔다 (docs/00_TATS_SOURCE_OF_TRUTH.md). */
+
+.credits {
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(24, 26, 30);
+    padding: 5%;
+}
+
+.credits__title {
+    font-size: 28px;
+    color: rgb(232, 234, 237);
+    margin-bottom: 3%;
+    -unity-text-align: middle-center;
+}
+
+.credits__tabs {
+    flex-direction: row;
+    width: 80%;
+    min-width: 360px;
+    max-width: 900px;
+    justify-content: space-between;
+    margin-bottom: 2%;
+}
+
+.credits__tab {
+    flex-grow: 1;
+    min-height: 44px;
+    min-width: 44px;
+    margin-right: 8px;
+    padding: 8px 16px;
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    color: rgb(200, 204, 210);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.credits__tab:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.credits__tab--active {
+    color: rgb(232, 234, 237);
+    background-color: rgb(58, 84, 132);
+}
+
+.credits__focusable--focused {
+    border-color: rgb(122, 171, 255);
+}
+
+.credits__error-label {
+    width: 80%;
+    min-width: 360px;
+    max-width: 900px;
+    color: rgb(224, 122, 122);
+    font-size: 14px;
+    -unity-text-align: middle-left;
+    margin-bottom: 2%;
+}
+
+.credits__content-scroll {
+    flex-grow: 1;
+    width: 80%;
+    min-width: 360px;
+    max-width: 900px;
+    background-color: rgb(30, 32, 37);
+    border-radius: 4px;
+    margin-bottom: 2%;
+}
+
+.credits__content {
+    flex-direction: column;
+    padding: 16px;
+}
+
+.credits__entry {
+    font-size: 15px;
+    color: rgb(232, 234, 237);
+    white-space: normal;
+    margin-bottom: 10px;
+}
+
+.credits__actions {
+    flex-direction: row;
+    width: 80%;
+    min-width: 360px;
+    max-width: 900px;
+    justify-content: flex-end;
+}
+
+.credits__action {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 24px;
+    font-size: 18px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.credits__action:hover {
+    background-color: rgb(54, 58, 66);
+}

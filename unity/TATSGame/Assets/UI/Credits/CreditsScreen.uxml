@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="CreditsScreen.uss" />
+    <ui:VisualElement name="credits-root" class="credits">
+        <ui:Label text="기여자" class="credits__title" />
+        <ui:VisualElement name="credits-tabs" class="credits__tabs">
+            <ui:Button name="credits-tab-team-button" text="팀" class="credits__tab" />
+            <ui:Button name="credits-tab-public-data-button" text="공개 데이터 출처" class="credits__tab" />
+            <ui:Button name="credits-tab-open-source-button" text="오픈소스 고지" class="credits__tab" />
+        </ui:VisualElement>
+        <ui:Label name="credits-error-label" text="" class="credits__error-label" />
+        <ui:ScrollView name="credits-content-scroll" class="credits__content-scroll">
+            <ui:VisualElement name="credits-content" class="credits__content" />
+        </ui:ScrollView>
+        <ui:VisualElement class="credits__actions">
+            <ui:Button name="credits-back-button" text="뒤로" class="credits__action" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
