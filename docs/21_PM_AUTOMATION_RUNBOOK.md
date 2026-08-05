@@ -1,8 +1,11 @@
 # TATS 2시간 PM 운영 런북
 
-기준 시각: 2026-08-04 21:15 KST
+기준 시각: 2026-08-05 15:42 KST
 
-- Codex 자동화: `automation-3` (`TATS 2시간 PM 대리`, 2시간 주기, ACTIVE)
+- Codex 자동화: `automation-3` (`TATS 2시간 PM 대리`, 2시간 주기, **PAUSED**)
+  - 2026-08-04 23:53 KST에 일시 중지됐다. 마지막 실행은 같은 날 21:50 KST다.
+  - 상태 정본은 `$CODEX_HOME/automations/automation-3/automation.toml`의 `status` 필드다.
+    이 문서가 아니라 그 파일을 보고 판단한다.
 - Notion 운영 보드: https://app.notion.com/p/3b25d8c25aa4813ebb67c1f92c7828a1
 - 로컬 프로젝트: `C:\Users\USER\Documents\세종AX해커톤_MSGA`
 
