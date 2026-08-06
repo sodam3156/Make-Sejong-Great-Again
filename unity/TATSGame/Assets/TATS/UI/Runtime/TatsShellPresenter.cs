@@ -13,6 +13,10 @@ namespace Tats.Client.UI
         private readonly Dictionary<SimulationSpeed, Button> speedButtons = new Dictionary<SimulationSpeed, Button>();
         private readonly Dictionary<OverlayType, Button> overlayButtons = new Dictionary<OverlayType, Button>();
         private readonly Dictionary<AlgorithmPreset, Button> algorithmButtons = new Dictionary<AlgorithmPreset, Button>();
+        private readonly Dictionary<string, Button> startIntersectionButtons = new Dictionary<string, Button>();
+        private readonly Dictionary<string, Button> startOpponentButtons = new Dictionary<string, Button>();
+        private readonly VisualElement experienceEntryOverlay;
+        private readonly VisualElement firstThreeMinutesOverlay;
         private readonly VisualElement overlayTray;
         private readonly Label cityClock;
         private readonly Label points;
@@ -25,6 +29,9 @@ namespace Tats.Client.UI
         private readonly Label contextSecondary;
         private readonly Label helper;
         private readonly Label mapModeBadge;
+        private readonly Label journeyStatus;
+        private readonly Label startConfiguration;
+        private readonly Label onboardingConfiguration;
         private readonly VisualElement signalEditorOverlay;
         private readonly VisualElement impactPreviewOverlay;
         private readonly VisualElement applyStatusOverlay;
@@ -65,6 +72,8 @@ namespace Tats.Client.UI
         private readonly Label buildingLevel;
         private readonly Label buildingOutput;
         private readonly Label buildingReceipt;
+        private readonly Label aiComparisonEyebrow;
+        private readonly Label aiComparisonTitle;
         private readonly Button signalPreviewButton;
         private readonly Button skillbookGenerateButton;
         private readonly Button roadPurchaseButton;
@@ -75,6 +84,8 @@ namespace Tats.Client.UI
             this.root = root ?? throw new ArgumentNullException(nameof(root));
             this.viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
 
+            experienceEntryOverlay = Require<VisualElement>("experience-entry-overlay");
+            firstThreeMinutesOverlay = Require<VisualElement>("first-three-minutes-overlay");
             overlayTray = Require<VisualElement>("overlay-tray");
             cityClock = Require<Label>("city-clock");
             points = Require<Label>("points-value");
@@ -87,6 +98,9 @@ namespace Tats.Client.UI
             contextSecondary = Require<Label>("context-secondary-value");
             helper = Require<Label>("tool-help");
             mapModeBadge = Require<Label>("map-mode-badge");
+            journeyStatus = Require<Label>("journey-status");
+            startConfiguration = Require<Label>("start-configuration");
+            onboardingConfiguration = Require<Label>("onboarding-configuration");
             signalEditorOverlay = Require<VisualElement>("signal-editor-overlay");
             impactPreviewOverlay = Require<VisualElement>("impact-preview-overlay");
             applyStatusOverlay = Require<VisualElement>("apply-status-overlay");
@@ -127,6 +141,8 @@ namespace Tats.Client.UI
             buildingLevel = Require<Label>("building-level");
             buildingOutput = Require<Label>("building-output");
             buildingReceipt = Require<Label>("building-receipt");
+            aiComparisonEyebrow = Require<Label>("ai-compare-eyebrow");
+            aiComparisonTitle = Require<Label>("ai-compare-opponent-title");
             signalPreviewButton = Require<Button>("signal-preview");
             skillbookGenerateButton = Require<Button>("skillbook-generate");
             roadPurchaseButton = Require<Button>("road-purchase");
@@ -157,6 +173,16 @@ namespace Tats.Client.UI
             BindIntersection("intersection-cheongsa", "intersection-cheongsa", "청사교차로");
             BindIntersection("intersection-sejong", "intersection-sejong", "세종교차로");
 
+            BindStartIntersection("start-intersection-seonggeum", "intersection-seonggeum", "성금사거리");
+            BindStartIntersection("start-intersection-cheongsa", "intersection-cheongsa", "청사교차로");
+            BindStartIntersection("start-intersection-sejong", "intersection-sejong", "세종교차로");
+            BindStartOpponent("start-ai-luna", "Luna");
+            BindStartOpponent("start-ai-terra", "Terra");
+            BindStartOpponent("start-ai-sol", "Sol");
+            Require<Button>("experience-start").clicked += viewModel.OpenFirstThreeMinutes;
+            Require<Button>("first-three-minutes-back").clicked += viewModel.ReturnToTitle;
+            Require<Button>("first-three-minutes-enter").clicked += viewModel.EnterMainGame;
+
             BindSignalPhaseButton("phase-ns-minus", SignalPhaseKind.NorthSouth, -5);
             BindSignalPhaseButton("phase-ns-plus", SignalPhaseKind.NorthSouth, 5);
             BindSignalPhaseButton("phase-ew-minus", SignalPhaseKind.EastWest, -5);
@@ -182,6 +208,7 @@ namespace Tats.Client.UI
             skillbookGenerateButton.clicked += viewModel.GenerateAiSignalDraft;
             roadPurchaseButton.clicked += viewModel.PurchaseRoadFixture;
             buildingUpgradeButton.clicked += viewModel.UpgradeBuildingFixture;
+            Require<Button>("building-next-ai").clicked += viewModel.OpenAiComparison;
             Require<Button>("skillbook-close").clicked += viewModel.CloseFeaturePanel;
             Require<Button>("road-close").clicked += viewModel.CloseFeaturePanel;
             Require<Button>("building-close").clicked += viewModel.CloseFeaturePanel;
@@ -233,6 +260,20 @@ namespace Tats.Client.UI
             Require<Button>(buttonName).clicked += () => viewModel.AdjustSignalPhase(phaseKind, deltaSeconds);
         }
 
+        private void BindStartIntersection(string buttonName, string elementId, string displayName)
+        {
+            var button = Require<Button>(buttonName);
+            startIntersectionButtons.Add(elementId, button);
+            button.clicked += () => viewModel.SelectStartIntersection(elementId, displayName);
+        }
+
+        private void BindStartOpponent(string buttonName, string opponentName)
+        {
+            var button = Require<Button>(buttonName);
+            startOpponentButtons.Add(opponentName, button);
+            button.clicked += () => viewModel.SelectStartOpponent(opponentName);
+        }
+
         private void BindAlgorithmButton(string buttonName, AlgorithmPreset preset)
         {
             var button = Require<Button>(buttonName);
@@ -253,6 +294,9 @@ namespace Tats.Client.UI
             contextPrimary.text = viewModel.SelectedPrimaryValue;
             contextSecondary.text = viewModel.SelectedSecondaryValue;
             helper.text = viewModel.HelperText;
+            journeyStatus.text = viewModel.JourneyStageLabel;
+            startConfiguration.text = viewModel.StartConfigurationLabel;
+            onboardingConfiguration.text = viewModel.StartConfigurationLabel;
             mapModeBadge.text = state.OverlayType == OverlayType.None
                 ? GetModeLabel(state.PrimaryMode)
                 : $"진단 · {TatsMockViewModel.GetOverlayLabel(state.OverlayType)}";
@@ -283,6 +327,8 @@ namespace Tats.Client.UI
             buildingLevel.text = viewModel.BuildingLevelLabel;
             buildingOutput.text = viewModel.BuildingOutputLabel;
             buildingReceipt.text = viewModel.FeatureReceiptLabel;
+            aiComparisonEyebrow.text = viewModel.AiComparisonEyebrow;
+            aiComparisonTitle.text = viewModel.AiComparisonTitle;
 
             signalEditorOverlay.style.display = state.SignalWorkflowPanel == SignalWorkflowPanel.Editor
                 ? DisplayStyle.Flex
@@ -327,6 +373,13 @@ namespace Tats.Client.UI
             buildingUpgradeButton.SetEnabled(viewModel.BuildingLevel < 3);
             buildingUpgradeButton.text = viewModel.BuildingLevel < 3 ? "다음 Level 업그레이드" : "최대 Level 도달";
 
+            experienceEntryOverlay.style.display = state.ExperienceScreen == ExperienceScreen.Title
+                ? DisplayStyle.Flex
+                : DisplayStyle.None;
+            firstThreeMinutesOverlay.style.display = state.ExperienceScreen == ExperienceScreen.FirstThreeMinutes
+                ? DisplayStyle.Flex
+                : DisplayStyle.None;
+
             overlayTray.style.display = state.PrimaryMode == PrimaryMode.Diagnose ? DisplayStyle.Flex : DisplayStyle.None;
 
             foreach (var pair in modeButtons)
@@ -347,6 +400,16 @@ namespace Tats.Client.UI
             foreach (var pair in algorithmButtons)
             {
                 pair.Value.EnableInClassList("is-active", pair.Key == state.AlgorithmPreset);
+            }
+
+            foreach (var pair in startIntersectionButtons)
+            {
+                pair.Value.EnableInClassList("is-active", pair.Key == viewModel.StartIntersectionId);
+            }
+
+            foreach (var pair in startOpponentButtons)
+            {
+                pair.Value.EnableInClassList("is-active", pair.Key == viewModel.StartOpponentLabel);
             }
 
             SetIntersectionActive("intersection-seonggeum", state.SelectedElementId == "intersection-seonggeum");

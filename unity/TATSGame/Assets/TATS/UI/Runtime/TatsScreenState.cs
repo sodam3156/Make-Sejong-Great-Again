@@ -2,6 +2,13 @@ using System;
 
 namespace Tats.Client.UI
 {
+    public enum ExperienceScreen
+    {
+        Title,
+        FirstThreeMinutes,
+        MainGame
+    }
+
     public enum PrimaryMode
     {
         Select,
@@ -104,6 +111,7 @@ namespace Tats.Client.UI
     [Serializable]
     public sealed class TatsScreenState
     {
+        public ExperienceScreen ExperienceScreen = ExperienceScreen.Title;
         public PrimaryMode PrimaryMode = PrimaryMode.Select;
         public SelectionKind SelectionKind = SelectionKind.None;
         public OverlayType OverlayType = OverlayType.None;

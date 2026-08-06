@@ -1388,3 +1388,564 @@
     border-top-right-radius: 9px;
     border-bottom-right-radius: 9px;
 }
+
+.map-toolbar__spacer,
+.start-panel__spacer,
+.first-three-footer__spacer {
+    flex-grow: 1;
+}
+
+.journey-status {
+    min-width: 150px;
+    height: 30px;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: rgb(28, 84, 65);
+    color: rgb(242, 255, 249);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.world-art-slot {
+    position: absolute;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-color: rgb(37, 83, 67);
+    border-right-color: rgb(37, 83, 67);
+    border-bottom-color: rgb(37, 83, 67);
+    border-left-color: rgb(37, 83, 67);
+}
+
+.world-building {
+    width: 116px;
+    height: 72px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(236, 173, 89);
+    border-bottom-width: 10px;
+    border-bottom-color: rgb(167, 103, 48);
+}
+
+.world-building--west {
+    left: 8%;
+    top: 11%;
+}
+
+.world-building--east {
+    right: 8%;
+    top: 14%;
+    background-color: rgb(129, 173, 196);
+    border-bottom-color: rgb(66, 111, 137);
+}
+
+.world-art-code {
+    color: rgb(24, 52, 43);
+    font-size: 11px;
+    -unity-font-style: bold;
+}
+
+.world-player {
+    left: 54%;
+    top: 24%;
+    width: 26px;
+    height: 34px;
+    background-color: rgb(180, 70, 49);
+}
+
+.world-player__vest {
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    top: 15px;
+    height: 11px;
+    background-color: rgb(226, 241, 55);
+}
+
+.world-duck {
+    left: 36%;
+    bottom: 18%;
+    width: 30px;
+    height: 22px;
+    background-color: rgb(248, 247, 230);
+}
+
+.world-duck__beak {
+    position: absolute;
+    right: -8px;
+    top: 7px;
+    width: 8px;
+    height: 7px;
+    background-color: rgb(247, 177, 34);
+}
+
+.world-vehicle {
+    width: 20px;
+    height: 36px;
+    background-color: rgb(54, 119, 207);
+    border-top-color: rgb(233, 245, 255);
+}
+
+.world-vehicle--north {
+    left: 59%;
+    top: 37%;
+}
+
+.world-vehicle--south {
+    left: 59%;
+    bottom: 12%;
+    background-color: rgb(220, 91, 74);
+}
+
+.world-art-handoff {
+    position: absolute;
+    right: 14px;
+    bottom: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
+    height: 24px;
+    background-color: rgba(244, 250, 247, 0.9);
+    color: rgb(54, 91, 78);
+    font-size: 10px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.experience-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 44px;
+    background-color: rgb(18, 42, 34);
+}
+
+.experience-overlay--guide {
+    background-color: rgba(18, 42, 34, 0.97);
+}
+
+.experience-stage {
+    width: 1500px;
+    max-width: 96%;
+    height: 820px;
+    max-height: 94%;
+    flex-direction: row;
+    overflow: hidden;
+    background-color: rgb(238, 244, 241);
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-color: rgb(235, 194, 67);
+    border-right-color: rgb(235, 194, 67);
+    border-bottom-color: rgb(235, 194, 67);
+    border-left-color: rgb(235, 194, 67);
+}
+
+.experience-world {
+    width: 65%;
+    padding: 48px;
+    background-color: rgb(209, 229, 215);
+}
+
+.experience-kicker {
+    color: rgb(40, 103, 80);
+    font-size: 13px;
+    -unity-font-style: bold;
+    letter-spacing: 1.4px;
+}
+
+.experience-title {
+    margin-top: 12px;
+    color: rgb(20, 59, 45);
+    font-size: 52px;
+    -unity-font-style: bold;
+}
+
+.experience-subtitle {
+    margin-top: 14px;
+    color: rgb(67, 94, 84);
+    font-size: 18px;
+}
+
+.hero-pixel-canvas {
+    position: relative;
+    flex-grow: 1;
+    min-height: 390px;
+    margin-top: 30px;
+    overflow: hidden;
+    background-color: rgb(150, 192, 141);
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-color: rgb(38, 83, 66);
+    border-right-color: rgb(38, 83, 66);
+    border-bottom-color: rgb(38, 83, 66);
+    border-left-color: rgb(38, 83, 66);
+}
+
+.hero-building {
+    position: absolute;
+    width: 190px;
+    height: 110px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(239, 177, 88);
+    border-left-width: 4px;
+    border-top-width: 4px;
+    border-right-width: 14px;
+    border-bottom-width: 14px;
+    border-left-color: rgb(110, 75, 43);
+    border-top-color: rgb(110, 75, 43);
+    border-right-color: rgb(160, 94, 45);
+    border-bottom-color: rgb(160, 94, 45);
+}
+
+.hero-building--one {
+    left: 7%;
+    top: 10%;
+}
+
+.hero-building--two {
+    right: 8%;
+    bottom: 9%;
+    background-color: rgb(132, 183, 208);
+    border-right-color: rgb(65, 111, 136);
+    border-bottom-color: rgb(65, 111, 136);
+}
+
+.hero-road {
+    position: absolute;
+    background-color: rgb(75, 87, 82);
+    border-top-color: rgb(244, 193, 45);
+    border-bottom-color: rgb(244, 193, 45);
+}
+
+.hero-road--horizontal {
+    left: 0;
+    right: 0;
+    top: 52%;
+    height: 82px;
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+}
+
+.hero-road--vertical {
+    top: 0;
+    bottom: 0;
+    left: 57%;
+    width: 82px;
+    border-left-width: 4px;
+    border-right-width: 4px;
+    border-left-color: rgb(244, 193, 45);
+    border-right-color: rgb(244, 193, 45);
+}
+
+.hero-vehicle {
+    position: absolute;
+    width: 28px;
+    height: 54px;
+    background-color: rgb(46, 109, 210);
+    border-top-width: 4px;
+    border-right-width: 3px;
+    border-bottom-width: 4px;
+    border-left-width: 3px;
+    border-top-color: rgb(229, 242, 255);
+    border-right-color: rgb(31, 63, 113);
+    border-bottom-color: rgb(31, 63, 113);
+    border-left-color: rgb(31, 63, 113);
+}
+
+.hero-vehicle--one {
+    left: 60%;
+    top: 14%;
+}
+
+.hero-vehicle--two {
+    left: 36%;
+    top: 56%;
+    width: 54px;
+    height: 28px;
+    background-color: rgb(219, 80, 64);
+}
+
+.hero-player {
+    position: absolute;
+    left: 50%;
+    bottom: 12%;
+    width: 38px;
+    height: 54px;
+    background-color: rgb(177, 67, 48);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-top-color: rgb(51, 76, 67);
+    border-right-color: rgb(51, 76, 67);
+    border-bottom-color: rgb(51, 76, 67);
+    border-left-color: rgb(51, 76, 67);
+}
+
+.hero-player__vest {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    top: 23px;
+    height: 17px;
+    background-color: rgb(227, 242, 52);
+}
+
+.hero-duck {
+    position: absolute;
+    left: 28%;
+    bottom: 16%;
+    width: 42px;
+    height: 30px;
+    background-color: rgb(250, 248, 225);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-top-color: rgb(56, 83, 72);
+    border-right-color: rgb(56, 83, 72);
+    border-bottom-color: rgb(56, 83, 72);
+    border-left-color: rgb(56, 83, 72);
+}
+
+.hero-duck__beak {
+    position: absolute;
+    right: -12px;
+    top: 9px;
+    width: 12px;
+    height: 9px;
+    background-color: rgb(247, 173, 30);
+}
+
+.hero-canvas-label {
+    position: absolute;
+    left: 14px;
+    bottom: 12px;
+    padding-left: 9px;
+    padding-right: 9px;
+    height: 28px;
+    background-color: rgb(20, 59, 45);
+    color: rgb(240, 251, 246);
+    font-size: 10px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.art-handoff-note {
+    margin-top: 12px;
+    color: rgb(58, 86, 76);
+    font-size: 12px;
+}
+
+.start-panel {
+    flex-grow: 1;
+    padding: 48px;
+    background-color: rgb(250, 252, 250);
+    border-left-width: 2px;
+    border-left-color: rgb(37, 83, 67);
+}
+
+.start-panel__title {
+    margin-bottom: 30px;
+    color: rgb(20, 59, 45);
+    font-size: 32px;
+    -unity-font-style: bold;
+}
+
+.start-panel__label {
+    margin-bottom: 10px;
+    color: rgb(69, 94, 84);
+    font-size: 13px;
+    -unity-font-style: bold;
+}
+
+.start-panel__label--spaced {
+    margin-top: 24px;
+}
+
+.start-choice-row {
+    flex-direction: row;
+}
+
+.start-choice {
+    flex-grow: 1;
+    min-width: 88px;
+    height: 50px;
+    margin-right: 8px;
+    background-color: rgb(235, 241, 238);
+    color: rgb(43, 65, 56);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-color: rgb(183, 201, 192);
+    border-right-color: rgb(183, 201, 192);
+    border-bottom-color: rgb(183, 201, 192);
+    border-left-color: rgb(183, 201, 192);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.start-choice.is-active {
+    background-color: rgb(34, 111, 82);
+    color: white;
+    border-top-color: rgb(235, 194, 67);
+    border-right-color: rgb(235, 194, 67);
+    border-bottom-color: rgb(235, 194, 67);
+    border-left-color: rgb(235, 194, 67);
+}
+
+.start-summary {
+    margin-top: 34px;
+    padding: 18px;
+    background-color: rgb(226, 240, 232);
+    border-left-width: 4px;
+    border-left-color: rgb(37, 117, 86);
+}
+
+.start-summary__label {
+    color: rgb(70, 98, 87);
+    font-size: 11px;
+}
+
+.start-summary__value {
+    margin-top: 7px;
+    color: rgb(21, 65, 49);
+    font-size: 17px;
+    -unity-font-style: bold;
+}
+
+.experience-primary-action,
+.experience-secondary-action {
+    height: 56px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -unity-font-style: bold;
+}
+
+.experience-primary-action {
+    background-color: rgb(37, 99, 235);
+    color: white;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+
+.experience-primary-action--inline {
+    width: 300px;
+}
+
+.experience-secondary-action {
+    width: 190px;
+    background-color: rgb(238, 243, 240);
+    color: rgb(32, 68, 54);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-color: rgb(172, 193, 183);
+    border-right-color: rgb(172, 193, 183);
+    border-bottom-color: rgb(172, 193, 183);
+    border-left-color: rgb(172, 193, 183);
+}
+
+.start-panel__footnote {
+    margin-top: 12px;
+    color: rgb(91, 110, 102);
+    font-size: 11px;
+    -unity-text-align: middle-center;
+}
+
+.first-three-card {
+    width: 1120px;
+    max-width: 94%;
+    min-height: 690px;
+    padding: 52px;
+    background-color: rgb(249, 252, 250);
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-color: rgb(235, 194, 67);
+    border-right-color: rgb(235, 194, 67);
+    border-bottom-color: rgb(235, 194, 67);
+    border-left-color: rgb(235, 194, 67);
+}
+
+.first-three-title {
+    margin-top: 12px;
+    color: rgb(20, 59, 45);
+    font-size: 38px;
+    -unity-font-style: bold;
+}
+
+.first-three-config {
+    margin-top: 12px;
+    color: rgb(37, 99, 235);
+    font-size: 16px;
+    -unity-font-style: bold;
+}
+
+.first-three-steps {
+    margin-top: 34px;
+}
+
+.first-three-step {
+    min-height: 116px;
+    margin-bottom: 14px;
+    flex-direction: row;
+    align-items: center;
+    padding: 18px;
+    background-color: rgb(232, 241, 236);
+    border-left-width: 4px;
+    border-left-color: rgb(42, 120, 90);
+}
+
+.first-three-step__number {
+    width: 70px;
+    color: rgb(38, 101, 77);
+    font-size: 28px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.first-three-step__copy {
+    flex-grow: 1;
+    margin-left: 18px;
+}
+
+.first-three-step__title {
+    color: rgb(23, 65, 49);
+    font-size: 19px;
+    -unity-font-style: bold;
+}
+
+.first-three-step__body {
+    margin-top: 8px;
+    color: rgb(75, 98, 89);
+    font-size: 14px;
+}
+
+.first-three-footer {
+    margin-top: 16px;
+    flex-direction: row;
+    align-items: center;
+}

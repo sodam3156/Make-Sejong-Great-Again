@@ -42,6 +42,8 @@
                 <ui:VisualElement class="map-toolbar">
                     <ui:Label name="map-mode-badge" text="선택 모드" class="map-mode-badge" />
                     <ui:Label text="실제 지도 어댑터 연결 영역" class="map-adapter-note" />
+                    <ui:VisualElement class="map-toolbar__spacer" />
+                    <ui:Label name="journey-status" text="01 · 지도 관찰" class="journey-status" />
                 </ui:VisualElement>
                 <ui:VisualElement class="map-canvas">
                     <ui:VisualElement class="map-block map-block--one" />
@@ -50,6 +52,21 @@
                     <ui:VisualElement class="map-road map-road--north" />
                     <ui:VisualElement class="map-road map-road--south" />
                     <ui:VisualElement class="map-road map-road--vertical" />
+                    <ui:VisualElement name="art-slot-building-west" tooltip="경은 건물 픽셀아트 교체 슬롯" class="world-art-slot world-building world-building--west">
+                        <ui:Label text="B1" class="world-art-code" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="art-slot-building-east" tooltip="경은 건물 픽셀아트 교체 슬롯" class="world-art-slot world-building world-building--east">
+                        <ui:Label text="B2" class="world-art-code" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="art-slot-player" tooltip="경은 플레이어 캐릭터 픽셀아트 교체 슬롯" class="world-art-slot world-player">
+                        <ui:VisualElement class="world-player__vest" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="art-slot-duck" tooltip="경은 오리 보행자 픽셀아트 교체 슬롯" class="world-art-slot world-duck">
+                        <ui:VisualElement class="world-duck__beak" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="art-slot-vehicle-north" tooltip="경은 차량 픽셀아트 교체 슬롯" class="world-art-slot world-vehicle world-vehicle--north" />
+                    <ui:VisualElement name="art-slot-vehicle-south" tooltip="경은 차량 픽셀아트 교체 슬롯" class="world-art-slot world-vehicle world-vehicle--south" />
+                    <ui:Label text="ART SLOTS · 480×270 → 1920×1080" class="world-art-handoff" />
                     <ui:Button name="intersection-seonggeum" text="성금" tooltip="성금사거리 선택" class="map-node map-node--one" />
                     <ui:Button name="intersection-cheongsa" text="청사" tooltip="청사교차로 선택" class="map-node map-node--two" />
                     <ui:Button name="intersection-sejong" text="세종" tooltip="세종교차로 선택" class="map-node map-node--three" />
@@ -459,6 +476,7 @@
                     <ui:Label name="building-receipt" text="아직 접수된 fixture 명령이 없습니다." class="validation-copy" />
                 </ui:VisualElement>
                 <ui:VisualElement class="workflow-footer">
+                    <ui:Button name="building-next-ai" text="24시간 AI 비교로" class="secondary-action" />
                     <ui:VisualElement class="workflow-footer__spacer" />
                     <ui:Button name="building-upgrade" text="다음 Level 업그레이드" class="primary-action" />
                 </ui:VisualElement>
@@ -467,7 +485,7 @@
             <ui:VisualElement name="ai-compare-panel" class="workflow-card feature-card feature-card--wide">
                 <ui:VisualElement class="workflow-header">
                     <ui:VisualElement class="workflow-header__copy">
-                        <ui:Label text="AI RECORD · LUNA" class="eyebrow" />
+                        <ui:Label name="ai-compare-eyebrow" text="AI RECORD · LUNA" class="eyebrow" />
                         <ui:Label text="24시간 운영 결과 비교" class="workflow-title" />
                         <ui:Label text="동일 시작점·동일 조건에서 플레이어 운영과 Luna AI Record를 비교합니다." class="workflow-subtitle" />
                     </ui:VisualElement>
@@ -484,7 +502,7 @@
                     </ui:VisualElement>
                     <ui:VisualElement class="ai-versus"><ui:Label text="VS" /></ui:VisualElement>
                     <ui:VisualElement class="ai-column">
-                        <ui:Label text="Luna AI Record" class="ai-column-title" />
+                        <ui:Label name="ai-compare-opponent-title" text="Luna AI Record" class="ai-column-title" />
                         <ui:VisualElement class="metric-row"><ui:Label text="목적지 도착 합계" class="receipt-label" /><ui:Label text="4,690 flowWeight" class="metric-value" /></ui:VisualElement>
                         <ui:VisualElement class="metric-row"><ui:Label text="안전 점수" class="receipt-label" /><ui:Label text="96 / 100" class="metric-value" /></ui:VisualElement>
                         <ui:VisualElement class="metric-row"><ui:Label text="사고 발생" class="receipt-label" /><ui:Label text="0건" class="metric-value" /></ui:VisualElement>
@@ -499,6 +517,87 @@
                 <ui:VisualElement class="workflow-footer">
                     <ui:VisualElement class="workflow-footer__spacer" />
                     <ui:Button name="ai-compare-confirm" text="비교 확인" class="primary-action" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="experience-entry-overlay" class="experience-overlay">
+            <ui:VisualElement class="experience-stage">
+                <ui:VisualElement class="experience-world">
+                    <ui:Label text="TATS · UNITY PLAYABLE PROTOTYPE" class="experience-kicker" />
+                    <ui:Label text="Totally Accurate&#10;Traffic Simulator" class="experience-title" />
+                    <ui:Label text="실제 도로 위 신호를 직접 설계하고, 같은 조건의 AI 기록에 도전하세요." class="experience-subtitle" />
+                    <ui:VisualElement class="hero-pixel-canvas">
+                        <ui:VisualElement class="hero-building hero-building--one"><ui:Label text="B1" class="world-art-code" /></ui:VisualElement>
+                        <ui:VisualElement class="hero-building hero-building--two"><ui:Label text="B2" class="world-art-code" /></ui:VisualElement>
+                        <ui:VisualElement class="hero-road hero-road--horizontal" />
+                        <ui:VisualElement class="hero-road hero-road--vertical" />
+                        <ui:VisualElement class="hero-vehicle hero-vehicle--one" />
+                        <ui:VisualElement class="hero-vehicle hero-vehicle--two" />
+                        <ui:VisualElement class="hero-player"><ui:VisualElement class="hero-player__vest" /></ui:VisualElement>
+                        <ui:VisualElement class="hero-duck"><ui:VisualElement class="hero-duck__beak" /></ui:VisualElement>
+                        <ui:Label text="480×270 PIXEL WORLD · ART REPLACE READY" class="hero-canvas-label" />
+                    </ui:VisualElement>
+                    <ui:Label text="캐릭터·오리 보행자·건물·차량은 경은 최종 에셋으로 즉시 교체 가능한 슬롯입니다." class="art-handoff-note" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="start-panel">
+                    <ui:Label text="새 도시 시작" class="start-panel__title" />
+                    <ui:Label text="시작 교차로" class="start-panel__label" />
+                    <ui:VisualElement class="start-choice-row">
+                        <ui:Button name="start-intersection-seonggeum" text="성금" class="start-choice" />
+                        <ui:Button name="start-intersection-cheongsa" text="청사" class="start-choice" />
+                        <ui:Button name="start-intersection-sejong" text="세종" class="start-choice" />
+                    </ui:VisualElement>
+                    <ui:Label text="AI 상대" class="start-panel__label start-panel__label--spaced" />
+                    <ui:VisualElement class="start-choice-row">
+                        <ui:Button name="start-ai-luna" text="Luna" class="start-choice" />
+                        <ui:Button name="start-ai-terra" text="Terra" class="start-choice" />
+                        <ui:Button name="start-ai-sol" text="Sol" class="start-choice" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="start-summary">
+                        <ui:Label text="선택한 플레이 조건" class="start-summary__label" />
+                        <ui:Label name="start-configuration" text="성금사거리 · Luna AI · Day 1 03:00" class="start-summary__value" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="start-panel__spacer" />
+                    <ui:Button name="experience-start" text="첫 3분 시작" class="experience-primary-action" />
+                    <ui:Label text="서버 어댑터 연결 전 fixture 데이터로 독립 실행됩니다." class="start-panel__footnote" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="first-three-minutes-overlay" class="experience-overlay experience-overlay--guide">
+            <ui:VisualElement class="first-three-card">
+                <ui:Label text="FIRST 3 MINUTES" class="experience-kicker" />
+                <ui:Label text="Day 1 03:00 — 지금 바로 시작하세요" class="first-three-title" />
+                <ui:Label name="onboarding-configuration" text="성금사거리 · Luna AI · Day 1 03:00" class="first-three-config" />
+                <ui:VisualElement class="first-three-steps">
+                    <ui:VisualElement class="first-three-step">
+                        <ui:Label text="01" class="first-three-step__number" />
+                        <ui:VisualElement class="first-three-step__copy">
+                            <ui:Label text="지도에서 현재 신호를 읽기" class="first-three-step__title" />
+                            <ui:Label text="신호 현시 레이어와 교차로의 대기·안전 근거를 확인합니다." class="first-three-step__body" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="first-three-step">
+                        <ui:Label text="02" class="first-three-step__number" />
+                        <ui:VisualElement class="first-three-step__copy">
+                            <ui:Label text="단계 하나를 직접 수정하기" class="first-three-step__title" />
+                            <ui:Label text="지속시간을 바꾸고 영향 미리보기와 안전 조건을 검토합니다." class="first-three-step__body" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="first-three-step">
+                        <ui:Label text="03" class="first-three-step__number" />
+                        <ui:VisualElement class="first-three-step__copy">
+                            <ui:Label text="적용·성장·AI 비교로 이어가기" class="first-three-step__title" />
+                            <ui:Label text="안전 전환 후 건물을 성장시키고 같은 조건의 Luna 기록과 비교합니다." class="first-three-step__body" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="first-three-footer">
+                    <ui:Button name="first-three-minutes-back" text="시작 설정으로" class="experience-secondary-action" />
+                    <ui:VisualElement class="first-three-footer__spacer" />
+                    <ui:Button name="first-three-minutes-enter" text="정지 상태에서 게임 시작" class="experience-primary-action experience-primary-action--inline" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

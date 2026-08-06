@@ -11,6 +11,9 @@ namespace Tats.Client.UI
         private const int ClearanceSeconds = 15;
         private SimulationSpeed speedBeforeConnectionLoss = SimulationSpeed.Paused;
         private string pointsLabel = "40 pt";
+        private string startIntersectionId = "intersection-seonggeum";
+        private string startIntersectionLabel = "성금사거리";
+        private string startOpponentLabel = "Luna";
 
         public event Action Changed;
 
@@ -19,7 +22,46 @@ namespace Tats.Client.UI
         public string CityClockLabel => "Day 1 · 03:00";
         public string PointsLabel => pointsLabel;
         public string SettlementLabel => "다음 정산 00:42";
-        public string AiOpponentLabel => "Luna · +84 flow";
+        public string AiOpponentLabel => $"{startOpponentLabel} · +84 flow";
+        public string AiComparisonEyebrow => $"AI RECORD · {startOpponentLabel.ToUpperInvariant()}";
+        public string AiComparisonTitle => $"{startOpponentLabel} AI Record";
+        public string StartIntersectionId => startIntersectionId;
+        public string StartOpponentLabel => startOpponentLabel;
+        public string StartConfigurationLabel => $"{startIntersectionLabel} · {startOpponentLabel} AI · Day 1 03:00";
+        public string JourneyStageLabel
+        {
+            get
+            {
+                if (State.PrimaryMode == PrimaryMode.RoadUnlock || State.PrimaryMode == PrimaryMode.Building)
+                {
+                    return "06 · 도시 성장";
+                }
+
+                if (State.PrimaryMode == PrimaryMode.AICompare)
+                {
+                    return "07 · AI 기록 비교";
+                }
+
+                if (State.SignalWorkflowPanel == SignalWorkflowPanel.ImpactPreview)
+                {
+                    return "04 · 영향 검토";
+                }
+
+                if (State.SignalWorkflowPanel == SignalWorkflowPanel.ApplyStatus ||
+                    State.SignalDraftStatus == SignalDraftStatus.Scheduled ||
+                    State.SignalDraftStatus == SignalDraftStatus.SafeTransition)
+                {
+                    return "05 · 안전 적용";
+                }
+
+                return State.PrimaryMode switch
+                {
+                    PrimaryMode.Diagnose => "02 · 원인 진단",
+                    PrimaryMode.SignalEdit => "03 · 신호 설계",
+                    _ => State.SelectionKind == SelectionKind.None ? "01 · 지도 관찰" : "02 · 교차로 진단"
+                };
+            }
+        }
         public string ConnectionLabel => State.ConnectionState switch
         {
             ConnectionState.Connected => "연결됨",
@@ -86,6 +128,44 @@ namespace Tats.Client.UI
             2 => "유동인구 +19 / 시간 · fixture",
             _ => "유동인구 +27 / 시간 · fixture"
         };
+
+        public void SelectStartIntersection(string elementId, string displayName)
+        {
+            startIntersectionId = elementId;
+            startIntersectionLabel = displayName;
+            NotifyChanged();
+        }
+
+        public void SelectStartOpponent(string opponentName)
+        {
+            startOpponentLabel = opponentName;
+            NotifyChanged();
+        }
+
+        public void OpenFirstThreeMinutes()
+        {
+            State.ExperienceScreen = ExperienceScreen.FirstThreeMinutes;
+            NotifyChanged();
+        }
+
+        public void ReturnToTitle()
+        {
+            State.ExperienceScreen = ExperienceScreen.Title;
+            NotifyChanged();
+        }
+
+        public void EnterMainGame()
+        {
+            State.ExperienceScreen = ExperienceScreen.MainGame;
+            State.PrimaryMode = PrimaryMode.Diagnose;
+            State.OverlayType = OverlayType.SignalPhase;
+            State.SimulationSpeed = SimulationSpeed.Paused;
+            State.IsFeaturePanelOpen = false;
+            State.SignalWorkflowPanel = SignalWorkflowPanel.Closed;
+            ApplyIntersectionSelection(startIntersectionId, startIntersectionLabel);
+            HelperText = "첫 3분 시작 · 현재 신호 현시를 읽고 선택 교차로의 계획을 진단하세요.";
+            NotifyChanged();
+        }
 
         public void SetMode(PrimaryMode mode)
         {
@@ -238,12 +318,7 @@ namespace Tats.Client.UI
 
         public void SelectIntersection(string elementId, string displayName)
         {
-            State.SelectionKind = SelectionKind.Intersection;
-            State.SelectedElementId = elementId;
-            SelectedTitle = displayName;
-            SelectedSubtitle = "교차로 · 현재 계획";
-            SelectedPrimaryValue = "1단계 활성 · 주기 120초";
-            SelectedSecondaryValue = "대기 12대 · 안전 98.4";
+            ApplyIntersectionSelection(elementId, displayName);
             HelperText = $"{displayName}을(를) 선택했습니다. 신호 편집으로 이어갈 수 있습니다.";
             NotifyChanged();
         }
@@ -319,9 +394,19 @@ namespace Tats.Client.UI
             State.SignalDraftStatus = SignalDraftStatus.SafeTransition;
             State.ConnectionState = ConnectionState.Connected;
             State.SignalWorkflowPanel = SignalWorkflowPanel.Closed;
+            State.PrimaryMode = PrimaryMode.Building;
+            State.IsFeaturePanelOpen = true;
             SelectedPrimaryValue = $"안전 전환 예약 · 초안 {DraftCycleSeconds}초";
             SelectedSecondaryValue = "활성 예정 tick 3,842 · fixture";
-            HelperText = "안전 전환 예약을 확인했습니다. 선택과 배속은 유지됩니다.";
+            HelperText = "안전 전환 예약을 확인했습니다. 같은 운영 흐름에서 건물 성장 단계로 이어집니다.";
+            NotifyChanged();
+        }
+
+        public void OpenAiComparison()
+        {
+            State.PrimaryMode = PrimaryMode.AICompare;
+            State.IsFeaturePanelOpen = true;
+            HelperText = "성장 결과를 같은 조건의 Luna AI Record와 비교합니다.";
             NotifyChanged();
         }
 
@@ -395,7 +480,16 @@ namespace Tats.Client.UI
 
         public void HandleEscape()
         {
-            if (State.ConnectionRecoveryPanel == ConnectionRecoveryPanel.SaveVerification)
+            if (State.ExperienceScreen == ExperienceScreen.FirstThreeMinutes)
+            {
+                ReturnToTitle();
+                return;
+            }
+            else if (State.ExperienceScreen == ExperienceScreen.Title)
+            {
+                return;
+            }
+            else if (State.ConnectionRecoveryPanel == ConnectionRecoveryPanel.SaveVerification)
             {
                 BackToConnectionLost();
                 return;
@@ -462,6 +556,16 @@ namespace Tats.Client.UI
         private void NotifyChanged()
         {
             Changed?.Invoke();
+        }
+
+        private void ApplyIntersectionSelection(string elementId, string displayName)
+        {
+            State.SelectionKind = SelectionKind.Intersection;
+            State.SelectedElementId = elementId;
+            SelectedTitle = displayName;
+            SelectedSubtitle = "교차로 · 현재 계획";
+            SelectedPrimaryValue = "1단계 활성 · 주기 120초";
+            SelectedSecondaryValue = "대기 12대 · 안전 98.4";
         }
 
         private static int Clamp(int value, int minimum, int maximum)

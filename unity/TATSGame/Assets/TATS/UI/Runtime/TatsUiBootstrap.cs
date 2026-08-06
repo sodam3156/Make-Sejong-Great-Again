@@ -47,7 +47,7 @@ namespace Tats.Client.UI
             runtimePanelSettings.themeStyleSheet = themeStyleSheet;
             runtimePanelSettings.scaleMode = PanelScaleMode.ScaleWithScreenSize;
             runtimePanelSettings.screenMatchMode = PanelScreenMatchMode.MatchWidthOrHeight;
-            runtimePanelSettings.referenceResolution = new Vector2Int(1440, 900);
+            runtimePanelSettings.referenceResolution = new Vector2Int(1920, 1080);
             runtimePanelSettings.match = 0.5f;
 
             document = GetComponent<UIDocument>();
