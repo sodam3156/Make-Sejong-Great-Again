@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "catalog_version": "rainflow-external-data-requests-v1",
+  "status_as_of": "2026-07-29",
+  "status_source": "user_recorded_information_disclosure_portal",
+  "model_activation_policy": "never_automatic",
+  "privacy_policy": {
+    "store_receipt_number_publicly": false,
+    "store_personal_contact_publicly": false,
+    "store_authentication_or_controller_credentials": false,
+    "redact_personal_information_before_commit": true
+  },
+  "allowed_statuses": [
+    "preparing",
+    "department_assignment_pending",
+    "processing",
+    "transferred",
+    "disclosed",
+    "partially_disclosed",
+    "not_disclosed",
+    "information_not_held",
+    "withdrawn"
+  ],
+  "requests": [
+    {
+      "request_id": "IR-TRAFFIC-2025",
+      "title": "2025년 세종 교통량 조사 용역 성과품·원자료",
+      "primary_agency": "한국도로교통공단",
+      "current_status": "department_assignment_pending",
+      "response_received": false,
+      "storage_path": "data/public/information_requests/IR-TRAFFIC-2025/",
+      "priority": "P1",
+      "use_cases": [
+        "direction_share_context",
+        "intraday_demand_calibration_if_resolution_allows"
+      ],
+      "requested_products": [
+        "조사지점·교차로 목록과 좌표",
+        "조사일·조사시간대",
+        "방향별 또는 회전별 원시 교통량",
+        "5분·15분·시간 집계표 중 보유 형식",
+        "차종 구분과 단위 정의",
+        "결측·오류·보정 표기",
+        "조사방법·장비·집계주기 설명"
+      ],
+      "acceptance_checks": [
+        "sha256",
+        "source_agency",
+        "as_of_date",
+        "date_coverage",
+        "time_resolution",
+        "timezone",
+        "intersection_identity",
+        "direction_semantics",
+        "units",
+        "missing_rate",
+        "duplicate_rows",
+        "license_and_disclosure_scope"
+      ],
+      "claim_limit_before_acceptance": "Not usable as current or same-date observed traffic."
+    },
+    {
+      "request_id": "IR-TRAFFIC-2026",
+      "title": "2026년 세종 교통량 조사 용역 성과품·원자료",
+      "primary_agency": "한국도로교통공단",
+      "current_status": "department_assignment_pending",
+      "response_received": false,
+      "storage_path": "data/public/information_requests/IR-TRAFFIC-2026/",
+      "priority": "P1",
+      "use_cases": [
+        "latest_direction_share_context",
+        "intraday_demand_calibration_if_resolution_allows"
+      ],
+      "requested_products": [
+        "조사지점·교차로 목록과 좌표",
+        "조사일·조사시간대",
+        "방향별 또는 회전별 원시 교통량",
+        "5분·15분·시간 집계표 중 보유 형식",
+        "차종 구분과 단위 정의",
+        "결측·오류·보정 표기",
+        "조사방법·장비·집계주기 설명"
+      ],
+      "acceptance_checks": [
+        "sha256",
+        "source_agency",
+        "as_of_date",
+        "date_coverage",
+        "time_resolution",
+        "timezone",
+        "intersection_identity",
+        "direction_semantics",
+        "units",
+        "missing_rate",
+        "duplicate_rows",
+        "license_and_disclosure_scope"
+      ],
+      "claim_limit_before_acceptance": "Not usable as 2026 current traffic until dates, coverage, and resolution are verified."
+    },
+    {
+      "request_id": "IR-SIGNAL-CHANGE-2026",
+      "title": "2026년 세종 교통신호체계 변경 이력·검토·협의자료",
+      "primary_agency": "한국도로교통공단 또는 보유기관 이송",
+      "current_status": "department_assignment_pending",
+      "response_received": false,
+      "storage_path": "data/public/information_requests/IR-SIGNAL-CHANGE-2026/",
+      "priority": "P2_CONDITIONAL",
+      "use_cases": [
+        "historical_signal_change_context",
+        "exclude_signal_change_as_confounder"
+      ],
+      "requested_products": [
+        "대상 교차로별 변경일",
+        "변경 전·후 운영방식",
+        "검토·협의 문서",
+        "변경 사유와 적용 시간대",
+        "자료 기준일과 시설 식별자"
+      ],
+      "acceptance_checks": [
+        "sha256",
+        "source_agency",
+        "as_of_date",
+        "effective_date",
+        "intersection_identity",
+        "document_scope",
+        "license_and_disclosure_scope"
+      ],
+      "claim_limit_before_acceptance": "Cannot claim a 2026 current signal plan or a specific historical operating state."
+    },
+    {
+      "request_id": "IR-SIGNAL-OPS-2026",
+      "title": "교통신호제어기 운영자료 입력 용역 과업·성과품",
+      "primary_agency": "한국도로교통공단 또는 보유기관 이송",
+      "current_status": "department_assignment_pending",
+      "response_received": false,
+      "storage_path": "data/public/information_requests/IR-SIGNAL-OPS-2026/",
+      "priority": "P2_CONDITIONAL",
+      "use_cases": [
+        "signal_model_contract_if_scope_changes",
+        "operating_mode_context"
+      ],
+      "requested_products": [
+        "교차로별 주기",
+        "현시 순서",
+        "방향별 유효녹색",
+        "황색·전적색 등 소거시간",
+        "교차로 간 옵셋",
+        "시간대별 계획 또는 감응제어 조건",
+        "적용 시작·종료일",
+        "자료 단위와 시설 식별자"
+      ],
+      "acceptance_checks": [
+        "sha256",
+        "source_agency",
+        "as_of_date",
+        "effective_date",
+        "intersection_identity",
+        "cycle",
+        "phase_order",
+        "effective_green",
+        "clearance",
+        "offset",
+        "time_of_day_plan",
+        "units",
+        "license_and_disclosure_scope"
+      ],
+      "claim_limit_before_acceptance": "No actual signal-service input or field replay claim is allowed."
+    },
+    {
+      "request_id": "IR-CORRIDOR-LATEST",
+      "title": "성금·청사·세종교차로 최신 회랑 운영자료",
+      "primary_agency": "세종특별자치시",
+      "current_status": "department_assignment_pending",
+      "response_received": false,
+      "storage_path": "data/public/information_requests/IR-CORRIDOR-LATEST/",
+      "priority": "P0",
+      "use_cases": [
+        "named_corridor_identity",
+        "absolute_intraday_demand",
+        "lane_and_storage_geometry",
+        "speed_and_travel_time_validation",
+        "signal_model_if_provided"
+      ],
+      "requested_products": [
+        "성금·청사·세종교차로의 시설 식별자와 좌표",
+        "날짜·시간대·방향별 5분·15분 또는 시간 교통량",
+        "가능한 경우 회전별 교통량",
+        "속도·통행시간·점유율·대기행렬 자료",
+        "차로 수와 방향별 차로운영",
+        "좌회전·회전 전용차로 및 유효 대기길이",
+        "정지선 위치와 링크 간 사용 가능 저장공간",
+        "사고·공사·행사·통제 기록",
+        "신호가 실제 범위에 포함되는 경우 주기·현시·유효녹색·옵셋·TOD",
+        "각 파일의 기준일·단위·시간대·결측 및 품질 플래그"
+      ],
+      "acceptance_checks": [
+        "sha256",
+        "source_agency",
+        "as_of_date",
+        "date_coverage",
+        "time_resolution",
+        "timezone",
+        "intersection_identity",
+        "direction_semantics",
+        "turn_semantics",
+        "units",
+        "missing_rate",
+        "duplicate_rows",
+        "lane_count",
+        "usable_queue_length",
+        "lane_use",
+        "stop_line",
+        "quality_flags",
+        "license_and_disclosure_scope"
+      ],
+      "claim_limit_before_acceptance": "Named intersections remain spatial references; current operations, absolute demand, storage, and signal plans are unverified."
+    }
+  ],
+  "response_handoff_requirements": {
+    "user_should_provide": [
+      "현재 포털 상태 문구와 확인일",
+      "공개·부분공개 시 회신 공문과 첨부파일 원본",
+      "파일명이 변경됐다면 원래 파일명 기록",
+      "개인정보를 가린 화면 또는 파일"
+    ],
+    "user_should_not_provide": [
+      "정보공개포털 비밀번호",
+      "API 인증키",
+      "제어기 계정·IP·망 구성",
+      "담당자 개인 전화번호·이메일",
+      "삭제·수정한 데이터만 있고 원본이 없는 파일"
+    ],
+    "processing_after_receipt": [
+      "원본 SHA-256 기록",
+      "원본과 정규화본 분리",
+      "날짜·공간·단위·시간대·집계주기 검사",
+      "결측·중복·이상치 검사",
+      "허용 용도와 금지 주장을 manifest에 기록",
+      "기존 synthetic-v0를 자동 교체하지 않음"
+    ]
+  }
+}
