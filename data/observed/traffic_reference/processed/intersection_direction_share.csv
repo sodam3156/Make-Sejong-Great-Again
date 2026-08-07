@@ -1,0 +1,4 @@
+canonical_intersection_name,months,period_start,period_end,total_veh,recommended_share_method,model_input_status,east_aggregate_share,east_median_monthly_share_normalized,west_aggregate_share,west_median_monthly_share_normalized,south_aggregate_share,south_median_monthly_share_normalized,north_aggregate_share,north_median_monthly_share_normalized
+성금교차로,11,2022-05,2023-03,15768531,normalized_median_monthly_share,NOT_READY_DIRECTION_SEMANTICS_PENDING,0.209724,0.206793,0.174427,0.174345,0.307385,0.312042,0.308464,0.306819
+세종교차로,11,2022-05,2023-03,12446885,normalized_median_monthly_share,NOT_READY_DIRECTION_SEMANTICS_PENDING,0.221381,0.238663,0.160055,0.173056,0.342193,0.320593,0.276371,0.267689
+청사교차로,11,2022-05,2023-03,6855278,normalized_median_monthly_share,NOT_READY_DIRECTION_SEMANTICS_PENDING,0.189541,0.191081,0.178198,0.176975,0.284808,0.285372,0.347454,0.346572

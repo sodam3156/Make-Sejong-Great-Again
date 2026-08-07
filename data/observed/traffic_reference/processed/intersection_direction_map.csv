@@ -1,0 +1,13 @@
+canonical_intersection_name,source_direction_label,normalized_direction,source_direction_semantics,model_approach_id,mapping_status,reason
+성금교차로,동,east,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+성금교차로,서,west,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+성금교차로,남,south,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+성금교차로,북,north,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+세종교차로,동,east,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+세종교차로,서,west,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+세종교차로,남,south,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+세종교차로,북,north,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+청사교차로,동,east,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+청사교차로,서,west,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+청사교차로,남,south,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
+청사교차로,북,north,UNCONFIRMED_TRAVEL_DIRECTION_OR_APPROACH_SIDE,,PENDING,"Public metadata does not define whether 동/서/남/북 is travel direction, origin approach, or detector placement."
