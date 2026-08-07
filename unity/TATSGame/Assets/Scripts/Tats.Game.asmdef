@@ -1,0 +1,8 @@
+{
+  "name": "Tats.Game",
+  "rootNamespace": "Tats.Game",
+  "references": [
+    "Unity.Newtonsoft.Json"
+  ],
+  "autoReferenced": true
+}

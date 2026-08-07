@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="ContinueScreen.uss" />
+    <ui:VisualElement name="continue-root" class="continue">
+        <ui:VisualElement name="continue-slot-list" class="continue__panel">
+            <ui:Label text="이어하기" class="continue__title" />
+            <ui:VisualElement name="continue-slots" class="continue__slot-list" />
+            <ui:Label name="continue-empty-label" text="저장된 게임이 없습니다." class="continue__empty-label" />
+            <ui:VisualElement class="continue__actions">
+                <ui:Button name="continue-back-button" text="뒤로" class="continue__action continue__action--secondary" />
+                <ui:Button name="continue-resume-button" text="이어하기" class="continue__action continue__action--primary" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="continue-resume-ready" class="continue__panel">
+            <ui:Label text="재개 준비" class="continue__title" />
+            <ui:Label name="continue-ready-summary" text="" class="continue__summary" />
+            <ui:VisualElement class="continue__actions">
+                <ui:Button name="continue-ready-back-button" text="뒤로" class="continue__action continue__action--secondary" />
+                <ui:Button name="continue-ready-confirm-button" text="재개" class="continue__action continue__action--primary" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="continue-resume-failed" class="continue__panel">
+            <ui:Label text="재개 실패" class="continue__title" />
+            <ui:Label name="continue-failed-reason" text="" class="continue__summary" />
+            <ui:VisualElement class="continue__actions">
+                <ui:Button name="continue-failed-quit-button" text="종료" class="continue__action continue__action--secondary" />
+                <ui:Button name="continue-failed-retry-button" text="재시도" class="continue__action continue__action--primary" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

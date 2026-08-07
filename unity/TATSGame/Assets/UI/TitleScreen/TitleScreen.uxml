@@ -1,0 +1,57 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="TitleScreen.uss" />
+    <ui:VisualElement name="title-screen-root" class="title-screen">
+        <ui:VisualElement name="title-screen-connection-status" class="title-screen__connection-status">
+            <ui:Label name="title-screen-connection-label" text="재시도 중" class="title-screen__connection-label" />
+            <ui:Label name="title-screen-connection-reason" text="" class="title-screen__connection-reason" />
+        </ui:VisualElement>
+        <ui:VisualElement name="title-screen-menu-panel" class="title-screen__menu-panel">
+            <ui:VisualElement name="title-screen-logo" class="title-screen__logo" />
+            <ui:VisualElement name="title-screen-menu" class="title-screen__menu">
+                <ui:Button name="new-game-button" class="title-screen__menu-item">
+                    <ui:VisualElement class="title-screen__menu-item-icon" />
+                    <ui:VisualElement class="title-screen__menu-item-text">
+                        <ui:Label text="새로 시작" class="title-screen__menu-item-name" />
+                        <ui:Label text="시작 교차로와 상대 AI를 골라 새 판을 시작합니다." class="title-screen__menu-item-description" />
+                    </ui:VisualElement>
+                </ui:Button>
+                <ui:Button name="continue-button" class="title-screen__menu-item">
+                    <ui:VisualElement class="title-screen__menu-item-icon" />
+                    <ui:VisualElement class="title-screen__menu-item-text">
+                        <ui:Label text="이어하기" class="title-screen__menu-item-name" />
+                        <ui:Label text="저장된 게임을 이어서 진행합니다." class="title-screen__menu-item-description" />
+                    </ui:VisualElement>
+                </ui:Button>
+                <ui:Button name="settings-button" class="title-screen__menu-item">
+                    <ui:VisualElement class="title-screen__menu-item-icon" />
+                    <ui:VisualElement class="title-screen__menu-item-text">
+                        <ui:Label text="환경설정" class="title-screen__menu-item-name" />
+                        <ui:Label text="해상도·기본 배속·볼륨·언어를 설정합니다." class="title-screen__menu-item-description" />
+                    </ui:VisualElement>
+                </ui:Button>
+                <ui:Button name="help-button" class="title-screen__menu-item">
+                    <ui:VisualElement class="title-screen__menu-item-icon" />
+                    <ui:VisualElement class="title-screen__menu-item-text">
+                        <ui:Label text="도움말" class="title-screen__menu-item-name" />
+                        <ui:Label text="첫 3분 안내와 조작법, 용어를 확인합니다." class="title-screen__menu-item-description" />
+                    </ui:VisualElement>
+                </ui:Button>
+                <ui:Button name="credits-button" class="title-screen__menu-item">
+                    <ui:VisualElement class="title-screen__menu-item-icon" />
+                    <ui:VisualElement class="title-screen__menu-item-text">
+                        <ui:Label text="기여자" class="title-screen__menu-item-name" />
+                        <ui:Label text="팀과 공개 데이터 출처, 오픈소스 고지를 확인합니다." class="title-screen__menu-item-description" />
+                    </ui:VisualElement>
+                </ui:Button>
+                <ui:Label name="title-screen-menu-disabled-reason" text="연결이 끊겨 새로 시작·이어하기를 사용할 수 없습니다." class="title-screen__menu-disabled-reason" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="title-screen-quit-confirm" class="title-screen__quit-confirm">
+            <ui:Label text="게임을 종료하시겠습니까?" class="title-screen__quit-message" />
+            <ui:VisualElement class="title-screen__quit-actions">
+                <ui:Button name="title-screen-quit-cancel-button" text="취소" class="title-screen__quit-action title-screen__quit-action--secondary" />
+                <ui:Button name="title-screen-quit-confirm-button" text="종료" class="title-screen__quit-action title-screen__quit-action--primary" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

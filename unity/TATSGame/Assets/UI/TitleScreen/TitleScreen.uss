@@ -1,0 +1,210 @@
+/* T1 셸: 최종 아트/스타일은 Manyfast V9 승인 전까지 회색 박스로 둔다 (docs/00_TATS_SOURCE_OF_TRUTH.md). */
+
+.title-screen {
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(24, 26, 30);
+    padding: 5%;
+}
+
+.title-screen__logo {
+    width: 40%;
+    min-width: 240px;
+    max-width: 480px;
+    height: 18%;
+    min-height: 96px;
+    max-height: 160px;
+    margin-bottom: 5%;
+    background-color: rgb(64, 67, 74);
+    border-radius: 4px;
+}
+
+.title-screen__menu {
+    flex-direction: column;
+    width: 32%;
+    min-width: 280px;
+    max-width: 420px;
+}
+
+/* T8: 클릭 영역 최소 44x44px(docs/20 4.1절, docs/23 T8) — min-width를 명시해 폭이 좁은 부모
+   레이아웃에서도 보장한다. flex-direction: row로 바꿔 아이콘 + 이름/설명을 나란히 배치한다. */
+.title-screen__menu-item {
+    flex-direction: row;
+    align-items: center;
+    min-height: 44px;
+    min-width: 44px;
+    margin-bottom: 12px;
+    padding: 8px 16px;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.title-screen__menu-item:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.title-screen__menu-item:focus,
+.title-screen__menu-item--focused {
+    background-color: rgb(54, 58, 66);
+    border-color: rgb(122, 171, 255);
+}
+
+/* T8: 비활성 텍스트 대비 4.5:1 이상(docs/20 12.1, docs/23 T8). 기존 rgb(110,114,120)은 이
+   배경(rgb(32,34,39))에서 3.29:1로 미달이라 rgb(152,156,160)(5.76:1)로 올렸다 — WCAG 1.4.3은
+   비활성 컨트롤을 대비 요구에서 제외하지만, 백로그 체크 항목이 예외 없이 "본문 대비 4.5:1"을
+   요구해 비활성 상태도 맞춘다. */
+.title-screen__menu-item:disabled {
+    background-color: rgb(32, 34, 39);
+    color: rgb(152, 156, 160);
+    border-color: rgba(0, 0, 0, 0);
+}
+
+/* T8: 아이콘은 최종 아트 승인 전 회색 박스로 둔다(docs/00_TATS_SOURCE_OF_TRUTH.md). */
+.title-screen__menu-item-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    margin-right: 12px;
+    background-color: rgb(140, 145, 153);
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.title-screen__menu-item-text {
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: flex-start;
+}
+
+.title-screen__menu-item-name {
+    font-size: 20px;
+    white-space: normal;
+}
+
+/* T8: 설명 텍스트는 rgb(42,45,52)/rgb(54,58,66)/rgb(32,34,39) 배경 모두에서 4.5:1 이상
+   (6.92:1 / 5.73:1 / 7.99:1)인 고정 회색을 쓴다. color를 지정하지 않으면 버튼의 color를
+   상속해 name과 구분되지 않으므로 이름보다 옅은 톤으로 고정했다 — 비활성 상태에서도 밝기가
+   그대로인 점은 이번 구현이 감수한 시각적 트레이드오프다(대비 기준 자체는 항상 만족한다). */
+.title-screen__menu-item-description {
+    font-size: 13px;
+    color: rgb(180, 184, 191);
+    white-space: normal;
+}
+
+.title-screen__menu-disabled-reason {
+    display: none;
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgb(224, 150, 150);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* T7: 연결 표시. docs/23_TITLE_SCREEN_BACKLOG.md — 연결됨·재시도·끊김 3상태. */
+
+.title-screen__connection-status {
+    position: absolute;
+    top: 4%;
+    right: 5%;
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 280px;
+}
+
+.title-screen__connection-label {
+    min-height: 28px;
+    padding: 4px 12px;
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(64, 67, 74);
+    border-radius: 4px;
+}
+
+.title-screen__connection-status--connected .title-screen__connection-label {
+    background-color: rgb(40, 74, 48);
+    color: rgb(163, 230, 180);
+}
+
+.title-screen__connection-status--retrying .title-screen__connection-label {
+    background-color: rgb(90, 78, 38);
+    color: rgb(235, 202, 130);
+}
+
+.title-screen__connection-status--disconnected .title-screen__connection-label {
+    background-color: rgb(90, 42, 42);
+    color: rgb(240, 165, 165);
+}
+
+.title-screen__connection-reason {
+    display: none;
+    margin-top: 4px;
+    font-size: 12px;
+    color: rgb(200, 204, 210);
+    -unity-text-align: upper-right;
+    white-space: normal;
+}
+
+/* T7: 종료 확인 오버레이. Esc가 유일한 진입점이다(시작 화면에 별도 `종료` 메뉴가 없다). */
+
+.title-screen__menu-panel {
+    flex-direction: column;
+    align-items: center;
+}
+
+.title-screen__quit-confirm {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    min-width: 320px;
+    padding: 24px 32px;
+    background-color: rgb(32, 34, 39);
+    border-width: 2px;
+    border-color: rgb(64, 67, 74);
+    border-radius: 6px;
+}
+
+.title-screen__quit-message {
+    font-size: 18px;
+    color: rgb(232, 234, 237);
+    margin-bottom: 16px;
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+.title-screen__quit-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.title-screen__quit-action {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 24px;
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.title-screen__quit-action:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.title-screen__quit-action--primary {
+    background-color: rgb(120, 56, 56);
+}
+
+.title-screen__quit-action:focus,
+.title-screen__quit-action--focused {
+    border-color: rgb(122, 171, 255);
+}

@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="NewGameScreen.uss" />
+    <ui:VisualElement name="new-game-root" class="new-game">
+        <ui:Label text="새로 시작" class="new-game__title" />
+
+        <ui:VisualElement name="new-game-intersections" class="new-game__section">
+            <ui:Label text="시작 교차로" class="new-game__section-label" />
+            <ui:VisualElement class="new-game__option-row">
+                <ui:Button name="start-intersection-ix_04-button" text="성금교차로" class="new-game__option" />
+                <ui:Button name="start-intersection-ix_09-button" text="청사교차로" class="new-game__option" />
+                <ui:Button name="start-intersection-ix_07-button" text="어진교차로" class="new-game__option" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="new-game-opponents" class="new-game__section">
+            <ui:Label text="상대 AI" class="new-game__section-label" />
+            <ui:VisualElement class="new-game__option-row">
+                <ui:Button name="opponent-luna-button" text="Luna" class="new-game__option" />
+                <ui:Button name="opponent-terra-button" text="Terra" class="new-game__option" />
+                <ui:Button name="opponent-sol-button" text="Sol" class="new-game__option" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="new-game-actions" class="new-game__actions">
+            <ui:Button name="back-button" text="뒤로" class="new-game__action new-game__action--secondary" />
+            <ui:Button name="start-button" text="시작" class="new-game__action new-game__action--primary" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

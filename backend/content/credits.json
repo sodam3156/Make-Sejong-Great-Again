@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "team": {
+    "title": "팀",
+    "name": "MSGA (Make Sejong Great Again)",
+    "members": [
+      "백서준",
+      "최영",
+      "손시우",
+      "김경은",
+      "여하윤"
+    ],
+    "source": "archive/legacy-rainflow-v1/docs/18_GAME_SLICE_EXECUTION_PLAN.md 팀명과 BM 절"
+  },
+  "publicDataSources": {
+    "title": "공개 데이터 출처",
+    "entries": [
+      {
+        "order": 1,
+        "name": "세종특별자치시 교차로 방향별 교통 통행량",
+        "url": "https://www.data.go.kr/data/15113448/fileData.do",
+        "note": null
+      },
+      {
+        "order": 2,
+        "name": "세종특별자치시 교차로 신호 표준데이터_기타",
+        "url": "https://www.data.go.kr/data/15113728/fileData.do",
+        "note": null
+      },
+      {
+        "order": 3,
+        "name": "세종특별자치시 신호등 조회 서비스",
+        "url": "https://www.data.go.kr/data/15098435/openapi.do",
+        "note": null
+      },
+      {
+        "order": 4,
+        "name": "도시부 제한속도 감속(5030)에 따른 교통영향 연구",
+        "url": "https://www.codil.or.kr/filebank/original/RK/OTKCRK190266/OTKCRK190266.pdf",
+        "note": null
+      },
+      {
+        "order": 5,
+        "name": "행정안전부 도로명주소 전자지도",
+        "url": "https://www.data.go.kr/data/15050413/fileData.do",
+        "note": null
+      },
+      {
+        "order": 6,
+        "name": "nodelink_202607291508.csv",
+        "url": null,
+        "note": "국가교통정보센터 노드·링크 체계에서 2026-07-29 내려받은 파일. 원본 파일 안에는 직접 출처 URL·생성기관·기준일 메타데이터가 없어 재다운로드 경로 확인이 필요하다."
+      },
+      {
+        "order": 7,
+        "name": "국가교통정보센터 노드링크 자료실",
+        "url": "https://www.its.go.kr/nodelink/nodelinkRef",
+        "note": "`[2026-07-16]NODELINKDATA.zip` — 실제 공간망 원본. 상세는 1-1절."
+      }
+    ],
+    "source": "archive/legacy-rainflow-v1/docs/evidence/public_data_inventory_20260729.md 3절"
+  },
+  "openSourceNotices": {
+    "title": "오픈소스 고지",
+    "entries": [
+      {
+        "name": "A/B Street",
+        "license": "Apache License 2.0",
+        "licenseSpdx": "Apache-2.0",
+        "upstreamUrl": "https://github.com/a-b-street/abstreet",
+        "forkUrl": "https://github.com/sodam3156/abstreet",
+        "pinnedCommit": "0964f29315820c91b171b585eb51e300164e9197",
+        "pinnedCommitUrl": "https://github.com/a-b-street/abstreet/commit/0964f29315820c91b171b585eb51e300164e9197",
+        "note": "현재 이 저장소에는 A/B Street 소스 또는 binary가 포함되지 않는다. 포함 시 upstream `LICENSE`를 배포물에 복사하고 수정 파일·저작권·귀속 고지를 유지한다."
+      },
+      {
+        "name": "OpenStreetMap data",
+        "license": "Open Database License (ODbL)",
+        "copyrightUrl": "https://www.openstreetmap.org/copyright",
+        "attributionGuidanceUrl": "https://osmfoundation.org/wiki/Licence/Attribution_Guidelines",
+        "note": "A/B Street importer 또는 OSM 파생 지도를 사용하는 배포물은 OpenStreetMap과 ODbL을 별도로 고지한다."
+      }
+    ],
+    "source": "THIRD_PARTY_NOTICES.md, third_party/abstreet.lock.json"
+  }
+}

@@ -1,0 +1,101 @@
+/* T2 셸: 최종 아트/스타일은 Manyfast V9 승인 전까지 회색 박스로 둔다 (docs/00_TATS_SOURCE_OF_TRUTH.md). */
+
+.new-game {
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(24, 26, 30);
+    padding: 5%;
+}
+
+.new-game__title {
+    font-size: 28px;
+    color: rgb(232, 234, 237);
+    margin-bottom: 4%;
+    -unity-text-align: middle-center;
+}
+
+.new-game__section {
+    width: 60%;
+    min-width: 360px;
+    max-width: 640px;
+    margin-bottom: 4%;
+}
+
+.new-game__section-label {
+    font-size: 16px;
+    color: rgb(180, 184, 191);
+    margin-bottom: 8px;
+    -unity-text-align: middle-left;
+}
+
+.new-game__option-row {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.new-game__option {
+    flex-grow: 1;
+    min-height: 44px;
+    min-width: 44px;
+    margin-right: 8px;
+    padding: 8px 12px;
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.new-game__option:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.new-game__option--selected {
+    background-color: rgb(58, 84, 64);
+    border-color: rgb(122, 214, 149);
+}
+
+.new-game__actions {
+    flex-direction: row;
+    width: 60%;
+    min-width: 360px;
+    max-width: 640px;
+    justify-content: space-between;
+    margin-top: 4%;
+}
+
+.new-game__action {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 24px;
+    font-size: 18px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 234, 237);
+    background-color: rgb(42, 45, 52);
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+
+.new-game__action:hover {
+    background-color: rgb(54, 58, 66);
+}
+
+.new-game__action--primary {
+    background-color: rgb(58, 84, 132);
+}
+
+/* T8: 비활성 대비 4.5:1 이상(docs/23 T8) — rgb(120,124,130)은 이 배경에서 3.28:1로 미달이라
+   rgb(152,156,160)(4.99:1)로 올렸다. */
+.new-game__action--primary:disabled {
+    background-color: rgb(42, 45, 52);
+    color: rgb(152, 156, 160);
+}
+
+.new-game__focusable--focused {
+    border-color: rgb(122, 171, 255);
+}

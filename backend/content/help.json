@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "firstThreeMinutes": {
+    "title": "첫 3분",
+    "note": "안내는 정답 신호 계획을 주지 않는다. 각 단계는 한 번에 행동 하나만 요구하고 언제든 건너뛰거나 다시 열 수 있다.",
+    "steps": [
+      { "order": 1, "text": "게임은 Day 1 03:00의 가장 한적한 시간대에서 정지 상태로 시작한다." },
+      { "order": 2, "text": "신호 현시 오버레이를 켜 현재 단계와 다음 단계를 읽는다." },
+      { "order": 3, "text": "시작 교차로를 선택해 한 단계의 지속시간 또는 우선순위를 바꾼다." },
+      { "order": 4, "text": "영향 미리보기에서 대기열·보행자 대기·안전 변화를 확인한다." },
+      { "order": 5, "text": "서버 적용 예약과 안전 전환 뒤 기본 지도로 돌아가 결과를 관찰한다." },
+      { "order": 6, "text": "세 번째 도시 시간 정산에서 현재값, 비교 기준, 기본 10포인트와 증가 보너스를 읽는다." },
+      { "order": 7, "text": "첫 연결 도로를 구매한다." }
+    ]
+  },
+  "controls": {
+    "title": "조작법",
+    "entries": [
+      {
+        "action": "메뉴 이동",
+        "keys": ["ArrowUp", "ArrowDown"],
+        "description": "항목 사이에서 포커스를 위아래로 옮긴다."
+      },
+      {
+        "action": "값 변경",
+        "keys": ["ArrowLeft", "ArrowRight"],
+        "description": "환경설정 화면에서 포커스된 값을 바꾼다."
+      },
+      {
+        "action": "선택 또는 확정",
+        "keys": ["Enter"],
+        "description": "포커스된 항목을 활성화하거나 확정한다."
+      },
+      {
+        "action": "뒤로",
+        "keys": ["Escape"],
+        "description": "열린 화면을 한 단계 닫는다. 저장하지 않은 값은 폐기한다."
+      }
+    ]
+  },
+  "terms": {
+    "title": "용어",
+    "entries": [
+      {
+        "id": "queue",
+        "term": "대기행렬",
+        "definition": "교차로 진입 방향(접근로)마다 아직 처리되지 못하고 쌓여 있는 차량 수와 길이. 대기열 오버레이가 접근 방향별 막대·화살표로 보여주며, 대기가 유입 포기 임계값을 넘으면 새로 도착한 차량은 대기열에 들어가지 못하고 버려진다.",
+        "source": "docs/20_TATS_UX_FRONTEND_HANDOFF_V1.md 5.1절, docs/22_TATS_BACKEND_DESIGN_V1.md 3.2·6절"
+      },
+      {
+        "id": "spillback",
+        "term": "spillback",
+        "definition": "하류 도로 구간이 이미 가득 차 있으면(점유율이 기준 이상) 신호가 초록불이어도 상류에서 차량을 내보내지 못하고 배출량이 0이 되는 현상. 하류가 막히면 그 여파로 상류까지 막히는 연쇄를 나타낸다.",
+        "source": "docs/22_TATS_BACKEND_DESIGN_V1.md 3.2절 배출 단계"
+      },
+      {
+        "id": "conflict",
+        "term": "상충",
+        "definition": "한 교차로 안에서 서로 다른 차량 이동, 또는 차량 이동과 보행 횡단이 동시에 초록불을 받으면 경로가 겹치는 조합. 보행 횡단과 그 횡단을 가로지르는 차량 이동이 동시에 초록불이면 신호 계획 자체가 거절되고, 차량끼리의 상충은 위험을 보여준 뒤 사용자가 감수하고 적용할 수 있다.",
+        "source": "docs/22_TATS_BACKEND_DESIGN_V1.md 3.1·4.2절"
+      },
+      {
+        "id": "saturation",
+        "term": "포화도",
+        "definition": "도로 구간이 처리할 수 있는 유동량 대비 실제로 처리한 유동량의 비율. 교통량 오버레이에서 완료 유동량·유입량과 함께 표시되며, 값이 높을수록 병목 가능성이 크다는 뜻이다.",
+        "source": "docs/22_TATS_BACKEND_DESIGN_V1.md 6절 Traffic 오버레이"
+      }
+    ]
+  }
+}
