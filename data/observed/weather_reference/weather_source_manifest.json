@@ -1,0 +1,55 @@
+{
+  "schema_version": 3,
+  "station": {
+    "provider": "Korea Meteorological Administration",
+    "station_id": 239,
+    "station_name": "Sejong",
+    "latitude": 36.48522,
+    "longitude": 127.24438
+  },
+  "classification": {
+    "reanalysis_proxy": "Date screening and sensitivity only; never a Sejong observed value.",
+    "observed_weather": "May be used as weather time-series input after committed QA passes.",
+    "traffic_parameter_mapping": "Not included. Capacity, demand, signal, fairness, and safety parameters require separate reviewed evidence."
+  },
+  "proxy": {
+    "source_model": "ERA5",
+    "usage_limit": "screening_and_sensitivity_only",
+    "analysis_window": {
+      "start_date": "2022-07-13",
+      "end_date": "2022-09-07"
+    },
+    "hourly_rows": 1392,
+    "daily_rows": 58,
+    "null_precipitation_values": 0,
+    "daily_hourly_max_abs_difference_mm": 0.0,
+    "rain_date": "2022-08-10",
+    "rain_date_proxy_precipitation_mm": 36.7,
+    "rain_date_proxy_max_hourly_mm": 2.8,
+    "selected_proxy_dry_candidate": "2022-07-27"
+  },
+  "kma_observed": {
+    "manifest": "data/observed/weather_reference/observed/kma_observation_manifest.json",
+    "compact_precipitation_file": "data/observed/weather_reference/observed/normalized/kma_aws_239_precipitation_compact.json",
+    "rain_date": "2022-08-10",
+    "rain_status": "OBSERVED_COMPLETE",
+    "rain_aws_minute_rows": 1440,
+    "rain_asos_hourly_rows": 24,
+    "rain_daily_precipitation_mm": 139.3,
+    "aws_asos_abs_difference_mm": 0.0,
+    "dry_date": "2022-07-27",
+    "dry_status": "OBSERVED_DRY_DAY_CONFIRMED_CONDITIONAL_ON_ANALYSIS_START_AT_OR_AFTER_06:00_KST",
+    "dry_aws_minute_rows": 1440,
+    "dry_daily_precipitation_mm": 0.0,
+    "minute_gaps": 0,
+    "scenario_input_artifact": "weather_reference_output/kma_observed/kma_weather_scenario_inputs.csv.gz"
+  },
+  "final_dry_date_status": "CONDITIONALLY_CONFIRMED_FOR_ANALYSIS_START_AT_OR_AFTER_06:00_KST",
+  "model_parameter_status": "NO_TRAFFIC_PARAMETER_CHANGED_BY_THIS_DATA_COMMIT",
+  "prohibited_claims": [
+    "ERA5 values are Sejong station observations.",
+    "KMA rainfall alone determines a traffic-capacity reduction factor.",
+    "The current simulation is calibrated to same-date observed traffic.",
+    "A dry-reference analysis starting before 06:00 KST has a verified preceding-six-hour window."
+  ]
+}

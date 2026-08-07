@@ -1,0 +1,61 @@
+name: Weather Reference Probe
+
+on:
+  push:
+    branches:
+      - agent/siwoo-weather-reference-selection-20260730
+    paths:
+      - scripts/fetch_weather_reference.py
+      - scripts/ingest_kma_weather_observations.py
+      - data/observed/weather_reference/**
+      - .github/workflows/weather-reference-probe.yml
+  pull_request:
+    paths:
+      - scripts/fetch_weather_reference.py
+      - scripts/ingest_kma_weather_observations.py
+      - data/observed/weather_reference/**
+      - .github/workflows/weather-reference-probe.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-weather-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Fetch proxy screening data
+        run: |
+          python scripts/fetch_weather_reference.py --output-dir weather_reference_output/proxy_probe
+
+      - name: Validate KMA observations and generate scenario inputs
+        run: |
+          python scripts/ingest_kma_weather_observations.py \
+            --output-dir weather_reference_output/kma_observed
+
+      - name: Confirm committed evidence files
+        run: |
+          test -f data/observed/weather_reference/weather_source_manifest.json
+          test -f data/observed/weather_reference/processed/dry_candidate_screening.csv
+          test -f data/observed/weather_reference/observed/kma_observation_manifest.json
+          test -f data/observed/weather_reference/observed/normalized/kma_aws_239_precipitation_compact.json
+          test -f data/observed/weather_reference/observed/normalized/kma_asos_239_20220810_hourly.csv
+          test -f weather_reference_output/kma_observed/kma_weather_scenario_inputs.csv.gz
+          test -f weather_reference_output/kma_observed/kma_validation_report.json
+
+      - name: Upload weather evidence artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: weather-reference-output
+          path: weather_reference_output/
+          if-no-files-found: error
+          retention-days: 14
+
+# Outputs are artifacts only. Reviewed evidence files change through explicit author
+# commits; the workflow has no write permission and cannot create recursive commits.
