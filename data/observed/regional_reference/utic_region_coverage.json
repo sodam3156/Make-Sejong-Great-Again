@@ -1,0 +1,66 @@
+{
+  "coverage_id": "utic-signal-region-coverage-20260731-v2",
+  "source_class": "official_service_description_and_codebook",
+  "source_documents": [
+    "2026 도시교통정보센터 개방데이터 세부내용.hwp",
+    "sig_code.hwp"
+  ],
+  "active_signal_open_data_coverage": {
+    "L02": "인천광역시",
+    "L29": "대구광역시"
+  },
+  "active_coverage_basis": "공식 세부내역은 신호 개방 데이터가 인천시와 대구시 2개 시의 온라인 신호제어기 계획정보(TOD), SIGNALMAP 및 기반정보를 제공한다고 명시한다.",
+  "codebook_region_codes": {
+    "L01": "서울특별시",
+    "L02": "인천광역시",
+    "L03": "부천시",
+    "L04": "광명시",
+    "L05": "안양시",
+    "L06": "과천시",
+    "L07": "안산시",
+    "L08": "용인시",
+    "L09": "성남시",
+    "L10": "고양시",
+    "L11": "시흥시",
+    "L12": "파주시",
+    "L13": "양주시",
+    "L14": "의정부시",
+    "L15": "김포시",
+    "L16": "의왕시",
+    "L17": "군포시",
+    "L18": "남양주시",
+    "L19": "수원시",
+    "L20": "광주시(경기)",
+    "L21": "구리시",
+    "L22": "하남시",
+    "L23": "부산광역시",
+    "L24": "양산시",
+    "L25": "창원시",
+    "L26": "김해시",
+    "L28": "거제시",
+    "L29": "대구광역시",
+    "L30": "대전광역시",
+    "L31": "광주광역시",
+    "L37": "포항시"
+  },
+  "codebook_warning": "REGION_CD 코드가 존재한다고 해서 해당 지역이 현재 신호 개방 데이터 서비스에 연결됐다는 뜻은 아니다.",
+  "validated_regions": {
+    "L02": {
+      "region": "인천광역시",
+      "evidence": "기존 신호주기 파일 및 parser fixture"
+    },
+    "L29": {
+      "region": "대구광역시",
+      "evidence": "getPlanCRRSInfo 온라인 정상 응답"
+    }
+  },
+  "sejong": {
+    "national_node_link_region_prefix": "413",
+    "utic_signal_open_data_active": false,
+    "status": "NOT_INCLUDED_IN_OFFICIAL_TWO_CITY_SIGNAL_COVERAGE",
+    "implication": "세종 NODE/LINK 공간망은 추출할 수 있으나, UTIC에서 세종 TOD·SIGNALMAP을 받을 수 있다고 주장할 수 없다."
+  },
+  "identifier_system_warning": "전국표준노드링크의 413은 UTIC REGION_CD와 별개의 식별체계다.",
+  "runtime_activation": "disabled",
+  "usable_for_sejong_signal_calibration": false
+}

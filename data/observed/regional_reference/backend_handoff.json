@@ -1,0 +1,64 @@
+{
+  "contract_version": "regional-reference-handoff-v1",
+  "runtime_activation": "disabled",
+  "datasets": [
+    {
+      "dataset_id": "cheonan-intersection-hourly-profile-v1",
+      "paths": ["cheonan_profiles.json", "cheonan_candidate_intersections.json"],
+      "source_class": "regional_reference",
+      "allowed_use": ["temporal profile ranges", "peak-period selection", "similar-intersection screening", "adapter and UI validation"],
+      "forbidden_use": ["absolute Sejong demand calibration", "same-date field replay"]
+    },
+    {
+      "dataset_id": "kict-near-sejong-reference-v1",
+      "paths": ["kict_expressway_profiles.json", "kict_national_road_profiles.json", "kict_near_sejong_stations.json", "kict_vehicle_composition.json"],
+      "source_class": "regional_reference",
+      "allowed_use": ["nearby-road temporal profile", "vehicle composition range", "reference-station display"],
+      "forbidden_use": ["intersection turning demand", "Sejong signal calibration"]
+    },
+    {
+      "dataset_id": "jeju-adapter-fixture-v1",
+      "paths": ["jeju_adapter_summaries.json"],
+      "source_class": "external_fixture",
+      "allowed_use": ["movement schema validation", "vehicle-class adapter validation", "flow visualization fixture"],
+      "forbidden_use": ["Sejong turning ratio or vehicle mix calibration"]
+    },
+    {
+      "dataset_id": "incheon-signal-cycle-fixture-v1",
+      "paths": ["incheon_signal_cycle_summary_a.json", "incheon_signal_cycle_summary_b.json"],
+      "source_class": "external_fixture",
+      "allowed_use": ["signal-cycle parser", "TOD switch visualization"],
+      "forbidden_use": ["Sejong current signal-plan claim"]
+    }
+  ],
+  "replacement_slots": [
+    {
+      "slot": "sejong_corridor_geometry",
+      "status": "awaiting_official_data",
+      "required_fields": ["node_id", "link_id", "geometry", "lane_count", "turn_lanes", "stop_line", "storage_length_m", "crs"]
+    },
+    {
+      "slot": "sejong_time_resolved_turning_counts",
+      "status": "awaiting_official_data",
+      "required_fields": ["timestamp_kst", "intersection_id", "approach", "movement", "volume", "interval_minutes", "quality_flag"]
+    },
+    {
+      "slot": "sejong_signal_plan",
+      "status": "awaiting_official_data",
+      "required_fields": ["effective_date", "cycle_sec", "phase_sequence", "effective_green_sec", "yellow_sec", "all_red_sec", "offset_sec", "tod_plan"]
+    },
+    {
+      "slot": "live_signal_snapshot",
+      "status": "api_access_pending",
+      "required_fields": ["observed_at", "intersection_id", "direction", "signal_state", "remaining_sec", "latency_sec"]
+    }
+  ],
+  "proposed_backend_surfaces": [
+    "GET /api/evidence/source-status",
+    "GET /api/reference/traffic-hourly-profile",
+    "GET /api/reference/vehicle-composition",
+    "GET /api/reference/movement-fixture",
+    "GET /api/reference/signal-cycle-fixture"
+  ],
+  "activation_rule": "Reference adapters may expose these files, but simulator parameters remain synthetic-v0 until a separate reviewed calibration PR explicitly activates quality-checked Sejong observed inputs."
+}

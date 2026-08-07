@@ -1,0 +1,1 @@
+{"dataset_id":"cheonan-name-join-qa-v1","unmatched":[{"traffic_intersection_name":"성거삼거리","normalized_name":"성거3","match_status":"UNMATCHED"},{"traffic_intersection_name":"성성고가교3","normalized_name":"성성고가교3","match_status":"UNMATCHED"},{"traffic_intersection_name":"저리교차로","normalized_name":"저리","match_status":"UNMATCHED"}],"ambiguous":[]}
